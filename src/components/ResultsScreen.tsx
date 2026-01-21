@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
-import { Brain, RotateCcw, Share2, Sparkles, Target, TrendingUp, Clock } from 'lucide-react';
-import { TestResults, categoryLabels, divergentLabels, getIQInterpretation } from '@/data/quizQuestions';
+import { Brain, RotateCcw, Share2, Sparkles, Target, TrendingUp, Clock, Award, Download, Linkedin, Copy, Check, Crown, Zap } from 'lucide-react';
+import { TestResults, categoryLabels, divergentLabels, getIQInterpretation, getPercentile } from '@/data/quizQuestions';
 import { Button } from '@/components/ui/button';
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Cell } from 'recharts';
+import { useState } from 'react';
 
 interface ResultsScreenProps {
   results: TestResults;
@@ -23,7 +24,17 @@ const formatTime = (seconds: number): string => {
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 };
 
+const getIQTier = (iq: number): { tier: string; color: string; description: string } => {
+  if (iq >= 140) return { tier: 'Exceptional', color: 'text-yellow-400', description: 'Top 0.4% globally' };
+  if (iq >= 130) return { tier: 'Superior', color: 'text-primary', description: 'Top 2% globally' };
+  if (iq >= 120) return { tier: 'High', color: 'text-secondary', description: 'Top 9% globally' };
+  if (iq >= 110) return { tier: 'Above Average', color: 'text-accent', description: 'Top 25% globally' };
+  return { tier: 'Average', color: 'text-foreground', description: 'Healthy cognitive baseline' };
+};
+
 export const ResultsScreen = ({ results, onRestart }: ResultsScreenProps) => {
+  const [copied, setCopied] = useState(false);
+  
   const radarData = results.categoryScores.map((score) => ({
     category: categoryLabels[score.category].replace(' Intelligence', '').replace(' Reasoning', '').replace(' Awareness', '').replace(' Recognition', '').replace(' Thinking', ''),
     value: score.percentage,
@@ -35,142 +46,227 @@ export const ResultsScreen = ({ results, onRestart }: ResultsScreenProps) => {
     value: profile.percentage,
   }));
 
+  const iqTier = getIQTier(results.iq);
+  const percentile = getPercentile(results.iq);
+
   const handleShare = async () => {
-    const shareText = `🧠 My Cognitive Profile:\n\n📊 IQ: ${results.iq}\n🎯 Primary Strength: ${categoryLabels[results.primaryStrength]}\n✨ Thinking Style: ${results.divergentType}\n\nTake the free assessment to discover yours!`;
+    const shareText = `🧠 My Cognitive Profile Results
+
+📊 Cognitive Score: ${results.iq} (${iqTier.tier})
+🏆 Percentile: Top ${100 - percentile}%
+🎯 Primary Strength: ${categoryLabels[results.primaryStrength]}
+✨ Executive Archetype: ${results.divergentType}
+
+${results.divergentDescription}
+
+Take the free assessment to discover your cognitive edge 👇
+${window.location.origin}
+
+#CognitiveAssessment #LeadershipDevelopment #PersonalGrowth`;
     
     if (navigator.share) {
       try {
         await navigator.share({ title: 'My Cognitive Profile', text: shareText });
       } catch (err) {
-        navigator.clipboard.writeText(shareText);
+        await navigator.clipboard.writeText(shareText);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
       }
     } else {
-      navigator.clipboard.writeText(shareText);
+      await navigator.clipboard.writeText(shareText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     }
+  };
+
+  const handleLinkedInShare = () => {
+    const text = encodeURIComponent(`Just completed my Cognitive Profile assessment! 🧠
+
+📊 Score: ${results.iq} (${iqTier.tier} - Top ${100 - percentile}%)
+✨ Archetype: ${results.divergentType}
+🎯 Strength: ${categoryLabels[results.primaryStrength]}
+
+Fascinating insights into how I think and solve problems. Try it yourself 👇`);
+    
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.origin)}&summary=${text}`, '_blank');
   };
 
   return (
     <div className="min-h-screen px-4 py-12 relative overflow-hidden">
-      {/* Background effects */}
+      {/* Premium background effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-cyan/10 rounded-full blur-3xl animate-pulse-glow" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-pink/10 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/8 via-transparent to-transparent" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/8 rounded-full blur-[100px] animate-pulse-glow" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-secondary/8 rounded-full blur-[100px] animate-pulse-glow" style={{ animationDelay: '1s' }} />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:60px_60px]" />
       </div>
 
-      <div className="max-w-4xl mx-auto relative z-10">
-        {/* Header */}
+      <div className="max-w-5xl mx-auto relative z-10">
+        {/* Header with Crown */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-10"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6">
+          <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+            className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400/20 to-yellow-600/20 border border-yellow-500/30 mb-6"
+          >
+            <Crown className="w-10 h-10 text-yellow-400" />
+          </motion.div>
+          
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-4">
             <Sparkles className="w-4 h-4" />
-            Your Complete Profile
+            Assessment Complete
           </div>
-          <h1 className="font-display text-3xl md:text-4xl font-bold mb-3">
-            Your <span className="text-gradient">Cognitive DNA</span>
+          
+          <h1 className="font-display text-4xl md:text-5xl font-bold mb-3">
+            Your <span className="text-gradient">Cognitive Profile</span>
           </h1>
-          <div className="flex items-center justify-center gap-2 text-muted-foreground">
-            <Clock className="w-4 h-4" />
-            <span>Completed in {formatTime(results.timeUsed)}</span>
+          <div className="flex items-center justify-center gap-3 text-muted-foreground flex-wrap">
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4" />
+              <span>Completed in {formatTime(results.timeUsed)}</span>
+            </div>
             {results.timeBonusApplied && (
-              <span className="text-primary font-medium">⚡ Speed Bonus!</span>
+              <>
+                <span className="hidden sm:inline">•</span>
+                <span className="text-primary font-medium flex items-center gap-1">
+                  <Zap className="w-4 h-4" />
+                  Speed Bonus Applied!
+                </span>
+              </>
             )}
           </div>
         </motion.div>
 
-        {/* Main Stats Grid */}
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          {/* IQ Score Card */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-            className="card-elevated rounded-2xl p-6 border border-border"
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                <Brain className="w-5 h-5 text-primary" />
-              </div>
-              <h3 className="font-display font-semibold text-lg">Estimated IQ</h3>
-            </div>
-            <div className="text-center py-4">
-              <motion.div
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.4, type: 'spring', stiffness: 150 }}
-              >
-                <span className="font-display text-6xl font-bold text-gradient">{results.iq}</span>
-              </motion.div>
-              <p className="text-muted-foreground text-sm mt-2">{getIQInterpretation(results.iq)}</p>
-              <div className="mt-4 flex justify-center gap-4 text-sm">
-                <div className="text-center">
-                  <p className="text-primary font-semibold">{results.totalCorrect}/{results.totalQuestions}</p>
-                  <p className="text-muted-foreground text-xs">Correct</p>
-                </div>
-                <div className="w-px bg-border" />
-                <div className="text-center">
-                  <p className="text-secondary font-semibold">{Math.round((results.totalCorrect / results.totalQuestions) * 100)}%</p>
-                  <p className="text-muted-foreground text-xs">Accuracy</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Divergent Thinker Type Card */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3 }}
-            className="card-elevated rounded-2xl p-6 border border-border"
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-secondary" />
-              </div>
-              <h3 className="font-display font-semibold text-lg">Your Thinking Style</h3>
-            </div>
-            <div className="text-center py-4">
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-              >
-                <h4 className="font-display text-2xl font-bold text-gradient mb-3">{results.divergentType}</h4>
-                <p className="text-muted-foreground text-sm leading-relaxed">{results.divergentDescription}</p>
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Cognitive Strengths */}
+        {/* Hero Stats - Large IQ Display */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="card-elevated rounded-2xl p-6 border border-border mb-8"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
+          className="mb-8"
         >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
-              <Target className="w-5 h-5 text-accent" />
-            </div>
-            <div>
-              <h3 className="font-display font-semibold text-lg">Cognitive Strengths</h3>
-              <p className="text-muted-foreground text-sm">Your performance across 5 categories</p>
+          <div className="card-elevated rounded-3xl p-8 md:p-10 border border-border relative overflow-hidden">
+            {/* Decorative gradient */}
+            <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
+            
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              {/* Left - IQ Score */}
+              <div className="text-center md:text-left">
+                <p className="text-muted-foreground text-sm uppercase tracking-wider mb-2">Cognitive Score</p>
+                <motion.div
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.4, type: 'spring', stiffness: 150 }}
+                  className="mb-4"
+                >
+                  <span className="font-display text-8xl md:text-9xl font-bold text-gradient">{results.iq}</span>
+                </motion.div>
+                <div className="flex items-center gap-3 justify-center md:justify-start mb-4">
+                  <span className={`font-display text-xl font-bold ${iqTier.color}`}>{iqTier.tier}</span>
+                  <span className="text-muted-foreground">•</span>
+                  <span className="text-muted-foreground">{iqTier.description}</span>
+                </div>
+                <p className="text-muted-foreground text-sm">{getIQInterpretation(results.iq)}</p>
+              </div>
+
+              {/* Right - Key Stats */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-muted/30 rounded-2xl p-5 text-center">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                    <TrendingUp className="w-6 h-6 text-primary" />
+                  </div>
+                  <p className="font-display text-3xl font-bold text-foreground">Top {100 - percentile}%</p>
+                  <p className="text-muted-foreground text-sm">Global Percentile</p>
+                </div>
+                <div className="bg-muted/30 rounded-2xl p-5 text-center">
+                  <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center mx-auto mb-3">
+                    <Target className="w-6 h-6 text-secondary" />
+                  </div>
+                  <p className="font-display text-3xl font-bold text-foreground">{results.totalCorrect}/{results.totalQuestions}</p>
+                  <p className="text-muted-foreground text-sm">Correct Answers</p>
+                </div>
+                <div className="bg-muted/30 rounded-2xl p-5 text-center">
+                  <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mx-auto mb-3">
+                    <Award className="w-6 h-6 text-accent" />
+                  </div>
+                  <p className="font-display text-3xl font-bold text-foreground">{Math.round((results.totalCorrect / results.totalQuestions) * 100)}%</p>
+                  <p className="text-muted-foreground text-sm">Accuracy Rate</p>
+                </div>
+                <div className="bg-muted/30 rounded-2xl p-5 text-center">
+                  <div className="w-12 h-12 rounded-xl bg-neon-pink/10 flex items-center justify-center mx-auto mb-3">
+                    <Brain className="w-6 h-6 text-neon-pink" />
+                  </div>
+                  <p className="font-display text-lg font-bold text-foreground">{categoryLabels[results.primaryStrength].split(' ')[0]}</p>
+                  <p className="text-muted-foreground text-sm">Top Strength</p>
+                </div>
+              </div>
             </div>
           </div>
+        </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            {/* Radar Chart */}
-            <div className="h-64">
+        {/* Executive Archetype Card - Featured */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.3 }}
+          className="mb-8"
+        >
+          <div className="card-elevated rounded-3xl p-8 border border-secondary/30 relative overflow-hidden bg-gradient-to-br from-secondary/5 to-transparent">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-accent" />
+            
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-secondary/20 to-accent/20 flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-7 h-7 text-secondary" />
+              </div>
+              <div>
+                <p className="text-muted-foreground text-sm uppercase tracking-wider mb-1">Your Executive Archetype</p>
+                <h2 className="font-display text-3xl md:text-4xl font-bold text-gradient">{results.divergentType}</h2>
+              </div>
+            </div>
+            
+            <p className="text-foreground text-lg leading-relaxed mb-6">{results.divergentDescription}</p>
+            
+            <div className="flex flex-wrap gap-2">
+              {results.divergentProfile.slice(0, 2).map((profile) => (
+                <span key={profile.dimension} className="px-4 py-2 rounded-full bg-muted/50 text-sm font-medium text-foreground">
+                  {divergentLabels[profile.dimension].label}: {profile.percentage}%
+                </span>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Two-column layout for charts */}
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          {/* Cognitive Strengths */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="card-elevated rounded-2xl p-6 border border-border"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                <Target className="w-5 h-5 text-accent" />
+              </div>
+              <div>
+                <h3 className="font-display font-semibold text-lg">Cognitive Strengths</h3>
+                <p className="text-muted-foreground text-sm">5-dimension analysis</p>
+              </div>
+            </div>
+
+            <div className="h-56">
               <ResponsiveContainer width="100%" height="100%">
                 <RadarChart data={radarData}>
                   <PolarGrid stroke="hsl(var(--border))" />
                   <PolarAngleAxis 
                     dataKey="category" 
-                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
+                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
                   />
                   <Radar
                     name="Score"
@@ -185,93 +281,115 @@ export const ResultsScreen = ({ results, onRestart }: ResultsScreenProps) => {
             </div>
 
             {/* Category Breakdown */}
-            <div className="space-y-3">
+            <div className="space-y-2 mt-4">
               {results.categoryScores.map((score, index) => (
                 <motion.div
                   key={score.category}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5 + index * 0.1 }}
-                  className="flex items-center gap-3"
+                  transition={{ delay: 0.5 + index * 0.05 }}
+                  className="flex items-center gap-2"
                 >
                   <div 
-                    className="w-3 h-3 rounded-full"
+                    className="w-2 h-2 rounded-full"
                     style={{ backgroundColor: categoryColors[score.category] }}
                   />
-                  <span className="text-sm text-muted-foreground flex-1">{categoryLabels[score.category]}</span>
+                  <span className="text-xs text-muted-foreground flex-1">{categoryLabels[score.category]}</span>
                   <div className="flex items-center gap-2">
-                    <div className="w-20 h-2 bg-muted rounded-full overflow-hidden">
+                    <div className="w-16 h-1.5 bg-muted rounded-full overflow-hidden">
                       <motion.div
                         className="h-full rounded-full"
                         style={{ backgroundColor: categoryColors[score.category] }}
                         initial={{ width: 0 }}
                         animate={{ width: `${score.percentage}%` }}
-                        transition={{ delay: 0.6 + index * 0.1, duration: 0.5 }}
+                        transition={{ delay: 0.6 + index * 0.05, duration: 0.5 }}
                       />
                     </div>
-                    <span className="text-sm font-semibold w-12 text-right">{score.percentage}%</span>
+                    <span className="text-xs font-semibold w-8 text-right">{score.percentage}%</span>
                   </div>
                 </motion.div>
               ))}
-              
-              <div className="pt-3 mt-3 border-t border-border">
-                <div className="flex items-center gap-2 text-primary">
-                  <TrendingUp className="w-4 h-4" />
-                  <span className="text-sm font-medium">
-                    Primary Strength: {categoryLabels[results.primaryStrength]}
-                  </span>
-                </div>
+            </div>
+          </motion.div>
+
+          {/* Divergent Thinking Profile */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="card-elevated rounded-2xl p-6 border border-border"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-xl bg-neon-pink/10 flex items-center justify-center">
+                <Sparkles className="w-5 h-5 text-neon-pink" />
+              </div>
+              <div>
+                <h3 className="font-display font-semibold text-lg">Creative Dimensions</h3>
+                <p className="text-muted-foreground text-sm">Divergent thinking profile</p>
               </div>
             </div>
-          </div>
-        </motion.div>
 
-        {/* Divergent Thinking Profile */}
+            <div className="h-44">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={divergentData} layout="vertical">
+                  <XAxis type="number" domain={[0, 100]} hide />
+                  <YAxis 
+                    dataKey="name" 
+                    type="category" 
+                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
+                    width={70}
+                  />
+                  <Bar dataKey="value" radius={[0, 4, 4, 0]}>
+                    {divergentData.map((_, index) => (
+                      <Cell 
+                        key={`cell-${index}`} 
+                        fill={['#00FFFF', '#FF00AA', '#AA66FF', '#FFD700'][index]}
+                      />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 mt-4">
+              {results.divergentProfile.map((profile) => (
+                <div key={profile.dimension} className="text-center p-3 rounded-lg bg-muted/30">
+                  <p className="text-xs text-muted-foreground mb-1">{divergentLabels[profile.dimension].label}</p>
+                  <p className="font-display font-bold text-foreground">{profile.percentage}%</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Share Section - LinkedIn focused */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.6 }}
           className="card-elevated rounded-2xl p-6 border border-border mb-8"
         >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-neon-pink/10 flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-neon-pink" />
-            </div>
-            <div>
-              <h3 className="font-display font-semibold text-lg">Divergent Thinking Profile</h3>
-              <p className="text-muted-foreground text-sm">Your creative thinking dimensions</p>
-            </div>
+          <div className="text-center mb-6">
+            <h3 className="font-display text-xl font-semibold mb-2">Share Your Cognitive Profile</h3>
+            <p className="text-muted-foreground text-sm">Let your network know about your cognitive strengths</p>
           </div>
-
-          <div className="h-48">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={divergentData} layout="vertical">
-                <XAxis type="number" domain={[0, 100]} hide />
-                <YAxis 
-                  dataKey="name" 
-                  type="category" 
-                  tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-                  width={80}
-                />
-                <Bar dataKey="value" radius={[0, 4, 4, 0]}>
-                  {divergentData.map((_, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={['#00FFFF', '#FF00AA', '#AA66FF', '#FFD700'][index]}
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
-            {results.divergentProfile.map((profile) => (
-              <div key={profile.dimension} className="text-center p-3 rounded-lg bg-muted/30">
-                <p className="text-xs text-muted-foreground mb-1">{divergentLabels[profile.dimension].label}</p>
-                <p className="font-display font-bold text-foreground">{profile.percentage}%</p>
-              </div>
-            ))}
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              onClick={handleLinkedInShare}
+              className="bg-[#0A66C2] hover:bg-[#004182] text-white font-display font-semibold py-6 px-8 rounded-xl hover:scale-105 transition-all"
+            >
+              <Linkedin className="w-5 h-5 mr-2" />
+              Share on LinkedIn
+            </Button>
+            <Button
+              onClick={handleShare}
+              variant="outline"
+              className="border-primary text-primary hover:bg-primary/10 font-display font-semibold py-6 px-8 rounded-xl"
+            >
+              {copied ? <Check className="w-5 h-5 mr-2" /> : <Copy className="w-5 h-5 mr-2" />}
+              {copied ? 'Copied!' : 'Copy Results'}
+            </Button>
           </div>
         </motion.div>
 
@@ -279,23 +397,16 @@ export const ResultsScreen = ({ results, onRestart }: ResultsScreenProps) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.7 }}
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
           <Button
-            onClick={handleShare}
-            className="bg-gradient-to-r from-secondary to-accent text-secondary-foreground font-display font-semibold py-6 px-8 rounded-xl hover:scale-105 transition-transform"
-          >
-            <Share2 className="w-5 h-5 mr-2" />
-            Share My Profile
-          </Button>
-          <Button
             onClick={onRestart}
             variant="outline"
-            className="border-primary text-primary hover:bg-primary/10 font-display font-semibold py-6 px-8 rounded-xl"
+            className="border-muted-foreground/30 text-muted-foreground hover:bg-muted/30 font-display font-semibold py-6 px-8 rounded-xl"
           >
             <RotateCcw className="w-5 h-5 mr-2" />
-            Take Again
+            Take Assessment Again
           </Button>
         </motion.div>
 
@@ -304,10 +415,10 @@ export const ResultsScreen = ({ results, onRestart }: ResultsScreenProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="text-center text-muted-foreground/60 text-sm mt-8"
+          className="text-center text-muted-foreground/50 text-sm mt-10"
         >
-          This assessment is for educational and entertainment purposes. 
-          For a clinical evaluation, please consult a licensed psychologist.
+          This cognitive assessment is designed for professional development and personal insight.
+          For clinical evaluation, please consult a licensed psychologist.
         </motion.p>
       </div>
     </div>

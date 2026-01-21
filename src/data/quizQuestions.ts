@@ -420,8 +420,8 @@ const getDivergentType = (profile: DivergentProfile[]): { divergentType: string;
 
   if (avgScore < 35) {
     return {
-      divergentType: 'Convergent Analyst',
-      divergentDescription: 'You excel at finding the single best solution through systematic analysis. Your strength is focused, methodical problem-solving—zeroing in on the optimal answer rather than exploring many alternatives.'
+      divergentType: 'The Precision Executive',
+      divergentDescription: 'Your cognitive signature reveals a rare gift for convergent excellence. Where others scatter their attention, you zero in with surgical precision. This makes you invaluable in high-stakes decisions where clarity and focus determine outcomes. Leaders like you drive operational excellence at Fortune 500 companies.'
     };
   }
 
@@ -430,28 +430,28 @@ const getDivergentType = (profile: DivergentProfile[]): { divergentType: string;
 
   const types: Record<string, { type: string; desc: string }> = {
     'fluency-flexibility': {
-      type: 'The Catalyst',
-      desc: 'You generate ideas at lightning speed and pivot effortlessly between perspectives. You energize brainstorms and see connections others miss. Best suited for: startup environments, creative direction, crisis problem-solving.'
+      type: 'The Innovation Catalyst',
+      desc: 'Your mind operates like a high-speed ideation engine with adaptive steering. You\'re the person who energizes strategy sessions, pivots faster than markets shift, and connects dots invisible to conventional thinkers. This profile is common among successful startup founders, creative directors, and crisis management leaders.'
     },
     'fluency-originality': {
-      type: 'The Maverick',
-      desc: 'Your mind produces a torrent of unconventional ideas. You don\'t just think outside the box—you question why the box exists. Best suited for: innovation labs, disruptive startups, artistic ventures.'
+      type: 'The Disruptive Visionary',
+      desc: 'Your cognitive pattern mirrors those who reshape industries. You don\'t iterate—you reimagine. While others optimize within existing frameworks, you\'re designing new ones. This archetype is found among breakthrough entrepreneurs, pioneering researchers, and category-creating founders.'
     },
     'fluency-elaboration': {
-      type: 'The Architect',
-      desc: 'You combine prolific ideation with the patience to build ideas out fully. You see projects from spark to completion. Best suited for: product development, worldbuilding, systems design.'
+      type: 'The Master Architect',
+      desc: 'You possess the rare combination of prolific ideation and meticulous execution. Ideas don\'t just spark in your mind—they mature into fully-realized blueprints. This profile is prevalent among successful product leaders, systems designers, and executives who turn vision into scaled reality.'
     },
     'flexibility-originality': {
-      type: 'The Shapeshifter',
-      desc: 'You reframe problems in unexpected ways and arrive at solutions nobody anticipated. Your mental agility paired with originality creates breakthrough thinking. Best suited for: consulting, R&D, creative strategy.'
+      type: 'The Strategic Shapeshifter',
+      desc: 'Your cognitive agility allows you to reframe problems in ways that unlock unprecedented solutions. You see constraints as design parameters and obstacles as opportunities. This thinking style characterizes top management consultants, R&D leaders, and turnaround specialists.'
     },
     'flexibility-elaboration': {
-      type: 'The Strategist',
-      desc: 'You adapt your thinking fluidly while building comprehensive, detailed solutions. You excel at pivoting without losing depth. Best suited for: business strategy, game design, policy development.'
+      type: 'The Adaptive Strategist',
+      desc: 'You blend strategic flexibility with deep implementation capability. When markets shift, you don\'t just pivot—you pivot with a comprehensive action plan. This profile is highly sought in venture-backed leadership, corporate strategy, and complex program management.'
     },
     'originality-elaboration': {
-      type: 'The Artisan',
-      desc: 'Your ideas are both unique and fully realized—you don\'t just conceive, you craft. Every detail matters, and your work is distinctly yours. Best suited for: design, writing, specialized crafts, research.'
+      type: 'The Creative Authority',
+      desc: 'Your ideas are both groundbreaking and fully realized. You don\'t just conceive—you craft with mastery. This rare combination of vision and execution distinguishes category-defining designers, thought leaders, and founders who build enduring companies.'
     },
   };
 
@@ -466,24 +466,43 @@ const getDivergentType = (profile: DivergentProfile[]): { divergentType: string;
 
   if (avgScore >= 70) {
     return {
-      divergentType: 'The Polymath',
-      divergentDescription: 'You have exceptional divergent thinking across all dimensions. This rare versatility means you can approach any creative challenge from multiple angles. Best suited for: entrepreneurship, creative leadership, interdisciplinary research.'
+      divergentType: 'The Renaissance Executive',
+      divergentDescription: 'Your cognitive profile shows exceptional capability across all creative dimensions—a pattern seen in less than 5% of high performers. This versatility allows you to lead across disciplines, connect insights others miss, and drive innovation at the highest levels. Common among serial entrepreneurs, C-suite leaders, and interdisciplinary pioneers.'
     };
   }
 
   return {
-    divergentType: 'The Explorer',
-    divergentDescription: 'You have a balanced creative profile with room to develop. Your thinking style adapts to different challenges. Focus on the dimensions where you scored highest to unlock your creative potential.'
+    divergentType: 'The Emerging Leader',
+    divergentDescription: 'Your cognitive profile shows solid foundations with significant growth potential. The most successful leaders continually develop their thinking capabilities. Your balanced profile suggests adaptability—focus on your highest-scoring dimensions to accelerate your development trajectory.'
   };
 };
 
 export const getIQInterpretation = (iq: number): string => {
-  if (iq >= 145) return 'Exceptional cognitive abilities, top 0.1% of population';
-  if (iq >= 135) return 'Highly gifted, top 1% — exceptional abstract reasoning';
-  if (iq >= 125) return 'Gifted range, top 5% — superior problem-solving';
-  if (iq >= 115) return 'Above average, top 15% — strong analytical skills';
-  if (iq >= 100) return 'Average to high average — solid reasoning abilities';
-  if (iq >= 90) return 'Average range — functional everyday reasoning';
-  if (iq >= 80) return 'Low average — practical problem-solving';
-  return 'Below average — may benefit from targeted skill-building';
+  if (iq >= 145) return 'Exceptional cognitive abilities — you operate at the highest levels of abstract reasoning and pattern recognition';
+  if (iq >= 135) return 'Highly gifted — your capacity for complex analysis and strategic thinking places you among elite performers';
+  if (iq >= 125) return 'Superior cognitive abilities — you excel at seeing connections others miss and solving novel problems';
+  if (iq >= 115) return 'Above average — strong analytical skills that serve you well in professional contexts';
+  if (iq >= 100) return 'Solid cognitive foundation — functional reasoning with room for targeted development';
+  if (iq >= 90) return 'Average range — practical problem-solving abilities';
+  if (iq >= 80) return 'Low average — may benefit from targeted cognitive training';
+  return 'Below average — focused skill-building recommended';
+};
+
+export const getPercentile = (iq: number): number => {
+  // IQ follows normal distribution with mean 100, SD 15
+  // These are approximate percentiles
+  if (iq >= 145) return 99.9;
+  if (iq >= 140) return 99.6;
+  if (iq >= 135) return 99;
+  if (iq >= 130) return 98;
+  if (iq >= 125) return 95;
+  if (iq >= 120) return 91;
+  if (iq >= 115) return 84;
+  if (iq >= 110) return 75;
+  if (iq >= 105) return 63;
+  if (iq >= 100) return 50;
+  if (iq >= 95) return 37;
+  if (iq >= 90) return 25;
+  if (iq >= 85) return 16;
+  return 9;
 };
