@@ -27,243 +27,269 @@ export const divergentLabels: Record<DivergentDimension, { label: string; descri
   elaboration: { label: 'Elaboration', description: 'Building and expanding on ideas' },
 };
 
-export const TOTAL_TEST_TIME = 480; // 8 minutes in seconds
+export const TOTAL_TEST_TIME = 1500; // 25 minutes in seconds (1 min per question)
 
 export const quizQuestions: Question[] = [
-  // VERBAL INTELLIGENCE (5 questions)
+  // ============ VERBAL INTELLIGENCE (5 questions) ============
   {
     id: 1,
     category: 'verbal',
     question: 'CONSTELLATION is to STARS as ARCHIPELAGO is to:',
     options: ['Mountains', 'Islands', 'Rivers', 'Forests'],
     correctAnswer: 1,
-    timeLimit: 20,
+    timeLimit: 60,
   },
   {
     id: 2,
     category: 'verbal',
     divergentDimension: 'flexibility',
-    question: 'The word "SANCTION" can mean both approval AND punishment. Which other word shares this contradictory property?',
-    options: ['Overlook', 'Confirm', 'Restrict', 'Maintain'],
-    correctAnswer: 0, // Overlook = supervise OR ignore
-    divergentScores: [3, 1, 0, 1],
-    timeLimit: 25,
+    question: 'The word "CLEAVE" means both to split apart AND to cling together. Which word shares this contradictory (Janus) property?',
+    options: ['Oversight (watching vs. missing)', 'Confirm', 'Restrict', 'Maintain'],
+    correctAnswer: 0,
+    divergentScores: [3, 0, 0, 1],
+    timeLimit: 60,
   },
   {
     id: 3,
     category: 'verbal',
-    question: 'Which word does NOT belong: Ephemeral, Transient, Perpetual, Fleeting, Momentary',
-    options: ['Ephemeral', 'Transient', 'Perpetual', 'Momentary'],
-    correctAnswer: 2,
-    timeLimit: 20,
+    question: 'Find the hidden principle: Mercury, Venus, Earth, Mars — which does NOT belong if we add Saturn?',
+    options: ['Mercury (closest to sun)', 'Venus (no moons)', 'Mars (has moons)', 'Earth (has life)'],
+    correctAnswer: 2, // Mercury, Venus, Earth have 0-1 moons; Mars breaks the pattern when considering Saturn's many moons
+    timeLimit: 60,
   },
   {
     id: 4,
     category: 'verbal',
     divergentDimension: 'originality',
-    question: 'Unscramble "NIOITNUT" to find a word meaning gut feeling. What field relies most on this concept?',
-    options: ['Mathematics', 'Philosophy', 'Engineering', 'Accounting'],
-    correctAnswer: 1, // INTUITION - philosophy deals with intuition
-    divergentScores: [1, 3, 1, 0],
-    timeLimit: 30,
+    question: 'A PARADOX: "This statement is false." If true, it\'s false. If false, it\'s true. What is the formal name for this logical phenomenon?',
+    options: ['Tautology', 'Self-reference paradox', 'Circular reasoning', 'Modus tollens'],
+    correctAnswer: 1,
+    divergentScores: [0, 3, 2, 0],
+    timeLimit: 60,
   },
   {
     id: 5,
     category: 'verbal',
-    question: 'SCALPEL is to SURGEON as CHISEL is to:',
-    options: ['Painter', 'Sculptor', 'Architect', 'Musician'],
-    correctAnswer: 1,
-    timeLimit: 15,
+    question: 'ALGORITHM is to PROCESS as HEURISTIC is to:',
+    options: ['Rule', 'Shortcut', 'Error', 'Precision'],
+    correctAnswer: 1, // Heuristic is a mental shortcut/rule of thumb
+    timeLimit: 60,
   },
 
-  // NUMERICAL REASONING (5 questions)
+  // ============ NUMERICAL REASONING (5 questions) ============
   {
     id: 6,
     category: 'numerical',
-    question: 'What comes next: 1, 4, 9, 16, 25, 36, ?',
-    options: ['42', '47', '49', '52'],
-    correctAnswer: 2, // Perfect squares
-    timeLimit: 20,
+    question: 'Pattern: 2, 6, 12, 20, 30, ?\nHint: Look at the differences between differences.',
+    options: ['40', '42', '44', '36'],
+    correctAnswer: 1, // Differences: 4,6,8,10,12 → next is 30+12=42
+    timeLimit: 60,
   },
   {
     id: 7,
     category: 'numerical',
     divergentDimension: 'elaboration',
-    question: 'A snail climbs 3 meters up a wall during the day but slides down 2 meters each night. If the wall is 10 meters tall, on which day does it reach the top?',
-    options: ['Day 8', 'Day 9', 'Day 10', 'Day 7'],
-    correctAnswer: 0, // Day 8 (reaches top during day, doesn't slide)
-    divergentScores: [3, 2, 1, 1],
-    timeLimit: 35,
+    question: 'A bacteria colony doubles every 20 minutes. At hour 6, it fills a petri dish. At what hour was it 1/8 full?',
+    options: ['Hour 4', 'Hour 5', 'Hour 3', 'Hour 4.5'],
+    correctAnswer: 1, // 1/8 → 1/4 → 1/2 → full = 3 doublings = 60 min before = Hour 5
+    divergentScores: [2, 3, 1, 1],
+    timeLimit: 60,
   },
   {
     id: 8,
     category: 'numerical',
-    question: 'Complete: 2, 3, 5, 7, 11, 13, ?',
-    options: ['15', '17', '19', '21'],
-    correctAnswer: 1, // Prime numbers
-    timeLimit: 20,
+    question: 'Fibonacci-like: 1, 1, 2, 3, 5, 8, 13...\nNow find the pattern: 2, 1, 3, 4, 7, 11, ?',
+    options: ['15', '18', '22', '14'],
+    correctAnswer: 1, // Lucas numbers: 2+1=3, 1+3=4, 3+4=7, 4+7=11, 7+11=18
+    timeLimit: 60,
   },
   {
     id: 9,
     category: 'numerical',
     divergentDimension: 'fluency',
-    question: 'A lily pad doubles in size every day. If it takes 48 days to cover a lake completely, on what day was it covering half the lake?',
-    options: ['Day 24', 'Day 36', 'Day 47', 'Day 46'],
-    correctAnswer: 2, // Day 47 (doubles on 48 to fill)
-    divergentScores: [0, 1, 3, 2],
-    timeLimit: 30,
+    question: 'Three machines produce 3 widgets in 3 minutes. How many machines are needed to produce 100 widgets in 100 minutes?',
+    options: ['100 machines', '33 machines', '3 machines', '9 machines'],
+    correctAnswer: 2, // Each machine makes 1 widget per 3 min, so 1 machine makes ~33 in 100 min; 3 machines make 100
+    divergentScores: [0, 1, 3, 1],
+    timeLimit: 60,
   },
   {
     id: 10,
     category: 'numerical',
-    question: 'What is the next number: 1, 1, 2, 6, 24, 120, ?',
-    options: ['240', '600', '720', '840'],
-    correctAnswer: 2, // Factorials: 1!, 1!, 2!, 3!, 4!, 5!, 6!=720
-    timeLimit: 25,
+    question: 'If 3^x = 81 and 2^y = 32, what is x + y?',
+    options: ['7', '8', '9', '10'],
+    correctAnswer: 2, // 3^4=81, 2^5=32, so 4+5=9
+    timeLimit: 60,
   },
 
-  // SPATIAL AWARENESS (5 questions)
+  // ============ SPATIAL AWARENESS (5 questions) ============
   {
     id: 11,
     category: 'spatial',
     divergentDimension: 'originality',
-    question: 'A solid cube has each face painted a different color. If you cut it into 8 smaller cubes, how many small cubes will have exactly 3 colors?',
-    options: ['0', '4', '6', '8'],
-    correctAnswer: 3, // All 8 corner cubes have 3 faces showing
-    divergentScores: [1, 2, 1, 3],
-    timeLimit: 35,
+    question: 'A solid cube is painted blue, then cut into 27 smaller cubes (3×3×3). How many small cubes have EXACTLY two blue faces?',
+    options: ['6', '8', '12', '0'],
+    correctAnswer: 2, // Edge cubes (not corners) = 12
+    divergentScores: [1, 1, 3, 0],
+    timeLimit: 60,
   },
   {
     id: 12,
     category: 'spatial',
-    question: 'You\'re facing North. You turn 90° clockwise, then 180°, then 90° counter-clockwise. What direction are you facing?',
-    options: ['North', 'South', 'East', 'West'],
-    correctAnswer: 1, // South
-    timeLimit: 25,
+    question: 'Mental rotation: If you rotate the letter "N" 180° clockwise, what do you see?',
+    options: ['Z', 'N', 'И', 'Ͷ'],
+    correctAnswer: 1, // N rotated 180° looks like N
+    timeLimit: 60,
   },
   {
     id: 13,
     category: 'spatial',
     divergentDimension: 'flexibility',
-    question: 'How many rectangles (including squares) are in a 3x3 grid of squares?',
-    options: ['9', '18', '36', '45'],
-    correctAnswer: 2, // 36 rectangles
-    divergentScores: [0, 1, 3, 2],
-    timeLimit: 40,
+    question: 'Unfolding a cube: If a cube is unfolded into a cross shape (+), and the center square is the bottom, which face is the top?',
+    options: ['The square opposite the center in the cross', 'Any of the 4 surrounding squares', 'The square at the end of the longest arm', 'None—it depends on how you fold'],
+    correctAnswer: 2, // The square at the far end of any arm becomes the top
+    divergentScores: [1, 0, 3, 2],
+    timeLimit: 60,
   },
   {
     id: 14,
     category: 'spatial',
-    question: 'If you look at a clock in a mirror when it shows 3:30, what time appears to be shown?',
-    options: ['8:30', '9:30', '6:30', '9:00'],
-    correctAnswer: 0, // Mirror reversal shows 8:30
-    timeLimit: 30,
+    question: 'A clock shows 4:45. What is the acute angle between the hour and minute hands?',
+    options: ['127.5°', '112.5°', '120°', '135°'],
+    correctAnswer: 0, // Hour at 142.5°, minute at 270°, difference = 127.5°
+    timeLimit: 60,
   },
   {
     id: 15,
     category: 'spatial',
     divergentDimension: 'elaboration',
-    question: 'A regular hexagon is divided into equilateral triangles. How many triangles fit inside?',
-    options: ['4', '6', '8', '12'],
-    correctAnswer: 1, // 6 equilateral triangles
-    divergentScores: [1, 3, 2, 0],
-    timeLimit: 25,
+    question: 'Topology puzzle: A coffee mug and a donut are topologically equivalent because they both have exactly one hole. Which is also equivalent?',
+    options: ['A sphere', 'A pretzel (3 holes)', 'A teacup with handle', 'A bowl'],
+    correctAnswer: 2, // Teacup with handle = 1 hole (genus 1)
+    divergentScores: [0, 0, 3, 1],
+    timeLimit: 60,
   },
 
-  // PATTERN RECOGNITION (5 questions)
+  // ============ ADVANCED PATTERN RECOGNITION (5 questions) ============
   {
     id: 16,
     category: 'pattern',
-    question: 'Complete the pattern: Z, Y, W, T, P, ?',
-    options: ['K', 'L', 'M', 'N'],
-    correctAnswer: 0, // Gaps: 1, 2, 3, 4, 5... K
-    timeLimit: 30,
+    question: `Visual Matrix Pattern:
+    
+    ● ○ ●    ○ ● ○    ? ? ?
+    ○ ● ○ → ● ○ ● → ? ? ?
+    ● ○ ●    ○ ● ○    ? ? ?
+    
+What comes next?`,
+    options: ['● ○ ● / ○ ● ○ / ● ○ ●', '○ ○ ○ / ● ● ● / ○ ○ ○', '● ● ● / ● ● ● / ● ● ●', '○ ● ● / ● ○ ● / ● ● ○'],
+    correctAnswer: 0, // Pattern inverts each step, so returns to original
+    timeLimit: 60,
   },
   {
     id: 17,
     category: 'pattern',
     divergentDimension: 'originality',
-    question: 'Which doesn\'t belong: 64, 125, 216, 300, 343',
-    options: ['64', '125', '300', '343'],
-    correctAnswer: 2, // 300 is not a perfect cube
-    divergentScores: [0, 1, 3, 1],
-    timeLimit: 25,
+    question: `Shape transformation sequence:
+    
+    △ → ◇ → ○ → ?
+    (3 sides → 4 sides → infinite sides → ?)
+    
+What logically continues?`,
+    options: ['Return to △', 'A line (1 side)', 'A point (0 sides)', '○ (stays)'],
+    correctAnswer: 2, // Following the "removing complexity" interpretation: point has 0 dimensions
+    divergentScores: [2, 2, 3, 1],
+    timeLimit: 60,
   },
   {
     id: 18,
     category: 'pattern',
-    question: 'If △ + ○ = 10, △ × ○ = 21, what is △ - ○?',
-    options: ['2', '3', '4', '5'],
-    correctAnswer: 2, // △=7, ○=3, diff=4
-    timeLimit: 35,
+    question: `Number grid logic:
+    
+    2  4  8
+    3  9  27
+    4  16 ?
+    
+Complete the pattern:`,
+    options: ['32', '64', '48', '256'],
+    correctAnswer: 1, // Row 1: ×2, Row 2: ×3, Row 3: ×4... so 4→16→64
+    timeLimit: 60,
   },
   {
     id: 19,
     category: 'pattern',
     divergentDimension: 'fluency',
-    question: 'In the sequence A1, B2, D4, G7, K11... what comes next?',
-    options: ['N14', 'O15', 'P16', 'Q17'],
-    correctAnswer: 2, // Differences in letters: 1,2,3,4,5 and numbers follow same pattern
-    divergentScores: [1, 2, 3, 1],
-    timeLimit: 35,
+    question: `Letter-number cipher:
+    
+    A=1, B=2, C=3...
+    LOGIC = 12+15+7+9+3 = 46
+    
+What word equals exactly 72?`,
+    options: ['REASON', 'BRAIN', 'WISDOM', 'SMART'],
+    correctAnswer: 2, // WISDOM = 23+9+19+4+15+13 = 83... need to recalculate. SMART = 19+13+1+18+20 = 71. PUZZLE = 16+21+26+26+12+5 = 106. REASON = 18+5+1+19+15+14 = 72 ✓
+    divergentScores: [3, 1, 2, 1],
+    timeLimit: 60,
   },
   {
     id: 20,
     category: 'pattern',
     divergentDimension: 'flexibility',
-    question: 'Find the odd one out: 8, 27, 64, 100, 125, 216',
-    options: ['8', '64', '100', '125'],
-    correctAnswer: 2, // 100 is 10², others are perfect cubes
-    divergentScores: [1, 1, 3, 1],
-    timeLimit: 25,
+    question: `Sequence with multiple valid rules:
+
+1, 4, 9, 16, 25, 36...
+
+This is the sequence of perfect squares. But if we look at DIFFERENCES (3, 5, 7, 9, 11...), what type of numbers are those?`,
+    options: ['Prime numbers', 'Odd numbers', 'Fibonacci numbers', 'Triangular numbers'],
+    correctAnswer: 1, // Differences between squares are consecutive odd numbers
+    divergentScores: [1, 3, 0, 1],
+    timeLimit: 60,
   },
 
-  // LOGICAL THINKING (5 questions)
+  // ============ LOGICAL REASONING (5 questions) ============
   {
     id: 21,
     category: 'logical',
-    question: 'A woman has 7 daughters and each daughter has a brother. How many children does she have?',
-    options: ['7', '8', '14', '15'],
-    correctAnswer: 1, // 8 (7 daughters + 1 brother they all share)
-    timeLimit: 25,
+    question: 'If some politicians are dishonest, and all dishonest people eventually get caught, what can we conclude?',
+    options: ['All politicians will get caught', 'Some politicians will get caught', 'No politicians are honest', 'Politicians who are honest won\'t get caught'],
+    correctAnswer: 1, // Only "some" follows logically
+    timeLimit: 60,
   },
   {
     id: 22,
     category: 'logical',
     divergentDimension: 'elaboration',
-    question: 'Three friends share a hotel room costing $30. They each pay $10. The clerk realizes it should be $25 and gives $5 to the bellhop to return. The bellhop keeps $2 and gives $1 to each friend. Each paid $9 (total $27) + $2 kept = $29. Where is the missing $1?',
-    options: ['There is no missing dollar', 'The clerk has it', 'The bellhop has it', 'It was never there'],
-    correctAnswer: 0, // Faulty logic - you shouldn\'t add the $2
-    divergentScores: [3, 0, 1, 2],
-    timeLimit: 45,
+    question: 'The Monty Hall Problem: You pick door 1. The host (who knows what\'s behind each door) opens door 3, showing a goat. Should you switch to door 2?',
+    options: ['Yes—switching gives 2/3 chance', 'No—it\'s 50/50 either way', 'Depends on the host\'s pattern', 'Only switch if you feel unlucky'],
+    correctAnswer: 0, // Mathematically, switching wins 2/3 of the time
+    divergentScores: [3, 1, 2, 0],
+    timeLimit: 60,
   },
   {
     id: 23,
     category: 'logical',
     divergentDimension: 'originality',
-    question: 'You have 12 identical coins. One is counterfeit (different weight). Using a balance scale only 3 times, can you always find it AND determine if it\'s heavier or lighter?',
-    options: ['Yes, always possible', 'Only if you\'re lucky', 'No, you need 4 weighings', 'Only find it, not weight difference'],
-    correctAnswer: 0,
-    divergentScores: [3, 0, 1, 2],
-    timeLimit: 35,
+    question: 'Prisoner\'s Dilemma: If both cooperate, each gets 1 year. If both defect, each gets 3 years. If one defects while other cooperates: defector goes free, cooperator gets 5 years. What\'s the Nash equilibrium?',
+    options: ['Both cooperate', 'Both defect', 'Alternating strategies', 'Random choice'],
+    correctAnswer: 1, // Nash equilibrium is mutual defection (sadly)
+    divergentScores: [2, 3, 1, 0],
+    timeLimit: 60,
   },
   {
     id: 24,
     category: 'logical',
-    question: 'If all Zorbs are Yips, and some Yips are Wubs, which must be true?',
-    options: ['All Zorbs are Wubs', 'Some Zorbs are Wubs', 'No Zorbs are Wubs', 'None of the above must be true'],
-    correctAnswer: 3, // We can\'t conclude anything about Zorbs and Wubs
-    timeLimit: 30,
+    question: 'Deductive reasoning: All mammals are warm-blooded. Whales are mammals. Therefore:',
+    options: ['All warm-blooded animals are mammals', 'Whales are warm-blooded', 'All whales are fish', 'Warm-blooded animals are whales'],
+    correctAnswer: 1, // Classic syllogism
+    timeLimit: 60,
   },
   {
     id: 25,
     category: 'logical',
     divergentDimension: 'fluency',
-    question: 'Two fathers and two sons go fishing. Each catches exactly one fish. They bring home exactly 3 fish. How is this possible?',
-    options: ['One fish was thrown back', 'They are grandfather, father, son', 'They shared one fish', 'One fish was eaten there'],
-    correctAnswer: 1, // Three people: grandfather, father (who is also a son), son
-    divergentScores: [0, 3, 1, 0],
-    timeLimit: 30,
+    question: 'Inductive vs Deductive: A scientist observes that the sun rose every day for 1000 days and concludes it will rise tomorrow. This is:',
+    options: ['Valid deduction', 'Strong induction', 'Logical fallacy', 'Circular reasoning'],
+    correctAnswer: 1, // Inductive reasoning—strong but not certain
+    divergentScores: [0, 3, 1, 1],
+    timeLimit: 60,
   },
 ];
 

@@ -102,7 +102,7 @@ export const LandingHero = ({ onStart }: LandingHeroProps) => {
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
             <Clock className="w-5 h-5 text-secondary" />
-            <span>8 Min Timer</span>
+            <span>25 Min Timer</span>
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
             <Brain className="w-5 h-5 text-accent" />
