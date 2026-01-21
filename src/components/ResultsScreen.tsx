@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Brain, RotateCcw, Share2, Sparkles, Target, TrendingUp } from 'lucide-react';
+import { Brain, RotateCcw, Share2, Sparkles, Target, TrendingUp, Clock } from 'lucide-react';
 import { TestResults, categoryLabels, divergentLabels, getIQInterpretation } from '@/data/quizQuestions';
 import { Button } from '@/components/ui/button';
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Cell } from 'recharts';
@@ -15,6 +15,12 @@ const categoryColors: Record<string, string> = {
   spatial: '#AA66FF',
   pattern: '#00D4FF',
   logical: '#FF66AA',
+};
+
+const formatTime = (seconds: number): string => {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
 };
 
 export const ResultsScreen = ({ results, onRestart }: ResultsScreenProps) => {
@@ -57,18 +63,22 @@ export const ResultsScreen = ({ results, onRestart }: ResultsScreenProps) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-10"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6">
             <Sparkles className="w-4 h-4" />
             Your Complete Profile
           </div>
-          <h1 className="font-display text-4xl md:text-5xl font-bold mb-4">
+          <h1 className="font-display text-3xl md:text-4xl font-bold mb-3">
             Your <span className="text-gradient">Cognitive DNA</span>
           </h1>
-          <p className="text-muted-foreground text-lg">
-            Here's what makes your mind unique
-          </p>
+          <div className="flex items-center justify-center gap-2 text-muted-foreground">
+            <Clock className="w-4 h-4" />
+            <span>Completed in {formatTime(results.timeUsed)}</span>
+            {results.timeBonusApplied && (
+              <span className="text-primary font-medium">⚡ Speed Bonus!</span>
+            )}
+          </div>
         </motion.div>
 
         {/* Main Stats Grid */}

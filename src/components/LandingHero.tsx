@@ -84,7 +84,7 @@ export const LandingHero = ({ onStart }: LandingHeroProps) => {
             <Sparkles className="w-5 h-5 text-secondary mt-0.5" />
             <div>
               <p className="font-medium text-foreground text-sm">Divergent Thinking Profile</p>
-              <p className="text-muted-foreground text-xs">Discover your creative thinking style</p>
+              <p className="text-muted-foreground text-xs">Are you a Catalyst, Maverick, or Strategist?</p>
             </div>
           </div>
         </motion.div>
@@ -98,11 +98,11 @@ export const LandingHero = ({ onStart }: LandingHeroProps) => {
         >
           <div className="flex items-center gap-2 text-muted-foreground">
             <Zap className="w-5 h-5 text-primary" />
-            <span>20 Questions</span>
+            <span>25 Questions</span>
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
             <Clock className="w-5 h-5 text-secondary" />
-            <span>~8 Minutes</span>
+            <span>8 Min Timer</span>
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
             <Brain className="w-5 h-5 text-accent" />
