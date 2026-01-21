@@ -4,6 +4,7 @@ import { TestResults, categoryLabels, divergentLabels, getIQInterpretation, getP
 import { Button } from '@/components/ui/button';
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Cell } from 'recharts';
 import { useState } from 'react';
+import { CareerIntelligenceReport } from '@/components/CareerIntelligenceReport';
 
 interface ResultsScreenProps {
   results: TestResults;
@@ -361,6 +362,9 @@ Fascinating insights into how I think and solve problems. Try it yourself 👇`)
             </div>
           </motion.div>
         </div>
+
+        {/* Career Intelligence Report - Premium Feature */}
+        <CareerIntelligenceReport results={results} />
 
         {/* Share Section - LinkedIn focused */}
         <motion.div
