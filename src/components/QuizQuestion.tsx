@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { Question } from '@/data/quizQuestions';
+import { Question, categoryLabels } from '@/data/quizQuestions';
 import { cn } from '@/lib/utils';
 
 interface QuizQuestionProps {
@@ -10,6 +10,14 @@ interface QuizQuestionProps {
   onSelectAnswer: (index: number) => void;
   onNext: () => void;
 }
+
+const categoryColors: Record<string, string> = {
+  verbal: 'bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30',
+  numerical: 'bg-neon-pink/10 text-neon-pink border-neon-pink/30',
+  spatial: 'bg-neon-purple/10 text-neon-purple border-neon-purple/30',
+  pattern: 'bg-primary/10 text-primary border-primary/30',
+  logical: 'bg-secondary/10 text-secondary border-secondary/30',
+};
 
 export const QuizQuestion = ({
   question,
@@ -37,6 +45,26 @@ export const QuizQuestion = ({
             transition={{ duration: 0.5, ease: 'easeOut' }}
           />
         </div>
+        {/* Category indicators */}
+        <div className="flex justify-center gap-2 mt-4">
+          {(['verbal', 'numerical', 'spatial', 'pattern', 'logical'] as const).map((cat) => (
+            <div
+              key={cat}
+              className={cn(
+                'w-3 h-3 rounded-full transition-all duration-300',
+                question.category === cat
+                  ? 'scale-125 ring-2 ring-offset-2 ring-offset-background'
+                  : 'opacity-30',
+                cat === 'verbal' && 'bg-neon-cyan ring-neon-cyan',
+                cat === 'numerical' && 'bg-neon-pink ring-neon-pink',
+                cat === 'spatial' && 'bg-neon-purple ring-neon-purple',
+                cat === 'pattern' && 'bg-primary ring-primary',
+                cat === 'logical' && 'bg-secondary ring-secondary',
+              )}
+              title={categoryLabels[cat]}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Question Card */}
@@ -50,24 +78,27 @@ export const QuizQuestion = ({
           className="w-full max-w-2xl"
         >
           <div className="card-elevated rounded-2xl p-8 border border-border">
-            {/* Question Type Badge */}
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-              {question.type.charAt(0).toUpperCase() + question.type.slice(1)}
+            {/* Question Category Badge */}
+            <div className={cn(
+              'inline-flex items-center px-3 py-1 rounded-full text-sm font-medium mb-6 border',
+              categoryColors[question.category]
+            )}>
+              {categoryLabels[question.category]}
             </div>
 
             {/* Question Text */}
-            <h2 className="font-display text-2xl md:text-3xl font-semibold mb-8 leading-relaxed whitespace-pre-line">
+            <h2 className="font-display text-xl md:text-2xl font-semibold mb-8 leading-relaxed whitespace-pre-line">
               {question.question}
             </h2>
 
             {/* Options */}
-            <div className="grid gap-4">
+            <div className="grid gap-3">
               {question.options.map((option, index) => (
                 <motion.button
                   key={index}
                   onClick={() => onSelectAnswer(index)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
                   className={cn(
                     'w-full p-4 rounded-xl text-left font-medium transition-all duration-300 border-2',
                     selectedAnswer === index
@@ -99,7 +130,7 @@ export const QuizQuestion = ({
                     : 'bg-muted text-muted-foreground cursor-not-allowed'
                 )}
               >
-                {currentIndex === totalQuestions - 1 ? 'See Results' : 'Next Question'}
+                {currentIndex === totalQuestions - 1 ? 'See My Results' : 'Next Question'}
               </button>
             </motion.div>
           </div>
