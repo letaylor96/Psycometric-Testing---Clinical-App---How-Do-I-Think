@@ -8,8 +8,8 @@ export interface Question {
   question: string;
   options: string[];
   correctAnswer: number;
-  // For divergent thinking questions, scoring is different
-  divergentScores?: number[]; // Score for each option (0-3)
+  divergentScores?: number[];
+  timeLimit: number; // seconds per question
 }
 
 export const categoryLabels: Record<CognitiveCategory, string> = {
@@ -27,176 +27,243 @@ export const divergentLabels: Record<DivergentDimension, { label: string; descri
   elaboration: { label: 'Elaboration', description: 'Building and expanding on ideas' },
 };
 
+export const TOTAL_TEST_TIME = 480; // 8 minutes in seconds
+
 export const quizQuestions: Question[] = [
-  // VERBAL INTELLIGENCE (4 questions)
+  // VERBAL INTELLIGENCE (5 questions)
   {
     id: 1,
     category: 'verbal',
-    question: 'WOLF is to PACK as FISH is to:',
-    options: ['Herd', 'Flock', 'School', 'Swarm'],
-    correctAnswer: 2,
+    question: 'CONSTELLATION is to STARS as ARCHIPELAGO is to:',
+    options: ['Mountains', 'Islands', 'Rivers', 'Forests'],
+    correctAnswer: 1,
+    timeLimit: 20,
   },
   {
     id: 2,
     category: 'verbal',
-    question: 'Which word is most nearly OPPOSITE in meaning to "EPHEMERAL"?',
-    options: ['Fleeting', 'Permanent', 'Temporary', 'Brief'],
-    correctAnswer: 1,
+    divergentDimension: 'flexibility',
+    question: 'The word "SANCTION" can mean both approval AND punishment. Which other word shares this contradictory property?',
+    options: ['Overlook', 'Confirm', 'Restrict', 'Maintain'],
+    correctAnswer: 0, // Overlook = supervise OR ignore
+    divergentScores: [3, 1, 0, 1],
+    timeLimit: 25,
   },
   {
     id: 3,
     category: 'verbal',
-    divergentDimension: 'flexibility',
-    question: 'If you rearrange "CIFAIPC" you get a word related to:',
-    options: ['A body of water', 'A continent', 'A weather pattern', 'A direction'],
-    correctAnswer: 0, // PACIFIC
-    divergentScores: [3, 2, 1, 1],
+    question: 'Which word does NOT belong: Ephemeral, Transient, Perpetual, Fleeting, Momentary',
+    options: ['Ephemeral', 'Transient', 'Perpetual', 'Momentary'],
+    correctAnswer: 2,
+    timeLimit: 20,
   },
   {
     id: 4,
     category: 'verbal',
-    question: 'CANVAS is to PAINTER as MARBLE is to:',
-    options: ['Artist', 'Sculptor', 'Architect', 'Mason'],
-    correctAnswer: 1,
+    divergentDimension: 'originality',
+    question: 'Unscramble "NIOITNUT" to find a word meaning gut feeling. What field relies most on this concept?',
+    options: ['Mathematics', 'Philosophy', 'Engineering', 'Accounting'],
+    correctAnswer: 1, // INTUITION - philosophy deals with intuition
+    divergentScores: [1, 3, 1, 0],
+    timeLimit: 30,
   },
-
-  // NUMERICAL REASONING (4 questions)
   {
     id: 5,
-    category: 'numerical',
-    question: 'What comes next: 2, 6, 12, 20, 30, ?',
-    options: ['36', '40', '42', '44'],
-    correctAnswer: 2, // differences: 4,6,8,10,12
+    category: 'verbal',
+    question: 'SCALPEL is to SURGEON as CHISEL is to:',
+    options: ['Painter', 'Sculptor', 'Architect', 'Musician'],
+    correctAnswer: 1,
+    timeLimit: 15,
   },
+
+  // NUMERICAL REASONING (5 questions)
   {
     id: 6,
     category: 'numerical',
-    question: 'What number completes the sequence: 1, 1, 2, 3, 5, 8, 13, ?',
-    options: ['18', '20', '21', '26'],
-    correctAnswer: 2, // Fibonacci
+    question: 'What comes next: 1, 4, 9, 16, 25, 36, ?',
+    options: ['42', '47', '49', '52'],
+    correctAnswer: 2, // Perfect squares
+    timeLimit: 20,
   },
   {
     id: 7,
     category: 'numerical',
     divergentDimension: 'elaboration',
-    question: 'If 3 machines make 3 widgets in 3 minutes, how many widgets do 100 machines make in 100 minutes?',
-    options: ['100', '300', '1000', '10000'],
-    correctAnswer: 3,
-    divergentScores: [0, 1, 2, 3],
+    question: 'A snail climbs 3 meters up a wall during the day but slides down 2 meters each night. If the wall is 10 meters tall, on which day does it reach the top?',
+    options: ['Day 8', 'Day 9', 'Day 10', 'Day 7'],
+    correctAnswer: 0, // Day 8 (reaches top during day, doesn't slide)
+    divergentScores: [3, 2, 1, 1],
+    timeLimit: 35,
   },
   {
     id: 8,
     category: 'numerical',
-    question: 'What comes next: 25, 24, 22, 19, 15, ?',
-    options: ['10', '11', '12', '13'],
-    correctAnswer: 0, // differences: -1,-2,-3,-4,-5
+    question: 'Complete: 2, 3, 5, 7, 11, 13, ?',
+    options: ['15', '17', '19', '21'],
+    correctAnswer: 1, // Prime numbers
+    timeLimit: 20,
   },
-
-  // SPATIAL AWARENESS (4 questions)
   {
     id: 9,
-    category: 'spatial',
-    divergentDimension: 'originality',
-    question: 'A cube is painted red on all sides, then cut into 27 smaller equal cubes. How many small cubes have exactly 2 red faces?',
-    options: ['6', '8', '12', '24'],
-    correctAnswer: 2, // Edge cubes (12)
-    divergentScores: [1, 2, 3, 0],
+    category: 'numerical',
+    divergentDimension: 'fluency',
+    question: 'A lily pad doubles in size every day. If it takes 48 days to cover a lake completely, on what day was it covering half the lake?',
+    options: ['Day 24', 'Day 36', 'Day 47', 'Day 46'],
+    correctAnswer: 2, // Day 47 (doubles on 48 to fill)
+    divergentScores: [0, 1, 3, 2],
+    timeLimit: 30,
   },
   {
     id: 10,
-    category: 'spatial',
-    question: 'If you fold a square piece of paper in half twice and cut a small triangle from the folded corner, how many holes will you see when unfolded?',
-    options: ['1', '2', '4', '8'],
-    correctAnswer: 0, // 1 hole in center
+    category: 'numerical',
+    question: 'What is the next number: 1, 1, 2, 6, 24, 120, ?',
+    options: ['240', '600', '720', '840'],
+    correctAnswer: 2, // Factorials: 1!, 1!, 2!, 3!, 4!, 5!, 6!=720
+    timeLimit: 25,
   },
+
+  // SPATIAL AWARENESS (5 questions)
   {
     id: 11,
     category: 'spatial',
-    question: 'Which shape can be formed by folding a cross made of 6 equal squares?',
-    options: ['Pyramid', 'Cube', 'Prism', 'Sphere'],
-    correctAnswer: 1,
+    divergentDimension: 'originality',
+    question: 'A solid cube has each face painted a different color. If you cut it into 8 smaller cubes, how many small cubes will have exactly 3 colors?',
+    options: ['0', '4', '6', '8'],
+    correctAnswer: 3, // All 8 corner cubes have 3 faces showing
+    divergentScores: [1, 2, 1, 3],
+    timeLimit: 35,
   },
   {
     id: 12,
     category: 'spatial',
-    divergentDimension: 'flexibility',
-    question: 'A clock shows 3:15. What is the angle between the hour and minute hands?',
-    options: ['0°', '7.5°', '15°', '22.5°'],
-    correctAnswer: 1, // Hour hand moves 0.5° per minute
-    divergentScores: [0, 3, 2, 1],
+    question: 'You\'re facing North. You turn 90° clockwise, then 180°, then 90° counter-clockwise. What direction are you facing?',
+    options: ['North', 'South', 'East', 'West'],
+    correctAnswer: 1, // South
+    timeLimit: 25,
   },
-
-  // PATTERN RECOGNITION (4 questions)
   {
     id: 13,
-    category: 'pattern',
-    question: 'If all Bloops are Razzies and all Razzies are Lazzies, then all Bloops are definitely Lazzies?',
-    options: ['True', 'False', 'Cannot determine', 'Sometimes'],
-    correctAnswer: 0,
+    category: 'spatial',
+    divergentDimension: 'flexibility',
+    question: 'How many rectangles (including squares) are in a 3x3 grid of squares?',
+    options: ['9', '18', '36', '45'],
+    correctAnswer: 2, // 36 rectangles
+    divergentScores: [0, 1, 3, 2],
+    timeLimit: 40,
   },
   {
     id: 14,
-    category: 'pattern',
-    divergentDimension: 'originality',
-    question: 'Which number is the odd one out: 3, 5, 11, 14, 17, 21',
-    options: ['3', '14', '21', '5'],
-    correctAnswer: 1, // 14 is even, others are odd/prime
-    divergentScores: [1, 3, 2, 1],
+    category: 'spatial',
+    question: 'If you look at a clock in a mirror when it shows 3:30, what time appears to be shown?',
+    options: ['8:30', '9:30', '6:30', '9:00'],
+    correctAnswer: 0, // Mirror reversal shows 8:30
+    timeLimit: 30,
   },
   {
     id: 15,
-    category: 'pattern',
-    question: 'Complete the pattern: J, F, M, A, M, J, J, ?',
-    options: ['A', 'S', 'O', 'N'],
-    correctAnswer: 0, // Months
+    category: 'spatial',
+    divergentDimension: 'elaboration',
+    question: 'A regular hexagon is divided into equilateral triangles. How many triangles fit inside?',
+    options: ['4', '6', '8', '12'],
+    correctAnswer: 1, // 6 equilateral triangles
+    divergentScores: [1, 3, 2, 0],
+    timeLimit: 25,
   },
+
+  // PATTERN RECOGNITION (5 questions)
   {
     id: 16,
     category: 'pattern',
-    divergentDimension: 'fluency',
-    question: 'What letter comes next: O, T, T, F, F, S, S, ?',
-    options: ['E', 'N', 'T', 'O'],
-    correctAnswer: 0, // One, Two, Three... Eight
-    divergentScores: [3, 1, 1, 0],
+    question: 'Complete the pattern: Z, Y, W, T, P, ?',
+    options: ['K', 'L', 'M', 'N'],
+    correctAnswer: 0, // Gaps: 1, 2, 3, 4, 5... K
+    timeLimit: 30,
   },
-
-  // LOGICAL THINKING (4 questions)
   {
     id: 17,
-    category: 'logical',
-    question: 'Mary is 16 years old. She is 4 times as old as her brother was when she was the same age as her brother is now. How old is her brother?',
-    options: ['8', '10', '12', '14'],
-    correctAnswer: 0,
+    category: 'pattern',
+    divergentDimension: 'originality',
+    question: 'Which doesn\'t belong: 64, 125, 216, 300, 343',
+    options: ['64', '125', '300', '343'],
+    correctAnswer: 2, // 300 is not a perfect cube
+    divergentScores: [0, 1, 3, 1],
+    timeLimit: 25,
   },
   {
     id: 18,
-    category: 'logical',
-    divergentDimension: 'elaboration',
-    question: 'A farmer has 17 sheep. All but 9 run away. How many sheep does the farmer have left?',
-    options: ['8', '9', '17', '0'],
-    correctAnswer: 1, // "All but 9" = 9 remain
-    divergentScores: [0, 3, 1, 0],
+    category: 'pattern',
+    question: 'If △ + ○ = 10, △ × ○ = 21, what is △ - ○?',
+    options: ['2', '3', '4', '5'],
+    correctAnswer: 2, // △=7, ○=3, diff=4
+    timeLimit: 35,
   },
   {
     id: 19,
-    category: 'logical',
-    question: 'If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to make 100 widgets?',
-    options: ['1 minute', '5 minutes', '20 minutes', '100 minutes'],
-    correctAnswer: 1,
+    category: 'pattern',
+    divergentDimension: 'fluency',
+    question: 'In the sequence A1, B2, D4, G7, K11... what comes next?',
+    options: ['N14', 'O15', 'P16', 'Q17'],
+    correctAnswer: 2, // Differences in letters: 1,2,3,4,5 and numbers follow same pattern
+    divergentScores: [1, 2, 3, 1],
+    timeLimit: 35,
   },
   {
     id: 20,
+    category: 'pattern',
+    divergentDimension: 'flexibility',
+    question: 'Find the odd one out: 8, 27, 64, 100, 125, 216',
+    options: ['8', '64', '100', '125'],
+    correctAnswer: 2, // 100 is 10², others are perfect cubes
+    divergentScores: [1, 1, 3, 1],
+    timeLimit: 25,
+  },
+
+  // LOGICAL THINKING (5 questions)
+  {
+    id: 21,
+    category: 'logical',
+    question: 'A woman has 7 daughters and each daughter has a brother. How many children does she have?',
+    options: ['7', '8', '14', '15'],
+    correctAnswer: 1, // 8 (7 daughters + 1 brother they all share)
+    timeLimit: 25,
+  },
+  {
+    id: 22,
+    category: 'logical',
+    divergentDimension: 'elaboration',
+    question: 'Three friends share a hotel room costing $30. They each pay $10. The clerk realizes it should be $25 and gives $5 to the bellhop to return. The bellhop keeps $2 and gives $1 to each friend. Each paid $9 (total $27) + $2 kept = $29. Where is the missing $1?',
+    options: ['There is no missing dollar', 'The clerk has it', 'The bellhop has it', 'It was never there'],
+    correctAnswer: 0, // Faulty logic - you shouldn\'t add the $2
+    divergentScores: [3, 0, 1, 2],
+    timeLimit: 45,
+  },
+  {
+    id: 23,
+    category: 'logical',
+    divergentDimension: 'originality',
+    question: 'You have 12 identical coins. One is counterfeit (different weight). Using a balance scale only 3 times, can you always find it AND determine if it\'s heavier or lighter?',
+    options: ['Yes, always possible', 'Only if you\'re lucky', 'No, you need 4 weighings', 'Only find it, not weight difference'],
+    correctAnswer: 0,
+    divergentScores: [3, 0, 1, 2],
+    timeLimit: 35,
+  },
+  {
+    id: 24,
+    category: 'logical',
+    question: 'If all Zorbs are Yips, and some Yips are Wubs, which must be true?',
+    options: ['All Zorbs are Wubs', 'Some Zorbs are Wubs', 'No Zorbs are Wubs', 'None of the above must be true'],
+    correctAnswer: 3, // We can\'t conclude anything about Zorbs and Wubs
+    timeLimit: 30,
+  },
+  {
+    id: 25,
     category: 'logical',
     divergentDimension: 'fluency',
-    question: 'You have two hourglasses: one measures 4 minutes, one measures 7 minutes. How do you measure exactly 9 minutes?',
-    options: [
-      'Start both, flip 4-min when done, flip 7-min when done',
-      'Start both, when 4 ends flip it, when 7 ends start timing',
-      'Start 7-min, when done start 4-min, flip when half done',
-      'Cannot be done with these hourglasses'
-    ],
-    correctAnswer: 1,
-    divergentScores: [1, 3, 2, 0],
+    question: 'Two fathers and two sons go fishing. Each catches exactly one fish. They bring home exactly 3 fish. How is this possible?',
+    options: ['One fish was thrown back', 'They are grandfather, father, son', 'They shared one fish', 'One fish was eaten there'],
+    correctAnswer: 1, // Three people: grandfather, father (who is also a son), son
+    divergentScores: [0, 3, 1, 0],
+    timeLimit: 30,
   },
 ];
 
@@ -223,9 +290,11 @@ export interface TestResults {
   primaryStrength: CognitiveCategory;
   divergentType: string;
   divergentDescription: string;
+  timeUsed: number;
+  timeBonusApplied: boolean;
 }
 
-export const calculateResults = (answers: number[]): TestResults => {
+export const calculateResults = (answers: number[], timeUsed: number): TestResults => {
   const categoryScores: Record<CognitiveCategory, { correct: number; total: number }> = {
     verbal: { correct: 0, total: 0 },
     numerical: { correct: 0, total: 0 },
@@ -245,6 +314,8 @@ export const calculateResults = (answers: number[]): TestResults => {
 
   quizQuestions.forEach((question, index) => {
     const userAnswer = answers[index];
+    if (userAnswer === undefined) return; // Skip unanswered
+    
     const isCorrect = userAnswer === question.correctAnswer;
     
     categoryScores[question.category].total++;
@@ -253,22 +324,19 @@ export const calculateResults = (answers: number[]): TestResults => {
       totalCorrect++;
     }
 
-    // Track divergent thinking scores
     if (question.divergentDimension && question.divergentScores) {
       divergentScores[question.divergentDimension].maxScore += 3;
       divergentScores[question.divergentDimension].score += question.divergentScores[userAnswer] || 0;
     }
   });
 
-  // Calculate category percentages
   const categoryResults: CategoryScore[] = Object.entries(categoryScores).map(([cat, data]) => ({
     category: cat as CognitiveCategory,
     correct: data.correct,
     total: data.total,
-    percentage: Math.round((data.correct / data.total) * 100),
+    percentage: data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0,
   }));
 
-  // Calculate divergent profile
   const divergentProfile: DivergentProfile[] = Object.entries(divergentScores).map(([dim, data]) => ({
     dimension: dim as DivergentDimension,
     score: data.score,
@@ -276,25 +344,33 @@ export const calculateResults = (answers: number[]): TestResults => {
     percentage: data.maxScore > 0 ? Math.round((data.score / data.maxScore) * 100) : 0,
   }));
 
-  // Find primary cognitive strength
   const primaryStrength = categoryResults.reduce((best, current) => 
     current.percentage > best.percentage ? current : best
   ).category;
 
-  // Calculate IQ estimate
+  // Calculate IQ with time bonus
   const overallPercentage = (totalCorrect / quizQuestions.length) * 100;
-  let iq: number;
-  if (overallPercentage >= 95) iq = 145;
-  else if (overallPercentage >= 90) iq = 135;
-  else if (overallPercentage >= 80) iq = 125;
-  else if (overallPercentage >= 70) iq = 115;
-  else if (overallPercentage >= 60) iq = 108;
-  else if (overallPercentage >= 50) iq = 100;
-  else if (overallPercentage >= 40) iq = 92;
-  else if (overallPercentage >= 30) iq = 85;
-  else iq = 78;
+  const timeBonusApplied = timeUsed < TOTAL_TEST_TIME * 0.7; // Finished with 30%+ time remaining
+  
+  let baseIQ: number;
+  if (overallPercentage >= 95) baseIQ = 145;
+  else if (overallPercentage >= 90) baseIQ = 138;
+  else if (overallPercentage >= 85) baseIQ = 132;
+  else if (overallPercentage >= 80) baseIQ = 126;
+  else if (overallPercentage >= 75) baseIQ = 120;
+  else if (overallPercentage >= 70) baseIQ = 115;
+  else if (overallPercentage >= 65) baseIQ = 111;
+  else if (overallPercentage >= 60) baseIQ = 107;
+  else if (overallPercentage >= 55) baseIQ = 103;
+  else if (overallPercentage >= 50) baseIQ = 100;
+  else if (overallPercentage >= 45) baseIQ = 96;
+  else if (overallPercentage >= 40) baseIQ = 92;
+  else if (overallPercentage >= 35) baseIQ = 88;
+  else if (overallPercentage >= 30) baseIQ = 84;
+  else baseIQ = 80;
 
-  // Determine divergent thinking type
+  const iq = timeBonusApplied ? Math.min(baseIQ + 3, 148) : baseIQ;
+
   const { divergentType, divergentDescription } = getDivergentType(divergentProfile);
 
   return {
@@ -306,6 +382,8 @@ export const calculateResults = (answers: number[]): TestResults => {
     primaryStrength,
     divergentType,
     divergentDescription,
+    timeUsed,
+    timeBonusApplied,
   };
 };
 
@@ -314,10 +392,10 @@ const getDivergentType = (profile: DivergentProfile[]): { divergentType: string;
   const topTwo = sorted.slice(0, 2);
   const avgScore = profile.reduce((sum, p) => sum + p.percentage, 0) / profile.length;
 
-  if (avgScore < 40) {
+  if (avgScore < 35) {
     return {
-      divergentType: 'Convergent Thinker',
-      divergentDescription: 'You excel at finding the single best solution through logical analysis. Your strength lies in focused, systematic problem-solving rather than generating multiple alternatives.'
+      divergentType: 'Convergent Analyst',
+      divergentDescription: 'You excel at finding the single best solution through systematic analysis. Your strength is focused, methodical problem-solving—zeroing in on the optimal answer rather than exploring many alternatives.'
     };
   }
 
@@ -326,48 +404,60 @@ const getDivergentType = (profile: DivergentProfile[]): { divergentType: string;
 
   const types: Record<string, { type: string; desc: string }> = {
     'fluency-flexibility': {
-      type: 'The Brainstormer',
-      desc: 'You generate ideas rapidly and can switch perspectives effortlessly. You thrive in brainstorming sessions and excel at seeing problems from multiple angles.'
+      type: 'The Catalyst',
+      desc: 'You generate ideas at lightning speed and pivot effortlessly between perspectives. You energize brainstorms and see connections others miss. Best suited for: startup environments, creative direction, crisis problem-solving.'
     },
     'fluency-originality': {
-      type: 'The Innovator',
-      desc: 'You produce many ideas, and they\'re often surprisingly unique. You\'re naturally creative and can quickly generate novel solutions others wouldn\'t consider.'
+      type: 'The Maverick',
+      desc: 'Your mind produces a torrent of unconventional ideas. You don\'t just think outside the box—you question why the box exists. Best suited for: innovation labs, disruptive startups, artistic ventures.'
     },
     'fluency-elaboration': {
-      type: 'The Builder',
-      desc: 'You generate many ideas and have the patience to develop them fully. You excel at both quantity and depth, making you effective at seeing projects through.'
+      type: 'The Architect',
+      desc: 'You combine prolific ideation with the patience to build ideas out fully. You see projects from spark to completion. Best suited for: product development, worldbuilding, systems design.'
     },
     'flexibility-originality': {
-      type: 'The Visionary',
-      desc: 'You combine mental agility with originality. You can reframe problems in unexpected ways and often arrive at breakthrough solutions through unconventional thinking.'
+      type: 'The Shapeshifter',
+      desc: 'You reframe problems in unexpected ways and arrive at solutions nobody anticipated. Your mental agility paired with originality creates breakthrough thinking. Best suited for: consulting, R&D, creative strategy.'
     },
     'flexibility-elaboration': {
       type: 'The Strategist',
-      desc: 'You adapt your thinking to new situations and build comprehensive solutions. You excel at developing detailed plans while remaining open to pivoting when needed.'
+      desc: 'You adapt your thinking fluidly while building comprehensive, detailed solutions. You excel at pivoting without losing depth. Best suited for: business strategy, game design, policy development.'
     },
     'originality-elaboration': {
-      type: 'The Artist',
-      desc: 'Your ideas are both unique and fully realized. You don\'t just think outside the box—you build entirely new boxes with intricate detail and depth.'
+      type: 'The Artisan',
+      desc: 'Your ideas are both unique and fully realized—you don\'t just conceive, you craft. Every detail matters, and your work is distinctly yours. Best suited for: design, writing, specialized crafts, research.'
     },
   };
 
   const key = `${primary}-${secondary}`;
   const reverseKey = `${secondary}-${primary}`;
   
-  const match = types[key] || types[reverseKey] || {
-    type: 'The Renaissance Thinker',
-    desc: 'You have a balanced divergent thinking profile, with strengths across multiple dimensions. This versatility makes you adaptable to various creative challenges.'
-  };
+  const match = types[key] || types[reverseKey];
 
-  return { divergentType: match.type, divergentDescription: match.desc };
+  if (match) {
+    return { divergentType: match.type, divergentDescription: match.desc };
+  }
+
+  if (avgScore >= 70) {
+    return {
+      divergentType: 'The Polymath',
+      divergentDescription: 'You have exceptional divergent thinking across all dimensions. This rare versatility means you can approach any creative challenge from multiple angles. Best suited for: entrepreneurship, creative leadership, interdisciplinary research.'
+    };
+  }
+
+  return {
+    divergentType: 'The Explorer',
+    divergentDescription: 'You have a balanced creative profile with room to develop. Your thinking style adapts to different challenges. Focus on the dimensions where you scored highest to unlock your creative potential.'
+  };
 };
 
 export const getIQInterpretation = (iq: number): string => {
-  if (iq >= 140) return 'Exceptional cognitive abilities, top 0.4% of population';
-  if (iq >= 130) return 'Gifted range, top 2% - highly advanced reasoning';
-  if (iq >= 120) return 'Superior intelligence, top 9% - excellent problem-solving';
-  if (iq >= 110) return 'High average, top 25% - strong analytical skills';
-  if (iq >= 90) return 'Average range - solid foundational reasoning';
-  if (iq >= 80) return 'Low average - functional everyday reasoning';
-  return 'Below average - may benefit from skill-building exercises';
+  if (iq >= 145) return 'Exceptional cognitive abilities, top 0.1% of population';
+  if (iq >= 135) return 'Highly gifted, top 1% — exceptional abstract reasoning';
+  if (iq >= 125) return 'Gifted range, top 5% — superior problem-solving';
+  if (iq >= 115) return 'Above average, top 15% — strong analytical skills';
+  if (iq >= 100) return 'Average to high average — solid reasoning abilities';
+  if (iq >= 90) return 'Average range — functional everyday reasoning';
+  if (iq >= 80) return 'Low average — practical problem-solving';
+  return 'Below average — may benefit from targeted skill-building';
 };

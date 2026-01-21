@@ -1,9 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { LandingHero } from '@/components/LandingHero';
 import { QuizQuestion } from '@/components/QuizQuestion';
 import { ResultsScreen } from '@/components/ResultsScreen';
-import { quizQuestions, calculateResults, TestResults } from '@/data/quizQuestions';
+import { quizQuestions, calculateResults, TestResults, TOTAL_TEST_TIME } from '@/data/quizQuestions';
 
 type GameState = 'landing' | 'quiz' | 'results';
 
@@ -13,6 +13,28 @@ const Index = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answers, setAnswers] = useState<number[]>([]);
   const [results, setResults] = useState<TestResults | null>(null);
+  const [timeRemaining, setTimeRemaining] = useState(TOTAL_TEST_TIME);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const startTimeRef = useRef<number>(0);
+
+  // Timer effect
+  useEffect(() => {
+    if (gameState === 'quiz') {
+      timerRef.current = setInterval(() => {
+        setTimeRemaining((prev) => {
+          if (prev <= 1) {
+            if (timerRef.current) clearInterval(timerRef.current);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => {
+        if (timerRef.current) clearInterval(timerRef.current);
+      };
+    }
+  }, [gameState]);
 
   const handleStartQuiz = useCallback(() => {
     setGameState('quiz');
@@ -20,11 +42,21 @@ const Index = () => {
     setAnswers([]);
     setSelectedAnswer(null);
     setResults(null);
+    setTimeRemaining(TOTAL_TEST_TIME);
+    startTimeRef.current = Date.now();
   }, []);
 
   const handleSelectAnswer = useCallback((index: number) => {
     setSelectedAnswer(index);
   }, []);
+
+  const finishQuiz = useCallback((finalAnswers: number[]) => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    const timeUsed = TOTAL_TEST_TIME - timeRemaining;
+    const finalResults = calculateResults(finalAnswers, timeUsed);
+    setResults(finalResults);
+    setGameState('results');
+  }, [timeRemaining]);
 
   const handleNextQuestion = useCallback(() => {
     if (selectedAnswer === null) return;
@@ -36,12 +68,22 @@ const Index = () => {
     if (currentQuestionIndex < quizQuestions.length - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
     } else {
-      // Calculate final results
-      const finalResults = calculateResults(newAnswers);
-      setResults(finalResults);
-      setGameState('results');
+      finishQuiz(newAnswers);
     }
-  }, [selectedAnswer, answers, currentQuestionIndex]);
+  }, [selectedAnswer, answers, currentQuestionIndex, finishQuiz]);
+
+  const handleTimeUp = useCallback(() => {
+    // Auto-submit with current answers (unanswered questions count as wrong)
+    const finalAnswers = [...answers];
+    if (selectedAnswer !== null) {
+      finalAnswers.push(selectedAnswer);
+    }
+    // Fill remaining with -1 (wrong answer)
+    while (finalAnswers.length < quizQuestions.length) {
+      finalAnswers.push(-1);
+    }
+    finishQuiz(finalAnswers);
+  }, [answers, selectedAnswer, finishQuiz]);
 
   const handleRestart = useCallback(() => {
     setGameState('landing');
@@ -49,6 +91,8 @@ const Index = () => {
     setAnswers([]);
     setSelectedAnswer(null);
     setResults(null);
+    setTimeRemaining(TOTAL_TEST_TIME);
+    if (timerRef.current) clearInterval(timerRef.current);
   }, []);
 
   return (
@@ -81,6 +125,8 @@ const Index = () => {
               selectedAnswer={selectedAnswer}
               onSelectAnswer={handleSelectAnswer}
               onNext={handleNextQuestion}
+              totalTimeRemaining={timeRemaining}
+              onTimeUp={handleTimeUp}
             />
           </motion.div>
         )}
