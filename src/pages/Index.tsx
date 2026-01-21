@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { LandingHero } from '@/components/LandingHero';
 import { QuizQuestion } from '@/components/QuizQuestion';
 import { ResultsScreen } from '@/components/ResultsScreen';
-import { quizQuestions } from '@/data/quizQuestions';
+import { quizQuestions, calculateResults, TestResults } from '@/data/quizQuestions';
 
 type GameState = 'landing' | 'quiz' | 'results';
 
@@ -12,12 +12,14 @@ const Index = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answers, setAnswers] = useState<number[]>([]);
+  const [results, setResults] = useState<TestResults | null>(null);
 
   const handleStartQuiz = useCallback(() => {
     setGameState('quiz');
     setCurrentQuestionIndex(0);
     setAnswers([]);
     setSelectedAnswer(null);
+    setResults(null);
   }, []);
 
   const handleSelectAnswer = useCallback((index: number) => {
@@ -34,6 +36,9 @@ const Index = () => {
     if (currentQuestionIndex < quizQuestions.length - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
     } else {
+      // Calculate final results
+      const finalResults = calculateResults(newAnswers);
+      setResults(finalResults);
       setGameState('results');
     }
   }, [selectedAnswer, answers, currentQuestionIndex]);
@@ -43,13 +48,8 @@ const Index = () => {
     setCurrentQuestionIndex(0);
     setAnswers([]);
     setSelectedAnswer(null);
+    setResults(null);
   }, []);
-
-  const calculateCorrectAnswers = () => {
-    return answers.reduce((count, answer, index) => {
-      return answer === quizQuestions[index].correctAnswer ? count + 1 : count;
-    }, 0);
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -85,7 +85,7 @@ const Index = () => {
           </motion.div>
         )}
 
-        {gameState === 'results' && (
+        {gameState === 'results' && results && (
           <motion.div
             key="results"
             initial={{ opacity: 0 }}
@@ -94,8 +94,7 @@ const Index = () => {
             transition={{ duration: 0.4 }}
           >
             <ResultsScreen
-              correctAnswers={calculateCorrectAnswers()}
-              totalQuestions={quizQuestions.length}
+              results={results}
               onRestart={handleRestart}
             />
           </motion.div>
