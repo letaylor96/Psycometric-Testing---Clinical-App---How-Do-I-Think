@@ -7,13 +7,16 @@ import { quizQuestions, calculateResults, TestResults, TOTAL_TEST_TIME } from '@
 import { AssessmentType } from '@/data/assessmentTypes';
 import { personalityQuestions, calculatePersonalityResults, PersonalityResults } from '@/data/personalityQuestions';
 import { adhdQuestions, calculateADHDResults, ADHDResults } from '@/data/adhdQuestions';
+import { calculateCognitiveStyleResults, CognitiveStyleResults } from '@/data/cognitiveStyleQuestions';
 import { PersonalityQuiz } from '@/components/PersonalityQuiz';
 import { ADHDQuiz } from '@/components/ADHDQuiz';
+import { CognitiveStyleQuiz } from '@/components/CognitiveStyleQuiz';
 import { PersonalityResultsScreen } from '@/components/PersonalityResultsScreen';
 import { ADHDResultsScreen } from '@/components/ADHDResultsScreen';
+import { CognitiveStyleResultsScreen } from '@/components/CognitiveStyleResultsScreen';
 import { CombinedDashboard } from '@/components/CombinedDashboard';
 
-type GameState = 'landing' | 'quiz' | 'results' | 'personality-quiz' | 'personality-results' | 'adhd-quiz' | 'adhd-results' | 'dashboard';
+type GameState = 'landing' | 'quiz' | 'results' | 'personality-quiz' | 'personality-results' | 'adhd-quiz' | 'adhd-results' | 'cognitive-quiz' | 'cognitive-results' | 'dashboard';
 
 const Index = () => {
   const [gameState, setGameState] = useState<GameState>('landing');
@@ -23,6 +26,7 @@ const Index = () => {
   const [results, setResults] = useState<TestResults | null>(null);
   const [personalityResults, setPersonalityResults] = useState<PersonalityResults | null>(null);
   const [adhdResults, setADHDResults] = useState<ADHDResults | null>(null);
+  const [cognitiveStyleResults, setCognitiveStyleResults] = useState<CognitiveStyleResults | null>(null);
   const [timeRemaining, setTimeRemaining] = useState(TOTAL_TEST_TIME);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number>(0);
@@ -66,9 +70,10 @@ const Index = () => {
         setGameState('personality-quiz');
         break;
       case 'iq':
-      case 'cognitive':
-        // Both use the existing IQ/cognitive quiz
         handleStartQuiz();
+        break;
+      case 'cognitive':
+        setGameState('cognitive-quiz');
         break;
       case 'adhd':
         setGameState('adhd-quiz');
@@ -125,6 +130,12 @@ const Index = () => {
     setGameState('adhd-results');
   }, []);
 
+  const handleCognitiveStyleComplete = useCallback((answers: number[]) => {
+    const results = calculateCognitiveStyleResults(answers);
+    setCognitiveStyleResults(results);
+    setGameState('cognitive-results');
+  }, []);
+
   const handleRestart = useCallback(() => {
     setGameState('landing');
     setCurrentQuestionIndex(0);
@@ -143,6 +154,7 @@ const Index = () => {
     setResults(null);
     setPersonalityResults(null);
     setADHDResults(null);
+    setCognitiveStyleResults(null);
     setTimeRemaining(TOTAL_TEST_TIME);
     if (timerRef.current) clearInterval(timerRef.current);
   }, []);
@@ -271,6 +283,34 @@ const Index = () => {
           >
             <ADHDResultsScreen 
               results={adhdResults} 
+              onRestart={handleRestart}
+              onViewDashboard={handleViewDashboard}
+            />
+          </motion.div>
+        )}
+
+        {gameState === 'cognitive-quiz' && (
+          <motion.div
+            key="cognitive-quiz"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <CognitiveStyleQuiz onComplete={handleCognitiveStyleComplete} onBack={handleRestart} />
+          </motion.div>
+        )}
+
+        {gameState === 'cognitive-results' && cognitiveStyleResults && (
+          <motion.div
+            key="cognitive-results"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <CognitiveStyleResultsScreen 
+              results={cognitiveStyleResults} 
               onRestart={handleRestart}
               onViewDashboard={handleViewDashboard}
             />

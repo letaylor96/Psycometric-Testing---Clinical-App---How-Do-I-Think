@@ -38,10 +38,10 @@ export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
     id: 'cognitive',
     title: 'Cognitive Style',
     shortTitle: 'Cognitive',
-    description: 'Understand your thinking style through divergent thinking and creative problem-solving patterns.',
-    framework: "Guilford's Divergent Thinking",
+    description: 'Discover how your mind naturally processes information - exploring thinking patterns often associated with neurodivergent minds.',
+    framework: 'Neurodivergent Thinking Patterns',
     questionCount: 25,
-    timeMinutes: 25,
+    timeMinutes: 8,
     color: 'primary',
   },
   adhd: {
