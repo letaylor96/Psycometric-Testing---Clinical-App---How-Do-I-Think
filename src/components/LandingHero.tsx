@@ -138,7 +138,7 @@ export const LandingHero = ({ onStart, onSelectAssessment }: LandingHeroProps) =
             <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-0.5 transition-transform" />
           </Button>
           <p className="text-muted-foreground text-sm mt-4">
-            All 4 assessments • ~70 minutes total • Comprehensive report
+            All 4 assessments • ~45 minutes total • Comprehensive report
           </p>
         </motion.div>
 
@@ -151,7 +151,7 @@ export const LandingHero = ({ onStart, onSelectAssessment }: LandingHeroProps) =
         >
           <p className="text-muted-foreground/70 text-sm font-medium">Backed by established research</p>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-muted-foreground/50 text-xs">
-            {['Big Five / OCEAN', "Raven's Matrices", "Guilford's Model", 'ASRS-v1.1'].map((name, i) => (
+            {['OCEAN Deep Profile', "Raven's Matrices", 'Neurodivergent Patterns', 'ASRS-v1.1'].map((name, i) => (
               <div key={i} className="flex items-center gap-1.5">
                 <Check className="w-3 h-3 text-primary/70" />
                 <span>{name}</span>
