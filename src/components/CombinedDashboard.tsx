@@ -32,6 +32,7 @@ import {
   Tooltip,
   Cell,
 } from 'recharts';
+import { PopulationComparison } from './PopulationComparison';
 
 interface CombinedDashboardProps {
   iqResults: TestResults | null;
@@ -489,7 +490,12 @@ export const CombinedDashboard = ({
           )}
         </div>
 
-        {/* Executive Summary (when all completed) */}
+        {/* Population Comparison Section */}
+        <PopulationComparison
+          iqResults={iqResults}
+          personalityResults={personalityResults}
+          adhdResults={adhdResults}
+        />
         {completedCount === totalAssessments && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
