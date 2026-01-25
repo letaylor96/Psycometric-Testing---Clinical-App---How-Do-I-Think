@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { TestResults, categoryLabels, divergentLabels } from '@/data/quizQuestions';
+import { TestResults, categoryLabels, divergentLabels, CognitiveCategory } from '@/data/quizQuestions';
 import { PersonalityResults, PersonalityTrait, personalityTraitLabels } from '@/data/personalityQuestions';
 import { ADHDResults, adhdDomainLabels } from '@/data/adhdQuestions';
 import { 
@@ -15,7 +15,10 @@ import {
   Target,
   Sparkles,
   Download,
-  Share2
+  Share2,
+  Crown,
+  Briefcase,
+  Zap
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -70,6 +73,15 @@ const getIQClassification = (iq: number): string => {
   return 'Below Average';
 };
 
+// Colors for the new cognitive categories
+const categoryColors: Record<CognitiveCategory, string> = {
+  matrix: 'hsl(252, 100%, 69%)',      // Purple
+  sequence: 'hsl(190, 100%, 50%)',    // Cyan
+  spatial: 'hsl(340, 100%, 60%)',     // Pink
+  analogical: 'hsl(45, 100%, 50%)',   // Gold
+  abstract: 'hsl(160, 100%, 40%)',    // Teal
+};
+
 export const CombinedDashboard = ({
   iqResults,
   personalityResults,
@@ -80,7 +92,7 @@ export const CombinedDashboard = ({
   const completedCount = [iqResults, personalityResults, adhdResults].filter(Boolean).length;
   const totalAssessments = 3;
 
-  // Prepare cognitive radar data
+  // Prepare cognitive radar data with new categories
   const cognitiveRadarData = iqResults?.categoryScores.map((cat) => ({
     trait: categoryLabels[cat.category],
     value: cat.percentage,
@@ -98,7 +110,7 @@ export const CombinedDashboard = ({
 
   // Prepare divergent thinking bar data
   const divergentBarData = iqResults?.divergentProfile.map((dim) => ({
-    name: divergentLabels[dim.dimension],
+    name: divergentLabels[dim.dimension].label,
     value: dim.percentage,
   })) || [];
 
@@ -129,7 +141,7 @@ export const CombinedDashboard = ({
             Your Complete Profile
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            A comprehensive view of your cognitive abilities, personality traits, and attention patterns
+            A comprehensive view of your cognitive abilities, personality archetypes, and attention patterns
           </p>
         </motion.div>
 
@@ -230,7 +242,7 @@ export const CombinedDashboard = ({
 
         {/* Main Results Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {/* IQ Results Card */}
+          {/* IQ Results Card - Updated with new categories */}
           {iqResults && (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -243,8 +255,8 @@ export const CombinedDashboard = ({
                   <Brain className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-display font-semibold">Cognitive Intelligence</h3>
-                  <p className="text-xs text-muted-foreground">IQ & Pattern Recognition</p>
+                  <h3 className="font-display font-semibold">Pattern Recognition IQ</h3>
+                  <p className="text-xs text-muted-foreground">Mensa-Style Assessment</p>
                 </div>
               </div>
 
@@ -260,14 +272,14 @@ export const CombinedDashboard = ({
                 </div>
               </div>
 
-              {/* Cognitive Radar Chart */}
+              {/* Cognitive Radar Chart with new categories */}
               <div className="h-[200px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart data={cognitiveRadarData}>
                     <PolarGrid stroke="hsl(var(--muted-foreground))" strokeOpacity={0.2} />
                     <PolarAngleAxis 
                       dataKey="trait" 
-                      tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
+                      tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 9 }}
                     />
                     <PolarRadiusAxis 
                       angle={90} 
@@ -285,6 +297,27 @@ export const CombinedDashboard = ({
                 </ResponsiveContainer>
               </div>
 
+              {/* Category Breakdown */}
+              <div className="mt-4 pt-4 border-t border-border space-y-2">
+                {iqResults.categoryScores.map((cat) => (
+                  <div key={cat.category} className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">{categoryLabels[cat.category]}</span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-16 h-1.5 bg-muted rounded-full overflow-hidden">
+                        <div 
+                          className="h-full rounded-full" 
+                          style={{ 
+                            width: `${cat.percentage}%`,
+                            backgroundColor: categoryColors[cat.category]
+                          }}
+                        />
+                      </div>
+                      <span className="font-medium text-foreground w-10 text-right">{cat.percentage}%</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
               <div className="mt-4 pt-4 border-t border-border">
                 <div className="flex items-center gap-2 text-sm">
                   <Award className="w-4 h-4 text-primary" />
@@ -295,7 +328,7 @@ export const CombinedDashboard = ({
             </motion.div>
           )}
 
-          {/* Personality Results Card */}
+          {/* Personality Archetype Card - Enhanced */}
           {personalityResults && (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -305,26 +338,41 @@ export const CombinedDashboard = ({
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
-                  <Users className="w-5 h-5 text-accent" />
+                  <Crown className="w-5 h-5 text-accent" />
                 </div>
                 <div>
-                  <h3 className="font-display font-semibold">Personality Profile</h3>
-                  <p className="text-xs text-muted-foreground">Big Five (OCEAN) Model</p>
+                  <h3 className="font-display font-semibold">Personality Archetype</h3>
+                  <p className="text-xs text-muted-foreground">IPIP-NEO + Jungian Analysis</p>
                 </div>
               </div>
 
-              {/* Personality Type */}
-              <div className="text-center mb-6">
-                <h4 className="font-display text-2xl font-bold text-accent mb-2">
+              {/* Archetype Display */}
+              <div className="text-center mb-4">
+                <h4 className="font-display text-2xl font-bold text-accent mb-1">
                   {personalityResults.personalityType}
                 </h4>
-                <p className="text-sm text-muted-foreground max-w-xs mx-auto">
-                  {personalityResults.description.slice(0, 100)}...
+                <p className="text-sm text-muted-foreground italic mb-2">
+                  "{personalityResults.archetype.tagline}"
                 </p>
+                <span className="inline-flex px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-semibold">
+                  {personalityResults.archetype.rarity}
+                </span>
+              </div>
+
+              {/* Famous Examples */}
+              <div className="mb-4">
+                <p className="text-xs text-muted-foreground mb-2">Notable examples:</p>
+                <div className="flex flex-wrap gap-1.5 justify-center">
+                  {personalityResults.archetype.famousExamples.slice(0, 3).map((name, i) => (
+                    <span key={i} className="px-2 py-1 rounded-md bg-muted text-foreground text-xs">
+                      {name}
+                    </span>
+                  ))}
+                </div>
               </div>
 
               {/* Personality Radar Chart */}
-              <div className="h-[200px]">
+              <div className="h-[180px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart data={personalityRadarData}>
                     <PolarGrid stroke="hsl(var(--muted-foreground))" strokeOpacity={0.2} />
@@ -348,13 +396,18 @@ export const CombinedDashboard = ({
                 </ResponsiveContainer>
               </div>
 
+              {/* Career Fit Preview */}
               <div className="mt-4 pt-4 border-t border-border">
-                <div className="flex items-center gap-2 text-sm">
-                  <Target className="w-4 h-4 text-accent" />
-                  <span className="text-muted-foreground">Dominant Trait:</span>
-                  <span className="font-medium text-foreground">
-                    {personalityTraitLabels[personalityResults.dominantTrait].label}
-                  </span>
+                <div className="flex items-center gap-2 text-sm mb-2">
+                  <Briefcase className="w-4 h-4 text-accent" />
+                  <span className="text-muted-foreground">Career Fit:</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {personalityResults.careerFit.slice(0, 3).map((career, i) => (
+                    <span key={i} className="px-2 py-1 rounded-md bg-accent/10 text-accent text-xs font-medium">
+                      {career}
+                    </span>
+                  ))}
                 </div>
               </div>
             </motion.div>
@@ -384,7 +437,7 @@ export const CombinedDashboard = ({
                   {iqResults.divergentType}
                 </h4>
                 <p className="text-sm text-muted-foreground max-w-xs mx-auto">
-                  {iqResults.divergentDescription.slice(0, 100)}...
+                  {iqResults.divergentDescription.slice(0, 120)}...
                 </p>
               </div>
 
@@ -496,12 +549,14 @@ export const CombinedDashboard = ({
           personalityResults={personalityResults}
           adhdResults={adhdResults}
         />
+
+        {/* Complete Profile Summary */}
         {completedCount === totalAssessments && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="card-elevated rounded-2xl p-8 border border-gradient-to-r from-primary/20 via-accent/20 to-purple-500/20 mb-8"
+            className="card-elevated rounded-2xl p-8 border border-primary/20 mb-8"
             style={{
               background: 'linear-gradient(135deg, hsl(var(--primary) / 0.05), hsl(var(--accent) / 0.05))'
             }}
@@ -516,18 +571,23 @@ export const CombinedDashboard = ({
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+              <div className="text-center p-4 rounded-xl bg-primary/5 border border-primary/10">
                 <p className="text-sm text-muted-foreground mb-1">Cognitive Power</p>
                 <p className="font-display text-3xl font-bold text-primary">{iqResults?.iq} IQ</p>
                 <p className="text-xs text-muted-foreground">{getIQClassification(iqResults?.iq || 100)}</p>
               </div>
-              <div className="text-center">
-                <p className="text-sm text-muted-foreground mb-1">Personality Type</p>
+              <div className="text-center p-4 rounded-xl bg-accent/5 border border-accent/10">
+                <p className="text-sm text-muted-foreground mb-1">Personality Archetype</p>
                 <p className="font-display text-lg font-bold text-accent">{personalityResults?.personalityType}</p>
-                <p className="text-xs text-muted-foreground">{personalityTraitLabels[personalityResults?.dominantTrait || 'openness'].label} Dominant</p>
+                <p className="text-xs text-muted-foreground">{personalityResults?.archetype.rarity}</p>
               </div>
-              <div className="text-center">
+              <div className={cn(
+                "text-center p-4 rounded-xl border",
+                adhdResults?.likelihood === 'low' && 'bg-emerald-500/5 border-emerald-500/10',
+                adhdResults?.likelihood === 'moderate' && 'bg-yellow-500/5 border-yellow-500/10',
+                adhdResults?.likelihood === 'high' && 'bg-orange-500/5 border-orange-500/10'
+              )}>
                 <p className="text-sm text-muted-foreground mb-1">Attention Profile</p>
                 <p className={cn(
                   'font-display text-lg font-bold capitalize',
@@ -540,6 +600,23 @@ export const CombinedDashboard = ({
                 <p className="text-xs text-muted-foreground">ASRS Screening</p>
               </div>
             </div>
+
+            {/* Key Strengths Summary */}
+            {personalityResults && (
+              <div className="p-4 rounded-xl bg-muted/30 border border-border">
+                <div className="flex items-center gap-2 mb-3">
+                  <Zap className="w-4 h-4 text-primary" />
+                  <span className="text-sm font-semibold">Your Key Strengths</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {personalityResults.archetype.strengths.map((strength, i) => (
+                    <span key={i} className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-xs font-medium">
+                      {strength}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </motion.div>
         )}
 
