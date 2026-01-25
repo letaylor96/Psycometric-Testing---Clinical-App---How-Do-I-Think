@@ -75,11 +75,11 @@ const getIQClassification = (iq: number): string => {
 
 // Colors for the new cognitive categories
 const categoryColors: Record<CognitiveCategory, string> = {
-  matrix: 'hsl(252, 100%, 69%)',      // Purple
-  sequence: 'hsl(190, 100%, 50%)',    // Cyan
-  spatial: 'hsl(340, 100%, 60%)',     // Pink
-  analogical: 'hsl(45, 100%, 50%)',   // Gold
-  abstract: 'hsl(160, 100%, 40%)',    // Teal
+  number_sequence: 'hsl(190, 100%, 50%)',  // Cyan
+  shape_pattern: 'hsl(45, 100%, 50%)',     // Gold
+  matrix: 'hsl(252, 100%, 69%)',           // Purple
+  spatial: 'hsl(340, 100%, 60%)',          // Pink
+  abstract: 'hsl(160, 100%, 40%)',         // Teal
 };
 
 export const CombinedDashboard = ({

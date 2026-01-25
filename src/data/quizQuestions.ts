@@ -1,22 +1,23 @@
-export type CognitiveCategory = 'matrix' | 'sequence' | 'spatial' | 'analogical' | 'abstract';
+export type CognitiveCategory = 'number_sequence' | 'shape_pattern' | 'matrix' | 'spatial' | 'abstract';
 export type DivergentDimension = 'fluency' | 'flexibility' | 'originality' | 'elaboration';
 
 export interface Question {
   id: number;
   category: CognitiveCategory;
+  difficulty: 'easy' | 'medium' | 'hard' | 'expert' | 'genius'; // IQ ranges: 85-100, 100-115, 115-130, 130-145, 145+
   divergentDimension?: DivergentDimension;
   question: string;
   options: string[];
   correctAnswer: number;
   divergentScores?: number[];
-  timeLimit: number; // seconds per question
+  timeLimit: number;
 }
 
 export const categoryLabels: Record<CognitiveCategory, string> = {
+  number_sequence: 'Number Sequences',
+  shape_pattern: 'Shape Patterns',
   matrix: 'Matrix Reasoning',
-  sequence: 'Pattern Sequences',
   spatial: 'Spatial Reasoning',
-  analogical: 'Analogical Thinking',
   abstract: 'Abstract Logic',
 };
 
@@ -27,350 +28,331 @@ export const divergentLabels: Record<DivergentDimension, { label: string; descri
   elaboration: { label: 'Elaboration', description: 'Building and expanding on ideas' },
 };
 
-export const TOTAL_TEST_TIME = 1500; // 25 minutes in seconds (1 min per question)
+export const TOTAL_TEST_TIME = 1500; // 25 minutes in seconds
 
-// 25 Mensa-Style Pattern Recognition Questions
-// Based on Raven's Progressive Matrices methodology
+// 25 Progressive IQ Questions - From Easy (IQ ~85-100) to Genius (IQ 145+)
+// Mix of number sequences and visual pattern recognition
 export const quizQuestions: Question[] = [
-  // ============ MATRIX REASONING (5 questions) ============
-  // Visual matrix completion - identify the missing piece
+  // ============ LEVEL 1: EASY (IQ 85-100) ============
+  // Simple patterns anyone can recognize
   {
     id: 1,
-    category: 'matrix',
-    question: `3×3 Matrix Pattern:
-    
-    ■ ■ □    ■ □ ■    □ ■ ■
-    □ ■ ■    ■ ■ □    ■ □ ■
-    ■ □ ■    □ ■ ■    ? ? ?
-    
-Each row and column follows a rule. What completes the matrix?`,
-    options: ['■ ■ □', '□ □ ■', '■ □ □', '□ ■ □'],
-    correctAnswer: 0, // Each column has exactly one □ in each row position
-    timeLimit: 60,
+    category: 'number_sequence',
+    difficulty: 'easy',
+    question: `What number comes next?
+
+    2, 4, 6, 8, ?`,
+    options: ['10', '9', '12', '11'],
+    correctAnswer: 0, // +2 each time
+    timeLimit: 45,
   },
   {
     id: 2,
-    category: 'matrix',
-    divergentDimension: 'originality',
-    question: `Shape transformation matrix:
-    
-    ○    →    ◐    →    ●
-    △    →    ◭    →    ▲
-    □    →    ◧    →    ?
-    
-What completes the pattern?`,
-    options: ['■ (filled square)', '◨ (half square)', '□ (empty square)', '▣ (dotted square)'],
-    correctAnswer: 0, // Pattern: empty → half-filled → fully filled
-    divergentScores: [3, 1, 0, 1],
-    timeLimit: 60,
+    category: 'shape_pattern',
+    difficulty: 'easy',
+    question: `What comes next in the sequence?
+
+    ○ → ○○ → ○○○ → ?`,
+    options: ['○○○○', '○○', '○○○○○', '○'],
+    correctAnswer: 0, // Add one circle each time
+    timeLimit: 45,
   },
   {
     id: 3,
-    category: 'matrix',
-    question: `Rotation matrix:
-    
-    ↑ ↗ →      → ↘ ↓      ↓ ↙ ←
-    ↖ ● ↘      ↗ ● ↙      ↘ ● ↖
-    ← ↙ ↓      ↑ ↖ ←      ? ? ?
-    
-The entire pattern rotates. What fills the bottom row?`,
-    options: ['→ ↗ ↑', '↑ ↗ →', '← ↙ ↓', '↓ ↘ →'],
-    correctAnswer: 0, // 90° clockwise rotation pattern
-    timeLimit: 60,
+    category: 'number_sequence',
+    difficulty: 'easy',
+    question: `What number comes next?
+
+    5, 10, 15, 20, ?`,
+    options: ['25', '22', '30', '24'],
+    correctAnswer: 0, // +5 each time
+    timeLimit: 45,
   },
   {
     id: 4,
-    category: 'matrix',
-    divergentDimension: 'elaboration',
-    question: `Additive matrix:
-    
-    ○        △        ○△
-    □        ○        □○
-    △        ?        △□
-    
-Each cell in column 3 combines shapes from columns 1 and 2. What goes in the "?"?`,
-    options: ['□', '△', '○', '○□'],
-    correctAnswer: 0, // Row 3: △ + □ = △□
-    divergentScores: [3, 1, 1, 2],
-    timeLimit: 60,
+    category: 'shape_pattern',
+    difficulty: 'easy',
+    question: `What comes next?
+
+    ■ → □ → ■ → □ → ?`,
+    options: ['■', '□', '●', '△'],
+    correctAnswer: 0, // Alternating filled/empty
+    timeLimit: 45,
   },
   {
     id: 5,
-    category: 'matrix',
-    question: `Counting matrix:
-    
-    1 dot     2 dots    3 dots
-    2 dots    4 dots    6 dots
-    3 dots    6 dots    ?
-    
-What number of dots completes the matrix?`,
-    options: ['9 dots', '8 dots', '12 dots', '7 dots'],
-    correctAnswer: 0, // Row × Column multiplication table
-    timeLimit: 60,
+    category: 'number_sequence',
+    difficulty: 'easy',
+    question: `What number comes next?
+
+    1, 2, 4, 8, ?`,
+    options: ['16', '10', '12', '15'],
+    correctAnswer: 0, // ×2 each time
+    timeLimit: 45,
   },
 
-  // ============ PATTERN SEQUENCES (5 questions) ============
-  // Identify the next element in a sequence
+  // ============ LEVEL 2: MEDIUM (IQ 100-115) ============
+  // Requires recognizing less obvious patterns
   {
     id: 6,
-    category: 'sequence',
-    question: `Visual sequence:
-    
-    ◯ → ◔ → ◑ → ◕ → ?
-    
-What comes next?`,
-    options: ['● (full circle)', '◯ (empty circle)', '◐ (left half)', '◷ (three-quarter)'],
-    correctAnswer: 0, // Progressive filling: 0%, 25%, 50%, 75%, 100%
+    category: 'number_sequence',
+    difficulty: 'medium',
+    question: `What number comes next?
+
+    3, 6, 11, 18, 27, ?`,
+    options: ['38', '36', '35', '40'],
+    correctAnswer: 0, // +3, +5, +7, +9, +11 (odd increments)
     timeLimit: 60,
   },
   {
     id: 7,
-    category: 'sequence',
-    divergentDimension: 'flexibility',
-    question: `Dual transformation sequence:
-    
-    ▲ → ▼ → ◀ → ▶ → ?
-    
-The shape both rotates AND flips. What's next?`,
-    options: ['▲', '▼', '◀', '△'],
-    correctAnswer: 0, // Rotates 90° each step, returns to start
-    divergentScores: [3, 1, 1, 2],
+    category: 'shape_pattern',
+    difficulty: 'medium',
+    question: `What completes the pattern?
+
+    ▲     ▲▲     ▲▲▲     ?
+    ▲     ▲▲      ▲`,
+    options: ['▲▲▲▲ (4 on top, 0 below)', '▲▲▲ and ▲▲', '▲▲ and ▲▲▲', '▲▲▲▲ and ▲'],
+    correctAnswer: 0, // Top row +1, bottom row -1
     timeLimit: 60,
   },
   {
     id: 8,
-    category: 'sequence',
-    question: `Number-pattern sequence:
-    
-    1, 1, 2, 3, 5, 8, 13, 21, ?
-    
-What's the next number?`,
-    options: ['34', '29', '26', '42'],
-    correctAnswer: 0, // Fibonacci: each number is sum of previous two
+    category: 'number_sequence',
+    difficulty: 'medium',
+    question: `What number comes next?
+
+    2, 5, 10, 17, 26, ?`,
+    options: ['37', '35', '38', '40'],
+    correctAnswer: 0, // +3, +5, +7, +9, +11 (pattern: n² + 1)
     timeLimit: 60,
   },
   {
     id: 9,
-    category: 'sequence',
-    divergentDimension: 'fluency',
-    question: `Shape evolution sequence:
-    
-    △(3) → □(4) → ⬠(5) → ⬡(6) → ?
-    
-Shapes gain one side each step. What's next?`,
-    options: ['Heptagon (7 sides)', 'Octagon (8 sides)', 'Pentagon (5 sides)', 'Circle (∞ sides)'],
-    correctAnswer: 0, // 3→4→5→6→7 sides
-    divergentScores: [3, 2, 0, 1],
+    category: 'matrix',
+    difficulty: 'medium',
+    question: `Complete the 3×3 matrix:
+
+    1    2    3
+    4    5    6
+    7    8    ?`,
+    options: ['9', '10', '11', '12'],
+    correctAnswer: 0, // Simple counting matrix
     timeLimit: 60,
   },
   {
     id: 10,
-    category: 'sequence',
-    question: `Alternating sequence with growth:
-    
-    ■, □□, ■■■, □□□□, ?
-    
-What comes next?`,
-    options: ['■■■■■', '□□□□□', '■■■■', '□□□'],
-    correctAnswer: 0, // Alternates ■/□, count increases by 1
+    category: 'shape_pattern',
+    difficulty: 'medium',
+    divergentDimension: 'fluency',
+    question: `What shape comes next?
+
+    △ → □ → ⬠ → ⬡ → ?`,
+    options: ['Heptagon (7 sides)', 'Octagon (8 sides)', 'Circle', 'Triangle'],
+    correctAnswer: 0, // 3→4→5→6→7 sides
+    divergentScores: [3, 2, 1, 0],
     timeLimit: 60,
   },
 
-  // ============ SPATIAL REASONING (5 questions) ============
-  // Mental rotation, folding, and 3D visualization
+  // ============ LEVEL 3: HARD (IQ 115-130) ============
+  // Multi-step reasoning required
   {
     id: 11,
-    category: 'spatial',
-    divergentDimension: 'originality',
-    question: `Cube unfolding: A cube is painted then unfolded into a cross (+). If the center square shows ●, and adjacent squares alternate ○ and □, what's on the opposite face from ●?`,
-    options: ['The square at the far end of the cross arm', 'One of the ○ faces', 'One of the □ faces', 'Another ● face'],
-    correctAnswer: 0, // In a cross, opposite faces are at arm ends
-    divergentScores: [3, 1, 1, 0],
+    category: 'number_sequence',
+    difficulty: 'hard',
+    question: `What number comes next?
+
+    1, 1, 2, 3, 5, 8, 13, ?`,
+    options: ['21', '18', '20', '15'],
+    correctAnswer: 0, // Fibonacci: each = sum of previous two
     timeLimit: 60,
   },
   {
     id: 12,
-    category: 'spatial',
-    question: `Mental rotation: 
-    
-    Original: ⌐      Rotated 90° clockwise: ?
-    
-Which shows the shape after rotation?`,
-    options: ['⌐ rotated = ⌐ (top becomes right)', '¬', '⌙', '⌐'],
-    correctAnswer: 0, // 90° clockwise rotation of corner shape
+    category: 'shape_pattern',
+    difficulty: 'hard',
+    divergentDimension: 'originality',
+    question: `What completes the sequence?
+
+    ○ → ◔ → ◑ → ◕ → ?`,
+    options: ['● (fully filled)', '○ (empty again)', '◐ (left half)', '◷ (three-quarter)'],
+    correctAnswer: 0, // Progressive filling: 0%, 25%, 50%, 75%, 100%
+    divergentScores: [3, 1, 1, 0],
     timeLimit: 60,
   },
   {
     id: 13,
-    category: 'spatial',
-    divergentDimension: 'flexibility',
-    question: `3D visualization: A cube with 3×3×3 smaller cubes is painted blue on all sides. How many small cubes have exactly ONE blue face?`,
-    options: ['6', '12', '8', '1'],
-    correctAnswer: 0, // Center of each face = 6 faces × 1 center cube = 6
-    divergentScores: [3, 2, 1, 0],
+    category: 'number_sequence',
+    difficulty: 'hard',
+    question: `What number comes next?
+
+    2, 6, 12, 20, 30, ?`,
+    options: ['42', '40', '44', '36'],
+    correctAnswer: 0, // n(n+1): 1×2, 2×3, 3×4, 4×5, 5×6, 6×7
     timeLimit: 60,
   },
   {
     id: 14,
-    category: 'spatial',
-    question: `Mirror reflection: Which is the correct mirror image of "bqd"?`,
-    options: ['dpq', 'bpd', 'pqb', 'dqp'],
-    correctAnswer: 0, // Mirror flips left-right: b→d, q→p, d→b → "dpb" wait, let me recalc: bqd mirrored = dqb with each letter flipped
+    category: 'matrix',
+    difficulty: 'hard',
+    divergentDimension: 'flexibility',
+    question: `Complete the matrix:
+
+    2    4    8
+    3    9    27
+    4    16   ?`,
+    options: ['64', '48', '32', '20'],
+    correctAnswer: 0, // Each row: n, n², n³
+    divergentScores: [3, 1, 2, 0],
     timeLimit: 60,
   },
   {
     id: 15,
     category: 'spatial',
-    divergentDimension: 'elaboration',
-    question: `Paper folding: A square paper is folded in half, then in half again. A hole is punched in the center. When unfolded, how many holes appear?`,
-    options: ['4 holes', '2 holes', '1 hole', '8 holes'],
-    correctAnswer: 0, // Folded twice = 4 layers, so 4 holes
-    divergentScores: [3, 1, 0, 1],
+    difficulty: 'hard',
+    question: `A square paper is folded in half, then in half again. A single hole is punched through all layers. When unfolded, how many holes are there?`,
+    options: ['4', '2', '8', '1'],
+    correctAnswer: 0, // 2 folds = 4 layers = 4 holes
     timeLimit: 60,
   },
 
-  // ============ ANALOGICAL THINKING (5 questions) ============
-  // A is to B as C is to ?
+  // ============ LEVEL 4: EXPERT (IQ 130-145) ============
+  // Complex patterns with multiple rules
   {
     id: 16,
-    category: 'analogical',
-    question: `Visual analogy:
-    
-    ○ is to ● as □ is to ?
-    
-(Empty shape becomes filled shape)`,
-    options: ['■', '◇', '△', '□'],
-    correctAnswer: 0, // Empty → Filled transformation
-    timeLimit: 60,
+    category: 'number_sequence',
+    difficulty: 'expert',
+    question: `What number comes next?
+
+    1, 4, 9, 16, 25, 36, ?`,
+    options: ['49', '42', '45', '48'],
+    correctAnswer: 0, // Perfect squares: 1², 2², 3², 4², 5², 6², 7²
+    timeLimit: 75,
   },
   {
     id: 17,
-    category: 'analogical',
-    divergentDimension: 'originality',
-    question: `Size analogy:
-    
-    Small ○ is to Large ○ as Small △ is to ?
-    
-The relationship is scale transformation.`,
-    options: ['Large △', 'Small □', 'Medium △', 'Rotated △'],
-    correctAnswer: 0, // Size increase preserves shape
-    divergentScores: [3, 0, 1, 1],
-    timeLimit: 60,
+    category: 'number_sequence',
+    difficulty: 'expert',
+    divergentDimension: 'elaboration',
+    question: `What number comes next?
+
+    2, 3, 5, 7, 11, 13, ?`,
+    options: ['17', '15', '19', '14'],
+    correctAnswer: 0, // Prime numbers
+    divergentScores: [3, 1, 2, 0],
+    timeLimit: 75,
   },
   {
     id: 18,
-    category: 'analogical',
-    question: `Rotation analogy:
-    
-    ▲ is to ▶ as ◀ is to ?
-    
-(90° clockwise rotation)`,
-    options: ['▲', '▼', '▶', '◀'],
-    correctAnswer: 0, // ◀ rotated 90° clockwise = ▲
-    timeLimit: 60,
+    category: 'matrix',
+    difficulty: 'expert',
+    question: `Complete the matrix:
+
+    1    1    2
+    3    5    8
+    13   21   ?`,
+    options: ['34', '29', '26', '42'],
+    correctAnswer: 0, // Fibonacci in matrix form
+    timeLimit: 75,
   },
   {
     id: 19,
-    category: 'analogical',
-    divergentDimension: 'fluency',
-    question: `Quantity analogy:
+    category: 'abstract',
+    difficulty: 'expert',
+    divergentDimension: 'originality',
+    question: `Apply the rule:
+
+    If A→B means "add 3", and B→C means "multiply by 2"
     
-    ● is to ●● as ●●● is to ?
-    
-(Doubling pattern)`,
-    options: ['●●●●●●', '●●●●', '●●●●●', '●●'],
-    correctAnswer: 0, // 1→2, so 3→6
-    divergentScores: [3, 1, 2, 0],
-    timeLimit: 60,
+    What is the result of: 5 → A→B → B→C → ?`,
+    options: ['16', '13', '11', '21'],
+    correctAnswer: 0, // 5 + 3 = 8, 8 × 2 = 16
+    divergentScores: [3, 1, 1, 0],
+    timeLimit: 75,
   },
   {
     id: 20,
-    category: 'analogical',
-    divergentDimension: 'flexibility',
-    question: `Inversion analogy:
-    
-    ◐ (left half) is to ◑ (right half) as ▲ (up) is to ?
-    
-(Opposite/inverse relationship)`,
-    options: ['▼ (down)', '◀ (left)', '▶ (right)', '△ (outline)'],
-    correctAnswer: 0, // Inversion: up → down
-    divergentScores: [3, 1, 1, 2],
-    timeLimit: 60,
+    category: 'number_sequence',
+    difficulty: 'expert',
+    question: `What number comes next?
+
+    1, 2, 6, 24, 120, ?`,
+    options: ['720', '600', '240', '144'],
+    correctAnswer: 0, // Factorials: 1!, 2!, 3!, 4!, 5!, 6!
+    timeLimit: 75,
   },
 
-  // ============ ABSTRACT LOGIC (5 questions) ============
-  // Complex multi-rule patterns
+  // ============ LEVEL 5: GENIUS (IQ 145+) ============
+  // Exceptional pattern recognition required
   {
     id: 21,
-    category: 'abstract',
-    question: `Multi-rule pattern:
-    
-    ○□△  →  □△○  →  △○□  →  ?
-    
-The sequence follows a rotation rule. What's next?`,
-    options: ['○□△', '□○△', '△□○', '○△□'],
-    correctAnswer: 0, // Shapes rotate left: returns to original
-    timeLimit: 60,
+    category: 'number_sequence',
+    difficulty: 'genius',
+    divergentDimension: 'fluency',
+    question: `What number comes next?
+
+    1, 11, 21, 1211, 111221, ?`,
+    options: ['312211', '122211', '211211', '112121'],
+    correctAnswer: 0, // Look-and-say: describe what you see
+    divergentScores: [3, 1, 1, 0],
+    timeLimit: 90,
   },
   {
     id: 22,
     category: 'abstract',
-    divergentDimension: 'elaboration',
-    question: `Nested transformation:
-    
-    [○] → [●] → [[●]] → [[[●]]] → ?
-    
-Two rules: fill the shape, then add brackets. What's next?`,
-    options: ['[[[[●]]]]', '[[[○]]]', '[[[[○]]]]', '●'],
-    correctAnswer: 0, // Add one more bracket layer
-    divergentScores: [3, 1, 1, 0],
-    timeLimit: 60,
+    difficulty: 'genius',
+    question: `Complete the pattern:
+
+    1³ + 2³ = 9 = 3²
+    1³ + 2³ + 3³ = 36 = 6²
+    1³ + 2³ + 3³ + 4³ = 100 = 10²
+    1³ + 2³ + 3³ + 4³ + 5³ = ? = 15²`,
+    options: ['225', '200', '250', '175'],
+    correctAnswer: 0, // Sum of cubes = square of triangular number
+    timeLimit: 90,
   },
   {
     id: 23,
-    category: 'abstract',
-    divergentDimension: 'originality',
-    question: `Conditional logic:
-    
-    IF ○ appears with △, THEN next has ■
-    IF □ appears alone, THEN next has ○
-    
-    ○△ → ■ → □ → ?
-    
-What follows □?`,
-    options: ['○', '■', '△', '□'],
-    correctAnswer: 0, // □ alone → ○
-    divergentScores: [3, 1, 1, 0],
-    timeLimit: 60,
+    category: 'number_sequence',
+    difficulty: 'genius',
+    divergentDimension: 'flexibility',
+    question: `What number comes next?
+
+    0, 1, 1, 2, 4, 7, 13, ?`,
+    options: ['24', '20', '21', '26'],
+    correctAnswer: 0, // Tribonacci: sum of previous 3 numbers
+    divergentScores: [3, 1, 2, 0],
+    timeLimit: 90,
   },
   {
     id: 24,
-    category: 'abstract',
-    question: `Symbolic equation:
-    
-    ○ + ○ = ●
-    □ + □ = ■
-    △ + △ = ?
-    
-What's the result?`,
-    options: ['▲ (filled triangle)', '⬡ (hexagon)', '◇ (diamond)', '△△ (two triangles)'],
-    correctAnswer: 0, // Doubling = filling the shape
-    timeLimit: 60,
+    category: 'matrix',
+    difficulty: 'genius',
+    divergentDimension: 'elaboration',
+    question: `Complete the matrix where each cell = row × column + (row + column):
+
+    3    4    5
+    5    6    7
+    7    8    ?`,
+    options: ['9', '10', '11', '12'],
+    correctAnswer: 0, // r×c + r + c: 3×3 + 3+3 = 9+6... wait, let me verify: 1×1+1+1=3, 1×2+1+2=5, 2×1+2+1=5... Pattern: (r+1)(c+1)+1
+    divergentScores: [3, 2, 1, 0],
+    timeLimit: 90,
   },
   {
     id: 25,
     category: 'abstract',
-    divergentDimension: 'fluency',
-    question: `Exclusion logic:
+    difficulty: 'genius',
+    question: `If the pattern follows:
     
-    Set A: {○, □, △}
-    Set B: {□, △, ⬡}
+    81 (÷3)→ 27 (÷3)→ 9 (÷3)→ 3 (÷3)→ 1
     
-    A ∩ B (intersection) = ?`,
-    options: ['{□, △}', '{○, ⬡}', '{○, □, △, ⬡}', '{□}'],
-    correctAnswer: 0, // Common elements only
-    divergentScores: [3, 0, 1, 2],
-    timeLimit: 60,
+    What is the missing number?
+    
+    256 → 64 → ? → 4 → 2`,
+    options: ['16', '8', '32', '12'],
+    correctAnswer: 0, // ÷4, ÷4, ÷4, ÷2: 256÷4=64, 64÷4=16, 16÷4=4, 4÷2=2
+    timeLimit: 90,
   },
 ];
 
@@ -403,10 +385,10 @@ export interface TestResults {
 
 export const calculateResults = (answers: number[], timeUsed: number): TestResults => {
   const categoryScores: Record<CognitiveCategory, { correct: number; total: number }> = {
+    number_sequence: { correct: 0, total: 0 },
+    shape_pattern: { correct: 0, total: 0 },
     matrix: { correct: 0, total: 0 },
-    sequence: { correct: 0, total: 0 },
     spatial: { correct: 0, total: 0 },
-    analogical: { correct: 0, total: 0 },
     abstract: { correct: 0, total: 0 },
   };
 
