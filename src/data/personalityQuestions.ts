@@ -1,26 +1,26 @@
-// Big Five Personality Assessment (OCEAN Model)
-// Based on IPIP-NEO framework with extended facet-level analysis
+// Personality DNA Assessment
+// Deep personality profiling based on the OCEAN model with modern, engaging framing
 
 export type PersonalityTrait = 'openness' | 'conscientiousness' | 'extraversion' | 'agreeableness' | 'neuroticism';
 
 export type PersonalityFacet = 
   // Openness facets
-  | 'fantasy' | 'aesthetics' | 'feelings' | 'actions' | 'ideas' | 'values'
+  | 'imagination' | 'curiosity' | 'creativity'
   // Conscientiousness facets
-  | 'competence' | 'order' | 'dutifulness' | 'achievement' | 'self_discipline' | 'deliberation'
+  | 'organization' | 'ambition' | 'discipline'
   // Extraversion facets
-  | 'warmth' | 'gregariousness' | 'assertiveness' | 'activity' | 'excitement' | 'positive_emotions'
+  | 'sociability' | 'assertiveness' | 'energy'
   // Agreeableness facets
-  | 'trust' | 'straightforwardness' | 'altruism' | 'compliance' | 'modesty' | 'tender_mindedness'
-  // Neuroticism facets
-  | 'anxiety' | 'hostility' | 'depression' | 'self_consciousness' | 'impulsiveness' | 'vulnerability';
+  | 'empathy' | 'cooperation' | 'trust'
+  // Neuroticism facets (scored as Resilience)
+  | 'composure' | 'confidence' | 'stability';
 
 export interface PersonalityQuestion {
   id: number;
   trait: PersonalityTrait;
   facet: PersonalityFacet;
   question: string;
-  reversed: boolean; // If true, scoring is inverted
+  reversed: boolean;
 }
 
 export const personalityTraitLabels: Record<PersonalityTrait, { label: string; high: string; low: string }> = {
@@ -45,51 +45,36 @@ export const personalityTraitLabels: Record<PersonalityTrait, { label: string; h
     low: 'Competitive, skeptical, challenging'
   },
   neuroticism: { 
-    label: 'Emotional Stability', 
-    high: 'Calm, secure, confident',
+    label: 'Resilience', 
+    high: 'Calm, secure, emotionally stable',
     low: 'Sensitive, emotionally reactive'
   },
 };
 
 export const facetLabels: Record<PersonalityFacet, { label: string; trait: PersonalityTrait; description: string }> = {
   // Openness facets
-  fantasy: { label: 'Fantasy', trait: 'openness', description: 'Vivid imagination and rich fantasy life' },
-  aesthetics: { label: 'Aesthetics', trait: 'openness', description: 'Appreciation for art and beauty' },
-  feelings: { label: 'Feelings', trait: 'openness', description: 'Receptivity to inner emotional states' },
-  actions: { label: 'Actions', trait: 'openness', description: 'Willingness to try new activities' },
-  ideas: { label: 'Ideas', trait: 'openness', description: 'Intellectual curiosity and open-mindedness' },
-  values: { label: 'Values', trait: 'openness', description: 'Readiness to re-examine social and political values' },
+  imagination: { label: 'Imagination', trait: 'openness', description: 'Vivid inner world and creative vision' },
+  curiosity: { label: 'Curiosity', trait: 'openness', description: 'Drive to explore and understand' },
+  creativity: { label: 'Creativity', trait: 'openness', description: 'Original thinking and artistic sensibility' },
   // Conscientiousness facets
-  competence: { label: 'Competence', trait: 'conscientiousness', description: 'Belief in one\'s own capability' },
-  order: { label: 'Order', trait: 'conscientiousness', description: 'Need for structure and organization' },
-  dutifulness: { label: 'Dutifulness', trait: 'conscientiousness', description: 'Adherence to ethical principles' },
-  achievement: { label: 'Achievement-Striving', trait: 'conscientiousness', description: 'Drive for accomplishment' },
-  self_discipline: { label: 'Self-Discipline', trait: 'conscientiousness', description: 'Ability to persist despite obstacles' },
-  deliberation: { label: 'Deliberation', trait: 'conscientiousness', description: 'Tendency to think before acting' },
+  organization: { label: 'Organization', trait: 'conscientiousness', description: 'Structure and systematic approach' },
+  ambition: { label: 'Ambition', trait: 'conscientiousness', description: 'Drive for achievement and excellence' },
+  discipline: { label: 'Discipline', trait: 'conscientiousness', description: 'Self-control and follow-through' },
   // Extraversion facets
-  warmth: { label: 'Warmth', trait: 'extraversion', description: 'Affectionate and friendly manner' },
-  gregariousness: { label: 'Gregariousness', trait: 'extraversion', description: 'Preference for social company' },
-  assertiveness: { label: 'Assertiveness', trait: 'extraversion', description: 'Social dominance and forcefulness' },
-  activity: { label: 'Activity', trait: 'extraversion', description: 'Pace and vigor of life' },
-  excitement: { label: 'Excitement-Seeking', trait: 'extraversion', description: 'Need for stimulation and thrill' },
-  positive_emotions: { label: 'Positive Emotions', trait: 'extraversion', description: 'Tendency to experience joy and optimism' },
+  sociability: { label: 'Sociability', trait: 'extraversion', description: 'Comfort in social situations' },
+  assertiveness: { label: 'Assertiveness', trait: 'extraversion', description: 'Confidence in expressing views' },
+  energy: { label: 'Energy', trait: 'extraversion', description: 'Vitality and enthusiasm' },
   // Agreeableness facets
-  trust: { label: 'Trust', trait: 'agreeableness', description: 'Belief in the honesty of others' },
-  straightforwardness: { label: 'Straightforwardness', trait: 'agreeableness', description: 'Frankness and sincerity' },
-  altruism: { label: 'Altruism', trait: 'agreeableness', description: 'Active concern for others\' welfare' },
-  compliance: { label: 'Compliance', trait: 'agreeableness', description: 'Deference to others in conflict' },
-  modesty: { label: 'Modesty', trait: 'agreeableness', description: 'Humility and self-effacement' },
-  tender_mindedness: { label: 'Tender-Mindedness', trait: 'agreeableness', description: 'Sympathy and concern for others' },
-  // Neuroticism facets (scored as Emotional Stability - high = stable)
-  anxiety: { label: 'Anxiety', trait: 'neuroticism', description: 'Level of free-floating anxiety' },
-  hostility: { label: 'Hostility', trait: 'neuroticism', description: 'Tendency to experience anger' },
-  depression: { label: 'Depression', trait: 'neuroticism', description: 'Tendency to experience depressive affect' },
-  self_consciousness: { label: 'Self-Consciousness', trait: 'neuroticism', description: 'Sensitivity to social evaluation' },
-  impulsiveness: { label: 'Impulsiveness', trait: 'neuroticism', description: 'Inability to control cravings' },
-  vulnerability: { label: 'Vulnerability', trait: 'neuroticism', description: 'Susceptibility to stress' },
+  empathy: { label: 'Empathy', trait: 'agreeableness', description: 'Understanding others\' perspectives' },
+  cooperation: { label: 'Cooperation', trait: 'agreeableness', description: 'Preference for harmony' },
+  trust: { label: 'Trust', trait: 'agreeableness', description: 'Faith in others\' intentions' },
+  // Resilience facets
+  composure: { label: 'Composure', trait: 'neuroticism', description: 'Calm under pressure' },
+  confidence: { label: 'Confidence', trait: 'neuroticism', description: 'Self-assurance and security' },
+  stability: { label: 'Stability', trait: 'neuroticism', description: 'Emotional consistency' },
 };
 
-// Likert scale options (same for all questions)
+// Likert scale options
 export const personalityOptions = [
   'Strongly Disagree',
   'Disagree', 
@@ -98,68 +83,47 @@ export const personalityOptions = [
   'Strongly Agree'
 ];
 
-// 50 Questions based on validated IPIP-NEO framework with facet-level granularity
+// 30 High-quality questions - 6 per trait, 2 per facet
 export const personalityQuestions: PersonalityQuestion[] = [
-  // OPENNESS TO EXPERIENCE (10 questions - covering all 6 facets)
-  { id: 1, trait: 'openness', facet: 'fantasy', question: 'I have a vivid imagination and often daydream about possibilities.', reversed: false },
-  { id: 2, trait: 'openness', facet: 'aesthetics', question: 'I am deeply moved by art, music, or poetry.', reversed: false },
-  { id: 3, trait: 'openness', facet: 'feelings', question: 'I experience my emotions intensely and pay attention to them.', reversed: false },
-  { id: 4, trait: 'openness', facet: 'actions', question: 'I prefer to stick with things I know rather than try new things.', reversed: true },
-  { id: 5, trait: 'openness', facet: 'ideas', question: 'I am curious about many different things and love learning.', reversed: false },
-  { id: 6, trait: 'openness', facet: 'values', question: 'I believe there are many valid ways to look at important issues.', reversed: false },
-  { id: 7, trait: 'openness', facet: 'fantasy', question: 'I rarely engage in imaginative or hypothetical thinking.', reversed: true },
-  { id: 8, trait: 'openness', facet: 'ideas', question: 'I enjoy thinking about abstract concepts and theoretical problems.', reversed: false },
-  { id: 9, trait: 'openness', facet: 'actions', question: 'I like to visit new places and experience different cultures.', reversed: false },
-  { id: 10, trait: 'openness', facet: 'values', question: 'I avoid philosophical discussions about life and meaning.', reversed: true },
+  // OPENNESS TO EXPERIENCE (6 questions)
+  { id: 1, trait: 'openness', facet: 'imagination', question: 'I often get lost in my own thoughts and daydreams.', reversed: false },
+  { id: 2, trait: 'openness', facet: 'imagination', question: 'I prefer dealing with concrete facts over abstract theories.', reversed: true },
+  { id: 3, trait: 'openness', facet: 'curiosity', question: 'I actively seek out experiences that challenge my worldview.', reversed: false },
+  { id: 4, trait: 'openness', facet: 'curiosity', question: 'I\'d rather stick with what I know than explore unfamiliar territory.', reversed: true },
+  { id: 5, trait: 'openness', facet: 'creativity', question: 'I find beauty and meaning in art, music, or nature that others might overlook.', reversed: false },
+  { id: 6, trait: 'openness', facet: 'creativity', question: 'I come up with unconventional solutions that surprise people.', reversed: false },
 
-  // CONSCIENTIOUSNESS (10 questions - covering all 6 facets)
-  { id: 11, trait: 'conscientiousness', facet: 'competence', question: 'I am confident in my ability to handle challenges effectively.', reversed: false },
-  { id: 12, trait: 'conscientiousness', facet: 'order', question: 'I keep my belongings organized and in their proper place.', reversed: false },
-  { id: 13, trait: 'conscientiousness', facet: 'dutifulness', question: 'I follow through on my commitments even when it\'s inconvenient.', reversed: false },
-  { id: 14, trait: 'conscientiousness', facet: 'achievement', question: 'I set ambitious goals and work hard to achieve them.', reversed: false },
-  { id: 15, trait: 'conscientiousness', facet: 'self_discipline', question: 'I have difficulty starting tasks and often procrastinate.', reversed: true },
-  { id: 16, trait: 'conscientiousness', facet: 'deliberation', question: 'I carefully consider the consequences before making decisions.', reversed: false },
-  { id: 17, trait: 'conscientiousness', facet: 'order', question: 'I often leave my belongings around without putting them away.', reversed: true },
-  { id: 18, trait: 'conscientiousness', facet: 'achievement', question: 'I strive for excellence in everything I do.', reversed: false },
-  { id: 19, trait: 'conscientiousness', facet: 'self_discipline', question: 'I persist with tasks even when they become difficult or tedious.', reversed: false },
-  { id: 20, trait: 'conscientiousness', facet: 'deliberation', question: 'I often act impulsively without thinking things through.', reversed: true },
+  // CONSCIENTIOUSNESS (6 questions)
+  { id: 7, trait: 'conscientiousness', facet: 'organization', question: 'My workspace and living space are usually organized and orderly.', reversed: false },
+  { id: 8, trait: 'conscientiousness', facet: 'organization', question: 'I often lose track of important deadlines and commitments.', reversed: true },
+  { id: 9, trait: 'conscientiousness', facet: 'ambition', question: 'I set ambitious goals and feel restless until I achieve them.', reversed: false },
+  { id: 10, trait: 'conscientiousness', facet: 'ambition', question: 'I\'m satisfied with "good enough" rather than striving for perfection.', reversed: true },
+  { id: 11, trait: 'conscientiousness', facet: 'discipline', question: 'I follow through on commitments even when I lose motivation.', reversed: false },
+  { id: 12, trait: 'conscientiousness', facet: 'discipline', question: 'I often start projects with enthusiasm but struggle to finish them.', reversed: true },
 
-  // EXTRAVERSION (10 questions - covering all 6 facets)
-  { id: 21, trait: 'extraversion', facet: 'warmth', question: 'I make friends easily and enjoy close relationships.', reversed: false },
-  { id: 22, trait: 'extraversion', facet: 'gregariousness', question: 'I prefer to spend time alone rather than with groups.', reversed: true },
-  { id: 23, trait: 'extraversion', facet: 'assertiveness', question: 'I naturally take charge in group situations.', reversed: false },
-  { id: 24, trait: 'extraversion', facet: 'activity', question: 'I lead a fast-paced, busy life with many activities.', reversed: false },
-  { id: 25, trait: 'extraversion', facet: 'excitement', question: 'I seek out thrilling experiences and adventures.', reversed: false },
-  { id: 26, trait: 'extraversion', facet: 'positive_emotions', question: 'I often feel joyful and enthusiastic about life.', reversed: false },
-  { id: 27, trait: 'extraversion', facet: 'warmth', question: 'I find it difficult to approach and connect with new people.', reversed: true },
-  { id: 28, trait: 'extraversion', facet: 'gregariousness', question: 'I enjoy being in crowds and at large social gatherings.', reversed: false },
-  { id: 29, trait: 'extraversion', facet: 'assertiveness', question: 'I tend to hold back and let others lead conversations.', reversed: true },
-  { id: 30, trait: 'extraversion', facet: 'positive_emotions', question: 'I rarely experience strong feelings of happiness or excitement.', reversed: true },
+  // EXTRAVERSION (6 questions)
+  { id: 13, trait: 'extraversion', facet: 'sociability', question: 'I feel energized after spending time with a group of people.', reversed: false },
+  { id: 14, trait: 'extraversion', facet: 'sociability', question: 'I prefer one-on-one conversations to large social gatherings.', reversed: true },
+  { id: 15, trait: 'extraversion', facet: 'assertiveness', question: 'I naturally take the lead when decisions need to be made.', reversed: false },
+  { id: 16, trait: 'extraversion', facet: 'assertiveness', question: 'I wait for others to speak first in meetings or discussions.', reversed: true },
+  { id: 17, trait: 'extraversion', facet: 'energy', question: 'People describe me as enthusiastic and full of life.', reversed: false },
+  { id: 18, trait: 'extraversion', facet: 'energy', question: 'I rarely feel the urge to seek out excitement or new experiences.', reversed: true },
 
-  // AGREEABLENESS (10 questions - covering all 6 facets)
-  { id: 31, trait: 'agreeableness', facet: 'trust', question: 'I believe most people have good intentions and can be trusted.', reversed: false },
-  { id: 32, trait: 'agreeableness', facet: 'straightforwardness', question: 'I am direct and honest, even when it might be uncomfortable.', reversed: false },
-  { id: 33, trait: 'agreeableness', facet: 'altruism', question: 'I go out of my way to help others even when there\'s no benefit to me.', reversed: false },
-  { id: 34, trait: 'agreeableness', facet: 'compliance', question: 'I avoid confrontation and prefer to keep the peace.', reversed: false },
-  { id: 35, trait: 'agreeableness', facet: 'modesty', question: 'I prefer to downplay my achievements rather than boast.', reversed: false },
-  { id: 36, trait: 'agreeableness', facet: 'tender_mindedness', question: 'I am deeply moved by others\' suffering and feel compelled to help.', reversed: false },
-  { id: 37, trait: 'agreeableness', facet: 'trust', question: 'I am suspicious of others\' motives and intentions.', reversed: true },
-  { id: 38, trait: 'agreeableness', facet: 'altruism', question: 'I am not particularly interested in other people\'s problems.', reversed: true },
-  { id: 39, trait: 'agreeableness', facet: 'compliance', question: 'I don\'t mind engaging in conflict to get my point across.', reversed: true },
-  { id: 40, trait: 'agreeableness', facet: 'tender_mindedness', question: 'I prioritize logic over feelings when making decisions about others.', reversed: true },
+  // AGREEABLENESS (6 questions)
+  { id: 19, trait: 'agreeableness', facet: 'empathy', question: 'I can easily sense what others are feeling, even when they don\'t express it.', reversed: false },
+  { id: 20, trait: 'agreeableness', facet: 'empathy', question: 'I focus on logic and facts rather than how decisions affect people emotionally.', reversed: true },
+  { id: 21, trait: 'agreeableness', facet: 'cooperation', question: 'I go out of my way to maintain harmony and avoid conflict.', reversed: false },
+  { id: 22, trait: 'agreeableness', facet: 'cooperation', question: 'I\'m comfortable disagreeing openly, even if it creates tension.', reversed: true },
+  { id: 23, trait: 'agreeableness', facet: 'trust', question: 'I generally assume people have good intentions until proven otherwise.', reversed: false },
+  { id: 24, trait: 'agreeableness', facet: 'trust', question: 'I\'m skeptical of others\' motives and verify before I trust.', reversed: true },
 
-  // NEUROTICISM / EMOTIONAL STABILITY (10 questions - covering all 6 facets)
-  // Note: We score as Emotional Stability, so high = stable
-  { id: 41, trait: 'neuroticism', facet: 'anxiety', question: 'I rarely feel anxious or worried about things.', reversed: false },
-  { id: 42, trait: 'neuroticism', facet: 'hostility', question: 'I get irritated easily and often feel angry.', reversed: true },
-  { id: 43, trait: 'neuroticism', facet: 'depression', question: 'I generally feel content and rarely experience sadness.', reversed: false },
-  { id: 44, trait: 'neuroticism', facet: 'self_consciousness', question: 'I worry a lot about what others think of me.', reversed: true },
-  { id: 45, trait: 'neuroticism', facet: 'impulsiveness', question: 'I have strong control over my urges and cravings.', reversed: false },
-  { id: 46, trait: 'neuroticism', facet: 'vulnerability', question: 'I stay calm and composed under pressure.', reversed: false },
-  { id: 47, trait: 'neuroticism', facet: 'anxiety', question: 'I often worry about things that might go wrong.', reversed: true },
-  { id: 48, trait: 'neuroticism', facet: 'depression', question: 'I frequently feel blue or down without clear reason.', reversed: true },
-  { id: 49, trait: 'neuroticism', facet: 'impulsiveness', question: 'I often give in to temptations that I later regret.', reversed: true },
-  { id: 50, trait: 'neuroticism', facet: 'vulnerability', question: 'I feel overwhelmed when facing stressful situations.', reversed: true },
+  // RESILIENCE / EMOTIONAL STABILITY (6 questions)
+  { id: 25, trait: 'neuroticism', facet: 'composure', question: 'I stay calm and clear-headed when facing stressful situations.', reversed: false },
+  { id: 26, trait: 'neuroticism', facet: 'composure', question: 'I get flustered easily when things don\'t go according to plan.', reversed: true },
+  { id: 27, trait: 'neuroticism', facet: 'confidence', question: 'I rarely worry about what others think of me.', reversed: false },
+  { id: 28, trait: 'neuroticism', facet: 'confidence', question: 'I often second-guess my decisions after making them.', reversed: true },
+  { id: 29, trait: 'neuroticism', facet: 'stability', question: 'My mood stays relatively consistent throughout the day.', reversed: false },
+  { id: 30, trait: 'neuroticism', facet: 'stability', question: 'Small setbacks can significantly impact my emotional state.', reversed: true },
 ];
 
 export interface FacetScore {

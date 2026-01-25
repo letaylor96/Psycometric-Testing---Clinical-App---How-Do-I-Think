@@ -16,12 +16,12 @@ export interface AssessmentInfo {
 export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
   personality: {
     id: 'personality',
-    title: 'Big Five Personality',
+    title: 'Personality DNA',
     shortTitle: 'Personality',
-    description: 'Discover your personality archetype across 30 facet-level dimensions with deep psychological insights.',
-    framework: 'IPIP-NEO + Jungian Archetypes',
-    questionCount: 50,
-    timeMinutes: 12,
+    description: 'Decode your personality blueprint - discover what drives you, how you connect, and your hidden strengths.',
+    framework: 'OCEAN Deep Profile',
+    questionCount: 30,
+    timeMinutes: 7,
     color: 'primary',
   },
   iq: {
