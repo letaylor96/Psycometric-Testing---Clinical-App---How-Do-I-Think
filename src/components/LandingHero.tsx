@@ -61,10 +61,10 @@ export const LandingHero = ({ onStart, onSelectAssessment }: LandingHeroProps) =
           transition={{ delay: 0.15, duration: 0.6 }}
           className="font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 leading-[1.05]"
         >
-          <span className="text-foreground">How Smart</span>
+          <span className="text-foreground">What Makes You</span>
           <br />
           <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-            Are You, Really?
+            One in a Million?
           </span>
         </motion.h1>
 
