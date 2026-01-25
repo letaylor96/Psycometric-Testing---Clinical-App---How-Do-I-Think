@@ -1,43 +1,26 @@
 import { motion } from 'framer-motion';
-import { Brain, Sparkles, Zap, Clock, UserCheck, Lightbulb, Target, Activity, ArrowRight, Check } from 'lucide-react';
+import { Brain, Sparkles, Zap, Clock, UserCheck, Lightbulb, Activity, ArrowRight, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { AssessmentType, assessmentInfo, allAssessmentTypes } from '@/data/assessmentTypes';
 
 interface LandingHeroProps {
   onStart: () => void;
+  onSelectAssessment: (type: AssessmentType) => void;
 }
 
-const assessments = [
-  { 
-    icon: UserCheck, 
-    title: 'Big Five Personality', 
-    desc: 'OCEAN model assessment',
-    badge: 'Most Popular',
-    color: 'primary'
-  },
-  { 
-    icon: Brain, 
-    title: 'IQ Assessment', 
-    desc: 'Raven\'s-style matrices',
-    badge: null,
-    color: 'accent'
-  },
-  { 
-    icon: Lightbulb, 
-    title: 'Cognitive Style', 
-    desc: 'Divergent thinking profile',
-    badge: null,
-    color: 'primary'
-  },
-  { 
-    icon: Activity, 
-    title: 'ADHD Screening', 
-    desc: 'Based on ASRS-v1.1',
-    badge: 'New',
-    color: 'accent'
-  },
-];
+const assessmentIcons: Record<AssessmentType, React.ElementType> = {
+  personality: UserCheck,
+  iq: Brain,
+  cognitive: Lightbulb,
+  adhd: Activity,
+};
 
-export const LandingHero = ({ onStart }: LandingHeroProps) => {
+const badgeLabels: Partial<Record<AssessmentType, string>> = {
+  personality: 'Most Popular',
+  adhd: 'New',
+};
+
+export const LandingHero = ({ onStart, onSelectAssessment }: LandingHeroProps) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 relative overflow-hidden bg-background">
       {/* Background */}
@@ -52,20 +35,20 @@ export const LandingHero = ({ onStart }: LandingHeroProps) => {
         transition={{ duration: 0.6 }}
         className="text-center z-10 max-w-5xl w-full"
       >
-        {/* Key benefits - prominent */}
+        {/* Key benefits */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="flex items-center justify-center gap-6 mb-10"
+          className="flex items-center justify-center gap-4 sm:gap-6 mb-10 flex-wrap"
         >
           {[
             { icon: Zap, text: 'Instant Results' },
-            { icon: UserCheck, text: 'No Sign Up Required' },
+            { icon: UserCheck, text: 'No Sign Up' },
             { icon: Clock, text: '100% Free' },
           ].map((item, i) => (
-            <div key={i} className="flex items-center gap-2 text-primary font-medium">
-              <item.icon className="w-5 h-5" />
+            <div key={i} className="flex items-center gap-2 text-primary font-medium text-sm sm:text-base">
+              <item.icon className="w-4 h-4 sm:w-5 sm:h-5" />
               <span>{item.text}</span>
             </div>
           ))}
@@ -92,59 +75,71 @@ export const LandingHero = ({ onStart }: LandingHeroProps) => {
           transition={{ delay: 0.25 }}
           className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-12"
         >
-          A comprehensive suite of scientifically-validated assessments. 
-          Get your personality profile, IQ score, cognitive style, and ADHD screening — 
-          <span className="text-foreground font-medium"> all in one session</span>.
+          Scientifically-validated assessments for personality, IQ, cognitive style, and ADHD screening.
+          <span className="text-foreground font-medium"> Choose one or take them all.</span>
         </motion.p>
 
-        {/* CTA */}
+        {/* Assessment cards - clickable */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mb-12"
+        >
+          {allAssessmentTypes.map((type, i) => {
+            const info = assessmentInfo[type];
+            const Icon = assessmentIcons[type];
+            const badge = badgeLabels[type];
+            
+            return (
+              <motion.button
+                key={type}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 + i * 0.07 }}
+                whileHover={{ y: -6, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => onSelectAssessment(type)}
+                className="relative group p-5 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/40 hover:bg-card/80 transition-all text-left cursor-pointer"
+              >
+                {badge && (
+                  <span className={`absolute -top-2 right-3 px-2 py-0.5 text-xs font-medium rounded-full ${badge === 'New' ? 'bg-accent text-accent-foreground' : 'bg-primary text-primary-foreground'}`}>
+                    {badge}
+                  </span>
+                )}
+                <div className={`w-10 h-10 rounded-lg bg-${info.color}/10 flex items-center justify-center mb-3 group-hover:bg-${info.color}/20 transition-colors`}>
+                  <Icon className={`w-5 h-5 text-${info.color}`} />
+                </div>
+                <p className="font-semibold text-foreground mb-1">{info.title}</p>
+                <p className="text-muted-foreground text-sm mb-2">{info.framework}</p>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground/70">
+                  <span>{info.questionCount} questions</span>
+                  <span>•</span>
+                  <span>{info.timeMinutes} min</span>
+                </div>
+              </motion.button>
+            );
+          })}
+        </motion.div>
+
+        {/* Full Assessment CTA */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="mb-16"
+          transition={{ delay: 0.6 }}
+          className="mb-12"
         >
           <Button
             onClick={onStart}
             size="lg"
             className="group bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-lg px-12 py-7 rounded-xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] transition-all"
           >
-            Start Your Assessment
+            Take Complete Assessment
             <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-0.5 transition-transform" />
           </Button>
           <p className="text-muted-foreground text-sm mt-4">
-            Takes ~25 minutes • Results delivered instantly • No email required
+            All 4 assessments • ~35 minutes total • Comprehensive report
           </p>
-        </motion.div>
-
-        {/* Assessment cards */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mb-14"
-        >
-          {assessments.map((item, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45 + i * 0.07 }}
-              whileHover={{ y: -4 }}
-              className="relative group p-5 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/30 hover:bg-card/80 transition-all text-left"
-            >
-              {item.badge && (
-                <span className={`absolute -top-2 right-3 px-2 py-0.5 text-xs font-medium rounded-full ${item.badge === 'New' ? 'bg-accent text-accent-foreground' : 'bg-primary text-primary-foreground'}`}>
-                  {item.badge}
-                </span>
-              )}
-              <div className={`w-10 h-10 rounded-lg bg-${item.color}/10 flex items-center justify-center mb-3`}>
-                <item.icon className={`w-5 h-5 text-${item.color}`} />
-              </div>
-              <p className="font-semibold text-foreground mb-1">{item.title}</p>
-              <p className="text-muted-foreground text-sm">{item.desc}</p>
-            </motion.div>
-          ))}
         </motion.div>
 
         {/* Research backing */}
@@ -156,7 +151,7 @@ export const LandingHero = ({ onStart }: LandingHeroProps) => {
         >
           <p className="text-muted-foreground/70 text-sm font-medium">Backed by established research</p>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-muted-foreground/50 text-xs">
-            {['Big Five / OCEAN Model', 'Raven\'s Progressive Matrices', 'Guilford\'s Divergent Thinking', 'ASRS-v1.1 (WHO)'].map((name, i) => (
+            {['Big Five / OCEAN', "Raven's Matrices", "Guilford's Model", 'ASRS-v1.1'].map((name, i) => (
               <div key={i} className="flex items-center gap-1.5">
                 <Check className="w-3 h-3 text-primary/70" />
                 <span>{name}</span>
