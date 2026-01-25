@@ -4,8 +4,15 @@ import { LandingHero } from '@/components/LandingHero';
 import { QuizQuestion } from '@/components/QuizQuestion';
 import { ResultsScreen } from '@/components/ResultsScreen';
 import { quizQuestions, calculateResults, TestResults, TOTAL_TEST_TIME } from '@/data/quizQuestions';
+import { AssessmentType, assessmentInfo } from '@/data/assessmentTypes';
+import { personalityQuestions, calculatePersonalityResults, PersonalityResults, personalityOptions } from '@/data/personalityQuestions';
+import { adhdQuestions, calculateADHDResults, ADHDResults, adhdOptions } from '@/data/adhdQuestions';
+import { PersonalityQuiz } from '@/components/PersonalityQuiz';
+import { ADHDQuiz } from '@/components/ADHDQuiz';
+import { PersonalityResultsScreen } from '@/components/PersonalityResultsScreen';
+import { ADHDResultsScreen } from '@/components/ADHDResultsScreen';
 
-type GameState = 'landing' | 'quiz' | 'results';
+type GameState = 'landing' | 'quiz' | 'results' | 'personality-quiz' | 'personality-results' | 'adhd-quiz' | 'adhd-results';
 
 const Index = () => {
   const [gameState, setGameState] = useState<GameState>('landing');
@@ -13,6 +20,8 @@ const Index = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answers, setAnswers] = useState<number[]>([]);
   const [results, setResults] = useState<TestResults | null>(null);
+  const [personalityResults, setPersonalityResults] = useState<PersonalityResults | null>(null);
+  const [adhdResults, setADHDResults] = useState<ADHDResults | null>(null);
   const [timeRemaining, setTimeRemaining] = useState(TOTAL_TEST_TIME);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number>(0);
@@ -46,6 +55,26 @@ const Index = () => {
     startTimeRef.current = Date.now();
   }, []);
 
+  const handleSelectAssessment = useCallback((type: AssessmentType) => {
+    setCurrentQuestionIndex(0);
+    setAnswers([]);
+    setSelectedAnswer(null);
+    
+    switch (type) {
+      case 'personality':
+        setGameState('personality-quiz');
+        break;
+      case 'iq':
+      case 'cognitive':
+        // Both use the existing IQ/cognitive quiz
+        handleStartQuiz();
+        break;
+      case 'adhd':
+        setGameState('adhd-quiz');
+        break;
+    }
+  }, [handleStartQuiz]);
+
   const handleSelectAnswer = useCallback((index: number) => {
     setSelectedAnswer(index);
   }, []);
@@ -73,17 +102,27 @@ const Index = () => {
   }, [selectedAnswer, answers, currentQuestionIndex, finishQuiz]);
 
   const handleTimeUp = useCallback(() => {
-    // Auto-submit with current answers (unanswered questions count as wrong)
     const finalAnswers = [...answers];
     if (selectedAnswer !== null) {
       finalAnswers.push(selectedAnswer);
     }
-    // Fill remaining with -1 (wrong answer)
     while (finalAnswers.length < quizQuestions.length) {
       finalAnswers.push(-1);
     }
     finishQuiz(finalAnswers);
   }, [answers, selectedAnswer, finishQuiz]);
+
+  const handlePersonalityComplete = useCallback((answers: number[]) => {
+    const results = calculatePersonalityResults(answers);
+    setPersonalityResults(results);
+    setGameState('personality-results');
+  }, []);
+
+  const handleADHDComplete = useCallback((answers: number[]) => {
+    const results = calculateADHDResults(answers);
+    setADHDResults(results);
+    setGameState('adhd-results');
+  }, []);
 
   const handleRestart = useCallback(() => {
     setGameState('landing');
@@ -91,6 +130,8 @@ const Index = () => {
     setAnswers([]);
     setSelectedAnswer(null);
     setResults(null);
+    setPersonalityResults(null);
+    setADHDResults(null);
     setTimeRemaining(TOTAL_TEST_TIME);
     if (timerRef.current) clearInterval(timerRef.current);
   }, []);
@@ -106,7 +147,7 @@ const Index = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <LandingHero onStart={handleStartQuiz} />
+            <LandingHero onStart={handleStartQuiz} onSelectAssessment={handleSelectAssessment} />
           </motion.div>
         )}
 
@@ -143,6 +184,54 @@ const Index = () => {
               results={results}
               onRestart={handleRestart}
             />
+          </motion.div>
+        )}
+
+        {gameState === 'personality-quiz' && (
+          <motion.div
+            key="personality-quiz"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <PersonalityQuiz onComplete={handlePersonalityComplete} onBack={handleRestart} />
+          </motion.div>
+        )}
+
+        {gameState === 'personality-results' && personalityResults && (
+          <motion.div
+            key="personality-results"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <PersonalityResultsScreen results={personalityResults} onRestart={handleRestart} />
+          </motion.div>
+        )}
+
+        {gameState === 'adhd-quiz' && (
+          <motion.div
+            key="adhd-quiz"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <ADHDQuiz onComplete={handleADHDComplete} onBack={handleRestart} />
+          </motion.div>
+        )}
+
+        {gameState === 'adhd-results' && adhdResults && (
+          <motion.div
+            key="adhd-results"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <ADHDResultsScreen results={adhdResults} onRestart={handleRestart} />
           </motion.div>
         )}
       </AnimatePresence>
