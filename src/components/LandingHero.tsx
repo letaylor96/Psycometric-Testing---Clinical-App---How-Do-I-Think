@@ -138,7 +138,7 @@ export const LandingHero = ({ onStart, onSelectAssessment }: LandingHeroProps) =
             <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-0.5 transition-transform" />
           </Button>
           <p className="text-muted-foreground text-sm mt-4">
-            All 4 assessments • ~35 minutes total • Comprehensive report
+            All 4 assessments • ~70 minutes total • Comprehensive report
           </p>
         </motion.div>
 
