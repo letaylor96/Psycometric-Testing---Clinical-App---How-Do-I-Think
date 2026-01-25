@@ -90,11 +90,11 @@ export default {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
   			},
-  			neon: {
-  				cyan: 'hsl(180 100% 50%)',
-  				pink: 'hsl(320 100% 60%)',
-  				purple: 'hsl(270 100% 65%)'
-  			}
+			neon: {
+				cyan: 'hsl(180 100% 45%)',
+				pink: 'hsl(330 100% 60%)',
+				purple: 'hsl(252 100% 67%)'
+			}
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
