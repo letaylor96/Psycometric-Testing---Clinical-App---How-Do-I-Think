@@ -1,12 +1,13 @@
 import { motion } from 'framer-motion';
 import { ADHDResults, adhdDomainLabels } from '@/data/adhdQuestions';
 import { Button } from '@/components/ui/button';
-import { RotateCcw, AlertTriangle, CheckCircle, Activity, Info } from 'lucide-react';
+import { RotateCcw, AlertTriangle, CheckCircle, Activity, Info, LayoutDashboard } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ADHDResultsScreenProps {
   results: ADHDResults;
   onRestart: () => void;
+  onViewDashboard?: () => void;
 }
 
 const likelihoodConfig = {
@@ -33,7 +34,7 @@ const likelihoodConfig = {
   },
 };
 
-export const ADHDResultsScreen = ({ results, onRestart }: ADHDResultsScreenProps) => {
+export const ADHDResultsScreen = ({ results, onRestart, onViewDashboard }: ADHDResultsScreenProps) => {
   const config = likelihoodConfig[results.likelihood];
   const Icon = config.icon;
 
@@ -210,12 +211,18 @@ export const ADHDResultsScreen = ({ results, onRestart }: ADHDResultsScreenProps
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="flex justify-center"
+          className="flex flex-wrap justify-center gap-4"
         >
           <Button onClick={onRestart} variant="outline" size="lg">
             <RotateCcw className="w-4 h-4 mr-2" />
             Take Another Assessment
           </Button>
+          {onViewDashboard && (
+            <Button onClick={onViewDashboard} size="lg" className="bg-gradient-to-r from-primary to-accent hover:opacity-90">
+              <LayoutDashboard className="w-4 h-4 mr-2" />
+              View Full Dashboard
+            </Button>
+          )}
         </motion.div>
       </div>
     </div>

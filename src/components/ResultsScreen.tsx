@@ -9,6 +9,7 @@ import { CareerIntelligenceReport } from '@/components/CareerIntelligenceReport'
 interface ResultsScreenProps {
   results: TestResults;
   onRestart: () => void;
+  onViewDashboard?: () => void;
 }
 
 const categoryColors: Record<string, string> = {
@@ -33,7 +34,7 @@ const getIQTier = (iq: number): { tier: string; color: string; description: stri
   return { tier: 'Average', color: 'text-foreground', description: 'Healthy cognitive baseline' };
 };
 
-export const ResultsScreen = ({ results, onRestart }: ResultsScreenProps) => {
+export const ResultsScreen = ({ results, onRestart, onViewDashboard }: ResultsScreenProps) => {
   const [copied, setCopied] = useState(false);
   
   const radarData = results.categoryScores.map((score) => ({
@@ -412,6 +413,15 @@ Fascinating insights into how I think and solve problems. Try it yourself 👇`)
             <RotateCcw className="w-5 h-5 mr-2" />
             Take Assessment Again
           </Button>
+          {onViewDashboard && (
+            <Button
+              onClick={onViewDashboard}
+              className="bg-gradient-to-r from-primary to-accent hover:opacity-90 font-display font-semibold py-6 px-8 rounded-xl"
+            >
+              <Sparkles className="w-5 h-5 mr-2" />
+              View Full Dashboard
+            </Button>
+          )}
         </motion.div>
 
         {/* Footer Note */}

@@ -1,13 +1,14 @@
 import { motion } from 'framer-motion';
 import { PersonalityResults, personalityTraitLabels, PersonalityTrait } from '@/data/personalityQuestions';
 import { Button } from '@/components/ui/button';
-import { RotateCcw, Share2, UserCheck, Sparkles, Copy, Check, Linkedin } from 'lucide-react';
+import { RotateCcw, Share2, UserCheck, Sparkles, Copy, Check, Linkedin, LayoutDashboard } from 'lucide-react';
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer } from 'recharts';
 import { useState } from 'react';
 
 interface PersonalityResultsScreenProps {
   results: PersonalityResults;
   onRestart: () => void;
+  onViewDashboard?: () => void;
 }
 
 const traitColors: Record<PersonalityTrait, string> = {
@@ -18,7 +19,7 @@ const traitColors: Record<PersonalityTrait, string> = {
   neuroticism: '#EC4899',
 };
 
-export const PersonalityResultsScreen = ({ results, onRestart }: PersonalityResultsScreenProps) => {
+export const PersonalityResultsScreen = ({ results, onRestart, onViewDashboard }: PersonalityResultsScreenProps) => {
   const [copied, setCopied] = useState(false);
 
   const radarData = (Object.keys(results.scores) as PersonalityTrait[]).map((trait) => ({
@@ -204,12 +205,18 @@ Take the free assessment yourself 👇`);
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="flex justify-center"
+          className="flex flex-wrap justify-center gap-4"
         >
           <Button onClick={onRestart} variant="outline" size="lg">
             <RotateCcw className="w-4 h-4 mr-2" />
             Take Another Assessment
           </Button>
+          {onViewDashboard && (
+            <Button onClick={onViewDashboard} size="lg" className="bg-gradient-to-r from-primary to-accent hover:opacity-90">
+              <LayoutDashboard className="w-4 h-4 mr-2" />
+              View Full Dashboard
+            </Button>
+          )}
         </motion.div>
       </div>
     </div>
