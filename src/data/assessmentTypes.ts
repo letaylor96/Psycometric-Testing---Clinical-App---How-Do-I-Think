@@ -39,7 +39,7 @@ export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
   },
   cognitive: {
     id: 'cognitive',
-    title: 'My Cognitive Style',
+    title: 'How Do I Think?',
     shortTitle: 'Cognitive',
     description: 'Discover how your mind naturally processes information - exploring thinking patterns often associated with neurodivergent minds.',
     framework: 'Neurodivergent Thinking Patterns',
