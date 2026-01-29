@@ -96,10 +96,10 @@ export const LandingHero = ({
           transition={{ delay: 0.15, duration: 0.6 }}
           className="font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 leading-[1.05]"
         >
-          <span className="text-foreground">Discover Your</span>
+          <span className="text-foreground">Learn About</span>
           <br />
-          <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-            Archetypes
+          <span className="bg-gradient-to-r from-primary via-yellow to-accent bg-clip-text text-transparent">
+            How I Think
           </span>
         </motion.h1>
 
