@@ -338,10 +338,6 @@ export const AssessmentPreview = ({ type, onStart, onBack }: AssessmentPreviewPr
                   <Zap className="w-3 h-3 text-amber-500" />
                   <span>Instant results</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Shield className="w-3 h-3 text-emerald-500" />
-                  <span>Money-back guarantee</span>
-                </div>
               </div>
             </motion.div>
           )}
