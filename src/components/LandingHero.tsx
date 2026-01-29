@@ -179,7 +179,6 @@ export const LandingHero = ({
             const Icon = assessmentIcons[type];
             const badge = badgeLabels[type];
             const isCompleted = completionStatus[type];
-            const isFirst = i === 0 && !hasStarted;
             
             return (
               <motion.button
@@ -193,22 +192,13 @@ export const LandingHero = ({
                 className={`relative group p-5 rounded-xl border backdrop-blur-sm transition-all text-left cursor-pointer ${
                   isCompleted 
                     ? 'border-emerald-500/40 bg-emerald-500/5' 
-                    : isFirst 
-                      ? 'border-primary/40 bg-primary/5 ring-2 ring-primary/20' 
-                      : 'border-border/50 bg-card/50 hover:border-primary/40 hover:bg-card/80'
+                    : 'border-border/50 bg-card/50 hover:border-primary/40 hover:bg-card/80'
                 }`}
               >
                 {/* Badge */}
                 {badge && !isCompleted && (
                   <span className={`absolute -top-2 right-3 px-2 py-0.5 text-xs font-medium rounded-full ${badge === 'New' ? 'bg-accent text-accent-foreground' : 'bg-primary text-primary-foreground'}`}>
                     {badge}
-                  </span>
-                )}
-                
-                {/* Free badge for first test - RECIPROCITY */}
-                {isFirst && (
-                  <span className="absolute -top-2 left-3 px-2 py-0.5 text-xs font-bold rounded-full bg-emerald-500 text-white">
-                    FREE
                   </span>
                 )}
 
@@ -229,12 +219,8 @@ export const LandingHero = ({
                 <p className="text-muted-foreground text-sm mb-2">{info.framework}</p>
                 <div className="flex items-center justify-between text-xs text-muted-foreground/70">
                   <span>{info.questionCount} questions • {info.timeMinutes} min</span>
-                  {isCompleted ? (
+                  {isCompleted && (
                     <span className="text-emerald-400 font-medium">Complete</span>
-                  ) : isFirst ? (
-                    <span className="text-emerald-400 font-medium">Free</span>
-                  ) : (
-                    <span className="text-foreground/70 font-medium">$3</span>
                   )}
                 </div>
               </motion.button>
