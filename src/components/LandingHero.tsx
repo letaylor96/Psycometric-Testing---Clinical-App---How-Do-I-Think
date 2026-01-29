@@ -252,18 +252,28 @@ export const LandingHero = ({
           transition={{ delay: 0.6 }}
           className="mb-10"
         >
-          <Button
-            onClick={onStart}
-            size="lg"
-            className="group bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-lg px-12 py-7 rounded-xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] transition-all"
-          >
-            {hasStarted ? 'Continue Your Assessment' : 'Start Free Assessment'}
-            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-0.5 transition-transform" />
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button
+              onClick={onStart}
+              size="lg"
+              className="group bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-lg px-10 py-7 rounded-xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] transition-all"
+            >
+              {hasStarted ? 'Continue Your Assessment' : 'Start Free Assessment'}
+              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-0.5 transition-transform" />
+            </Button>
+            <Button
+              onClick={onStart}
+              size="lg"
+              className="group bg-gradient-to-r from-yellow to-yellow/80 hover:from-yellow/90 hover:to-yellow/70 text-yellow-foreground font-semibold text-lg px-10 py-7 rounded-xl shadow-lg shadow-yellow/25 hover:shadow-xl hover:shadow-yellow/30 hover:scale-[1.02] transition-all"
+            >
+              Start Paid Assessment
+              <Sparkles className="w-5 h-5 ml-2 group-hover:scale-110 transition-transform" />
+            </Button>
+          </div>
           <p className="text-muted-foreground text-sm mt-4">
             {hasStarted 
               ? `${completedCount}/4 complete • Unlock your full Cognitive DNA report` 
-              : 'No credit card required • Results in minutes'
+              : 'Free: Limited insights • Paid: Full premium report'
             }
           </p>
         </motion.div>
