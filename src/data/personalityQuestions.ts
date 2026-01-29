@@ -1,5 +1,5 @@
-// Personality DNA Assessment
-// Deep personality profiling based on the OCEAN model with modern, engaging framing
+// Who Am I? Personality Assessment
+// Deep personality profiling based on the Big Five model with modern, engaging framing
 
 export type PersonalityTrait = 'openness' | 'conscientiousness' | 'extraversion' | 'agreeableness' | 'neuroticism';
 
