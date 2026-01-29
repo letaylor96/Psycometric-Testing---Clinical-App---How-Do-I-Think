@@ -84,7 +84,7 @@ export const LandingHero = ({
           {[
             { icon: Zap, text: 'Instant Results' },
             { icon: Gift, text: 'First Test Free' },
-            { icon: Clock, text: '$4.99/assessment' },
+            { icon: Clock, text: 'Free and Paid' },
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-2 text-primary font-medium text-sm sm:text-base">
               <item.icon className="w-4 h-4 sm:w-5 sm:h-5" />
