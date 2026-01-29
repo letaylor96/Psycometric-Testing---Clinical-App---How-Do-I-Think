@@ -281,14 +281,14 @@ export const AssessmentPreview = ({ type, onStart, onBack }: AssessmentPreviewPr
                 </ul>
               </div>
 
-              {/* What's NOT included - Loss Aversion */}
+              {/* Additional Analysis - Premium upsell */}
               <div className="pt-4 border-t border-border/50">
-                <p className="text-xs text-muted-foreground uppercase tracking-wide mb-2">You'll miss out on</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wide mb-2">Additional Analysis in Premium</p>
                 <ul className="space-y-2">
                   {tiers.free.excluded.map((item, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm">
-                      <X className="w-4 h-4 text-red-400/70 mt-0.5 shrink-0" />
-                      <span className="text-muted-foreground/70 line-through">{item}</span>
+                      <Crown className="w-4 h-4 text-primary/60 mt-0.5 shrink-0" />
+                      <span className="text-muted-foreground">{item}</span>
                     </li>
                   ))}
                 </ul>
