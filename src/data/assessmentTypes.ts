@@ -21,8 +21,8 @@ export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
     id: 'personality',
     title: 'Who Am I?',
     shortTitle: 'Personality',
-    description: 'Discover what makes you tick - your strengths, how you connect with others, and what drives you.',
-    framework: 'Big Five Personality',
+    description: 'Discover your personality archetype, Myers-Briggs type, and what makes you uniquely you.',
+    framework: 'Big Five + MBTI',
     questionCount: 30,
     timeMinutes: Math.ceil((30 * TIME_PER_QUESTION_SECONDS) / 60), // 15 min
     color: 'primary',

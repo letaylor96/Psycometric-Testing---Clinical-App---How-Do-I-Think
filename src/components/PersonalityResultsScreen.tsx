@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
-import { PersonalityResults, personalityTraitLabels, PersonalityTrait, facetLabels } from '@/data/personalityQuestions';
+import { PersonalityResults, personalityTraitLabels, PersonalityTrait, facetLabels, MBTIType } from '@/data/personalityQuestions';
 import { Button } from '@/components/ui/button';
 import { 
   RotateCcw, Share2, UserCheck, Sparkles, Copy, Check, Linkedin, LayoutDashboard,
-  Briefcase, MessageSquare, Crown, Zap, Users, Brain, Target, Shield, ChevronDown, ChevronUp
+  Briefcase, MessageSquare, Crown, Zap, Users, Brain, Target, Shield, ChevronDown, ChevronUp,
+  Puzzle, Heart, Lightbulb, Compass
 } from 'lucide-react';
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer } from 'recharts';
 import { useState } from 'react';
@@ -34,9 +35,13 @@ export const PersonalityResultsScreen = ({ results, onRestart, onViewDashboard }
   }));
 
   const handleShare = async () => {
-    const shareText = `🧠 My Personality Archetype: ${results.personalityType}
+    const shareText = `🧠 My Personality Profile
 
+🎭 Archetype: ${results.personalityType}
 "${results.archetype.tagline}"
+
+🧩 MBTI Type: ${results.mbti.type} - ${results.mbti.name}
+"${results.mbti.description}"
 
 📊 OCEAN Profile:
 • Openness: ${results.scores.openness}%
@@ -50,7 +55,7 @@ ${results.archetype.rarity}
 Take the free assessment 👇
 ${window.location.origin}
 
-#PersonalityArchetype #BigFive #SelfDiscovery`;
+#WhoAmI #MBTI #BigFive #PersonalityTest`;
 
     await navigator.clipboard.writeText(shareText);
     setCopied(true);
@@ -58,7 +63,7 @@ ${window.location.origin}
   };
 
   const handleLinkedInShare = () => {
-    const text = encodeURIComponent(`Just discovered my personality archetype: ${results.personalityType} 🧠
+    const text = encodeURIComponent(`Just discovered my personality profile: ${results.mbti.type} (${results.mbti.name}) + ${results.personalityType} 🧠
 
 "${results.archetype.tagline}"
 
@@ -161,6 +166,126 @@ Take the free assessment yourself 👇`);
                   </li>
                 ))}
               </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* MBTI Card */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.15 }}
+          className="card-elevated rounded-2xl p-6 md:p-8 border border-accent/30 bg-gradient-to-br from-accent/5 to-primary/5 mb-8"
+        >
+          <div className="flex items-start gap-4 mb-6">
+            <div className="w-14 h-14 rounded-xl bg-accent/20 flex items-center justify-center">
+              <Puzzle className="w-7 h-7 text-accent" />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-2 flex-wrap">
+                <span className="font-mono text-3xl font-bold text-accent">{results.mbti.type}</span>
+                <h2 className="font-display text-xl font-bold text-foreground">{results.mbti.name}</h2>
+              </div>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{results.mbti.nickname}</p>
+              <p className="text-foreground/90 leading-relaxed">{results.mbti.description}</p>
+            </div>
+          </div>
+
+          {/* MBTI Dimensions */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            {Object.entries(results.mbti.dimensions).map(([key, dim]) => (
+              <div key={key} className="p-3 rounded-xl bg-background/50 border border-border">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-2xl font-bold font-mono text-accent">{dim.letter}</span>
+                  <span className="text-sm font-medium text-muted-foreground">{dim.score}%</span>
+                </div>
+                <p className="text-xs text-foreground/70">{dim.label}</p>
+                <div className="h-1.5 bg-muted rounded-full overflow-hidden mt-2">
+                  <motion.div
+                    className="h-full bg-accent rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${dim.score}%` }}
+                    transition={{ delay: 0.3, duration: 0.5 }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* MBTI Strengths & Challenges */}
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <p className="text-sm font-semibold text-accent mb-3 flex items-center gap-2">
+                <Lightbulb className="w-4 h-4" />
+                MBTI Strengths
+              </p>
+              <ul className="space-y-2">
+                {results.mbti.strengths.map((strength, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-foreground/80">
+                    <span className="text-accent mt-0.5">✓</span>
+                    {strength}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-primary mb-3 flex items-center gap-2">
+                <Compass className="w-4 h-4" />
+                Growth Areas
+              </p>
+              <ul className="space-y-2">
+                {results.mbti.challenges.map((challenge, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-foreground/80">
+                    <span className="text-primary mt-0.5">→</span>
+                    {challenge}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Famous Examples & Career Paths */}
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <p className="text-muted-foreground text-sm mb-2 flex items-center gap-2">
+                <Users className="w-4 h-4" />
+                Famous {results.mbti.type}s:
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {results.mbti.famousExamples.map((name, i) => (
+                  <span key={i} className="px-3 py-1.5 rounded-lg bg-muted text-foreground text-sm font-medium">
+                    {name}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-muted-foreground text-sm mb-2 flex items-center gap-2">
+                <Briefcase className="w-4 h-4" />
+                Ideal Career Paths:
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {results.mbti.careerPaths.map((career, i) => (
+                  <span key={i} className="px-3 py-1.5 rounded-lg bg-accent/10 text-accent text-sm font-medium border border-accent/20">
+                    {career}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Compatibility */}
+          <div className="mt-6 pt-6 border-t border-border">
+            <p className="text-muted-foreground text-sm mb-2 flex items-center gap-2">
+              <Heart className="w-4 h-4" />
+              Most Compatible Types:
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {results.mbti.compatibility.map((type, i) => (
+                <span key={i} className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-sm font-bold font-mono border border-primary/20">
+                  {type}
+                </span>
+              ))}
             </div>
           </div>
         </motion.div>
