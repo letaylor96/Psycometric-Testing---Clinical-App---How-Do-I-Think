@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { LandingHero } from '@/components/LandingHero';
 import { QuizQuestion } from '@/components/QuizQuestion';
 import { ResultsScreen } from '@/components/ResultsScreen';
+import { AssessmentPreview } from '@/components/AssessmentPreview';
 import { quizQuestions, calculateResults, TestResults, TOTAL_TEST_TIME } from '@/data/quizQuestions';
 import { AssessmentType } from '@/data/assessmentTypes';
 import { personalityQuestions, calculatePersonalityResults, PersonalityResults } from '@/data/personalityQuestions';
@@ -16,10 +17,22 @@ import { ADHDResultsScreen } from '@/components/ADHDResultsScreen';
 import { CognitiveStyleResultsScreen } from '@/components/CognitiveStyleResultsScreen';
 import { CombinedDashboard } from '@/components/CombinedDashboard';
 
-type GameState = 'landing' | 'quiz' | 'results' | 'personality-quiz' | 'personality-results' | 'adhd-quiz' | 'adhd-results' | 'cognitive-quiz' | 'cognitive-results' | 'dashboard';
+type GameState = 
+  | 'landing' 
+  | 'preview'
+  | 'quiz' 
+  | 'results' 
+  | 'personality-quiz' 
+  | 'personality-results' 
+  | 'adhd-quiz' 
+  | 'adhd-results' 
+  | 'cognitive-quiz' 
+  | 'cognitive-results' 
+  | 'dashboard';
 
 const Index = () => {
   const [gameState, setGameState] = useState<GameState>('landing');
+  const [previewType, setPreviewType] = useState<AssessmentType | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answers, setAnswers] = useState<number[]>([]);
@@ -30,6 +43,9 @@ const Index = () => {
   const [timeRemaining, setTimeRemaining] = useState(TOTAL_TEST_TIME);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number>(0);
+
+  // Check if this is user's first assessment (for free tier)
+  const hasCompletedAny = !!results || !!personalityResults || !!adhdResults || !!cognitiveStyleResults;
 
   // Timer effect
   useEffect(() => {
@@ -60,12 +76,21 @@ const Index = () => {
     startTimeRef.current = Date.now();
   }, []);
 
+  // Show preview screen when assessment is selected
   const handleSelectAssessment = useCallback((type: AssessmentType) => {
+    setPreviewType(type);
+    setGameState('preview');
+  }, []);
+
+  // Start the actual quiz from preview
+  const handleStartFromPreview = useCallback(() => {
+    if (!previewType) return;
+    
     setCurrentQuestionIndex(0);
     setAnswers([]);
     setSelectedAnswer(null);
     
-    switch (type) {
+    switch (previewType) {
       case 'personality':
         setGameState('personality-quiz');
         break;
@@ -79,7 +104,12 @@ const Index = () => {
         setGameState('adhd-quiz');
         break;
     }
-  }, [handleStartQuiz]);
+  }, [previewType, handleStartQuiz]);
+
+  const handleBackFromPreview = useCallback(() => {
+    setGameState('landing');
+    setPreviewType(null);
+  }, []);
 
   const handleSelectAnswer = useCallback((index: number) => {
     setSelectedAnswer(index);
@@ -138,6 +168,7 @@ const Index = () => {
 
   const handleRestart = useCallback(() => {
     setGameState('landing');
+    setPreviewType(null);
     setCurrentQuestionIndex(0);
     setAnswers([]);
     setSelectedAnswer(null);
@@ -148,6 +179,7 @@ const Index = () => {
 
   const handleFullRestart = useCallback(() => {
     setGameState('landing');
+    setPreviewType(null);
     setCurrentQuestionIndex(0);
     setAnswers([]);
     setSelectedAnswer(null);
@@ -164,22 +196,9 @@ const Index = () => {
   }, []);
 
   const handleTakeAssessmentFromDashboard = useCallback((type: 'iq' | 'personality' | 'adhd') => {
-    setCurrentQuestionIndex(0);
-    setAnswers([]);
-    setSelectedAnswer(null);
-    
-    switch (type) {
-      case 'personality':
-        setGameState('personality-quiz');
-        break;
-      case 'iq':
-        handleStartQuiz();
-        break;
-      case 'adhd':
-        setGameState('adhd-quiz');
-        break;
-    }
-  }, [handleStartQuiz]);
+    setPreviewType(type);
+    setGameState('preview');
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -193,13 +212,30 @@ const Index = () => {
             transition={{ duration: 0.4 }}
           >
             <LandingHero 
-              onStart={handleStartQuiz} 
+              onStart={() => handleSelectAssessment('iq')} 
               onSelectAssessment={handleSelectAssessment}
               onViewDashboard={handleViewDashboard}
               iqResults={results}
               personalityResults={personalityResults}
               adhdResults={adhdResults}
               cognitiveStyleResults={cognitiveStyleResults}
+            />
+          </motion.div>
+        )}
+
+        {gameState === 'preview' && previewType && (
+          <motion.div
+            key="preview"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <AssessmentPreview
+              type={previewType}
+              isFree={!hasCompletedAny}
+              onStart={handleStartFromPreview}
+              onBack={handleBackFromPreview}
             />
           </motion.div>
         )}
