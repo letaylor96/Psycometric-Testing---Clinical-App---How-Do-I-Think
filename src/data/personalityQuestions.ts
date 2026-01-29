@@ -1,7 +1,32 @@
 // Who Am I? Personality Assessment
-// Deep personality profiling based on the Big Five model with modern, engaging framing
+// Deep personality profiling based on the Big Five model + Myers-Briggs Type Indicator
 
 export type PersonalityTrait = 'openness' | 'conscientiousness' | 'extraversion' | 'agreeableness' | 'neuroticism';
+
+// MBTI Types
+export type MBTIType = 
+  | 'INTJ' | 'INTP' | 'ENTJ' | 'ENTP'
+  | 'INFJ' | 'INFP' | 'ENFJ' | 'ENFP'
+  | 'ISTJ' | 'ISFJ' | 'ESTJ' | 'ESFJ'
+  | 'ISTP' | 'ISFP' | 'ESTP' | 'ESFP';
+
+export interface MBTIResult {
+  type: MBTIType;
+  name: string;
+  nickname: string;
+  description: string;
+  dimensions: {
+    EI: { letter: 'E' | 'I'; score: number; label: string };
+    SN: { letter: 'S' | 'N'; score: number; label: string };
+    TF: { letter: 'T' | 'F'; score: number; label: string };
+    JP: { letter: 'J' | 'P'; score: number; label: string };
+  };
+  strengths: string[];
+  challenges: string[];
+  famousExamples: string[];
+  careerPaths: string[];
+  compatibility: string[];
+}
 
 export type PersonalityFacet = 
   // Openness facets
@@ -154,6 +179,7 @@ export interface PersonalityResults {
   communicationStyle: string;
   leadershipStyle: string;
   stressResponse: string;
+  mbti: MBTIResult; // Myers-Briggs Type Indicator
 }
 
 export interface PersonalityArchetype {
@@ -250,6 +276,9 @@ export const calculatePersonalityResults = (answers: number[]): PersonalityResul
   // Generate stress response
   const stressResponse = getStressResponse(scores);
 
+  // Calculate MBTI type from Big Five scores
+  const mbti = calculateMBTI(scores);
+
   return { 
     scores, 
     facetScores, 
@@ -262,6 +291,7 @@ export const calculatePersonalityResults = (answers: number[]): PersonalityResul
     communicationStyle,
     leadershipStyle,
     stressResponse,
+    mbti,
   };
 };
 
@@ -636,6 +666,215 @@ const getPersonalityType = (
       rarity: 'Top 15% of population',
       strengths: ['Situational awareness', 'Flexibility', 'Cross-functional effectiveness', 'Bridging different perspectives'],
       blindSpots: ['May lack distinctive edge', 'Can seem inconsistent', 'May not stand out in specialized contexts'],
+    },
+  };
+};
+
+// MBTI Type Definitions
+const mbtiTypeDetails: Record<MBTIType, Omit<MBTIResult, 'type' | 'dimensions'>> = {
+  INTJ: {
+    name: 'The Architect',
+    nickname: 'Strategic Mastermind',
+    description: 'Imaginative and strategic thinkers with a plan for everything. You combine creativity with high standards and drive.',
+    strengths: ['Strategic planning', 'Independent thinking', 'High standards', 'Innovative problem-solving'],
+    challenges: ['Can appear cold or dismissive', 'Perfectionism', 'Impatience with inefficiency'],
+    famousExamples: ['Elon Musk', 'Michelle Obama', 'Isaac Newton'],
+    careerPaths: ['Executive Leadership', 'Strategic Consulting', 'Scientific Research', 'Systems Architecture'],
+    compatibility: ['ENFP', 'ENTP', 'INTJ', 'ENTJ'],
+  },
+  INTP: {
+    name: 'The Logician',
+    nickname: 'Objective Analyst',
+    description: 'Innovative inventors with an unquenchable thirst for knowledge. You love theoretical and abstract ideas.',
+    strengths: ['Analytical thinking', 'Objectivity', 'Creativity', 'Complex problem-solving'],
+    challenges: ['Social situations', 'Following rules', 'Expressing emotions'],
+    famousExamples: ['Albert Einstein', 'Bill Gates', 'Marie Curie'],
+    careerPaths: ['Software Development', 'Research Science', 'Philosophy', 'Data Analysis'],
+    compatibility: ['ENTJ', 'ESTJ', 'INFJ', 'ENFJ'],
+  },
+  ENTJ: {
+    name: 'The Commander',
+    nickname: 'Decisive Leader',
+    description: 'Bold, imaginative, and strong-willed leaders who always find a way. You thrive on challenge and drive for results.',
+    strengths: ['Leadership', 'Strategic thinking', 'Efficiency', 'Confidence'],
+    challenges: ['Impatience', 'Stubbornness', 'Dominance', 'Emotional expression'],
+    famousExamples: ['Steve Jobs', 'Margaret Thatcher', 'Napoleon Bonaparte'],
+    careerPaths: ['CEO/Executive', 'Management Consulting', 'Entrepreneurship', 'Law'],
+    compatibility: ['INTP', 'ISTP', 'ENTJ', 'INTJ'],
+  },
+  ENTP: {
+    name: 'The Debater',
+    nickname: 'Innovative Challenger',
+    description: 'Smart and curious thinkers who cannot resist an intellectual challenge. You love to explore new ideas.',
+    strengths: ['Quick thinking', 'Charisma', 'Innovation', 'Debate skills'],
+    challenges: ['Follow-through', 'Routine tasks', 'Sensitivity to others'],
+    famousExamples: ['Mark Twain', 'Thomas Edison', 'Céline Dion'],
+    careerPaths: ['Entrepreneurship', 'Creative Direction', 'Consulting', 'Venture Capital'],
+    compatibility: ['INFJ', 'INTJ', 'ENFP', 'ENTP'],
+  },
+  INFJ: {
+    name: 'The Advocate',
+    nickname: 'Insightful Visionary',
+    description: 'Quiet and mystical, yet inspiring and tireless idealists. You\'re driven by a deep sense of purpose.',
+    strengths: ['Insightfulness', 'Idealism', 'Compassion', 'Determination'],
+    challenges: ['Burnout', 'Perfectionism', 'Sensitivity to criticism'],
+    famousExamples: ['Martin Luther King Jr.', 'Nelson Mandela', 'Mother Teresa'],
+    careerPaths: ['Counseling', 'Writing', 'Nonprofit Leadership', 'Psychology'],
+    compatibility: ['ENTP', 'ENFP', 'INFJ', 'INTJ'],
+  },
+  INFP: {
+    name: 'The Mediator',
+    nickname: 'Idealistic Healer',
+    description: 'Poetic, kind, and altruistic people, always eager to help a good cause. You seek harmony and authenticity.',
+    strengths: ['Empathy', 'Creativity', 'Open-mindedness', 'Passion'],
+    challenges: ['Practicality', 'Self-criticism', 'Conflict avoidance'],
+    famousExamples: ['William Shakespeare', 'J.R.R. Tolkien', 'Princess Diana'],
+    careerPaths: ['Writing', 'Art Therapy', 'Social Work', 'UX Design'],
+    compatibility: ['ENFJ', 'ENTJ', 'INFP', 'ISFP'],
+  },
+  ENFJ: {
+    name: 'The Protagonist',
+    nickname: 'Charismatic Leader',
+    description: 'Charismatic and inspiring leaders who mesmerize their listeners. You\'re driven to help others achieve their potential.',
+    strengths: ['Natural leadership', 'Empathy', 'Reliability', 'Charisma'],
+    challenges: ['Overly idealistic', 'People-pleasing', 'Self-neglect'],
+    famousExamples: ['Oprah Winfrey', 'Barack Obama', 'Jennifer Lawrence'],
+    careerPaths: ['Executive Coaching', 'Politics', 'Teaching', 'HR Leadership'],
+    compatibility: ['INFP', 'ISFP', 'ENFJ', 'INFJ'],
+  },
+  ENFP: {
+    name: 'The Campaigner',
+    nickname: 'Enthusiastic Idealist',
+    description: 'Enthusiastic, creative, and sociable free spirits who can always find a reason to smile. You inspire others.',
+    strengths: ['Enthusiasm', 'Creativity', 'Sociability', 'Optimism'],
+    challenges: ['Focus', 'Overthinking', 'Follow-through'],
+    famousExamples: ['Robin Williams', 'Robert Downey Jr.', 'Will Smith'],
+    careerPaths: ['Creative Direction', 'Public Relations', 'Entrepreneurship', 'Coaching'],
+    compatibility: ['INTJ', 'INFJ', 'ENFP', 'ENTP'],
+  },
+  ISTJ: {
+    name: 'The Logistician',
+    nickname: 'Responsible Realist',
+    description: 'Practical and fact-minded individuals whose reliability cannot be doubted. You value tradition and loyalty.',
+    strengths: ['Honesty', 'Dedication', 'Responsibility', 'Calmness'],
+    challenges: ['Stubbornness', 'Insensitivity', 'Resistance to change'],
+    famousExamples: ['George Washington', 'Queen Elizabeth II', 'Warren Buffett'],
+    careerPaths: ['Finance', 'Law', 'Military', 'Project Management'],
+    compatibility: ['ESFP', 'ESTP', 'ISTJ', 'ISFJ'],
+  },
+  ISFJ: {
+    name: 'The Defender',
+    nickname: 'Protective Guardian',
+    description: 'Very dedicated and warm protectors, always ready to defend their loved ones. You combine service with care.',
+    strengths: ['Supportive', 'Reliable', 'Patient', 'Observant'],
+    challenges: ['Overloading self', 'Shyness', 'Repressing feelings'],
+    famousExamples: ['Beyoncé', 'Kate Middleton', 'Rosa Parks'],
+    careerPaths: ['Healthcare', 'Social Work', 'Education', 'Administration'],
+    compatibility: ['ESFP', 'ESTP', 'ISFJ', 'ISTJ'],
+  },
+  ESTJ: {
+    name: 'The Executive',
+    nickname: 'Efficient Organizer',
+    description: 'Excellent administrators, unsurpassed at managing things and people. You bring order and structure.',
+    strengths: ['Dedication', 'Strong will', 'Direct', 'Honest'],
+    challenges: ['Inflexibility', 'Difficulty relaxing', 'Judgmental'],
+    famousExamples: ['Sonia Sotomayor', 'John D. Rockefeller', 'Judge Judy'],
+    careerPaths: ['Business Management', 'Law', 'Politics', 'Operations'],
+    compatibility: ['ISTP', 'ISFP', 'ESTJ', 'ENTJ'],
+  },
+  ESFJ: {
+    name: 'The Consul',
+    nickname: 'Supportive Contributor',
+    description: 'Extraordinarily caring, social, and popular people, always eager to help. You create harmony in communities.',
+    strengths: ['Loyalty', 'Kindness', 'Practical skills', 'Warmth'],
+    challenges: ['Worry about status', 'Inflexibility', 'Selflessness to a fault'],
+    famousExamples: ['Taylor Swift', 'Bill Clinton', 'Jennifer Garner'],
+    careerPaths: ['Healthcare', 'Event Planning', 'Customer Success', 'Teaching'],
+    compatibility: ['ISTP', 'ISFP', 'ESFJ', 'ENFJ'],
+  },
+  ISTP: {
+    name: 'The Virtuoso',
+    nickname: 'Practical Problem-Solver',
+    description: 'Bold and practical experimenters, masters of all kinds of tools. You love to explore with your hands.',
+    strengths: ['Optimistic', 'Creative', 'Practical', 'Spontaneous'],
+    challenges: ['Stubbornness', 'Insensitivity', 'Risk-prone behavior'],
+    famousExamples: ['Bear Grylls', 'Clint Eastwood', 'Michael Jordan'],
+    careerPaths: ['Engineering', 'Mechanics', 'Forensics', 'Piloting'],
+    compatibility: ['ESTJ', 'ESFJ', 'ISTP', 'ESTP'],
+  },
+  ISFP: {
+    name: 'The Adventurer',
+    nickname: 'Versatile Creator',
+    description: 'Flexible and charming artists, always ready to explore and experience something new. You live in the moment.',
+    strengths: ['Charming', 'Artistic', 'Curious', 'Passionate'],
+    challenges: ['Easily stressed', 'Overly competitive', 'Unpredictable'],
+    famousExamples: ['Michael Jackson', 'Frida Kahlo', 'Lana Del Rey'],
+    careerPaths: ['Art & Design', 'Music', 'Culinary Arts', 'Physical Therapy'],
+    compatibility: ['ESTJ', 'ESFJ', 'ISFP', 'ESFP'],
+  },
+  ESTP: {
+    name: 'The Entrepreneur',
+    nickname: 'Energetic Problem-Solver',
+    description: 'Smart, energetic, and perceptive people who truly enjoy living on the edge. You thrive in action.',
+    strengths: ['Bold', 'Rational', 'Practical', 'Perceptive'],
+    challenges: ['Impatient', 'Risk-prone', 'Unstructured', 'Defiant'],
+    famousExamples: ['Donald Trump', 'Madonna', 'Ernest Hemingway'],
+    careerPaths: ['Sales', 'Entrepreneurship', 'Sports', 'Emergency Services'],
+    compatibility: ['ISTJ', 'ISFJ', 'ESTP', 'ISTP'],
+  },
+  ESFP: {
+    name: 'The Entertainer',
+    nickname: 'Spontaneous Energizer',
+    description: 'Spontaneous, energetic, and enthusiastic people who make life exciting. You light up every room.',
+    strengths: ['Bold', 'Original', 'Practical', 'Observant'],
+    challenges: ['Sensitive', 'Conflict-averse', 'Easily bored', 'Unfocused'],
+    famousExamples: ['Marilyn Monroe', 'Jamie Foxx', 'Adele'],
+    careerPaths: ['Entertainment', 'Event Planning', 'Sales', 'Public Relations'],
+    compatibility: ['ISTJ', 'ISFJ', 'ESFP', 'ESTP'],
+  },
+};
+
+// Calculate MBTI from Big Five scores
+const calculateMBTI = (scores: Record<PersonalityTrait, number>): MBTIResult => {
+  // Map Big Five to MBTI dimensions:
+  // E/I ← Extraversion (high = E, low = I)
+  // S/N ← Openness (high = N, low = S) - Intuition correlates with Openness
+  // T/F ← Agreeableness (high = F, low = T) - Thinking vs Feeling
+  // J/P ← Conscientiousness (high = J, low = P) - Judging vs Perceiving
+  
+  const EI = scores.extraversion >= 50 ? 'E' : 'I';
+  const SN = scores.openness >= 50 ? 'N' : 'S';
+  const TF = scores.agreeableness >= 50 ? 'F' : 'T';
+  const JP = scores.conscientiousness >= 50 ? 'J' : 'P';
+  
+  const mbtiType = `${EI}${SN}${TF}${JP}` as MBTIType;
+  
+  const typeDetails = mbtiTypeDetails[mbtiType];
+  
+  return {
+    type: mbtiType,
+    ...typeDetails,
+    dimensions: {
+      EI: {
+        letter: EI,
+        score: EI === 'E' ? scores.extraversion : (100 - scores.extraversion),
+        label: EI === 'E' ? 'Extraversion' : 'Introversion',
+      },
+      SN: {
+        letter: SN,
+        score: SN === 'N' ? scores.openness : (100 - scores.openness),
+        label: SN === 'N' ? 'Intuition' : 'Sensing',
+      },
+      TF: {
+        letter: TF,
+        score: TF === 'F' ? scores.agreeableness : (100 - scores.agreeableness),
+        label: TF === 'F' ? 'Feeling' : 'Thinking',
+      },
+      JP: {
+        letter: JP,
+        score: JP === 'J' ? scores.conscientiousness : (100 - scores.conscientiousness),
+        label: JP === 'J' ? 'Judging' : 'Perceiving',
+      },
     },
   };
 };
