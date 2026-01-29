@@ -28,7 +28,8 @@ export const divergentLabels: Record<DivergentDimension, { label: string; descri
   elaboration: { label: 'Elaboration', description: 'Building and expanding on ideas' },
 };
 
-export const TOTAL_TEST_TIME = 1500; // 25 minutes in seconds
+export const TIME_PER_QUESTION = 30; // 30 seconds per question
+export const TOTAL_TEST_TIME = 25 * TIME_PER_QUESTION; // 25 questions × 30 seconds = 750 seconds (12.5 min)
 
 // 25 Progressive IQ Questions - From Easy (IQ ~85-100) to Genius (IQ 145+)
 // Mix of number sequences and visual pattern recognition
