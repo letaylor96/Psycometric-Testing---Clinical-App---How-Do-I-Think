@@ -74,20 +74,23 @@ export const LandingHero = ({
           onViewDashboard={onViewDashboard}
         />
 
-        {/* Key benefits */}
+        {/* Key benefits - Marketing optimized with visual hierarchy */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="flex items-center justify-center gap-4 sm:gap-6 mb-10 flex-wrap"
+          className="flex items-center justify-center gap-3 sm:gap-4 mb-10 flex-wrap"
         >
           {[
-            { icon: Zap, text: 'Instant Results' },
-            { icon: Gift, text: 'First Test Free' },
-            { icon: Clock, text: 'Free and Paid' },
+            { icon: Zap, text: 'Instant Results', color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
+            { icon: Gift, text: 'First Test Free', color: 'text-emerald-400', bg: 'bg-emerald-400/10', highlight: true },
+            { icon: Clock, text: '~10 min each', color: 'text-cyan-400', bg: 'bg-cyan-400/10' },
           ].map((item, i) => (
-            <div key={i} className="flex items-center gap-2 text-primary font-medium text-sm sm:text-base">
-              <item.icon className="w-4 h-4 sm:w-5 sm:h-5" />
+            <div 
+              key={i} 
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${item.bg} ${item.color} font-medium text-sm ${item.highlight ? 'ring-1 ring-emerald-400/30' : ''}`}
+            >
+              <item.icon className="w-4 h-4" />
               <span>{item.text}</span>
             </div>
           ))}
