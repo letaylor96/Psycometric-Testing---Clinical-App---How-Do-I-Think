@@ -229,8 +229,12 @@ export const LandingHero = ({
                 <p className="text-muted-foreground text-sm mb-2">{info.framework}</p>
                 <div className="flex items-center justify-between text-xs text-muted-foreground/70">
                   <span>{info.questionCount} questions • {info.timeMinutes} min</span>
-                  {!isFirst && !isCompleted && (
-                    <span className="text-muted-foreground/50">$4.99</span>
+                  {isCompleted ? (
+                    <span className="text-emerald-400 font-medium">Complete</span>
+                  ) : isFirst ? (
+                    <span className="text-emerald-400 font-medium">Free</span>
+                  ) : (
+                    <span className="text-foreground/70 font-medium">$3</span>
                   )}
                 </div>
               </motion.button>
@@ -248,9 +252,9 @@ export const LandingHero = ({
           <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
             <TrendingUp className="w-4 h-4 text-primary" />
             <span className="text-sm">
-              <span className="text-muted-foreground line-through">$19.96</span>
-              <span className="text-foreground font-bold ml-2">$14.99 for all 4</span>
-              <span className="text-emerald-400 font-medium ml-2">Save 25%</span>
+              <span className="text-muted-foreground line-through">$12</span>
+              <span className="text-foreground font-bold ml-2">$9.99 for all 4</span>
+              <span className="text-emerald-400 font-medium ml-2">Save 17%</span>
             </span>
           </div>
         </motion.div>

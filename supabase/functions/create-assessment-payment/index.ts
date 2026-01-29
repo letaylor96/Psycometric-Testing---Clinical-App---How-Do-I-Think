@@ -7,31 +7,31 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// Price IDs for each assessment
+// Price IDs for each assessment - $3 each, $9.99 bundle
 const PRICE_CONFIG = {
   personality: {
     priceId: "price_1SunEvBc1qszx46pso7A1zyO",
-    amount: 499,
+    amount: 300,
     name: "Who Am I? (Personality)",
   },
   iq: {
     priceId: "price_1SunFCBc1qszx46pw2qPtn6F",
-    amount: 499,
+    amount: 300,
     name: "IQ Assessment",
   },
   cognitive: {
     priceId: "price_1SunFRBc1qszx46pIVIagGTN",
-    amount: 499,
+    amount: 300,
     name: "How Do I Think? (Cognitive)",
   },
   adhd: {
     priceId: "price_1SunFhBc1qszx46pHaZLrhXQ",
-    amount: 499,
+    amount: 300,
     name: "Am I Neurodivergent? (ADHD)",
   },
   bundle: {
     priceId: "price_1SunFvBc1qszx46p9jK6KiNp",
-    amount: 1499,
+    amount: 999,
     name: "Complete Assessment Bundle",
   },
 };
