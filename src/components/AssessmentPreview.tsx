@@ -416,6 +416,21 @@ export const AssessmentPreview = ({ type, onStart, onBack }: AssessmentPreviewPr
             }
           </p>
         </motion.div>
+
+        {/* Legal Disclaimer */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="mt-8 pt-6 border-t border-border/30"
+        >
+          <p className="text-xs text-muted-foreground/60 text-center leading-relaxed max-w-lg mx-auto">
+            <strong className="text-muted-foreground/80">For educational and entertainment purposes only.</strong>{' '}
+            This assessment is not a medical or psychological diagnostic tool and does not constitute professional advice. 
+            Results should not be used for clinical decisions. If you have concerns about your mental health, 
+            please consult a qualified healthcare professional.
+          </p>
+        </motion.div>
       </motion.div>
     </div>
   );
