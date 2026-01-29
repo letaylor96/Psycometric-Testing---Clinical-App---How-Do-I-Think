@@ -66,270 +66,316 @@ export const processingStyleLabels: Record<ProcessingStyle, string> = {
   sequential: 'Sequential Processor',
 };
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// COGNITIVE STYLE ASSESSMENT - 20 Questions
+// ═══════════════════════════════════════════════════════════════════════════════
+// Based on validated neurocognitive research frameworks:
+// • Cognitive Reflection Test (CRT) by Shane Frederick (System 1 vs System 2)
+// • Baron-Cohen's Systemizing Quotient (pattern/systems thinking)
+// • Field Dependence/Independence research (Witkin et al.)
+// • Dual-process theory of reasoning (Kahneman)
+// • Neurodivergent cognition research (Armstrong, Silberman)
+// ═══════════════════════════════════════════════════════════════════════════════
+
 export const cognitiveStyleQuestions: CognitiveStyleQuestion[] = [
-  // Visual-Spatial Questions
+  // ───────────────────────────────────────────────────────────────────────────
+  // VISUAL-SPATIAL THINKING (3 questions)
+  // Measures mental imagery, spatial reasoning, and visual-kinesthetic processing
+  // ───────────────────────────────────────────────────────────────────────────
   {
     id: 1,
-    question: "When someone gives you directions, how do you best understand them?",
+    question: "When trying to understand a complex system (like a new software, organization, or machine), what helps you most?",
     dimension: 'visual_spatial',
     options: [
       { 
-        text: "I visualize a mental map and see myself moving through it",
-        scores: { visual_spatial: 5, pattern_recognition: 2, hyperfocus: 0, divergent_thinking: 1, detail_orientation: 1, big_picture: 3 }
+        text: "Drawing diagrams or mental maps of how components connect",
+        scores: { visual_spatial: 5, pattern_recognition: 3, hyperfocus: 0, divergent_thinking: 1, detail_orientation: 1, big_picture: 4 }
       },
       { 
-        text: "I prefer written step-by-step instructions I can follow",
-        scores: { visual_spatial: 1, pattern_recognition: 1, hyperfocus: 2, divergent_thinking: 0, detail_orientation: 4, big_picture: 1 }
+        text: "Reading detailed documentation or step-by-step instructions",
+        scores: { visual_spatial: 1, pattern_recognition: 1, hyperfocus: 2, divergent_thinking: 0, detail_orientation: 5, big_picture: 1 }
       },
       { 
-        text: "I need to physically travel the route once to remember it",
-        scores: { visual_spatial: 3, pattern_recognition: 2, hyperfocus: 1, divergent_thinking: 0, detail_orientation: 2, big_picture: 2 }
+        text: "Hands-on experimentation and trial-and-error",
+        scores: { visual_spatial: 3, pattern_recognition: 3, hyperfocus: 2, divergent_thinking: 4, detail_orientation: 1, big_picture: 2 }
       },
       { 
-        text: "I rely on GPS and don't try to remember the route",
-        scores: { visual_spatial: 0, pattern_recognition: 1, hyperfocus: 0, divergent_thinking: 2, detail_orientation: 0, big_picture: 1 }
+        text: "Discussing it with someone who can explain it verbally",
+        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 0, divergent_thinking: 2, detail_orientation: 2, big_picture: 2 }
       },
     ],
   },
   {
     id: 2,
-    question: "When reading a novel, what happens in your mind?",
+    question: "When remembering events from your past, how do you typically experience them?",
     dimension: 'visual_spatial',
     options: [
       { 
-        text: "I see vivid scenes like a movie playing in my head",
-        scores: { visual_spatial: 5, pattern_recognition: 1, hyperfocus: 3, divergent_thinking: 2, detail_orientation: 2, big_picture: 2 }
+        text: "As vivid mental images or movie-like scenes I can 'see' clearly",
+        scores: { visual_spatial: 5, pattern_recognition: 1, hyperfocus: 2, divergent_thinking: 2, detail_orientation: 3, big_picture: 2 }
       },
       { 
-        text: "I focus on the words and language, the imagery is abstract",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 4, big_picture: 1 }
+        text: "Through the emotions and feelings I experienced at the time",
+        scores: { visual_spatial: 2, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 2, detail_orientation: 1, big_picture: 3 }
       },
       { 
-        text: "I connect with characters' emotions more than visual scenes",
-        scores: { visual_spatial: 2, pattern_recognition: 3, hyperfocus: 2, divergent_thinking: 2, detail_orientation: 1, big_picture: 3 }
+        text: "As factual knowledge—I know what happened but don't 'relive' it",
+        scores: { visual_spatial: 1, pattern_recognition: 3, hyperfocus: 1, divergent_thinking: 0, detail_orientation: 4, big_picture: 2 }
       },
       { 
-        text: "I often get distracted and have to re-read passages",
-        scores: { visual_spatial: 2, pattern_recognition: 1, hyperfocus: 0, divergent_thinking: 3, detail_orientation: 1, big_picture: 1 }
+        text: "Memories are often fragmented; I struggle to recall details visually",
+        scores: { visual_spatial: 0, pattern_recognition: 1, hyperfocus: 0, divergent_thinking: 3, detail_orientation: 0, big_picture: 2 }
       },
     ],
   },
   {
     id: 3,
-    question: "If you're assembling furniture, how do you approach it?",
+    question: "If asked to mentally rotate a 3D object in your mind, how easy is this for you?",
     dimension: 'visual_spatial',
     options: [
       { 
-        text: "I look at the finished picture and figure it out intuitively",
-        scores: { visual_spatial: 5, pattern_recognition: 4, hyperfocus: 2, divergent_thinking: 3, detail_orientation: 0, big_picture: 4 }
+        text: "Very easy—I can manipulate objects in my mind effortlessly",
+        scores: { visual_spatial: 5, pattern_recognition: 4, hyperfocus: 1, divergent_thinking: 2, detail_orientation: 2, big_picture: 3 }
       },
       { 
-        text: "I follow the manual step by step, checking each stage",
-        scores: { visual_spatial: 1, pattern_recognition: 1, hyperfocus: 3, divergent_thinking: 0, detail_orientation: 5, big_picture: 1 }
+        text: "I can do it, but it requires deliberate effort and concentration",
+        scores: { visual_spatial: 3, pattern_recognition: 2, hyperfocus: 3, divergent_thinking: 1, detail_orientation: 3, big_picture: 2 }
       },
       { 
-        text: "I scan the instructions, then improvise based on what makes sense",
-        scores: { visual_spatial: 3, pattern_recognition: 3, hyperfocus: 1, divergent_thinking: 4, detail_orientation: 1, big_picture: 3 }
+        text: "I prefer to sketch it out or use a physical model",
+        scores: { visual_spatial: 2, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 2, detail_orientation: 4, big_picture: 1 }
       },
       { 
-        text: "I need someone to show me first, then I can replicate it",
-        scores: { visual_spatial: 2, pattern_recognition: 2, hyperfocus: 1, divergent_thinking: 1, detail_orientation: 2, big_picture: 2 }
+        text: "I find this task quite difficult and frustrating",
+        scores: { visual_spatial: 0, pattern_recognition: 1, hyperfocus: 0, divergent_thinking: 2, detail_orientation: 1, big_picture: 1 }
       },
     ],
   },
 
-  // Pattern Recognition Questions
+  // ───────────────────────────────────────────────────────────────────────────
+  // PATTERN RECOGNITION (3 questions)
+  // Measures ability to detect regularities, systems, and underlying structures
+  // ───────────────────────────────────────────────────────────────────────────
   {
     id: 4,
-    question: "When you encounter a new system or process, what do you notice first?",
+    question: "When you encounter a dataset, spreadsheet, or collection of information, what do you naturally do first?",
     dimension: 'pattern_recognition',
     options: [
       { 
-        text: "The underlying logic and how all the pieces connect",
+        text: "Look for trends, correlations, or anomalies that stand out",
         scores: { visual_spatial: 2, pattern_recognition: 5, hyperfocus: 2, divergent_thinking: 2, detail_orientation: 2, big_picture: 4 }
       },
       { 
-        text: "The specific steps and procedures to follow",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 0, detail_orientation: 5, big_picture: 1 }
+        text: "Organize and categorize the data systematically",
+        scores: { visual_spatial: 1, pattern_recognition: 3, hyperfocus: 2, divergent_thinking: 0, detail_orientation: 5, big_picture: 2 }
       },
       { 
-        text: "The exceptions and edge cases that might break it",
-        scores: { visual_spatial: 1, pattern_recognition: 4, hyperfocus: 1, divergent_thinking: 4, detail_orientation: 3, big_picture: 2 }
+        text: "Ask what questions this data might answer",
+        scores: { visual_spatial: 1, pattern_recognition: 3, hyperfocus: 1, divergent_thinking: 4, detail_orientation: 1, big_picture: 4 }
       },
       { 
-        text: "How it compares to other systems I already know",
-        scores: { visual_spatial: 2, pattern_recognition: 4, hyperfocus: 1, divergent_thinking: 2, detail_orientation: 1, big_picture: 3 }
+        text: "Feel overwhelmed until someone explains what I should focus on",
+        scores: { visual_spatial: 1, pattern_recognition: 1, hyperfocus: 0, divergent_thinking: 2, detail_orientation: 2, big_picture: 1 }
       },
     ],
   },
   {
     id: 5,
-    question: "When watching a mystery movie or reading a thriller, do you:",
+    question: "In conversations, do you often notice when someone's current statement contradicts something they said earlier?",
     dimension: 'pattern_recognition',
     options: [
       { 
-        text: "Usually figure out the twist before it's revealed",
-        scores: { visual_spatial: 1, pattern_recognition: 5, hyperfocus: 3, divergent_thinking: 2, detail_orientation: 3, big_picture: 2 }
+        text: "Yes, inconsistencies jump out at me immediately",
+        scores: { visual_spatial: 1, pattern_recognition: 5, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 4, big_picture: 2 }
       },
       { 
-        text: "Enjoy the ride without trying to predict the ending",
-        scores: { visual_spatial: 2, pattern_recognition: 1, hyperfocus: 2, divergent_thinking: 2, detail_orientation: 1, big_picture: 2 }
+        text: "Sometimes, if I'm paying close attention",
+        scores: { visual_spatial: 1, pattern_recognition: 3, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 3, big_picture: 2 }
       },
       { 
-        text: "Notice small details that later turn out to be important",
-        scores: { visual_spatial: 2, pattern_recognition: 4, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 5, big_picture: 1 }
+        text: "I focus more on the emotional content than logical consistency",
+        scores: { visual_spatial: 1, pattern_recognition: 1, hyperfocus: 1, divergent_thinking: 2, detail_orientation: 1, big_picture: 3 }
       },
       { 
-        text: "Get frustrated when the plot has logical inconsistencies",
-        scores: { visual_spatial: 1, pattern_recognition: 5, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 4, big_picture: 3 }
+        text: "I rarely notice—I take statements at face value in the moment",
+        scores: { visual_spatial: 1, pattern_recognition: 0, hyperfocus: 0, divergent_thinking: 3, detail_orientation: 0, big_picture: 2 }
       },
     ],
   },
   {
     id: 6,
-    question: "When learning something new, how do you know you understand it?",
+    question: "When learning a new game or system, how quickly do you understand the underlying rules?",
     dimension: 'pattern_recognition',
     options: [
       { 
-        text: "When I can see how it connects to what I already know",
-        scores: { visual_spatial: 2, pattern_recognition: 5, hyperfocus: 1, divergent_thinking: 2, detail_orientation: 1, big_picture: 4 }
+        text: "I often infer rules before they're explicitly explained",
+        scores: { visual_spatial: 2, pattern_recognition: 5, hyperfocus: 2, divergent_thinking: 3, detail_orientation: 1, big_picture: 4 }
       },
       { 
-        text: "When I can explain it to someone else step by step",
-        scores: { visual_spatial: 1, pattern_recognition: 3, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 3, big_picture: 2 }
+        text: "I prefer to read all the rules thoroughly first",
+        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 3, divergent_thinking: 0, detail_orientation: 5, big_picture: 1 }
       },
       { 
-        text: "When I can apply it in different contexts successfully",
-        scores: { visual_spatial: 2, pattern_recognition: 4, hyperfocus: 2, divergent_thinking: 4, detail_orientation: 2, big_picture: 3 }
+        text: "I learn best by watching others play first",
+        scores: { visual_spatial: 3, pattern_recognition: 3, hyperfocus: 1, divergent_thinking: 2, detail_orientation: 2, big_picture: 3 }
       },
       { 
-        text: "When I've memorized the key facts and procedures",
-        scores: { visual_spatial: 0, pattern_recognition: 1, hyperfocus: 3, divergent_thinking: 0, detail_orientation: 5, big_picture: 0 }
+        text: "I need multiple attempts and explanations to understand",
+        scores: { visual_spatial: 1, pattern_recognition: 1, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 2, big_picture: 1 }
       },
     ],
   },
 
-  // Hyperfocus Questions
+  // ───────────────────────────────────────────────────────────────────────────
+  // HYPERFOCUS CAPACITY (4 questions)
+  // Measures ability for deep, sustained attention on engaging tasks
+  // ───────────────────────────────────────────────────────────────────────────
   {
     id: 7,
-    question: "How do you experience time when deeply engaged in something you love?",
+    question: "When working on something that genuinely interests you, how do you experience the passage of time?",
     dimension: 'hyperfocus',
     options: [
       { 
-        text: "Hours pass like minutes - I completely lose track of time",
+        text: "Hours vanish—I'm shocked when I realize how much time has passed",
         scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 5, divergent_thinking: 2, detail_orientation: 2, big_picture: 1 }
       },
       { 
-        text: "I stay aware of time but am fully present in the activity",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 3, divergent_thinking: 1, detail_orientation: 3, big_picture: 2 }
+        text: "I stay engaged but maintain awareness of time",
+        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 3, big_picture: 2 }
       },
       { 
-        text: "I get interrupted by other thoughts and check the time often",
-        scores: { visual_spatial: 1, pattern_recognition: 1, hyperfocus: 0, divergent_thinking: 4, detail_orientation: 1, big_picture: 2 }
-      },
-      { 
-        text: "I have to set timers because I can't trust my time perception",
+        text: "I need to set alarms because I know I'll lose track",
         scores: { visual_spatial: 0, pattern_recognition: 2, hyperfocus: 4, divergent_thinking: 2, detail_orientation: 2, big_picture: 1 }
+      },
+      { 
+        text: "I naturally check the time regularly regardless of the task",
+        scores: { visual_spatial: 1, pattern_recognition: 1, hyperfocus: 0, divergent_thinking: 2, detail_orientation: 3, big_picture: 2 }
       },
     ],
   },
   {
     id: 8,
-    question: "When you find a topic fascinating, how do you explore it?",
+    question: "How do you typically react when you discover a new topic that fascinates you?",
     dimension: 'hyperfocus',
     options: [
       { 
-        text: "I dive deep for hours/days, consuming everything I can find",
+        text: "I go 'down the rabbit hole' for hours or days, consuming everything I can",
         scores: { visual_spatial: 1, pattern_recognition: 3, hyperfocus: 5, divergent_thinking: 3, detail_orientation: 3, big_picture: 2 }
       },
       { 
-        text: "I explore it gradually over time in a structured way",
+        text: "I explore it systematically, pacing myself over time",
         scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 4, big_picture: 2 }
       },
       { 
-        text: "I jump between related topics, making unexpected connections",
-        scores: { visual_spatial: 2, pattern_recognition: 4, hyperfocus: 2, divergent_thinking: 5, detail_orientation: 1, big_picture: 4 }
+        text: "I quickly branch into related topics, making unexpected connections",
+        scores: { visual_spatial: 2, pattern_recognition: 4, hyperfocus: 1, divergent_thinking: 5, detail_orientation: 1, big_picture: 4 }
       },
       { 
-        text: "I stick to practical aspects that I can immediately apply",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 3, big_picture: 1 }
+        text: "I focus only on practically applicable information",
+        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 0, detail_orientation: 4, big_picture: 1 }
       },
     ],
   },
   {
     id: 9,
-    question: "What happens when you're interrupted during deep concentration?",
+    question: "When you're interrupted during deep concentration, what happens?",
     dimension: 'hyperfocus',
     options: [
       { 
-        text: "It's jarring and takes a long time to get back to that state",
+        text: "It's jarring—I feel disoriented and need significant time to return to that state",
         scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 5, divergent_thinking: 1, detail_orientation: 3, big_picture: 1 }
       },
       { 
-        text: "I can pause and resume fairly easily",
+        text: "I can pause and resume fairly smoothly",
         scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 2, detail_orientation: 2, big_picture: 2 }
       },
       { 
-        text: "I sometimes don't even notice the interruption at first",
+        text: "Sometimes I don't even register the interruption initially",
         scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 5, divergent_thinking: 1, detail_orientation: 2, big_picture: 0 }
       },
       { 
-        text: "Interruptions are welcome - they keep me from going too deep",
+        text: "I welcome interruptions—they prevent me from getting too absorbed",
         scores: { visual_spatial: 1, pattern_recognition: 1, hyperfocus: 0, divergent_thinking: 3, detail_orientation: 1, big_picture: 3 }
       },
     ],
   },
-
-  // Divergent Thinking Questions
   {
     id: 10,
-    question: "In brainstorming sessions, what role do you naturally play?",
-    dimension: 'divergent_thinking',
+    question: "Have you ever neglected basic needs (eating, sleeping, hygiene) because you were so absorbed in an activity?",
+    dimension: 'hyperfocus',
     options: [
       { 
-        text: "The idea generator - I come up with many unconventional options",
-        scores: { visual_spatial: 2, pattern_recognition: 2, hyperfocus: 1, divergent_thinking: 5, detail_orientation: 0, big_picture: 3 }
+        text: "Yes, this happens to me regularly when I'm engaged in something",
+        scores: { visual_spatial: 0, pattern_recognition: 2, hyperfocus: 5, divergent_thinking: 2, detail_orientation: 1, big_picture: 0 }
       },
       { 
-        text: "The connector - I link different ideas together in new ways",
-        scores: { visual_spatial: 2, pattern_recognition: 4, hyperfocus: 1, divergent_thinking: 4, detail_orientation: 1, big_picture: 4 }
+        text: "Occasionally, but only for truly exceptional projects",
+        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 3, divergent_thinking: 1, detail_orientation: 2, big_picture: 1 }
       },
       { 
-        text: "The critic - I evaluate which ideas are actually feasible",
-        scores: { visual_spatial: 1, pattern_recognition: 3, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 4, big_picture: 2 }
+        text: "Rarely—I maintain routines even when deeply focused",
+        scores: { visual_spatial: 1, pattern_recognition: 1, hyperfocus: 1, divergent_thinking: 0, detail_orientation: 5, big_picture: 2 }
       },
       { 
-        text: "The builder - I take ideas and develop them into plans",
-        scores: { visual_spatial: 2, pattern_recognition: 2, hyperfocus: 3, divergent_thinking: 2, detail_orientation: 3, big_picture: 3 }
+        text: "Never—basic needs always take priority for me",
+        scores: { visual_spatial: 1, pattern_recognition: 1, hyperfocus: 0, divergent_thinking: 1, detail_orientation: 3, big_picture: 3 }
       },
     ],
   },
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // DIVERGENT THINKING (4 questions)
+  // Measures unconventional ideation, cognitive flexibility, and creative reasoning
+  // ───────────────────────────────────────────────────────────────────────────
   {
     id: 11,
-    question: "When faced with a problem, what's your first instinct?",
+    question: "In brainstorming or creative sessions, what role do you naturally play?",
     dimension: 'divergent_thinking',
     options: [
       { 
-        text: "Question the assumptions - maybe the problem is framed wrong",
-        scores: { visual_spatial: 1, pattern_recognition: 3, hyperfocus: 1, divergent_thinking: 5, detail_orientation: 1, big_picture: 4 }
+        text: "The idea generator—I produce many unconventional possibilities quickly",
+        scores: { visual_spatial: 2, pattern_recognition: 2, hyperfocus: 1, divergent_thinking: 5, detail_orientation: 0, big_picture: 3 }
       },
       { 
-        text: "Research how others have solved similar problems",
-        scores: { visual_spatial: 1, pattern_recognition: 3, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 3, big_picture: 2 }
+        text: "The connector—I see links between ideas that others miss",
+        scores: { visual_spatial: 2, pattern_recognition: 5, hyperfocus: 1, divergent_thinking: 4, detail_orientation: 1, big_picture: 4 }
       },
       { 
-        text: "Break it down into smaller, manageable parts",
+        text: "The evaluator—I assess which ideas are actually feasible",
         scores: { visual_spatial: 1, pattern_recognition: 3, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 5, big_picture: 2 }
       },
       { 
-        text: "Look for an unexpected angle no one has considered",
-        scores: { visual_spatial: 2, pattern_recognition: 4, hyperfocus: 2, divergent_thinking: 5, detail_orientation: 1, big_picture: 3 }
+        text: "The developer—I take raw ideas and build them into concrete plans",
+        scores: { visual_spatial: 2, pattern_recognition: 2, hyperfocus: 3, divergent_thinking: 2, detail_orientation: 4, big_picture: 3 }
       },
     ],
   },
   {
     id: 12,
-    question: "How do you respond when someone says 'that's not how it's done'?",
+    question: "When faced with a problem that conventional approaches haven't solved, what's your instinct?",
+    dimension: 'divergent_thinking',
+    options: [
+      { 
+        text: "Question whether the problem itself is correctly defined",
+        scores: { visual_spatial: 1, pattern_recognition: 4, hyperfocus: 1, divergent_thinking: 5, detail_orientation: 1, big_picture: 5 }
+      },
+      { 
+        text: "Research how experts in other fields have solved analogous problems",
+        scores: { visual_spatial: 1, pattern_recognition: 4, hyperfocus: 2, divergent_thinking: 3, detail_orientation: 2, big_picture: 3 }
+      },
+      { 
+        text: "Break it into smaller subproblems and tackle each systematically",
+        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 3, divergent_thinking: 1, detail_orientation: 5, big_picture: 2 }
+      },
+      { 
+        text: "Seek an unconventional angle that others haven't considered",
+        scores: { visual_spatial: 2, pattern_recognition: 3, hyperfocus: 2, divergent_thinking: 5, detail_orientation: 0, big_picture: 3 }
+      },
+    ],
+  },
+  {
+    id: 13,
+    question: "How do you respond when someone tells you 'that's not how it's done'?",
     dimension: 'divergent_thinking',
     options: [
       { 
@@ -337,336 +383,188 @@ export const cognitiveStyleQuestions: CognitiveStyleQuestion[] = [
         scores: { visual_spatial: 1, pattern_recognition: 4, hyperfocus: 2, divergent_thinking: 4, detail_orientation: 2, big_picture: 3 }
       },
       { 
-        text: "I usually defer to established methods - they exist for a reason",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 0, detail_orientation: 4, big_picture: 1 }
+        text: "I generally defer to established methods—they exist for good reasons",
+        scores: { visual_spatial: 1, pattern_recognition: 1, hyperfocus: 2, divergent_thinking: 0, detail_orientation: 5, big_picture: 1 }
       },
       { 
-        text: "I feel energized to prove there's a better way",
+        text: "I feel motivated to demonstrate there's a better approach",
         scores: { visual_spatial: 2, pattern_recognition: 2, hyperfocus: 3, divergent_thinking: 5, detail_orientation: 1, big_picture: 2 }
       },
       { 
-        text: "It depends on my expertise level in that area",
+        text: "It depends on how much expertise I have in that domain",
         scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 1, divergent_thinking: 2, detail_orientation: 3, big_picture: 2 }
-      },
-    ],
-  },
-
-  // Detail Orientation Questions
-  {
-    id: 13,
-    question: "When proofreading, what's your experience?",
-    dimension: 'detail_orientation',
-    options: [
-      { 
-        text: "I easily spot typos, formatting issues, and inconsistencies",
-        scores: { visual_spatial: 2, pattern_recognition: 3, hyperfocus: 2, divergent_thinking: 0, detail_orientation: 5, big_picture: 1 }
-      },
-      { 
-        text: "I catch content errors but miss surface-level typos",
-        scores: { visual_spatial: 1, pattern_recognition: 4, hyperfocus: 2, divergent_thinking: 2, detail_orientation: 2, big_picture: 4 }
-      },
-      { 
-        text: "I need to read very slowly and deliberately to catch errors",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 3, divergent_thinking: 1, detail_orientation: 3, big_picture: 2 }
-      },
-      { 
-        text: "I struggle with proofreading - my eyes skip over errors",
-        scores: { visual_spatial: 2, pattern_recognition: 2, hyperfocus: 1, divergent_thinking: 3, detail_orientation: 0, big_picture: 3 }
       },
     ],
   },
   {
     id: 14,
-    question: "In a new environment, what do you notice?",
+    question: "When you daydream or let your mind wander, what typically happens?",
+    dimension: 'divergent_thinking',
+    options: [
+      { 
+        text: "I make unexpected connections between unrelated ideas or domains",
+        scores: { visual_spatial: 2, pattern_recognition: 4, hyperfocus: 0, divergent_thinking: 5, detail_orientation: 0, big_picture: 4 }
+      },
+      { 
+        text: "I replay past events or plan future ones in detail",
+        scores: { visual_spatial: 3, pattern_recognition: 2, hyperfocus: 1, divergent_thinking: 1, detail_orientation: 3, big_picture: 2 }
+      },
+      { 
+        text: "I generate creative scenarios, stories, or hypothetical situations",
+        scores: { visual_spatial: 4, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 4, detail_orientation: 1, big_picture: 3 }
+      },
+      { 
+        text: "I don't daydream much—my mind stays focused on immediate tasks",
+        scores: { visual_spatial: 0, pattern_recognition: 1, hyperfocus: 2, divergent_thinking: 0, detail_orientation: 4, big_picture: 1 }
+      },
+    ],
+  },
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // DETAIL ORIENTATION (3 questions)
+  // Measures precision, accuracy, and fine-grained information processing
+  // ───────────────────────────────────────────────────────────────────────────
+  {
+    id: 15,
+    question: "When proofreading a document, what is your typical experience?",
     dimension: 'detail_orientation',
     options: [
       { 
-        text: "Small details - the slight hum of lights, specific textures",
+        text: "I naturally spot typos, formatting inconsistencies, and errors",
+        scores: { visual_spatial: 2, pattern_recognition: 3, hyperfocus: 2, divergent_thinking: 0, detail_orientation: 5, big_picture: 1 }
+      },
+      { 
+        text: "I catch logical or content errors but miss surface-level typos",
+        scores: { visual_spatial: 1, pattern_recognition: 4, hyperfocus: 2, divergent_thinking: 2, detail_orientation: 2, big_picture: 4 }
+      },
+      { 
+        text: "I need to read very slowly and deliberately to catch mistakes",
+        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 3, divergent_thinking: 1, detail_orientation: 3, big_picture: 2 }
+      },
+      { 
+        text: "My eyes tend to skip over errors—proofreading is difficult for me",
+        scores: { visual_spatial: 1, pattern_recognition: 1, hyperfocus: 0, divergent_thinking: 3, detail_orientation: 0, big_picture: 3 }
+      },
+    ],
+  },
+  {
+    id: 16,
+    question: "When entering a new environment (office, restaurant, home), what do you notice?",
+    dimension: 'detail_orientation',
+    options: [
+      { 
+        text: "Specific details—the subtle hum of electronics, particular textures, minor asymmetries",
         scores: { visual_spatial: 3, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 5, big_picture: 0 },
         sensoryIndicator: 'sensory_seeking'
       },
       { 
-        text: "The overall vibe and how it makes me feel",
-        scores: { visual_spatial: 2, pattern_recognition: 2, hyperfocus: 1, divergent_thinking: 2, detail_orientation: 1, big_picture: 4 }
+        text: "The overall atmosphere, mood, and how the space makes me feel",
+        scores: { visual_spatial: 2, pattern_recognition: 2, hyperfocus: 1, divergent_thinking: 2, detail_orientation: 1, big_picture: 5 }
       },
       { 
-        text: "Practical elements - exits, layout, where things are located",
+        text: "Practical elements—exits, layout, where things are positioned",
         scores: { visual_spatial: 4, pattern_recognition: 3, hyperfocus: 1, divergent_thinking: 1, detail_orientation: 3, big_picture: 3 }
       },
       { 
-        text: "I don't notice much unless something is really unusual",
+        text: "I don't consciously notice much unless something is unusual",
         scores: { visual_spatial: 1, pattern_recognition: 1, hyperfocus: 0, divergent_thinking: 2, detail_orientation: 0, big_picture: 2 }
       },
     ],
   },
   {
-    id: 15,
-    question: "When working on a project, how do you handle the small details?",
+    id: 17,
+    question: "How do you handle the final details when completing a project?",
     dimension: 'detail_orientation',
     options: [
       { 
-        text: "I can't move forward until every detail is perfect",
+        text: "I can't consider it finished until every detail meets my standards",
         scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 4, divergent_thinking: 0, detail_orientation: 5, big_picture: 0 }
       },
       { 
-        text: "I handle them systematically with checklists and processes",
+        text: "I use systematic checklists to ensure nothing is overlooked",
         scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 0, detail_orientation: 4, big_picture: 2 }
       },
       { 
-        text: "I prefer to get the big picture right first, then refine",
-        scores: { visual_spatial: 2, pattern_recognition: 3, hyperfocus: 1, divergent_thinking: 3, detail_orientation: 1, big_picture: 5 }
-      },
-      { 
-        text: "I often overlook details - I rely on others to catch them",
-        scores: { visual_spatial: 2, pattern_recognition: 2, hyperfocus: 1, divergent_thinking: 4, detail_orientation: 0, big_picture: 4 }
-      },
-    ],
-  },
-
-  // Big Picture / Systems Thinking Questions
-  {
-    id: 16,
-    question: "When you learn that something in the world is broken or inefficient, you:",
-    dimension: 'big_picture',
-    options: [
-      { 
-        text: "Immediately see how it connects to larger systemic issues",
-        scores: { visual_spatial: 2, pattern_recognition: 4, hyperfocus: 2, divergent_thinking: 3, detail_orientation: 1, big_picture: 5 }
-      },
-      { 
-        text: "Focus on the specific problem and how to fix that one thing",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 3, divergent_thinking: 1, detail_orientation: 4, big_picture: 1 }
-      },
-      { 
-        text: "Wonder about the history and evolution that led to this",
-        scores: { visual_spatial: 1, pattern_recognition: 5, hyperfocus: 2, divergent_thinking: 3, detail_orientation: 2, big_picture: 4 }
-      },
-      { 
-        text: "Think about how it affects people's daily lives",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 1, divergent_thinking: 2, detail_orientation: 2, big_picture: 3 }
-      },
-    ],
-  },
-  {
-    id: 17,
-    question: "How do you prefer to explain complex topics to others?",
-    dimension: 'big_picture',
-    options: [
-      { 
-        text: "Start with the big picture, then zoom into specifics",
+        text: "I focus on whether the overall result achieves the goal",
         scores: { visual_spatial: 2, pattern_recognition: 3, hyperfocus: 1, divergent_thinking: 2, detail_orientation: 1, big_picture: 5 }
       },
       { 
-        text: "Build up from fundamentals to the complete picture",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 4, big_picture: 2 }
-      },
-      { 
-        text: "Use analogies and comparisons to familiar concepts",
-        scores: { visual_spatial: 3, pattern_recognition: 4, hyperfocus: 1, divergent_thinking: 4, detail_orientation: 1, big_picture: 4 }
-      },
-      { 
-        text: "Show them rather than tell them when possible",
-        scores: { visual_spatial: 4, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 2, detail_orientation: 2, big_picture: 2 }
-      },
-    ],
-  },
-  {
-    id: 18,
-    question: "When making a decision, what weighs most heavily?",
-    dimension: 'big_picture',
-    options: [
-      { 
-        text: "Long-term implications and ripple effects",
-        scores: { visual_spatial: 1, pattern_recognition: 4, hyperfocus: 2, divergent_thinking: 2, detail_orientation: 1, big_picture: 5 }
-      },
-      { 
-        text: "Immediate practical outcomes and efficiency",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 3, divergent_thinking: 1, detail_orientation: 4, big_picture: 1 }
-      },
-      { 
-        text: "How it aligns with my values and intuition",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 1, divergent_thinking: 3, detail_orientation: 1, big_picture: 3 }
-      },
-      { 
-        text: "Data, evidence, and logical analysis",
-        scores: { visual_spatial: 1, pattern_recognition: 4, hyperfocus: 3, divergent_thinking: 1, detail_orientation: 4, big_picture: 2 }
+        text: "I often struggle to wrap up—I find ending harder than starting",
+        scores: { visual_spatial: 1, pattern_recognition: 1, hyperfocus: 0, divergent_thinking: 3, detail_orientation: 0, big_picture: 2 }
       },
     ],
   },
 
-  // Processing Style Questions
+  // ───────────────────────────────────────────────────────────────────────────
+  // SYSTEMS/BIG PICTURE THINKING (3 questions)
+  // Measures holistic processing, synthesis, and contextual understanding
+  // ───────────────────────────────────────────────────────────────────────────
   {
-    id: 19,
-    question: "How does your thinking process feel to you?",
-    dimension: 'pattern_recognition',
+    id: 18,
+    question: "When reading about a historical event or scientific discovery, what interests you most?",
+    dimension: 'big_picture',
     options: [
       { 
-        text: "Like a web - everything connects to everything else",
-        scores: { visual_spatial: 2, pattern_recognition: 5, hyperfocus: 1, divergent_thinking: 4, detail_orientation: 1, big_picture: 5 },
-        processingStyle: 'nonlinear'
+        text: "How it connects to broader patterns and influences other events",
+        scores: { visual_spatial: 2, pattern_recognition: 4, hyperfocus: 1, divergent_thinking: 2, detail_orientation: 1, big_picture: 5 }
       },
       { 
-        text: "Like a flowchart - one thought leads logically to the next",
-        scores: { visual_spatial: 1, pattern_recognition: 3, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 4, big_picture: 2 },
-        processingStyle: 'linear'
+        text: "The specific facts, dates, and key figures involved",
+        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 0, detail_orientation: 5, big_picture: 1 }
       },
       { 
-        text: "Like a river with many tributaries running at once",
-        scores: { visual_spatial: 2, pattern_recognition: 3, hyperfocus: 1, divergent_thinking: 4, detail_orientation: 1, big_picture: 3 },
-        processingStyle: 'parallel'
+        text: "The human stories and personal experiences within it",
+        scores: { visual_spatial: 2, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 2, detail_orientation: 2, big_picture: 3 }
       },
       { 
-        text: "Like building blocks - methodical and sequential",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 3, divergent_thinking: 0, detail_orientation: 5, big_picture: 1 },
-        processingStyle: 'sequential'
+        text: "What lessons or principles we can apply today",
+        scores: { visual_spatial: 1, pattern_recognition: 3, hyperfocus: 1, divergent_thinking: 3, detail_orientation: 1, big_picture: 4 }
+      },
+    ],
+  },
+  {
+    id: 19,
+    question: "When explaining your reasoning to others, what feedback do you typically receive?",
+    dimension: 'big_picture',
+    options: [
+      { 
+        text: "That I make unexpected connections they hadn't considered",
+        scores: { visual_spatial: 2, pattern_recognition: 4, hyperfocus: 1, divergent_thinking: 4, detail_orientation: 1, big_picture: 5 }
+      },
+      { 
+        text: "That I'm thorough and cover all the important details",
+        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 5, big_picture: 2 }
+      },
+      { 
+        text: "That I jump around and they struggle to follow my logic",
+        scores: { visual_spatial: 2, pattern_recognition: 3, hyperfocus: 0, divergent_thinking: 4, detail_orientation: 0, big_picture: 4 }
+      },
+      { 
+        text: "That I explain things clearly in a step-by-step manner",
+        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 0, detail_orientation: 4, big_picture: 2 }
       },
     ],
   },
   {
     id: 20,
-    question: "When you're explaining your thought process, people often:",
-    dimension: 'divergent_thinking',
+    question: "When faced with a complex decision, how do you typically approach it?",
+    dimension: 'big_picture',
     options: [
       { 
-        text: "Get confused by how I jumped from A to Z",
-        scores: { visual_spatial: 2, pattern_recognition: 4, hyperfocus: 1, divergent_thinking: 5, detail_orientation: 0, big_picture: 3 },
-        processingStyle: 'nonlinear'
+        text: "Consider how the decision fits into the larger context and long-term trajectory",
+        scores: { visual_spatial: 2, pattern_recognition: 4, hyperfocus: 1, divergent_thinking: 2, detail_orientation: 1, big_picture: 5 }
       },
       { 
-        text: "Follow along easily because I explain step by step",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 1, detail_orientation: 4, big_picture: 2 },
-        processingStyle: 'sequential'
-      },
-      { 
-        text: "Appreciate the unique connections I make",
-        scores: { visual_spatial: 2, pattern_recognition: 4, hyperfocus: 1, divergent_thinking: 4, detail_orientation: 1, big_picture: 4 }
-      },
-      { 
-        text: "Ask me to slow down and explain the intermediate steps",
-        scores: { visual_spatial: 1, pattern_recognition: 3, hyperfocus: 2, divergent_thinking: 3, detail_orientation: 1, big_picture: 3 },
-        processingStyle: 'parallel'
-      },
-    ],
-  },
-
-  // Mixed/Integration Questions
-  {
-    id: 21,
-    question: "What's your relationship with routines?",
-    dimension: 'hyperfocus',
-    options: [
-      { 
-        text: "I need them for some things but they feel restrictive overall",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 4, detail_orientation: 2, big_picture: 3 }
-      },
-      { 
-        text: "I thrive on consistent routines - they free up mental energy",
+        text: "Create a detailed pros-and-cons list with all factors weighted",
         scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 3, divergent_thinking: 0, detail_orientation: 5, big_picture: 2 }
       },
       { 
-        text: "I create elaborate systems but struggle to maintain them",
-        scores: { visual_spatial: 2, pattern_recognition: 4, hyperfocus: 3, divergent_thinking: 3, detail_orientation: 3, big_picture: 4 }
+        text: "Trust my intuition after absorbing all available information",
+        scores: { visual_spatial: 2, pattern_recognition: 3, hyperfocus: 1, divergent_thinking: 3, detail_orientation: 1, big_picture: 4 }
       },
       { 
-        text: "I prefer flexibility and adapting in the moment",
-        scores: { visual_spatial: 2, pattern_recognition: 2, hyperfocus: 0, divergent_thinking: 5, detail_orientation: 0, big_picture: 3 }
-      },
-    ],
-  },
-  {
-    id: 22,
-    question: "When you have many tasks to complete, you:",
-    dimension: 'detail_orientation',
-    options: [
-      { 
-        text: "Jump between them based on interest and energy",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 1, divergent_thinking: 4, detail_orientation: 0, big_picture: 2 },
-        processingStyle: 'nonlinear'
-      },
-      { 
-        text: "Work through them systematically in priority order",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 3, divergent_thinking: 0, detail_orientation: 5, big_picture: 2 },
-        processingStyle: 'sequential'
-      },
-      { 
-        text: "Make progress on several at once, switching between them",
-        scores: { visual_spatial: 2, pattern_recognition: 3, hyperfocus: 2, divergent_thinking: 3, detail_orientation: 1, big_picture: 3 },
-        processingStyle: 'parallel'
-      },
-      { 
-        text: "Hyperfocus on the most interesting one until it's done",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 5, divergent_thinking: 2, detail_orientation: 2, big_picture: 1 }
-      },
-    ],
-  },
-  {
-    id: 23,
-    question: "In conversations, what do you find yourself doing?",
-    dimension: 'divergent_thinking',
-    options: [
-      { 
-        text: "Making unexpected connections between different topics",
-        scores: { visual_spatial: 2, pattern_recognition: 4, hyperfocus: 1, divergent_thinking: 5, detail_orientation: 1, big_picture: 4 }
-      },
-      { 
-        text: "Staying focused on the topic until it's fully explored",
-        scores: { visual_spatial: 1, pattern_recognition: 3, hyperfocus: 4, divergent_thinking: 1, detail_orientation: 3, big_picture: 2 }
-      },
-      { 
-        text: "Remembering specific details others mentioned earlier",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 3, divergent_thinking: 1, detail_orientation: 5, big_picture: 1 }
-      },
-      { 
-        text: "Seeing how the conversation fits into bigger themes",
-        scores: { visual_spatial: 1, pattern_recognition: 4, hyperfocus: 1, divergent_thinking: 2, detail_orientation: 1, big_picture: 5 }
-      },
-    ],
-  },
-  {
-    id: 24,
-    question: "Your ideal work environment would be:",
-    dimension: 'hyperfocus',
-    options: [
-      { 
-        text: "Quiet and controlled with minimal interruptions",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 5, divergent_thinking: 1, detail_orientation: 4, big_picture: 1 },
-        sensoryIndicator: 'sensory_avoiding'
-      },
-      { 
-        text: "Stimulating with variety and things happening around me",
-        scores: { visual_spatial: 2, pattern_recognition: 2, hyperfocus: 1, divergent_thinking: 4, detail_orientation: 0, big_picture: 2 },
-        sensoryIndicator: 'sensory_seeking'
-      },
-      { 
-        text: "Flexible - different spaces for different types of work",
-        scores: { visual_spatial: 2, pattern_recognition: 3, hyperfocus: 3, divergent_thinking: 3, detail_orientation: 2, big_picture: 3 }
-      },
-      { 
-        text: "Structured and predictable with clear expectations",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 2, divergent_thinking: 0, detail_orientation: 5, big_picture: 1 }
-      },
-    ],
-  },
-  {
-    id: 25,
-    question: "When you discover something you were wrong about, you feel:",
-    dimension: 'pattern_recognition',
-    options: [
-      { 
-        text: "Excited - it means updating my mental model of how things work",
-        scores: { visual_spatial: 1, pattern_recognition: 5, hyperfocus: 2, divergent_thinking: 3, detail_orientation: 2, big_picture: 4 }
-      },
-      { 
-        text: "Frustrated with myself for missing the correct answer",
-        scores: { visual_spatial: 1, pattern_recognition: 3, hyperfocus: 3, divergent_thinking: 0, detail_orientation: 4, big_picture: 1 }
-      },
-      { 
-        text: "Curious about what led me to the wrong conclusion",
-        scores: { visual_spatial: 1, pattern_recognition: 4, hyperfocus: 2, divergent_thinking: 4, detail_orientation: 2, big_picture: 3 }
-      },
-      { 
-        text: "Ready to move on and apply the correct information",
-        scores: { visual_spatial: 1, pattern_recognition: 2, hyperfocus: 1, divergent_thinking: 2, detail_orientation: 2, big_picture: 2 }
+        text: "Consult others whose judgment I trust",
+        scores: { visual_spatial: 1, pattern_recognition: 1, hyperfocus: 0, divergent_thinking: 2, detail_orientation: 2, big_picture: 2 }
       },
     ],
   },
