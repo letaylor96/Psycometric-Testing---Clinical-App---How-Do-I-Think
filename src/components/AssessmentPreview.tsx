@@ -1,12 +1,13 @@
-import { motion } from 'framer-motion';
-import { ArrowRight, ArrowLeft, Brain, UserCheck, Lightbulb, Activity, Check, Lock, Sparkles, Crown, Shield, CreditCard } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, ArrowLeft, Brain, UserCheck, Lightbulb, Activity, Check, X, Sparkles, Crown, Shield, CreditCard, Users, Zap, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo } from '@/data/assessmentTypes';
 
 interface AssessmentPreviewProps {
   type: AssessmentType;
   isFree: boolean;
-  onStart: () => void;
+  onStart: (tier: 'free' | 'premium') => void;
   onBack: () => void;
 }
 
@@ -18,70 +19,110 @@ const assessmentIcons: Record<AssessmentType, React.ElementType> = {
 };
 
 // What users get for free vs paid for each assessment
-const assessmentTiers: Record<AssessmentType, { free: string[]; paid: string[] }> = {
+const assessmentTiers: Record<AssessmentType, { 
+  free: { included: string[]; excluded: string[] }; 
+  paid: string[];
+  premiumStats: { percentage: number; benefit: string };
+}> = {
   personality: {
-    free: [
-      'Your primary personality type',
-      'Basic Big Five scores (OCEAN)',
-      'Your Myers-Briggs type indicator',
-      'Key strengths summary',
-    ],
+    free: {
+      included: [
+        'Basic personality type',
+        'Simplified Big Five scores',
+      ],
+      excluded: [
+        'Detailed facet analysis',
+        'Leadership style insights',
+        'Career recommendations',
+        'Relationship compatibility',
+        'Executive persona archetype',
+      ],
+    },
     paid: [
-      'Deep facet-level personality analysis',
-      'Leadership style breakdown',
-      'Communication preferences',
+      'Full Big Five + all 30 facets',
+      'Your Myers-Briggs type with confidence %',
+      'Leadership & communication style',
       'Career fit recommendations',
-      'Relationship compatibility insights',
-      'Executive persona archetype',
+      'Relationship compatibility matrix',
+      'Your executive persona archetype',
+      'Shareable profile card',
     ],
+    premiumStats: { percentage: 78, benefit: 'discovered career insights they never considered' },
   },
   iq: {
-    free: [
-      'Your IQ score estimate',
-      'Global percentile ranking',
-      'Basic cognitive category',
-      'Pattern recognition score',
-    ],
+    free: {
+      included: [
+        'Approximate IQ range',
+        'Basic percentile',
+      ],
+      excluded: [
+        'Exact IQ score',
+        'Cognitive breakdown',
+        'Processing speed analysis',
+        'Professional benchmarks',
+        'Achievement badge',
+      ],
+    },
     paid: [
-      'Detailed cognitive breakdown',
+      'Precise IQ score (not just range)',
+      'Global percentile with confidence interval',
       'Verbal vs spatial intelligence split',
-      'Processing speed analysis',
-      'Problem-solving style profile',
-      'Comparison to professional benchmarks',
+      'Processing speed & working memory',
+      'Comparison to 50+ professions',
       'LinkedIn-ready achievement badge',
+      'Mensa eligibility indicator',
     ],
+    premiumStats: { percentage: 84, benefit: 'scored higher than they expected' },
   },
   cognitive: {
-    free: [
-      'Your cognitive style type',
-      'Primary thinking pattern',
-      'Processing style (linear/nonlinear)',
-      'Basic strengths overview',
-    ],
+    free: {
+      included: [
+        'Primary thinking style',
+        'Basic processing type',
+      ],
+      excluded: [
+        'Full 6-dimension profile',
+        'Hyperfocus analysis',
+        'Productivity strategies',
+        'Cognitive archetype',
+        'Strengths deep-dive',
+      ],
+    },
     paid: [
-      'Full 6-dimension cognitive profile',
+      'Complete 6-dimension cognitive map',
       'Hyperfocus pattern analysis',
       'Divergent thinking score',
-      'Detail orientation metrics',
+      'Sensory processing insights',
       'Personalized productivity strategies',
-      'Cognitive archetype (e.g., "Visual Architect")',
+      'Your cognitive archetype title',
+      'Work environment recommendations',
     ],
+    premiumStats: { percentage: 91, benefit: 'finally understood why they think differently' },
   },
   adhd: {
-    free: [
-      'ADHD likelihood indicator',
-      'Part A screening score',
-      'Inattention vs Hyperactivity split',
-      'Basic recommendations',
-    ],
+    free: {
+      included: [
+        'Basic ADHD indicator',
+        'General attention score',
+      ],
+      excluded: [
+        'Clinical-grade report',
+        'Domain breakdown',
+        'Severity analysis',
+        'Coping strategies',
+        'Professional guidance',
+      ],
+    },
     paid: [
       'Full ASRS-v1.1 clinical report',
-      'Domain-specific breakdown',
-      'Symptom severity analysis',
-      'Coping strategy recommendations',
+      'Inattention vs Hyperactivity breakdown',
+      'Symptom severity by domain',
+      'Evidence-based coping strategies',
       'When to seek professional help',
-      'Workplace accommodation suggestions',
+      'Workplace accommodation guide',
+      'PDF report for healthcare providers',
     ],
+    premiumStats: { percentage: 73, benefit: 'took their results to a healthcare provider' },
   },
 };
 
@@ -104,7 +145,10 @@ const assessmentDescriptions: Record<AssessmentType, { tagline: string; what: st
   },
 };
 
-export const AssessmentPreview = ({ type, isFree, onStart, onBack }: AssessmentPreviewProps) => {
+export const AssessmentPreview = ({ type, onStart, onBack }: AssessmentPreviewProps) => {
+  // Default to premium (psychological: default effect)
+  const [selectedTier, setSelectedTier] = useState<'free' | 'premium'>('premium');
+  
   const info = assessmentInfo[type];
   const Icon = assessmentIcons[type];
   const tiers = assessmentTiers[type];
@@ -135,8 +179,8 @@ export const AssessmentPreview = ({ type, isFree, onStart, onBack }: AssessmentP
 
         {/* Header */}
         <div className="text-center mb-8">
-          <div className={`w-16 h-16 rounded-2xl bg-${info.color}/10 flex items-center justify-center mx-auto mb-4`}>
-            <Icon className={`w-8 h-8 text-${info.color}`} />
+          <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+            <Icon className="w-8 h-8 text-primary" />
           </div>
           <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">
             {info.title}
@@ -167,66 +211,151 @@ export const AssessmentPreview = ({ type, isFree, onStart, onBack }: AssessmentP
           </p>
         </motion.div>
 
-        {/* Results comparison */}
+        {/* Tier Selection Tabs */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8"
+          transition={{ delay: 0.15 }}
+          className="mb-6"
         >
-          {/* Free tier */}
-          <div className={`rounded-xl border p-5 ${isFree ? 'border-emerald-500/40 bg-emerald-500/5' : 'border-border/50 bg-card/50'}`}>
-            <div className="flex items-center gap-2 mb-4">
-              <div className={`px-2 py-1 rounded-full text-xs font-bold ${isFree ? 'bg-emerald-500 text-white' : 'bg-muted text-muted-foreground'}`}>
-                {isFree ? 'YOUR TIER' : 'FREE'}
-              </div>
-              {isFree && (
-                <span className="text-emerald-400 text-xs font-medium">First test free!</span>
+          <div className="flex gap-2 p-1 bg-muted/50 rounded-xl">
+            <button
+              onClick={() => setSelectedTier('free')}
+              className={`flex-1 py-3 px-4 rounded-lg text-sm font-medium transition-all ${
+                selectedTier === 'free'
+                  ? 'bg-background text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <span className="flex items-center justify-center gap-2">
+                Free Version
+              </span>
+            </button>
+            <button
+              onClick={() => setSelectedTier('premium')}
+              className={`flex-1 py-3 px-4 rounded-lg text-sm font-medium transition-all relative ${
+                selectedTier === 'premium'
+                  ? 'bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/25'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <span className="flex items-center justify-center gap-2">
+                <Crown className="w-4 h-4" />
+                Premium Report — $3
+              </span>
+              {selectedTier !== 'premium' && (
+                <span className="absolute -top-2 -right-2 px-2 py-0.5 bg-amber-500 text-white text-[10px] font-bold rounded-full">
+                  RECOMMENDED
+                </span>
               )}
-            </div>
-            <h4 className="font-semibold text-foreground mb-3">Basic Results</h4>
-            <ul className="space-y-2">
-              {tiers.free.map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm">
-                  <Check className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                  <span className="text-muted-foreground">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Paid tier */}
-          <div className={`rounded-xl border p-5 ${!isFree ? 'border-primary/40 bg-primary/5 ring-1 ring-primary/20' : 'border-border/50 bg-card/50'}`}>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="px-2 py-1 rounded-full text-xs font-bold bg-primary text-primary-foreground flex items-center gap-1">
-                <Crown className="w-3 h-3" />
-                PREMIUM
-              </div>
-              <span className="text-foreground text-xs font-medium">$3</span>
-            </div>
-            <h4 className="font-semibold text-foreground mb-3">Full Report</h4>
-            <ul className="space-y-2">
-              {tiers.paid.map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm">
-                  {isFree ? (
-                    <Lock className="w-4 h-4 text-muted-foreground/50 mt-0.5 shrink-0" />
-                  ) : (
-                    <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                  )}
-                  <span className={isFree ? 'text-muted-foreground/50' : 'text-muted-foreground'}>{item}</span>
-                </li>
-              ))}
-            </ul>
-            {isFree && (
-              <p className="text-xs text-muted-foreground/60 mt-3 pt-3 border-t border-border/50">
-                Upgrade after completing to unlock full insights
-              </p>
-            )}
+            </button>
           </div>
         </motion.div>
 
-        {/* Trust badges */}
-        {!isFree && (
+        {/* Tier Content */}
+        <AnimatePresence mode="wait">
+          {selectedTier === 'free' ? (
+            <motion.div
+              key="free"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.2 }}
+              className="rounded-xl border border-border/50 bg-card/30 p-6 mb-6"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-lg font-semibold text-foreground">Basic Results</span>
+                <span className="px-2 py-0.5 bg-muted text-muted-foreground text-xs rounded-full">Limited</span>
+              </div>
+              
+              {/* What's included */}
+              <div className="mb-4">
+                <p className="text-xs text-muted-foreground uppercase tracking-wide mb-2">Included</p>
+                <ul className="space-y-2">
+                  {tiers.free.included.map((item, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm">
+                      <Check className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" />
+                      <span className="text-foreground">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* What's NOT included - Loss Aversion */}
+              <div className="pt-4 border-t border-border/50">
+                <p className="text-xs text-muted-foreground uppercase tracking-wide mb-2">You'll miss out on</p>
+                <ul className="space-y-2">
+                  {tiers.free.excluded.map((item, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm">
+                      <X className="w-4 h-4 text-red-400/70 mt-0.5 shrink-0" />
+                      <span className="text-muted-foreground/70 line-through">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Nudge to premium */}
+              <div className="mt-6 p-3 rounded-lg bg-primary/5 border border-primary/20">
+                <p className="text-xs text-center text-muted-foreground">
+                  <span className="text-primary font-medium">{tiers.premiumStats.percentage}% of users</span> who chose Premium {tiers.premiumStats.benefit}
+                </p>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="premium"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.2 }}
+              className="rounded-xl border-2 border-primary/40 bg-gradient-to-b from-primary/5 to-transparent p-6 mb-6 relative overflow-hidden"
+            >
+              {/* Popular badge */}
+              <div className="absolute top-0 right-0 bg-gradient-to-l from-amber-500 to-amber-400 text-white text-xs font-bold px-4 py-1 rounded-bl-lg flex items-center gap-1">
+                <TrendingUp className="w-3 h-3" />
+                MOST POPULAR
+              </div>
+
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-lg font-semibold text-foreground">Full Premium Report</span>
+                <div className="flex items-center gap-1">
+                  <span className="text-xs text-muted-foreground line-through">$9</span>
+                  <span className="text-primary font-bold">$3</span>
+                </div>
+              </div>
+
+              {/* Social proof */}
+              <div className="flex items-center gap-2 mb-4 text-xs text-muted-foreground">
+                <Users className="w-3 h-3" />
+                <span><strong className="text-foreground">2,847</strong> people unlocked full insights this week</span>
+              </div>
+              
+              <ul className="space-y-2 mb-4">
+                {tiers.paid.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm">
+                    <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                    <span className="text-foreground">{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Value proposition */}
+              <div className="flex items-center gap-3 pt-4 border-t border-primary/20">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Zap className="w-3 h-3 text-amber-500" />
+                  <span>Instant results</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Shield className="w-3 h-3 text-emerald-500" />
+                  <span>Money-back guarantee</span>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Trust badges - Always show for premium */}
+        {selectedTier === 'premium' && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -238,17 +367,12 @@ export const AssessmentPreview = ({ type, isFree, onStart, onBack }: AssessmentP
               <span>256-bit SSL</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
-              <svg className="w-10 h-4" viewBox="0 0 60 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8.31 5.84H5.28L3.33 14.86L1.5 5.84H0L2.42 17.16H4.11L6.09 8.04L8.04 17.16H9.78L12.18 5.84H10.68L8.88 14.86L8.31 5.84Z" fill="currentColor" className="text-muted-foreground"/>
-                <path d="M15.93 17.34C17.85 17.34 19.29 15.84 19.29 13.68C19.29 11.52 17.85 10.02 15.93 10.02C14.01 10.02 12.57 11.52 12.57 13.68C12.57 15.84 14.01 17.34 15.93 17.34ZM15.93 16.02C14.79 16.02 13.95 15.06 13.95 13.68C13.95 12.3 14.79 11.34 15.93 11.34C17.07 11.34 17.91 12.3 17.91 13.68C17.91 15.06 17.07 16.02 15.93 16.02Z" fill="currentColor" className="text-muted-foreground"/>
-                <path d="M23.52 10.2L22.8 12.66C22.56 13.5 22.38 14.22 22.2 14.94H22.14C21.96 14.22 21.75 13.5 21.48 12.66L20.7 10.2H19.2L21.42 17.16H22.86L25.08 10.2H23.52Z" fill="currentColor" className="text-muted-foreground"/>
-                <path d="M28.89 17.34C30.27 17.34 31.35 16.68 31.77 15.6L30.51 15.12C30.21 15.78 29.61 16.14 28.89 16.14C27.81 16.14 27.03 15.3 26.97 14.1H31.89V13.56C31.89 11.46 30.57 10.02 28.77 10.02C26.85 10.02 25.53 11.58 25.53 13.68C25.53 15.84 26.91 17.34 28.89 17.34ZM28.77 11.22C29.73 11.22 30.39 11.94 30.51 12.96H27.03C27.21 11.88 27.87 11.22 28.77 11.22Z" fill="currentColor" className="text-muted-foreground"/>
-                <path d="M35.16 17.16H36.48V13.26C36.48 11.7 37.32 11.1 38.7 11.34V10.02C37.56 9.9 36.78 10.5 36.42 11.46H36.36L36.24 10.2H35.16V17.16Z" fill="currentColor" className="text-muted-foreground"/>
-                <path d="M42.27 17.34C43.65 17.34 44.73 16.68 45.15 15.6L43.89 15.12C43.59 15.78 42.99 16.14 42.27 16.14C41.19 16.14 40.41 15.3 40.35 14.1H45.27V13.56C45.27 11.46 43.95 10.02 42.15 10.02C40.23 10.02 38.91 11.58 38.91 13.68C38.91 15.84 40.29 17.34 42.27 17.34ZM42.15 11.22C43.11 11.22 43.77 11.94 43.89 12.96H40.41C40.59 11.88 41.25 11.22 42.15 11.22Z" fill="currentColor" className="text-muted-foreground"/>
-                <path d="M49.02 17.34C50.1 17.34 50.88 16.86 51.3 16.14H51.36L51.48 17.16H52.56V5.52H51.24V11.1H51.18C50.76 10.44 49.98 10.02 49.02 10.02C47.22 10.02 45.96 11.52 45.96 13.68C45.96 15.84 47.22 17.34 49.02 17.34ZM49.26 16.02C48.12 16.02 47.34 15.06 47.34 13.68C47.34 12.3 48.12 11.34 49.26 11.34C50.4 11.34 51.24 12.3 51.24 13.68C51.24 15.06 50.4 16.02 49.26 16.02Z" fill="currentColor" className="text-muted-foreground"/>
-                <path d="M59.64 13.68C59.64 11.52 58.2 10.02 56.28 10.02C54.36 10.02 52.92 11.52 52.92 13.68C52.92 15.84 54.36 17.34 56.28 17.34C57.36 17.34 58.26 16.86 58.74 16.08L57.66 15.36C57.36 15.78 56.88 16.02 56.28 16.02C55.2 16.02 54.42 15.18 54.3 14.1H59.58C59.61 13.95 59.64 13.8 59.64 13.68ZM56.28 11.22C57.24 11.22 57.9 11.94 58.02 12.96H54.36C54.54 11.88 55.32 11.22 56.28 11.22Z" fill="currentColor" className="text-muted-foreground"/>
+              <svg className="w-12 h-5" viewBox="0 0 60 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5.4 6.6C5.28 6.6 5.16 6.66 5.1 6.78L2.4 12.6C2.34 12.72 2.34 12.84 2.4 12.96L5.1 18.78C5.16 18.9 5.28 18.96 5.4 18.96H7.2C7.44 18.96 7.62 18.72 7.5 18.48L5.04 13.08H9.6V12.48H5.04L7.5 7.08C7.62 6.84 7.44 6.6 7.2 6.6H5.4Z" fill="#635BFF"/>
+                <path d="M14.7 10.2C13.02 10.2 11.7 11.52 11.7 13.2V13.8C11.7 15.48 13.02 16.8 14.7 16.8C15.72 16.8 16.62 16.32 17.16 15.54L16.02 14.82C15.72 15.24 15.24 15.48 14.7 15.48C13.86 15.48 13.14 14.88 13.02 14.1H17.52V13.5C17.52 11.7 16.32 10.2 14.7 10.2ZM13.02 12.9C13.14 12.06 13.8 11.52 14.7 11.52C15.54 11.52 16.14 12.12 16.26 12.9H13.02Z" fill="#635BFF"/>
+                <path d="M22.38 10.2C21.36 10.2 20.52 10.68 20.1 11.4V10.38H18.72V19.8H20.16V15.96C20.58 16.56 21.36 16.98 22.32 16.98C24 16.98 25.32 15.6 25.32 13.56C25.32 11.52 24.06 10.2 22.38 10.2ZM22.08 15.54C21.12 15.54 20.28 14.76 20.16 13.68V13.44C20.28 12.36 21.12 11.64 22.08 11.64C23.16 11.64 23.88 12.48 23.88 13.56C23.88 14.7 23.16 15.54 22.08 15.54Z" fill="#635BFF"/>
               </svg>
-              <span className="text-muted-foreground">by Stripe</span>
+              <span className="text-muted-foreground font-medium">Stripe</span>
             </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <CreditCard className="w-4 h-4 text-primary" />
@@ -265,15 +389,31 @@ export const AssessmentPreview = ({ type, isFree, onStart, onBack }: AssessmentP
           className="text-center"
         >
           <Button
-            onClick={onStart}
+            onClick={() => onStart(selectedTier)}
             size="lg"
-            className="group bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-lg px-10 py-6 rounded-xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] transition-all"
+            className={`group font-semibold text-lg px-10 py-6 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all ${
+              selectedTier === 'premium' 
+                ? 'bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-primary/25 hover:shadow-primary/30'
+                : 'bg-muted hover:bg-muted/80 text-foreground'
+            }`}
           >
-            Start Assessment
-            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-0.5 transition-transform" />
+            {selectedTier === 'premium' ? (
+              <>
+                Start Premium Assessment
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-0.5 transition-transform" />
+              </>
+            ) : (
+              <>
+                Start Free Version
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-0.5 transition-transform" />
+              </>
+            )}
           </Button>
           <p className="text-muted-foreground/70 text-sm mt-4">
-            {isFree ? 'No payment required • Get basic results free' : 'Payment required after completion for full results'}
+            {selectedTier === 'premium' 
+              ? 'Payment processed securely after you complete the assessment'
+              : 'Limited insights • Upgrade anytime for full report'
+            }
           </p>
         </motion.div>
       </motion.div>

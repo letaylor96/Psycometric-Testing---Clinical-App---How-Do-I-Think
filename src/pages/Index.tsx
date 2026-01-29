@@ -83,8 +83,11 @@ const Index = () => {
   }, []);
 
   // Start the actual quiz from preview
-  const handleStartFromPreview = useCallback(() => {
+  const handleStartFromPreview = useCallback((tier: 'free' | 'premium') => {
     if (!previewType) return;
+    
+    // TODO: Store tier selection for payment gating after quiz completion
+    console.log(`Starting ${previewType} assessment with tier: ${tier}`);
     
     setCurrentQuestionIndex(0);
     setAnswers([]);
