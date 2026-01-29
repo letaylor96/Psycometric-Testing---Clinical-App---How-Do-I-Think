@@ -156,7 +156,7 @@ export const LandingHero = ({
           transition={{ delay: 0.25 }}
           className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-4"
         >
-          Discover what 97% of people don't know about themselves.
+          Discover what most people do not know about themselves.
         </motion.p>
         <motion.p
           initial={{ opacity: 0 }}
