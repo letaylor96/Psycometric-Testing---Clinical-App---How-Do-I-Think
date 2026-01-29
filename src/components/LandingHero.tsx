@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion';
-import { Brain, Sparkles, Zap, Clock, UserCheck, Lightbulb, Activity, ArrowRight, Check } from 'lucide-react';
+import { Brain, Sparkles, Zap, Clock, UserCheck, Lightbulb, Activity, ArrowRight, Check, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo, allAssessmentTypes } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
+import { AuthButton } from '@/components/AuthButton';
 import { TestResults } from '@/data/quizQuestions';
 import { PersonalityResults } from '@/data/personalityQuestions';
 import { ADHDResults } from '@/data/adhdQuestions';
 import { CognitiveStyleResults } from '@/data/cognitiveStyleQuestions';
-
 interface LandingHeroProps {
   onStart: () => void;
   onSelectAssessment: (type: AssessmentType) => void;
@@ -48,12 +48,16 @@ export const LandingHero = ({
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 relative overflow-hidden bg-background">
+      {/* Auth Button - Top Right */}
+      <div className="absolute top-4 right-4 z-20">
+        <AuthButton />
+      </div>
+
       {/* Background */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-gradient-to-b from-primary/15 via-primary/5 to-transparent rounded-full blur-[120px]" />
         <div className="absolute bottom-0 right-1/4 w-[500px] h-[400px] bg-gradient-to-tl from-accent/10 to-transparent rounded-full blur-[80px]" />
       </div>
-
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -79,8 +83,8 @@ export const LandingHero = ({
         >
           {[
             { icon: Zap, text: 'Instant Results' },
-            { icon: UserCheck, text: 'No Sign Up' },
-            { icon: Clock, text: '100% Free' },
+            { icon: Gift, text: 'First Test Free' },
+            { icon: Clock, text: '$4.99/assessment' },
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-2 text-primary font-medium text-sm sm:text-base">
               <item.icon className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -88,7 +92,6 @@ export const LandingHero = ({
             </div>
           ))}
         </motion.div>
-
         {/* Title */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
