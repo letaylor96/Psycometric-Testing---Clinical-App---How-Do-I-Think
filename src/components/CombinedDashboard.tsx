@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { TestResults, categoryLabels, divergentLabels, CognitiveCategory } from '@/data/quizQuestions';
 import { PersonalityResults, PersonalityTrait, personalityTraitLabels } from '@/data/personalityQuestions';
 import { ADHDResults, adhdDomainLabels } from '@/data/adhdQuestions';
+import { CognitiveStyleResults } from '@/data/cognitiveStyleQuestions';
 import { 
   RotateCcw, 
   Brain, 
@@ -20,6 +22,7 @@ import {
   Briefcase,
   Zap
 } from 'lucide-react';
+import { CareerMatchRecommendations } from './CareerMatchRecommendations';
 import { cn } from '@/lib/utils';
 import {
   RadarChart,
@@ -41,8 +44,9 @@ interface CombinedDashboardProps {
   iqResults: TestResults | null;
   personalityResults: PersonalityResults | null;
   adhdResults: ADHDResults | null;
+  cognitiveStyleResults?: CognitiveStyleResults | null;
   onRestart: () => void;
-  onTakeAssessment: (type: 'iq' | 'personality' | 'adhd') => void;
+  onTakeAssessment: (type: 'iq' | 'personality' | 'adhd' | 'cognitive') => void;
 }
 
 const getIQPercentile = (iq: number): number => {
@@ -86,11 +90,13 @@ export const CombinedDashboard = ({
   iqResults,
   personalityResults,
   adhdResults,
+  cognitiveStyleResults,
   onRestart,
   onTakeAssessment,
 }: CombinedDashboardProps) => {
-  const completedCount = [iqResults, personalityResults, adhdResults].filter(Boolean).length;
-  const totalAssessments = 3;
+  const [isPremiumCareer, setIsPremiumCareer] = useState(false);
+  const completedCount = [iqResults, personalityResults, adhdResults, cognitiveStyleResults].filter(Boolean).length;
+  const totalAssessments = 4;
 
   // Prepare cognitive radar data with new categories
   const cognitiveRadarData = iqResults?.categoryScores.map((cat) => ({
@@ -548,6 +554,21 @@ export const CombinedDashboard = ({
           iqResults={iqResults}
           personalityResults={personalityResults}
           adhdResults={adhdResults}
+        />
+
+        {/* Career Match Recommendations - Premium Feature */}
+        <CareerMatchRecommendations
+          context={{
+            iqResults,
+            personalityResults,
+            adhdResults,
+            cognitiveStyleResults
+          }}
+          isPremium={isPremiumCareer}
+          onUnlockPremium={() => {
+            // TODO: Integrate with payment flow
+            setIsPremiumCareer(true);
+          }}
         />
 
         {/* Complete Profile Summary */}

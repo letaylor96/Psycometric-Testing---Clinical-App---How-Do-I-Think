@@ -198,7 +198,7 @@ const Index = () => {
     setGameState('dashboard');
   }, []);
 
-  const handleTakeAssessmentFromDashboard = useCallback((type: 'iq' | 'personality' | 'adhd') => {
+  const handleTakeAssessmentFromDashboard = useCallback((type: 'iq' | 'personality' | 'adhd' | 'cognitive') => {
     setPreviewType(type);
     setGameState('preview');
   }, []);
@@ -376,6 +376,7 @@ const Index = () => {
               iqResults={results}
               personalityResults={personalityResults}
               adhdResults={adhdResults}
+              cognitiveStyleResults={cognitiveStyleResults}
               onRestart={handleFullRestart}
               onTakeAssessment={handleTakeAssessmentFromDashboard}
             />
