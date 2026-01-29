@@ -31,334 +31,371 @@ export const divergentLabels: Record<DivergentDimension, { label: string; descri
 export const TIME_PER_QUESTION = 30; // 30 seconds per question
 export const TOTAL_TEST_TIME = 25 * TIME_PER_QUESTION; // 25 questions × 30 seconds = 750 seconds (12.5 min)
 
-// 25 Progressive IQ Questions - Mensa-Style Pattern Recognition
-// Based on official Mensa admission test formats: Raven's Matrices, number sequences, spatial reasoning
+// ═══════════════════════════════════════════════════════════════════════════════
+// 25 PROGRESSIVE IQ QUESTIONS - Professional Psychometric Assessment
+// ═══════════════════════════════════════════════════════════════════════════════
+// Based on established cognitive assessment frameworks:
+// • Raven's Progressive Matrices (non-verbal reasoning)
+// • Wechsler Adult Intelligence Scale patterns (matrix completion)
+// • Cattell Culture Fair Intelligence Test (fluid reasoning)
+// • Mensa admission test formats (progressive difficulty)
+//
+// Question types follow validated psychometric categories:
+// 1. Number Sequences - Mathematical pattern recognition
+// 2. Matrix Reasoning - 3×3 grid completion (Raven's style)
+// 3. Spatial Reasoning - Mental rotation and transformation
+// 4. Abstract Logic - Rule inference and application
+// ═══════════════════════════════════════════════════════════════════════════════
+
 export const quizQuestions: Question[] = [
-  // ============ LEVEL 1: EASY (IQ 85-100) ============
-  // Foundational patterns - accessible to most test-takers
+  // ╔═══════════════════════════════════════════════════════════════════════════╗
+  // ║ LEVEL 1: FOUNDATIONAL (IQ 85-100) - ~50th percentile                      ║
+  // ║ Simple single-rule patterns accessible to most test-takers                 ║
+  // ╚═══════════════════════════════════════════════════════════════════════════╝
+  
   {
     id: 1,
     category: 'number_sequence',
     difficulty: 'easy',
-    question: `What number comes next?
+    question: `Identify the pattern and find the missing number:
 
-    2, 4, 6, 8, ?`,
+    2,  4,  6,  8,  __`,
     options: ['10', '9', '12', '11'],
-    correctAnswer: 0, // +2 each time
-    timeLimit: 45,
+    correctAnswer: 0, // Arithmetic progression: +2
+    timeLimit: 30,
   },
   {
     id: 2,
     category: 'matrix',
     difficulty: 'easy',
-    question: `Complete the 3×3 grid. Each row and column contains ○, △, □ exactly once.
+    question: `Each row and column must contain each symbol exactly once.
+What belongs in the empty cell?
 
-    ○    △    □
-    △    □    ○
-    □    ○    ?`,
+    ○   △   □
+    △   □   ○
+    □   ○   __`,
     options: ['△', '○', '□', '●'],
     correctAnswer: 0, // Latin square completion
-    timeLimit: 45,
+    timeLimit: 30,
   },
   {
     id: 3,
     category: 'number_sequence',
     difficulty: 'easy',
-    question: `What number comes next?
+    question: `What number continues this sequence?
 
-    3, 6, 9, 12, ?`,
-    options: ['15', '14', '18', '13'],
-    correctAnswer: 0, // +3 each time (multiples of 3)
-    timeLimit: 45,
+    1,  3,  5,  7,  __`,
+    options: ['9', '8', '10', '11'],
+    correctAnswer: 0, // Odd numbers: +2
+    timeLimit: 30,
   },
   {
     id: 4,
     category: 'shape_pattern',
     difficulty: 'easy',
-    question: `What comes next in the rotation sequence?
+    question: `The arrow rotates 90° clockwise each step. What comes next?
 
-    ⬆ → ➡ → ⬇ → ?`,
-    options: ['⬅ (Left)', '⬆ (Up)', '↗ (Diagonal)', '⬇ (Down)'],
+    ↑  →  ↓  __`,
+    options: ['← (Left)', '↑ (Up)', '↘ (Diagonal)', '→ (Right)'],
     correctAnswer: 0, // 90° clockwise rotation
-    timeLimit: 45,
+    timeLimit: 30,
   },
   {
     id: 5,
     category: 'number_sequence',
     difficulty: 'easy',
-    question: `What number comes next?
+    question: `Each number is double the previous. What comes next?
 
-    1, 2, 4, 8, ?`,
+    1,  2,  4,  8,  __`,
     options: ['16', '10', '12', '15'],
-    correctAnswer: 0, // ×2 each time (powers of 2)
-    timeLimit: 45,
+    correctAnswer: 0, // Geometric progression: ×2
+    timeLimit: 30,
   },
 
-  // ============ LEVEL 2: MEDIUM (IQ 100-115) ============
-  // Standard Mensa-style questions requiring pattern detection
+  // ╔═══════════════════════════════════════════════════════════════════════════╗
+  // ║ LEVEL 2: STANDARD (IQ 100-115) - ~75th percentile                         ║
+  // ║ Multi-step patterns requiring active pattern detection                     ║
+  // ╚═══════════════════════════════════════════════════════════════════════════╝
+  
   {
     id: 6,
     category: 'matrix',
     difficulty: 'medium',
-    question: `In each row, the third figure combines elements from the first two. What goes in the blank?
+    question: `In each row, the third symbol combines elements from the first two.
+What completes the pattern?
 
-    ○    ●    ◐
-    △    ▲    ◭
-    □    ■    ?`,
-    options: ['◧ (Half-filled square)', '□ (Empty)', '■ (Filled)', '▣ (Dotted)'],
-    correctAnswer: 0, // Pattern: empty + filled = half-filled
-    timeLimit: 60,
+    ○   ●   ◐
+    △   ▲   ◭
+    □   ■   __`,
+    options: ['◧ (Half-filled)', '□ (Empty)', '■ (Filled)', '▣ (Dotted)'],
+    correctAnswer: 0, // Rule: empty + filled = half-filled
+    timeLimit: 30,
   },
   {
     id: 7,
     category: 'number_sequence',
     difficulty: 'medium',
-    question: `What number comes next?
+    question: `Find the rule governing this sequence:
 
-    2, 5, 10, 17, 26, ?`,
+    2,  5,  10,  17,  26,  __`,
     options: ['37', '35', '38', '40'],
-    correctAnswer: 0, // n² + 1: 1²+1=2, 2²+1=5, 3²+1=10, 4²+1=17, 5²+1=26, 6²+1=37
-    timeLimit: 60,
+    correctAnswer: 0, // n² + 1 sequence: 1²+1, 2²+1, 3²+1, 4²+1, 5²+1, 6²+1=37
+    timeLimit: 30,
   },
   {
     id: 8,
     category: 'spatial',
     difficulty: 'medium',
     divergentDimension: 'fluency',
-    question: `Which shape is the odd one out?
+    question: `Which shape does NOT belong with the others?
 
-    A: ◇ (Diamond rotated 45°)
-    B: □ (Square)
-    C: ▭ (Rectangle)
-    D: △ (Triangle)`,
-    options: ['D - Triangle (3 sides, others have 4)', 'A - Diamond (rotated)', 'B - Square (regular)', 'C - Rectangle (elongated)'],
-    correctAnswer: 0, // Triangle has 3 sides, others have 4
+    A: ◇ (Diamond)    B: □ (Square)
+    C: ▬ (Rectangle)  D: △ (Triangle)`,
+    options: ['D - Different number of sides', 'A - Different orientation', 'B - Regular polygon', 'C - Elongated shape'],
+    correctAnswer: 0, // Triangle = 3 sides; others = 4 sides
     divergentScores: [3, 1, 1, 1],
-    timeLimit: 60,
+    timeLimit: 30,
   },
   {
     id: 9,
     category: 'number_sequence',
     difficulty: 'medium',
-    question: `What number comes next?
+    question: `These are perfect squares. What comes next?
 
-    1, 4, 9, 16, 25, ?`,
+    1,  4,  9,  16,  25,  __`,
     options: ['36', '30', '35', '49'],
-    correctAnswer: 0, // Perfect squares: 1², 2², 3², 4², 5², 6²
-    timeLimit: 60,
+    correctAnswer: 0, // Square numbers: 1², 2², 3², 4², 5², 6²=36
+    timeLimit: 30,
   },
   {
     id: 10,
     category: 'matrix',
     difficulty: 'medium',
     divergentDimension: 'flexibility',
-    question: `In this 3×3 matrix, each row follows a rule. What goes in the blank?
+    question: `Each row follows the pattern: n, 2n, 3n. What is the missing value?
 
     2    4    6
     3    6    9
-    5    10   ?`,
+    5   10   __`,
     options: ['15', '20', '12', '25'],
-    correctAnswer: 0, // Each row: n, 2n, 3n
+    correctAnswer: 0, // 5×3 = 15
     divergentScores: [3, 1, 2, 0],
-    timeLimit: 60,
+    timeLimit: 30,
   },
 
-  // ============ LEVEL 3: HARD (IQ 115-130) ============
-  // Multi-rule patterns and complex transformations
+  // ╔═══════════════════════════════════════════════════════════════════════════╗
+  // ║ LEVEL 3: ADVANCED (IQ 115-130) - ~90th percentile                         ║
+  // ║ Complex multi-rule patterns and transformational reasoning                 ║
+  // ╚═══════════════════════════════════════════════════════════════════════════╝
+  
   {
     id: 11,
     category: 'number_sequence',
     difficulty: 'hard',
-    question: `What number comes next?
+    question: `In this famous sequence, each term is the sum of the two preceding terms:
 
-    1, 1, 2, 3, 5, 8, 13, ?`,
+    1,  1,  2,  3,  5,  8,  13,  __`,
     options: ['21', '18', '20', '15'],
-    correctAnswer: 0, // Fibonacci: each = sum of previous two
-    timeLimit: 60,
+    correctAnswer: 0, // Fibonacci sequence: 8+13=21
+    timeLimit: 30,
   },
   {
     id: 12,
     category: 'matrix',
     difficulty: 'hard',
     divergentDimension: 'originality',
-    question: `In this Mensa-style matrix, shapes transform across rows. What completes it?
+    question: `In this Raven's-style matrix, each row adds one element. What completes Row 3?
 
-    Row 1: ○ with 1 dot → ○ with 2 dots → ○ with 3 dots
-    Row 2: □ with 1 line → □ with 2 lines → □ with 3 lines  
-    Row 3: △ with 1 dot → △ with 2 dots → ?`,
-    options: ['△ with 3 dots', '△ with 4 dots', '△ with 1 dot', '□ with 3 dots'],
+    Row 1: ○·    ○··    ○···
+    Row 2: □—    □——    □———
+    Row 3: △·    △··     __`,
+    options: ['△··· (3 dots)', '△···· (4 dots)', '△· (1 dot)', '□··· (wrong shape)'],
     correctAnswer: 0, // Pattern: add one element per column
     divergentScores: [3, 1, 0, 1],
-    timeLimit: 60,
+    timeLimit: 30,
   },
   {
     id: 13,
     category: 'number_sequence',
     difficulty: 'hard',
-    question: `What number comes next?
+    question: `These are pronic numbers (n × (n+1)). What comes next?
 
-    2, 6, 12, 20, 30, ?`,
+    2,  6,  12,  20,  30,  __`,
     options: ['42', '40', '44', '36'],
-    correctAnswer: 0, // n(n+1): 1×2=2, 2×3=6, 3×4=12, 4×5=20, 5×6=30, 6×7=42
-    timeLimit: 60,
+    correctAnswer: 0, // 1×2, 2×3, 3×4, 4×5, 5×6, 6×7=42
+    timeLimit: 30,
   },
   {
     id: 14,
     category: 'spatial',
     difficulty: 'hard',
     divergentDimension: 'flexibility',
-    question: `A square paper is folded in half, then in half again. A single hole is punched through all layers. When unfolded, how many holes are there?`,
+    question: `A square sheet of paper is folded in half, then folded in half again (creating 4 layers). A single hole is punched through all layers. When unfolded, how many holes are visible?`,
     options: ['4', '2', '8', '1'],
-    correctAnswer: 0, // 2 folds = 4 layers = 4 holes
+    correctAnswer: 0, // 2 folds = 2² = 4 layers = 4 holes
     divergentScores: [3, 1, 2, 0],
-    timeLimit: 60,
+    timeLimit: 30,
   },
   {
     id: 15,
     category: 'matrix',
     difficulty: 'hard',
-    question: `Complete this Raven's-style matrix. Each row shows a transformation:
+    question: `Each row shows a progressive filling transformation. What completes the sequence?
 
-    ○ → ◐ → ●
-    □ → ◧ → ■
-    △ → ◭ → ?`,
-    options: ['▲ (Filled triangle)', '△ (Empty)', '◭ (Half)', '▽ (Inverted)'],
-    correctAnswer: 0, // Empty → Half-filled → Filled
-    timeLimit: 60,
+    ○  →  ◐  →  ●
+    □  →  ◧  →  ■
+    △  →  ◭  →  __`,
+    options: ['▲ (Filled)', '△ (Empty)', '◭ (Half)', '▽ (Inverted)'],
+    correctAnswer: 0, // Empty → Half-filled → Fully filled
+    timeLimit: 30,
   },
 
-  // ============ LEVEL 4: EXPERT (IQ 130-145) ============
-  // Complex multi-dimensional reasoning
+  // ╔═══════════════════════════════════════════════════════════════════════════╗
+  // ║ LEVEL 4: SUPERIOR (IQ 130-145) - ~98th percentile                         ║
+  // ║ Complex multi-dimensional reasoning and abstract rule inference            ║
+  // ╚═══════════════════════════════════════════════════════════════════════════╝
+  
   {
     id: 16,
     category: 'number_sequence',
     difficulty: 'expert',
-    question: `What number comes next?
+    question: `This sequence contains only prime numbers:
 
-    2, 3, 5, 7, 11, 13, ?`,
+    2,  3,  5,  7,  11,  13,  __`,
     options: ['17', '15', '19', '14'],
-    correctAnswer: 0, // Prime numbers
-    timeLimit: 75,
+    correctAnswer: 0, // Next prime after 13 is 17
+    timeLimit: 30,
   },
   {
     id: 17,
     category: 'matrix',
     difficulty: 'expert',
     divergentDimension: 'elaboration',
-    question: `In this matrix, each cell = row number × column number. What is the missing value?
+    question: `In this multiplication table, each cell = (row × column). What is the missing value?
 
-    1    2    3
-    2    4    6
-    3    6    ?`,
+    ×   1   2   3
+    ─────────────
+    1 │ 1   2   3
+    2 │ 2   4   6
+    3 │ 3   6   __`,
     options: ['9', '8', '12', '7'],
     correctAnswer: 0, // 3 × 3 = 9
     divergentScores: [3, 1, 2, 0],
-    timeLimit: 75,
+    timeLimit: 30,
   },
   {
     id: 18,
     category: 'number_sequence',
     difficulty: 'expert',
-    question: `What number comes next?
+    question: `These are factorials (n!). What comes next?
 
-    1, 2, 6, 24, 120, ?`,
+    1,  2,  6,  24,  120,  __`,
     options: ['720', '600', '240', '144'],
-    correctAnswer: 0, // Factorials: 1!, 2!, 3!, 4!, 5!, 6!
-    timeLimit: 75,
+    correctAnswer: 0, // 1!, 2!, 3!, 4!, 5!, 6!=720
+    timeLimit: 30,
   },
   {
     id: 19,
     category: 'abstract',
     difficulty: 'expert',
     divergentDimension: 'originality',
-    question: `If these symbols follow a rule:
-    
-    ★ = 5, ◆ = 3, ● = 2
-    
-    What is ★ + ◆ × ● = ?`,
+    question: `Given these symbol values, apply standard mathematical order of operations:
+
+    ★ = 5    ◆ = 3    ● = 2
+
+    ★ + ◆ × ● = __`,
     options: ['11', '16', '13', '10'],
-    correctAnswer: 0, // Order of operations: 5 + (3 × 2) = 5 + 6 = 11
+    correctAnswer: 0, // Order of operations: 5 + (3×2) = 5 + 6 = 11
     divergentScores: [3, 1, 1, 0],
-    timeLimit: 75,
+    timeLimit: 30,
   },
   {
     id: 20,
     category: 'spatial',
     difficulty: 'expert',
-    question: `A cube is painted red on all sides, then cut into 27 smaller cubes (3×3×3). How many small cubes have exactly 2 painted faces?`,
+    question: `A cube is painted red on all 6 faces, then cut into 27 identical smaller cubes (3×3×3 grid). How many small cubes have exactly 2 painted faces?`,
     options: ['12', '8', '6', '24'],
-    correctAnswer: 0, // Edge cubes (not corners): 12 edges × 1 cube each = 12
-    timeLimit: 75,
+    correctAnswer: 0, // Edge cubes (not corners): 12 edges × 1 middle cube = 12
+    timeLimit: 30,
   },
 
-  // ============ LEVEL 5: GENIUS (IQ 145+) ============
-  // Exceptional pattern recognition - Mensa qualifying level
+  // ╔═══════════════════════════════════════════════════════════════════════════╗
+  // ║ LEVEL 5: EXCEPTIONAL (IQ 145+) - ~99.9th percentile                       ║
+  // ║ Genius-level pattern recognition - Mensa qualifying difficulty             ║
+  // ╚═══════════════════════════════════════════════════════════════════════════╝
+  
   {
     id: 21,
     category: 'number_sequence',
     difficulty: 'genius',
     divergentDimension: 'fluency',
-    question: `What number comes next? (Look-and-Say sequence)
+    question: `This is the "Look-and-Say" sequence. Each term describes the previous term. What comes next?
 
-    1, 11, 21, 1211, 111221, ?`,
+    1  →  "one 1"  →  11
+    11 →  "two 1s" →  21
+    21 →  "one 2, one 1" → 1211
+    1211 → 111221 → __`,
     options: ['312211', '122211', '211211', '112121'],
-    correctAnswer: 0, // Describe what you see: "three 1s, two 2s, one 1"
+    correctAnswer: 0, // Describe "111221": three 1s, two 2s, one 1 = 312211
     divergentScores: [3, 1, 1, 0],
-    timeLimit: 90,
+    timeLimit: 30,
   },
   {
     id: 22,
     category: 'abstract',
     difficulty: 'genius',
-    question: `Complete the pattern (sum of cubes):
+    question: `The sum of the first n cubes always equals the square of the n-th triangular number:
 
     1³ + 2³ = 9 = 3²
     1³ + 2³ + 3³ = 36 = 6²
     1³ + 2³ + 3³ + 4³ = 100 = 10²
-    1³ + 2³ + 3³ + 4³ + 5³ = ? = 15²`,
-    options: ['225', '200', '250', '175'],
-    correctAnswer: 0, // Sum of first n cubes = (n(n+1)/2)²
-    timeLimit: 90,
+    
+    What is 1³ + 2³ + 3³ + 4³ + 5³ = __²`,
+    options: ['225 (15²)', '196 (14²)', '256 (16²)', '169 (13²)'],
+    correctAnswer: 0, // Triangular(5) = 15, so answer = 15² = 225
+    timeLimit: 30,
   },
   {
     id: 23,
     category: 'number_sequence',
     difficulty: 'genius',
     divergentDimension: 'flexibility',
-    question: `What number comes next? (Tribonacci sequence)
+    question: `In this Tribonacci sequence, each term is the sum of the three preceding terms:
 
-    0, 1, 1, 2, 4, 7, 13, ?`,
+    0,  1,  1,  2,  4,  7,  13,  __`,
     options: ['24', '20', '21', '26'],
-    correctAnswer: 0, // Sum of previous 3: 2+4+7=13, 4+7+13=24
+    correctAnswer: 0, // 4+7+13 = 24
     divergentScores: [3, 1, 2, 0],
-    timeLimit: 90,
+    timeLimit: 30,
   },
   {
     id: 24,
     category: 'matrix',
     difficulty: 'genius',
     divergentDimension: 'elaboration',
-    question: `In this Mensa matrix, two operations occur: Row operation (+2) and Column operation (×2). Find the missing value:
+    question: `This matrix has TWO rules operating simultaneously:
+• Row rule: Each row increases by +2
+• Column rule: Each column doubles
 
         Col1   Col2   Col3
-    R1:  1      2      4
-    R2:  3      4      8
-    R3:  5      6      ?`,
+    R1:   1      2      4
+    R2:   3      4      8
+    R3:   5      6     __`,
     options: ['12', '10', '14', '8'],
-    correctAnswer: 0, // Column 3 = Column 2 × 2: 6 × 2 = 12
+    correctAnswer: 0, // Column 3 follows doubling: Col2 × 2 = 6 × 2 = 12
     divergentScores: [3, 2, 1, 0],
-    timeLimit: 90,
+    timeLimit: 30,
   },
   {
     id: 25,
     category: 'abstract',
     difficulty: 'genius',
-    question: `This sequence follows a hidden rule. What comes next?
+    question: `This sequence represents something you encounter every year. What comes after N?
 
-    J, F, M, A, M, J, J, A, S, O, N, ?`,
+    J,  F,  M,  A,  M,  J,  J,  A,  S,  O,  N,  __`,
     options: ['D', 'J', 'M', 'L'],
-    correctAnswer: 0, // First letters of months: January→December
-    timeLimit: 90,
+    correctAnswer: 0, // First letters of months: January through December
+    timeLimit: 30,
   },
 ];
 
