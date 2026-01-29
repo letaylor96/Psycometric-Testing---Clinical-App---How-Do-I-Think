@@ -19,10 +19,10 @@ export const TIME_PER_QUESTION_SECONDS = 30;
 export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
   personality: {
     id: 'personality',
-    title: 'Personality DNA',
+    title: 'Who Am I?',
     shortTitle: 'Personality',
-    description: 'Decode your personality blueprint - discover what drives you, how you connect, and your hidden strengths.',
-    framework: 'OCEAN Deep Profile',
+    description: 'Discover what makes you tick - your strengths, how you connect with others, and what drives you.',
+    framework: 'Big Five Personality',
     questionCount: 30,
     timeMinutes: Math.ceil((30 * TIME_PER_QUESTION_SECONDS) / 60), // 15 min
     color: 'primary',
