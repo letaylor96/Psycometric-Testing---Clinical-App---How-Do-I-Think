@@ -39,7 +39,7 @@ export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
   },
   cognitive: {
     id: 'cognitive',
-    title: 'Cognitive Style',
+    title: 'My Cognitive Style',
     shortTitle: 'Cognitive',
     description: 'Discover how your mind naturally processes information - exploring thinking patterns often associated with neurodivergent minds.',
     framework: 'Neurodivergent Thinking Patterns',
@@ -49,9 +49,9 @@ export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
   },
   adhd: {
     id: 'adhd',
-    title: 'ADHD Screening',
+    title: 'Am I Neurodivergent?',
     shortTitle: 'ADHD',
-    description: 'Clinical-grade self-assessment screening for attention and hyperactivity patterns.',
+    description: 'Explore attention and focus patterns with a validated screening tool.',
     framework: 'ASRS-v1.1 (WHO)',
     questionCount: 18,
     timeMinutes: Math.ceil((18 * TIME_PER_QUESTION_SECONDS) / 60), // 9 min
