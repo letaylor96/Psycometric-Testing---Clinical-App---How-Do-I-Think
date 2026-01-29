@@ -80,25 +80,30 @@ export const CognitiveStyleResultsScreen = ({
   return (
     <div className="min-h-screen bg-background py-8 px-4">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
+        {/* Header - Personal Answer */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-neon-purple/20 to-neon-cyan/20 border border-neon-purple/30 mb-4">
-            <Brain className="w-4 h-4 text-neon-purple" />
-            <span className="text-sm font-medium">Cognitive Style Profile</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border text-muted-foreground text-sm font-medium mb-4">
+            <Brain className="w-4 h-4" />
+            My Cognitive Style
           </div>
-          <h1 className="font-display text-3xl md:text-4xl font-bold mb-2">
-            Your Thinking Style Revealed
+          
+          {/* Personal Identity Statement */}
+          <h1 className="font-display text-3xl md:text-5xl font-bold mb-3">
+            You are <span className="text-gradient">{results.primaryProfile.name}</span>
           </h1>
+          <p className="text-lg text-muted-foreground italic mb-2">
+            "{results.primaryProfile.tagline}"
+          </p>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Understanding how your mind naturally processes information
+            Your mind processes information in a unique way that shapes how you think, learn, and create
           </p>
         </motion.div>
 
-        {/* Primary Profile Card */}
+        {/* Primary Profile Card - "This is YOUR mind" */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -112,13 +117,13 @@ export const CognitiveStyleResultsScreen = ({
               <div>
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neon-purple/10 text-neon-purple text-xs font-medium mb-3">
                   <Crown className="w-3 h-3" />
-                  Primary Profile
+                  Your Cognitive Identity
                 </div>
                 <h2 className="font-display text-2xl md:text-3xl font-bold mb-2">
                   {results.primaryProfile.name}
                 </h2>
-                <p className="text-lg text-muted-foreground italic">
-                  "{results.primaryProfile.tagline}"
+                <p className="text-sm text-muted-foreground leading-relaxed max-w-lg">
+                  {results.primaryProfile.description}
                 </p>
               </div>
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-neon-purple to-neon-cyan flex items-center justify-center">
@@ -126,25 +131,24 @@ export const CognitiveStyleResultsScreen = ({
               </div>
             </div>
 
-            <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-              {results.primaryProfile.description}
-            </p>
-
-            {/* Neurodivergent Traits */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {results.primaryProfile.neurodivergentTraits.map((trait, index) => (
-                <span
-                  key={index}
-                  className="px-3 py-1 rounded-full bg-neon-cyan/10 text-neon-cyan text-xs font-medium border border-neon-cyan/20"
-                >
-                  {trait}
-                </span>
-              ))}
+            {/* What Makes YOUR Mind Unique */}
+            <div className="mb-6">
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3">What Makes Your Mind Unique</p>
+              <div className="flex flex-wrap gap-2">
+                {results.primaryProfile.neurodivergentTraits.map((trait, index) => (
+                  <span
+                    key={index}
+                    className="px-3 py-1.5 rounded-full bg-gradient-to-r from-neon-purple/20 to-neon-cyan/20 text-foreground text-sm font-medium border border-neon-purple/20"
+                  >
+                    ✦ {trait}
+                  </span>
+                ))}
+              </div>
             </div>
 
-            {/* Famous Examples */}
+            {/* Famous Examples - "Minds like yours" */}
             <div className="p-4 rounded-xl bg-muted/30 border border-border">
-              <p className="text-xs text-muted-foreground mb-2">Notable minds with similar profiles:</p>
+              <p className="text-xs text-muted-foreground mb-2">Notable minds with your cognitive style:</p>
               <p className="text-sm font-medium">
                 {results.primaryProfile.famousExamples.join(' • ')}
               </p>

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Cell } from 'recharts';
 import { useState } from 'react';
 import { CareerIntelligenceReport } from '@/components/CareerIntelligenceReport';
+import { cn } from '@/lib/utils';
 
 interface ResultsScreenProps {
   results: TestResults;
@@ -26,12 +27,14 @@ const formatTime = (seconds: number): string => {
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 };
 
-const getIQTier = (iq: number): { tier: string; color: string; description: string } => {
-  if (iq >= 140) return { tier: 'Exceptional', color: 'text-yellow-400', description: 'Top 0.4% globally' };
-  if (iq >= 130) return { tier: 'Superior', color: 'text-primary', description: 'Top 2% globally' };
-  if (iq >= 120) return { tier: 'High', color: 'text-secondary', description: 'Top 9% globally' };
-  if (iq >= 110) return { tier: 'Above Average', color: 'text-accent', description: 'Top 25% globally' };
-  return { tier: 'Average', color: 'text-foreground', description: 'Healthy cognitive baseline' };
+const getIQTier = (iq: number): { tier: string; color: string; description: string; tagline: string } => {
+  if (iq >= 145) return { tier: 'Genius', color: 'text-yellow-400', description: 'Top 0.1% globally', tagline: 'Your cognitive abilities are extraordinarily rare' };
+  if (iq >= 140) return { tier: 'Exceptional', color: 'text-yellow-400', description: 'Top 0.4% globally', tagline: 'You think at a level few can match' };
+  if (iq >= 130) return { tier: 'Superior', color: 'text-primary', description: 'Top 2% globally', tagline: 'Your mental horsepower is remarkable' };
+  if (iq >= 120) return { tier: 'High', color: 'text-secondary', description: 'Top 9% globally', tagline: 'You process information faster than most' };
+  if (iq >= 110) return { tier: 'Above Average', color: 'text-accent', description: 'Top 25% globally', tagline: 'Your thinking skills are stronger than average' };
+  if (iq >= 90) return { tier: 'Average', color: 'text-foreground', description: 'Healthy baseline', tagline: 'Solid cognitive foundation across domains' };
+  return { tier: 'Developing', color: 'text-foreground', description: 'Room for growth', tagline: 'Intelligence is malleable and can be developed' };
 };
 
 export const ResultsScreen = ({ results, onRestart, onViewDashboard }: ResultsScreenProps) => {
@@ -104,7 +107,7 @@ Fascinating insights into how I think and solve problems. Try it yourself 👇`)
       </div>
 
       <div className="max-w-5xl mx-auto relative z-10">
-        {/* Header with Crown */}
+        {/* Header - Direct Answer */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -120,15 +123,19 @@ Fascinating insights into how I think and solve problems. Try it yourself 👇`)
             <Crown className="w-10 h-10 text-yellow-400" />
           </motion.div>
           
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-4">
-            <Sparkles className="w-4 h-4" />
-            Assessment Complete
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border text-muted-foreground text-sm font-medium mb-4">
+            <Brain className="w-4 h-4" />
+            IQ Assessment Complete
           </div>
           
-          <h1 className="font-display text-4xl md:text-5xl font-bold mb-3">
-            Your <span className="text-gradient">Cognitive Profile</span>
+          {/* The Big Answer */}
+          <h1 className="font-display text-3xl md:text-4xl font-bold mb-2">
+            Your IQ Score: <span className={cn("text-gradient", iqTier.color)}>{results.iq}</span>
           </h1>
-          <div className="flex items-center justify-center gap-3 text-muted-foreground flex-wrap">
+          <p className={cn("text-xl font-semibold mb-2", iqTier.color)}>{iqTier.tier} Intelligence</p>
+          <p className="text-lg text-muted-foreground">{iqTier.tagline}</p>
+          
+          <div className="flex items-center justify-center gap-3 text-muted-foreground flex-wrap mt-4">
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4" />
               <span>Completed in {formatTime(results.timeUsed)}</span>

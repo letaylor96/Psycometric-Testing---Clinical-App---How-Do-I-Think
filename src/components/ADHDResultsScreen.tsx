@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { ADHDResults, adhdDomainLabels } from '@/data/adhdQuestions';
 import { Button } from '@/components/ui/button';
-import { RotateCcw, AlertTriangle, CheckCircle, Activity, Info, LayoutDashboard } from 'lucide-react';
+import { RotateCcw, AlertTriangle, CheckCircle, Activity, Info, LayoutDashboard, Brain, Sparkles, HelpCircle, ThumbsUp, ThumbsDown, Minus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ADHDResultsScreenProps {
@@ -10,32 +10,48 @@ interface ADHDResultsScreenProps {
   onViewDashboard?: () => void;
 }
 
-const likelihoodConfig = {
+// Direct answer configuration - answers the question "Am I Neurodivergent?"
+const answerConfig = {
   low: {
+    answer: 'Probably Not',
+    emoji: '✓',
     color: 'text-emerald-500',
     bgColor: 'bg-emerald-500/10',
     borderColor: 'border-emerald-500/30',
-    icon: CheckCircle,
-    label: 'Low Likelihood',
+    gradientFrom: 'from-emerald-500/20',
+    gradientTo: 'to-teal-500/20',
+    icon: ThumbsDown,
+    explanation: 'Your responses suggest neurotypical attention patterns',
+    subtitle: 'Your screening indicates typical attention and focus patterns',
   },
   moderate: {
-    color: 'text-yellow-500',
-    bgColor: 'bg-yellow-500/10',
-    borderColor: 'border-yellow-500/30',
-    icon: Info,
-    label: 'Moderate Indicators',
+    answer: 'Possibly',
+    emoji: '?',
+    color: 'text-amber-500',
+    bgColor: 'bg-amber-500/10',
+    borderColor: 'border-amber-500/30',
+    gradientFrom: 'from-amber-500/20',
+    gradientTo: 'to-orange-500/20',
+    icon: HelpCircle,
+    explanation: 'Your responses show some neurodivergent traits worth exploring',
+    subtitle: 'Some indicators present — professional evaluation recommended',
   },
   high: {
-    color: 'text-orange-500',
-    bgColor: 'bg-orange-500/10',
-    borderColor: 'border-orange-500/30',
-    icon: AlertTriangle,
-    label: 'Further Evaluation Suggested',
+    answer: 'Likely Yes',
+    emoji: '!',
+    color: 'text-violet-500',
+    bgColor: 'bg-violet-500/10',
+    borderColor: 'border-violet-500/30',
+    gradientFrom: 'from-violet-500/20',
+    gradientTo: 'to-purple-500/20',
+    icon: Sparkles,
+    explanation: 'Your responses strongly suggest neurodivergent thinking patterns',
+    subtitle: 'Strong indicators present — professional confirmation recommended',
   },
 };
 
 export const ADHDResultsScreen = ({ results, onRestart, onViewDashboard }: ADHDResultsScreenProps) => {
-  const config = likelihoodConfig[results.likelihood];
+  const config = answerConfig[results.likelihood];
   const Icon = config.icon;
 
   // Count inattention and hyperactivity questions for accurate percentage calculation
@@ -49,29 +65,43 @@ export const ADHDResultsScreen = ({ results, onRestart, onViewDashboard }: ADHDR
     <div className="min-h-screen px-4 py-12 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[100px]" />
+        <div className={cn("absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full blur-[100px]", config.bgColor)} />
         <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[100px]" />
       </div>
 
       <div className="max-w-3xl mx-auto relative z-10">
-        {/* Header */}
+        {/* Header - Direct Answer to the Question */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-10"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 text-accent text-sm font-medium mb-4">
-            <Activity className="w-4 h-4" />
-            ADHD Screening Results
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border text-muted-foreground text-sm font-medium mb-4">
+            <Brain className="w-4 h-4" />
+            Am I Neurodivergent?
           </div>
           
-          <h1 className="font-display text-4xl md:text-5xl font-bold mb-2">
-            Screening Complete
-          </h1>
-          <p className="text-muted-foreground">Based on the ASRS-v1.1 (WHO) framework</p>
+          {/* The Big Answer */}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+            className={cn(
+              "inline-flex items-center gap-4 px-8 py-4 rounded-2xl border-2 mb-4",
+              config.borderColor,
+              `bg-gradient-to-r ${config.gradientFrom} ${config.gradientTo}`
+            )}
+          >
+            <span className={cn("text-5xl md:text-6xl font-bold font-display", config.color)}>
+              {config.answer}
+            </span>
+          </motion.div>
+          
+          <p className="text-lg text-muted-foreground mb-2">{config.explanation}</p>
+          <p className="text-sm text-muted-foreground">{config.subtitle}</p>
         </motion.div>
 
-        {/* Main Result Card */}
+        {/* Visual Summary Card */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -86,8 +116,8 @@ export const ADHDResultsScreen = ({ results, onRestart, onViewDashboard }: ADHDR
               <Icon className={cn('w-8 h-8', config.color)} />
             </div>
             <div>
-              <p className="text-muted-foreground text-sm uppercase tracking-wider mb-1">Result</p>
-              <h2 className={cn('font-display text-2xl font-bold', config.color)}>{config.label}</h2>
+              <p className="text-muted-foreground text-sm uppercase tracking-wider mb-1">What This Means</p>
+              <h2 className="font-display text-xl font-bold text-foreground">Understanding Your Results</h2>
             </div>
           </div>
           
