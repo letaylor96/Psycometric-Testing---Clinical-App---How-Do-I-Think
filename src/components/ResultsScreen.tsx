@@ -436,10 +436,12 @@ Fascinating insights into how I think and solve problems. Try it yourself 👇`)
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="text-center text-muted-foreground/50 text-sm mt-10"
+          className="text-center text-xs text-muted-foreground/60 mt-10 max-w-lg mx-auto leading-relaxed"
         >
-          This cognitive assessment is designed for professional development and personal insight.
-          For clinical evaluation, please consult a licensed psychologist.
+          <strong className="text-muted-foreground/80">Educational & Entertainment Purposes Only.</strong>{' '}
+          This assessment is not a standardized IQ test and does not provide a clinical measure of intelligence. 
+          Results are for self-reflection and entertainment, not professional, educational, or employment decisions. 
+          A formal cognitive evaluation requires administration by a licensed psychologist.
         </motion.p>
       </div>
     </div>

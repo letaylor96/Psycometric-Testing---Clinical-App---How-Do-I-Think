@@ -381,10 +381,12 @@ export const CognitiveStyleResultsScreen = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
-          className="text-center text-xs text-muted-foreground mt-8 max-w-lg mx-auto"
+          className="text-center text-xs text-muted-foreground/60 mt-8 max-w-lg mx-auto leading-relaxed"
         >
-          This assessment explores thinking patterns often associated with neurodivergent minds.
-          It's designed for self-understanding, not clinical diagnosis.
+          <strong className="text-muted-foreground/80">Educational & Entertainment Purposes Only.</strong>{' '}
+          This assessment is designed for self-reflection and personal insight, not clinical diagnosis. 
+          It does not diagnose neurodivergent conditions such as autism, ADHD, or any other medical condition. 
+          If you have concerns about your cognitive patterns, please consult a qualified healthcare professional.
         </motion.p>
       </div>
     </div>

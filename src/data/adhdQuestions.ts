@@ -268,6 +268,6 @@ export const calculateADHDResults = (answers: number[]): ADHDResults => {
     likelihood,
     interpretation,
     recommendations,
-    disclaimer: 'IMPORTANT: This is a screening tool based on the WHO Adult ADHD Self-Report Scale (ASRS-v1.1), not a diagnostic instrument. ADHD can only be diagnosed by a qualified healthcare professional through comprehensive evaluation including clinical interview, developmental history, and ruling out other conditions. This tool is intended for educational purposes only. If you have concerns about ADHD, please consult a psychiatrist, psychologist, or other qualified mental health professional.',
+    disclaimer: 'FOR EDUCATIONAL AND ENTERTAINMENT PURPOSES ONLY. This is a self-report screening tool inspired by the WHO ASRS framework—it is NOT a diagnostic instrument and does not provide a medical diagnosis. ADHD can only be diagnosed by a qualified healthcare professional through comprehensive clinical evaluation. Your results should not be used for medical, employment, or legal decisions. If you have concerns about attention or focus, please consult a psychiatrist, psychologist, or other licensed mental health professional.',
   };
 };
