@@ -1,1 +1,16 @@
 project_id = "mcjyqbehvrbqowufnepb"
+
+[functions.analyze-cv]
+verify_jwt = false
+
+[functions.create-assessment-payment]
+verify_jwt = false
+
+[functions.verify-payment]
+verify_jwt = false
+
+[functions.check-assessment-access]
+verify_jwt = false
+
+[functions.use-free-assessment]
+verify_jwt = false
