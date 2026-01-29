@@ -93,7 +93,12 @@ export default {
 			neon: {
 				cyan: 'hsl(180 100% 45%)',
 				pink: 'hsl(330 100% 60%)',
-				purple: 'hsl(252 100% 67%)'
+				purple: 'hsl(252 100% 67%)',
+				yellow: 'hsl(45 100% 55%)'
+			},
+			yellow: {
+				DEFAULT: 'hsl(var(--yellow))',
+				foreground: 'hsl(var(--yellow-foreground))'
 			}
   		},
   		borderRadius: {
