@@ -88,7 +88,7 @@ export const CognitiveStyleResultsScreen = ({
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border text-muted-foreground text-sm font-medium mb-4">
             <Brain className="w-4 h-4" />
-            My Cognitive Style
+            How Do I Think?
           </div>
           
           {/* Personal Identity Statement */}
