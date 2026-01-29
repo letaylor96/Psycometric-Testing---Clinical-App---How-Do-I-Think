@@ -2,10 +2,20 @@ import { motion } from 'framer-motion';
 import { Brain, Sparkles, Zap, Clock, UserCheck, Lightbulb, Activity, ArrowRight, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo, allAssessmentTypes } from '@/data/assessmentTypes';
+import { AssessmentProgress } from '@/components/AssessmentProgress';
+import { TestResults } from '@/data/quizQuestions';
+import { PersonalityResults } from '@/data/personalityQuestions';
+import { ADHDResults } from '@/data/adhdQuestions';
+import { CognitiveStyleResults } from '@/data/cognitiveStyleQuestions';
 
 interface LandingHeroProps {
   onStart: () => void;
   onSelectAssessment: (type: AssessmentType) => void;
+  onViewDashboard?: () => void;
+  iqResults?: TestResults | null;
+  personalityResults?: PersonalityResults | null;
+  adhdResults?: ADHDResults | null;
+  cognitiveStyleResults?: CognitiveStyleResults | null;
 }
 
 const assessmentIcons: Record<AssessmentType, React.ElementType> = {
@@ -20,7 +30,22 @@ const badgeLabels: Partial<Record<AssessmentType, string>> = {
   adhd: 'New',
 };
 
-export const LandingHero = ({ onStart, onSelectAssessment }: LandingHeroProps) => {
+export const LandingHero = ({ 
+  onStart, 
+  onSelectAssessment, 
+  onViewDashboard,
+  iqResults,
+  personalityResults,
+  adhdResults,
+  cognitiveStyleResults,
+}: LandingHeroProps) => {
+  const completionStatus: Record<AssessmentType, boolean> = {
+    personality: !!personalityResults,
+    iq: !!iqResults,
+    cognitive: !!cognitiveStyleResults,
+    adhd: !!adhdResults,
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 relative overflow-hidden bg-background">
       {/* Background */}
@@ -35,6 +60,16 @@ export const LandingHero = ({ onStart, onSelectAssessment }: LandingHeroProps) =
         transition={{ duration: 0.6 }}
         className="text-center z-10 max-w-5xl w-full"
       >
+        {/* Progress Indicator - shows after any test is completed */}
+        <AssessmentProgress
+          iqResults={iqResults ?? null}
+          personalityResults={personalityResults ?? null}
+          adhdResults={adhdResults ?? null}
+          cognitiveStyleResults={cognitiveStyleResults ?? null}
+          onSelectAssessment={onSelectAssessment}
+          onViewDashboard={onViewDashboard}
+        />
+
         {/* Key benefits */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}

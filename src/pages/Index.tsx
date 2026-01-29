@@ -192,7 +192,15 @@ const Index = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <LandingHero onStart={handleStartQuiz} onSelectAssessment={handleSelectAssessment} />
+            <LandingHero 
+              onStart={handleStartQuiz} 
+              onSelectAssessment={handleSelectAssessment}
+              onViewDashboard={handleViewDashboard}
+              iqResults={results}
+              personalityResults={personalityResults}
+              adhdResults={adhdResults}
+              cognitiveStyleResults={cognitiveStyleResults}
+            />
           </motion.div>
         )}
 
