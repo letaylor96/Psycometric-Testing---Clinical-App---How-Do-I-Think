@@ -158,14 +158,24 @@ export const LandingHero = ({
             className="mt-10 flex flex-col items-center"
           >
             <span className="text-muted-foreground/50 text-xs uppercase tracking-wider mb-2">Choose your assessment</span>
-            <motion.button
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              onClick={() => document.getElementById('assessment-grid')?.scrollIntoView({ behavior: 'smooth' })}
-              className="cursor-pointer hover:scale-110 transition-transform"
+            <button
+              type="button"
+              onClick={() => {
+                const target = document.getElementById('assessment-grid');
+                if (target) {
+                  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+              aria-label="Scroll down to assessment options"
+              className="relative flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 border border-primary/30 cursor-pointer hover:bg-primary/20 hover:border-primary/50 hover:scale-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
             >
-              <ChevronDown className="w-6 h-6 text-primary/60" />
-            </motion.button>
+              <motion.div
+                animate={{ y: [0, 6, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <ChevronDown className="w-6 h-6 text-primary" />
+              </motion.div>
+            </button>
           </motion.div>
         </div>
       </section>
