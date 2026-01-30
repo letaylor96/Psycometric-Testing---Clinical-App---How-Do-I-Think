@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Cell } from 'recharts';
 import { useState } from 'react';
 import { CareerIntelligenceReport } from '@/components/CareerIntelligenceReport';
+import { PremiumFeatureTeaser } from '@/components/PremiumFeatureTeaser';
 import { cn } from '@/lib/utils';
 
 interface ResultsScreenProps {
@@ -373,6 +374,9 @@ Fascinating insights into how I think and solve problems. Try it yourself 👇`)
 
         {/* Career Intelligence Report - Premium Feature */}
         <CareerIntelligenceReport results={results} />
+
+        {/* Premium Features Teaser */}
+        <PremiumFeatureTeaser className="mb-8" />
 
         {/* Share Section - LinkedIn focused */}
         <motion.div

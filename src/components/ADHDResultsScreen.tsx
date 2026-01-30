@@ -3,6 +3,7 @@ import { ADHDResults, adhdDomainLabels } from '@/data/adhdQuestions';
 import { Button } from '@/components/ui/button';
 import { RotateCcw, AlertTriangle, CheckCircle, Activity, Info, LayoutDashboard, Brain, Sparkles, HelpCircle, ThumbsUp, ThumbsDown, Minus } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { PremiumFeatureTeaser } from '@/components/PremiumFeatureTeaser';
 
 interface ADHDResultsScreenProps {
   results: ADHDResults;
@@ -217,6 +218,9 @@ export const ADHDResultsScreen = ({ results, onRestart, onViewDashboard }: ADHDR
             ))}
           </ul>
         </motion.div>
+
+        {/* Premium Features Teaser */}
+        <PremiumFeatureTeaser className="mb-8" />
 
         {/* Disclaimer */}
         <motion.div
