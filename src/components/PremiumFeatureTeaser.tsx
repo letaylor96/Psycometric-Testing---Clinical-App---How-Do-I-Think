@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Lock, Crown, Check, Brain, Target, MessageCircle, FileText, Sparkles, ArrowRight } from 'lucide-react';
+import { Lock, Crown, Check, Brain, Target, MessageCircle, FileText, Sparkles, ArrowRight, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PremiumGate } from '@/components/PremiumGate';
 import { usePremiumAccess } from '@/hooks/usePremiumAccess';
@@ -12,11 +12,19 @@ interface PremiumFeatureTeaserProps {
 const premiumFeatures = [
   { 
     icon: Crown, 
-    title: 'Historical Mind Match', 
-    description: 'Discover which great minds from history share your cognitive patterns',
+    title: 'Blind Spot Analysis', 
+    description: 'Uncover the one recurring cognitive pattern operating below your awareness',
     color: 'text-amber-500',
     bgColor: 'bg-amber-500/10',
     borderColor: 'border-amber-500/20',
+  },
+  { 
+    icon: Users, 
+    title: 'Peer Comparison', 
+    description: 'See how your thinking compares to people your age and education level',
+    color: 'text-blue-500',
+    bgColor: 'bg-blue-500/10',
+    borderColor: 'border-blue-500/20',
   },
   { 
     icon: FileText, 
@@ -33,14 +41,6 @@ const premiumFeatures = [
     color: 'text-violet-500',
     bgColor: 'bg-violet-500/10',
     borderColor: 'border-violet-500/20',
-  },
-  { 
-    icon: Sparkles, 
-    title: 'Cross-Test Synergy Analysis', 
-    description: 'See how your results across all assessments work together',
-    color: 'text-pink-500',
-    bgColor: 'bg-pink-500/10',
-    borderColor: 'border-pink-500/20',
   },
 ];
 

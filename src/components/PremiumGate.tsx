@@ -18,8 +18,8 @@ interface PremiumGateProps {
 }
 
 const premiumFeatures = [
-  { icon: Brain, label: 'All 4 comprehensive assessments', color: 'text-primary' },
-  { icon: Target, label: 'Full detailed reports & insights', color: 'text-amber-500' },
+  { icon: Brain, label: 'Blind Spot Analysis', color: 'text-amber-500' },
+  { icon: Target, label: 'Peer & Percentile Comparison', color: 'text-blue-500' },
   { icon: Crown, label: 'Historical Mind Match', color: 'text-yellow-500' },
   { icon: FileText, label: 'Therapist-ready clinical report', color: 'text-emerald-500' },
   { icon: MessageCircle, label: 'Ask AI about your results', color: 'text-violet-500' },
