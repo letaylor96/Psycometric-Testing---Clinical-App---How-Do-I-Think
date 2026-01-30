@@ -22,7 +22,6 @@ const getCache = (): CacheData | null => {
     const cached = localStorage.getItem(CACHE_KEY);
     if (!cached) return null;
     const data = JSON.parse(cached) as CacheData;
-    // Check if cache is still valid
     if (Date.now() - data.timestamp < CACHE_TTL_MS) {
       return data;
     }
@@ -53,14 +52,17 @@ const clearCache = () => {
 };
 
 export const usePremiumAccess = (): PremiumAccessState => {
+  // All hooks must be called unconditionally and in the same order every render
   const { user, session } = useAuth();
+  
   const [hasPremiumAccess, setHasPremiumAccess] = useState<boolean>(() => {
-    // Use cached value for initial render to prevent flicker
     const cached = getCache();
     return cached?.hasPremiumAccess ?? false;
   });
+  
   const [isLoading, setIsLoading] = useState(true);
 
+  // Define all useCallback hooks before any useEffect
   const checkPremiumAccess = useCallback(async () => {
     if (!user || !session) {
       setHasPremiumAccess(false);
@@ -87,22 +89,6 @@ export const usePremiumAccess = (): PremiumAccessState => {
       setIsLoading(false);
     }
   }, [user, session]);
-
-  // Check premium access on mount and when user changes
-  useEffect(() => {
-    checkPremiumAccess();
-  }, [checkPremiumAccess]);
-
-  // Periodically refresh (every minute)
-  useEffect(() => {
-    if (!user) return;
-
-    const interval = setInterval(() => {
-      checkPremiumAccess();
-    }, 60 * 1000);
-
-    return () => clearInterval(interval);
-  }, [user, checkPremiumAccess]);
 
   const unlockWithCode = useCallback(async (code: string): Promise<boolean> => {
     if (!user || !session) {
@@ -137,6 +123,21 @@ export const usePremiumAccess = (): PremiumAccessState => {
     setIsLoading(true);
     await checkPremiumAccess();
   }, [checkPremiumAccess]);
+
+  // All useEffect hooks after useCallback
+  useEffect(() => {
+    checkPremiumAccess();
+  }, [checkPremiumAccess]);
+
+  useEffect(() => {
+    if (!user) return;
+
+    const interval = setInterval(() => {
+      checkPremiumAccess();
+    }, 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, [user, checkPremiumAccess]);
 
   return {
     hasPremiumAccess,
