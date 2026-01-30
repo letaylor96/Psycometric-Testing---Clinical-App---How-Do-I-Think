@@ -159,12 +159,14 @@ export const LandingHero = ({
             className="mt-10 flex flex-col items-center"
           >
             <span className="text-muted-foreground/50 text-xs uppercase tracking-wider mb-2">Choose your assessment</span>
-            <motion.div
+            <motion.button
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              onClick={() => document.getElementById('assessment-grid')?.scrollIntoView({ behavior: 'smooth' })}
+              className="cursor-pointer hover:scale-110 transition-transform"
             >
               <ChevronDown className="w-6 h-6 text-primary/60" />
-            </motion.div>
+            </motion.button>
           </motion.div>
         </div>
       </section>
@@ -188,7 +190,7 @@ export const LandingHero = ({
       </section>
 
       {/* Assessment Grid */}
-      <section className="py-20 bg-background">
+      <section id="assessment-grid" className="py-20 bg-background">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
             <p className="text-yellow text-sm font-medium tracking-widest uppercase mb-4">
