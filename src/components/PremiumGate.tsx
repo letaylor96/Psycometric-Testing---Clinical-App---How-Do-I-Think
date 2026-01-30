@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Crown, Lock, Check, Sparkles, Brain, Target, MessageCircle, FileText, ChevronRight, CreditCard, Shield } from 'lucide-react';
+import { Crown, Lock, Check, Sparkles, Brain, Target, MessageCircle, FileText, ChevronRight, CreditCard, Shield, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { usePremiumAccess } from '@/hooks/usePremiumAccess';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 interface PremiumGateProps {
   isOpen: boolean;
@@ -26,7 +29,10 @@ const premiumFeatures = [
 export const PremiumGate = ({ isOpen, onClose, onUnlocked, feature }: PremiumGateProps) => {
   const [promoCode, setPromoCode] = useState('');
   const [showPromoInput, setShowPromoInput] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { unlockWithCode } = usePremiumAccess();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const handlePromoSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,9 +45,36 @@ export const PremiumGate = ({ isOpen, onClose, onUnlocked, feature }: PremiumGat
     }
   };
 
-  const handlePayment = () => {
-    // TODO: Integrate with Stripe payment
-    toast.info('Payment integration coming soon');
+  const handlePayment = async () => {
+    if (!user) {
+      toast.error('Please sign in to purchase premium access');
+      onClose();
+      navigate('/auth');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('create-assessment-payment', {
+        body: { assessmentType: 'bundle' },
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      if (data?.url) {
+        // Redirect to Stripe Checkout
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL received');
+      }
+    } catch (err) {
+      console.error('Payment error:', err);
+      toast.error(err instanceof Error ? err.message : 'Failed to start checkout');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -106,10 +139,20 @@ export const PremiumGate = ({ isOpen, onClose, onUnlocked, feature }: PremiumGat
           {/* Payment Button */}
           <Button 
             onClick={handlePayment}
+            disabled={isLoading}
             className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground font-semibold py-6 mb-3"
           >
-            <CreditCard className="w-4 h-4 mr-2" />
-            Unlock Premium Access
+            {isLoading ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              <>
+                <CreditCard className="w-4 h-4 mr-2" />
+                Unlock Premium Access
+              </>
+            )}
           </Button>
 
           {/* Trust badges */}
