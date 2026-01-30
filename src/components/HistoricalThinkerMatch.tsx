@@ -7,8 +7,10 @@ import { TestResults } from '@/data/quizQuestions';
 import { PersonalityResults } from '@/data/personalityQuestions';
 import { ADHDResults } from '@/data/adhdQuestions';
 import { CognitiveStyleResults } from '@/data/cognitiveStyleQuestions';
-import { Scroll, Crown, Brain, Sparkles, ChevronRight, Quote } from 'lucide-react';
+import { Scroll, Crown, Brain, Sparkles, ChevronRight, Quote, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { usePremiumAccess } from '@/hooks/usePremiumAccess';
+import { PremiumGate } from '@/components/PremiumGate';
 
 interface HistoricalThinkerMatchProps {
   iqResults: TestResults | null;
@@ -27,8 +29,18 @@ export const HistoricalThinkerMatch = ({
   const [matches, setMatches] = useState<HistoricalMatch[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedMatch, setSelectedMatch] = useState<HistoricalMatch | null>(null);
+  const [showPremiumGate, setShowPremiumGate] = useState(false);
+  const { hasPremiumAccess } = usePremiumAccess();
 
   const hasAnyResults = iqResults || personalityResults || adhdResults || cognitiveStyleResults;
+
+  const handleClick = () => {
+    if (!hasPremiumAccess) {
+      setShowPremiumGate(true);
+      return;
+    }
+    handleGenerateReport();
+  };
 
   const handleGenerateReport = () => {
     setIsLoading(true);
@@ -63,13 +75,24 @@ export const HistoricalThinkerMatch = ({
   return (
     <>
       <Button
-        onClick={handleGenerateReport}
+        onClick={handleClick}
         disabled={!hasAnyResults}
-        className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white"
+        className={cn(
+          "bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white",
+          !hasPremiumAccess && "opacity-90"
+        )}
       >
+        {!hasPremiumAccess && <Lock className="w-3 h-3 mr-1.5" />}
         <Scroll className="w-4 h-4 mr-2" />
         Historical Mind Match
       </Button>
+
+      <PremiumGate
+        isOpen={showPremiumGate}
+        onClose={() => setShowPremiumGate(false)}
+        onUnlocked={handleGenerateReport}
+        feature="Historical Mind Match"
+      />
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto">

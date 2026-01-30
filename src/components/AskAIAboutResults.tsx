@@ -7,10 +7,12 @@ import { TestResults, categoryLabels } from '@/data/quizQuestions';
 import { PersonalityResults, personalityTraitLabels, PersonalityTrait } from '@/data/personalityQuestions';
 import { ADHDResults, adhdDomainLabels } from '@/data/adhdQuestions';
 import { CognitiveStyleResults, dimensionLabels } from '@/data/cognitiveStyleQuestions';
-import { MessageCircle, Send, Sparkles, User, Bot, Loader2 } from 'lucide-react';
+import { MessageCircle, Send, Sparkles, User, Bot, Loader2, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import ReactMarkdown from 'react-markdown';
+import { usePremiumAccess } from '@/hooks/usePremiumAccess';
+import { PremiumGate } from '@/components/PremiumGate';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -34,7 +36,9 @@ export const AskAIAboutResults = ({
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showPremiumGate, setShowPremiumGate] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { hasPremiumAccess } = usePremiumAccess();
 
   const hasAnyResults = iqResults || personalityResults || adhdResults || cognitiveStyleResults;
 
@@ -133,6 +137,14 @@ export const AskAIAboutResults = ({
     }
   };
 
+  const handleClick = () => {
+    if (!hasPremiumAccess) {
+      setShowPremiumGate(true);
+      return;
+    }
+    handleOpen();
+  };
+
   const handleOpen = () => {
     setIsOpen(true);
     if (messages.length === 0) {
@@ -155,10 +167,14 @@ export const AskAIAboutResults = ({
   return (
     <>
       <Button
-        onClick={handleOpen}
+        onClick={handleClick}
         disabled={!hasAnyResults}
-        className="bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white"
+        className={cn(
+          "bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white",
+          !hasPremiumAccess && "opacity-90"
+        )}
       >
+        {!hasPremiumAccess && <Lock className="w-3 h-3 mr-1.5" />}
         <MessageCircle className="w-4 h-4 mr-2" />
         Ask AI About My Results
       </Button>
@@ -281,6 +297,13 @@ export const AskAIAboutResults = ({
           </div>
         </DialogContent>
       </Dialog>
+
+      <PremiumGate
+        isOpen={showPremiumGate}
+        onClose={() => setShowPremiumGate(false)}
+        onUnlocked={handleOpen}
+        feature="Ask AI About Results"
+      />
     </>
   );
 };
