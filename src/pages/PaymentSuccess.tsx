@@ -42,8 +42,8 @@ const PaymentSuccess = () => {
         }
 
         if (data?.success) {
-          // Store premium access in localStorage
-          localStorage.setItem('premiumAccess', 'true');
+          // Payment verified server-side - the purchase is now in the database
+          // The usePremiumAccess hook will pick this up on refresh
           setStatus('success');
         } else {
           setStatus('error');
