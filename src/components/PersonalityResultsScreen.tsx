@@ -9,6 +9,7 @@ import {
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer } from 'recharts';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { PremiumFeatureTeaser } from '@/components/PremiumFeatureTeaser';
 
 interface PersonalityResultsScreenProps {
   results: PersonalityResults;
@@ -506,6 +507,9 @@ Take the free assessment yourself 👇`);
             <p className="text-foreground/80 text-sm leading-relaxed">{results.stressResponse}</p>
           </div>
         </motion.div>
+
+        {/* Premium Features Teaser */}
+        <PremiumFeatureTeaser className="mb-8" />
 
         {/* Share Section */}
         <motion.div

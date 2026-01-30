@@ -1,9 +1,6 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Check, Brain, Lightbulb, Sparkles, Target, Zap, ChevronDown, Crown, MessageCircle, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { AssessmentType, assessmentInfo, allAssessmentTypes } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
 import { AuthButton } from '@/components/AuthButton';
@@ -11,13 +8,15 @@ import { TestResults } from '@/data/quizQuestions';
 import { PersonalityResults } from '@/data/personalityQuestions';
 import { ADHDResults } from '@/data/adhdQuestions';
 import { CognitiveStyleResults } from '@/data/cognitiveStyleQuestions';
-import { toast } from 'sonner';
+import { usePremiumAccess } from '@/hooks/usePremiumAccess';
+
 const assessmentIcons: Record<AssessmentType, React.ElementType> = {
   personality: Target,
   iq: Brain,
   cognitive: Lightbulb,
   adhd: Zap,
 };
+
 interface LandingHeroProps {
   onStart: () => void;
   onSelectAssessment: (type: AssessmentType) => void;
@@ -37,11 +36,7 @@ export const LandingHero = ({
   adhdResults,
   cognitiveStyleResults,
 }: LandingHeroProps) => {
-  const [promoDialogOpen, setPromoDialogOpen] = useState(false);
-  const [promoCode, setPromoCode] = useState('');
-  const [hasPremiumAccess, setHasPremiumAccess] = useState(() => {
-    return localStorage.getItem('premiumAccess') === 'true';
-  });
+  const { hasPremiumAccess } = usePremiumAccess();
 
   const completionStatus: Record<AssessmentType, boolean> = {
     personality: !!personalityResults,
@@ -52,18 +47,6 @@ export const LandingHero = ({
 
   const completedCount = Object.values(completionStatus).filter(Boolean).length;
   const hasStarted = completedCount > 0;
-
-  const handlePromoSubmit = () => {
-    if (promoCode.toUpperCase() === 'LHT') {
-      localStorage.setItem('premiumAccess', 'true');
-      setHasPremiumAccess(true);
-      setPromoDialogOpen(false);
-      setPromoCode('');
-      toast.success('Premium access unlocked!');
-    } else {
-      toast.error('Invalid code');
-    }
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -152,15 +135,6 @@ export const LandingHero = ({
               {hasStarted ? 'Continue Assessment' : 'Begin Assessment'}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
-            <Button
-              onClick={() => setPromoDialogOpen(true)}
-              size="lg"
-              variant="outline"
-              className="border-primary/50 hover:border-primary hover:bg-primary/10 text-foreground font-medium px-8 py-6 text-base"
-            >
-              <Sparkles className="w-4 h-4 mr-2 text-primary" />
-              {hasPremiumAccess ? 'Premium Unlocked ✓' : 'Premium Access'}
-            </Button>
           </motion.div>
 
           <motion.p
@@ -169,36 +143,12 @@ export const LandingHero = ({
             transition={{ delay: 0.3 }}
             className="text-muted-foreground/70 text-sm"
           >
-            {hasPremiumAccess ? 'Premium access active' : 'First assessment free · Premium bundle $9.99'}
+            {hasPremiumAccess ? (
+              <span className="text-emerald-500 font-medium">✓ Premium access active</span>
+            ) : (
+              'First assessment free · Premium unlocks all features'
+            )}
           </motion.p>
-
-          {/* Promo Code Dialog */}
-          <Dialog open={promoDialogOpen} onOpenChange={setPromoDialogOpen}>
-            <DialogContent className="max-w-sm">
-              <DialogHeader>
-                <DialogTitle>Enter Access Code</DialogTitle>
-                <DialogDescription>
-                  Enter your promo code to unlock premium access
-                </DialogDescription>
-              </DialogHeader>
-              <form onSubmit={(e) => { e.preventDefault(); handlePromoSubmit(); }} className="space-y-4">
-                <Input
-                  value={promoCode}
-                  onChange={(e) => setPromoCode(e.target.value)}
-                  placeholder="Enter code..."
-                  className="text-center text-lg tracking-widest uppercase"
-                />
-                <div className="flex gap-3">
-                  <Button type="button" variant="outline" className="flex-1" onClick={() => setPromoDialogOpen(false)}>
-                    Cancel
-                  </Button>
-                  <Button type="submit" className="flex-1">
-                    Unlock
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
 
           {/* Scroll indicator */}
           <motion.div

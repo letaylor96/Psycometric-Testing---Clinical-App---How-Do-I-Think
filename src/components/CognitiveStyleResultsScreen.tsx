@@ -31,6 +31,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { PremiumFeatureTeaser } from '@/components/PremiumFeatureTeaser';
 
 interface CognitiveStyleResultsScreenProps {
   results: CognitiveStyleResults;
@@ -339,6 +340,9 @@ export const CognitiveStyleResultsScreen = ({
             {results.primaryProfile.communicationStyle}
           </p>
         </motion.div>
+
+        {/* Premium Features Teaser */}
+        <PremiumFeatureTeaser className="mb-8" />
 
         {/* Action Buttons */}
         <motion.div
