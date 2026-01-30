@@ -26,6 +26,8 @@ import { CareerMatchRecommendations } from './CareerMatchRecommendations';
 import { HistoricalThinkerMatch } from './HistoricalThinkerMatch';
 import { TherapistReport } from './TherapistReport';
 import { AskAIAboutResults } from './AskAIAboutResults';
+import { BlindSpotAnalysis } from './BlindSpotAnalysis';
+import { PeerComparison } from './PeerComparison';
 import { cn } from '@/lib/utils';
 import {
   RadarChart,
@@ -574,6 +576,17 @@ export const CombinedDashboard = ({
           }}
         />
 
+        {/* Blind Spot Analysis - Directly under score visualization */}
+        {(iqResults || personalityResults || adhdResults || cognitiveStyleResults) && (
+          <BlindSpotAnalysis
+            iqResults={iqResults}
+            personalityResults={personalityResults}
+            adhdResults={adhdResults}
+            cognitiveStyleResults={cognitiveStyleResults}
+            className="mb-8"
+          />
+        )}
+
         {/* AI Insight Tools Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -586,8 +599,8 @@ export const CombinedDashboard = ({
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="font-display font-semibold">AI-Powered Insights</h3>
-              <p className="text-xs text-muted-foreground">Unlock deeper understanding of your results</p>
+              <h3 className="font-display font-semibold">Unlock AI-Powered Insights</h3>
+              <p className="text-xs text-muted-foreground">Deeper understanding of your cognitive profile</p>
             </div>
           </div>
 
@@ -639,7 +652,18 @@ export const CombinedDashboard = ({
           </div>
         </motion.div>
 
-        {/* Complete Profile Summary */}
+        {/* Peer Comparison Section */}
+        {(iqResults || personalityResults || adhdResults || cognitiveStyleResults) && (
+          <PeerComparison
+            iqResults={iqResults}
+            personalityResults={personalityResults}
+            adhdResults={adhdResults}
+            cognitiveStyleResults={cognitiveStyleResults}
+            className="mb-8"
+          />
+        )}
+
+
         {completedCount === totalAssessments && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
