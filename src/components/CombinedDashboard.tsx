@@ -23,6 +23,9 @@ import {
   Zap
 } from 'lucide-react';
 import { CareerMatchRecommendations } from './CareerMatchRecommendations';
+import { HistoricalThinkerMatch } from './HistoricalThinkerMatch';
+import { TherapistReport } from './TherapistReport';
+import { AskAIAboutResults } from './AskAIAboutResults';
 import { cn } from '@/lib/utils';
 import {
   RadarChart,
@@ -570,6 +573,71 @@ export const CombinedDashboard = ({
             setIsPremiumCareer(true);
           }}
         />
+
+        {/* AI Insight Tools Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.55 }}
+          className="card-elevated rounded-2xl p-6 border border-purple-500/20 mb-8"
+        >
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h3 className="font-display font-semibold">AI-Powered Insights</h3>
+              <p className="text-xs text-muted-foreground">Unlock deeper understanding of your results</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Historical Match */}
+            <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/20">
+              <div className="text-3xl mb-3">👑</div>
+              <h4 className="font-semibold mb-1">Historical Mind Match</h4>
+              <p className="text-sm text-muted-foreground mb-4">
+                Discover which great minds from history share your cognitive patterns
+              </p>
+              <HistoricalThinkerMatch
+                iqResults={iqResults}
+                personalityResults={personalityResults}
+                adhdResults={adhdResults}
+                cognitiveStyleResults={cognitiveStyleResults}
+              />
+            </div>
+
+            {/* Therapist Report */}
+            <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
+              <div className="text-3xl mb-3">📋</div>
+              <h4 className="font-semibold mb-1">Therapist Report</h4>
+              <p className="text-sm text-muted-foreground mb-4">
+                Generate a professional summary to share with your healthcare provider
+              </p>
+              <TherapistReport
+                iqResults={iqResults}
+                personalityResults={personalityResults}
+                adhdResults={adhdResults}
+                cognitiveStyleResults={cognitiveStyleResults}
+              />
+            </div>
+
+            {/* Ask AI */}
+            <div className="p-4 rounded-xl bg-violet-500/5 border border-violet-500/20">
+              <div className="text-3xl mb-3">💬</div>
+              <h4 className="font-semibold mb-1">Ask AI</h4>
+              <p className="text-sm text-muted-foreground mb-4">
+                Chat with AI to understand what your results mean for your life
+              </p>
+              <AskAIAboutResults
+                iqResults={iqResults}
+                personalityResults={personalityResults}
+                adhdResults={adhdResults}
+                cognitiveStyleResults={cognitiveStyleResults}
+              />
+            </div>
+          </div>
+        </motion.div>
 
         {/* Complete Profile Summary */}
         {completedCount === totalAssessments && (

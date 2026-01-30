@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Check, Brain, Lightbulb, Sparkles, Target, Zap, ChevronDown } from 'lucide-react';
+import { ArrowRight, Check, Brain, Lightbulb, Sparkles, Target, Zap, ChevronDown, Crown, MessageCircle, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo, allAssessmentTypes } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
@@ -273,6 +273,78 @@ export const LandingHero = ({
               </div>
             </motion.div>
           )}
+        </div>
+      </section>
+
+      {/* AI Insights Section - NEW */}
+      <section className="py-20 bg-gradient-to-b from-background via-purple-500/[0.03] to-background">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm font-medium mb-4">
+              <Sparkles className="w-4 h-4" />
+              AI-Powered Insights
+            </div>
+            <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
+              Go Beyond the Numbers
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              After completing your assessments, unlock powerful AI-driven tools to 
+              understand your unique cognitive profile.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Historical Mind Match */}
+            <div className="p-8 rounded-xl bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/20 text-center">
+              <div className="w-16 h-16 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center mx-auto mb-6">
+                <Crown className="w-8 h-8 text-amber-500" />
+              </div>
+              <h3 className="font-serif text-xl font-semibold text-foreground mb-3">
+                Historical Mind Match
+              </h3>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                Discover which great minds from history—Einstein, Da Vinci, Curie—share 
+                your cognitive patterns and thinking style.
+              </p>
+              <span className="text-amber-500 text-sm font-medium">
+                Match with 20+ historical figures
+              </span>
+            </div>
+
+            {/* Therapist Report */}
+            <div className="p-8 rounded-xl bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20 text-center">
+              <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center mx-auto mb-6">
+                <FileText className="w-8 h-8 text-emerald-500" />
+              </div>
+              <h3 className="font-serif text-xl font-semibold text-foreground mb-3">
+                Therapist Report
+              </h3>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                Generate a professional clinical summary of your results, formatted 
+                for mental health providers and therapists.
+              </p>
+              <span className="text-emerald-500 text-sm font-medium">
+                Export-ready clinical format
+              </span>
+            </div>
+
+            {/* Ask AI */}
+            <div className="p-8 rounded-xl bg-gradient-to-br from-violet-500/10 to-violet-500/5 border border-violet-500/20 text-center">
+              <div className="w-16 h-16 rounded-full bg-violet-500/20 border border-violet-500/30 flex items-center justify-center mx-auto mb-6">
+                <MessageCircle className="w-8 h-8 text-violet-500" />
+              </div>
+              <h3 className="font-serif text-xl font-semibold text-foreground mb-3">
+                Ask AI About Results
+              </h3>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                Chat directly with AI to understand what your results mean for your 
+                career, relationships, and personal growth.
+              </p>
+              <span className="text-violet-500 text-sm font-medium">
+                Personalized insights on demand
+              </span>
+            </div>
+          </div>
         </div>
       </section>
 
