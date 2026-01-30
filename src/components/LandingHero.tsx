@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Brain, Sparkles, Zap, Clock, UserCheck, Lightbulb, Activity, ArrowRight, Check, Gift, Users, TrendingUp, Lock, Unlock } from 'lucide-react';
+import { Brain, Sparkles, ArrowRight, Check, ChevronRight, Atom, FlaskConical, Target, Network } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo, allAssessmentTypes } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
@@ -21,22 +21,17 @@ interface LandingHeroProps {
 }
 
 const assessmentIcons: Record<AssessmentType, React.ElementType> = {
-  personality: UserCheck,
+  personality: Target,
   iq: Brain,
-  cognitive: Lightbulb,
-  adhd: Activity,
+  cognitive: Network,
+  adhd: Atom,
 };
 
-const badgeLabels: Partial<Record<AssessmentType, string>> = {
-  personality: 'Most Popular',
-  adhd: 'New',
-};
-
-// Social proof - generates believable random numbers
-const generateSocialProof = () => {
-  const base = 2847;
-  const variance = Math.floor(Math.random() * 200);
-  return base + variance;
+const researchLabels: Record<AssessmentType, string> = {
+  personality: 'Big Five / OCEAN Model',
+  iq: "Raven's Progressive Matrices",
+  cognitive: 'Dual-Process Theory',
+  adhd: 'ASRS-v1.1 Clinical Scale',
 };
 
 export const LandingHero = ({ 
@@ -48,16 +43,6 @@ export const LandingHero = ({
   adhdResults,
   cognitiveStyleResults,
 }: LandingHeroProps) => {
-  const [todayCount, setTodayCount] = useState(generateSocialProof());
-  
-  // Simulate live activity (social proof + urgency)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTodayCount(prev => prev + Math.floor(Math.random() * 3));
-    }, 15000);
-    return () => clearInterval(interval);
-  }, []);
-
   const completionStatus: Record<AssessmentType, boolean> = {
     personality: !!personalityResults,
     iq: !!iqResults,
@@ -71,23 +56,58 @@ export const LandingHero = ({
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 relative overflow-hidden bg-background">
       {/* Auth Button - Top Right */}
-      <div className="absolute top-4 right-4 z-20">
+      <div className="absolute top-6 right-6 z-20">
         <AuthButton />
       </div>
 
-      {/* Background */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-gradient-to-b from-primary/15 via-primary/5 to-transparent rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[400px] bg-gradient-to-tl from-accent/10 to-transparent rounded-full blur-[80px]" />
+      {/* Scientific Background Pattern */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Primary gradient orb */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[700px] bg-gradient-radial from-primary/8 via-primary/3 to-transparent rounded-full blur-[100px]" />
+        
+        {/* Grid pattern overlay */}
+        <div 
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, hsl(var(--foreground)) 1px, transparent 1px),
+              linear-gradient(to bottom, hsl(var(--foreground)) 1px, transparent 1px)
+            `,
+            backgroundSize: '60px 60px'
+          }}
+        />
+        
+        {/* Floating molecular nodes */}
+        <svg className="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="nodeGradient" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.6"/>
+              <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0"/>
+            </radialGradient>
+          </defs>
+          {/* Scattered dots representing data points */}
+          {[...Array(20)].map((_, i) => (
+            <motion.circle
+              key={i}
+              cx={`${10 + (i * 4.5) % 90}%`}
+              cy={`${15 + (i * 7.3) % 70}%`}
+              r={2 + (i % 3)}
+              fill="url(#nodeGradient)"
+              initial={{ opacity: 0.1 }}
+              animate={{ opacity: [0.1, 0.4, 0.1] }}
+              transition={{ duration: 4 + (i % 3), repeat: Infinity, delay: i * 0.2 }}
+            />
+          ))}
+        </svg>
       </div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="text-center z-10 max-w-5xl w-full"
       >
-        {/* Progress Indicator - shows after any test is completed */}
+        {/* Progress Indicator */}
         <AssessmentProgress
           iqResults={iqResults ?? null}
           personalityResults={personalityResults ?? null}
@@ -97,87 +117,77 @@ export const LandingHero = ({
           onViewDashboard={onViewDashboard}
         />
 
-        {/* SOCIAL PROOF - Bandwagon Effect */}
+        {/* Research Institution Badge */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.05 }}
-          className="flex items-center justify-center gap-2 mb-6"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+          className="flex items-center justify-center gap-3 mb-8"
         >
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-            <div className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </div>
-            <span className="text-emerald-400 text-sm font-medium">
-              <span className="font-bold">{todayCount.toLocaleString()}</span> people assessed today
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 bg-card/30 backdrop-blur-sm">
+            <FlaskConical className="w-4 h-4 text-primary" />
+            <span className="text-muted-foreground text-sm font-medium tracking-wide uppercase">
+              Cognitive Assessment Laboratory
             </span>
           </div>
         </motion.div>
 
-        {/* Key benefits - Optimized with value hierarchy */}
+        {/* Title with scientific typography */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.6 }}
+          className="mb-6"
+        >
+          <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.0]">
+            <span className="block text-foreground">How Do I</span>
+            <span className="block bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent mt-2">
+              Think?
+            </span>
+          </h1>
+        </motion.div>
+
+        {/* Scientific subtitle */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.25 }}
+          className="max-w-2xl mx-auto mb-12"
+        >
+          <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
+            A comprehensive psychometric analysis of your cognitive architecture, personality structure, and neurological processing patterns.
+          </p>
+        </motion.div>
+
+        {/* Research Framework Badges */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="flex items-center justify-center gap-3 sm:gap-4 mb-8 flex-wrap"
+          transition={{ delay: 0.3 }}
+          className="flex flex-wrap items-center justify-center gap-3 mb-12"
         >
-          {[
-            { icon: Zap, text: 'Instant Results', color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
-            { icon: Gift, text: 'First Test Free', color: 'text-emerald-400', bg: 'bg-emerald-400/10', highlight: true },
-            { icon: Clock, text: '~10 min each', color: 'text-cyan-400', bg: 'bg-cyan-400/10' },
-          ].map((item, i) => (
+          {['Big Five Factor Model', 'Fluid Intelligence (Gf)', 'Executive Function', 'Attentional Control'].map((framework, i) => (
             <div 
               key={i} 
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${item.bg} ${item.color} font-medium text-sm ${item.highlight ? 'ring-1 ring-emerald-400/30' : ''}`}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-muted/30 border border-border/30"
             >
-              <item.icon className="w-4 h-4" />
-              <span>{item.text}</span>
+              <div className="w-1.5 h-1.5 rounded-full bg-primary/60" />
+              <span className="text-muted-foreground text-xs font-medium tracking-wide">{framework}</span>
             </div>
           ))}
         </motion.div>
 
-        {/* Title */}
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.6 }}
-          className="font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 leading-[1.05]"
-        >
-          <span className="bg-gradient-to-r from-primary via-yellow to-accent bg-clip-text text-transparent">
-            How I Think
-          </span>
-        </motion.h1>
-
-        {/* Subtitle - CURIOSITY GAP */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.25 }}
-          className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-4"
-        >
-          Discover what most people do not know about themselves.
-        </motion.p>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="text-muted-foreground/70 text-base max-w-xl mx-auto mb-10"
-        >
-          Scientifically-validated assessments for personality, IQ, cognitive style & ADHD screening.
-        </motion.p>
-
-        {/* Assessment cards with UNLOCK/LOCK visual + ANCHORING */}
+        {/* Assessment Grid - Scientific Cards */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mb-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mb-12"
         >
           {allAssessmentTypes.map((type, i) => {
             const info = assessmentInfo[type];
             const Icon = assessmentIcons[type];
-            const badge = badgeLabels[type];
+            const research = researchLabels[type];
             const isCompleted = completionStatus[type];
             
             return (
@@ -185,138 +195,125 @@ export const LandingHero = ({
                 key={type}
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + i * 0.07 }}
-                whileHover={{ y: -6, scale: 1.02 }}
+                transition={{ delay: 0.4 + i * 0.08 }}
+                whileHover={{ y: -4 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => onSelectAssessment(type)}
                 className={`relative group p-5 rounded-xl border backdrop-blur-sm transition-all text-left cursor-pointer ${
                   isCompleted 
-                    ? 'border-emerald-500/40 bg-emerald-500/5' 
-                    : 'border-border/50 bg-card/50 hover:border-primary/40 hover:bg-card/80'
+                    ? 'border-emerald-500/30 bg-emerald-500/5' 
+                    : 'border-border/40 bg-card/40 hover:border-primary/30 hover:bg-card/60'
                 }`}
               >
-                {/* Badge */}
-                {badge && !isCompleted && (
-                  <span className={`absolute -top-2 right-3 px-2 py-0.5 text-xs font-medium rounded-full ${badge === 'New' ? 'bg-accent text-accent-foreground' : 'bg-primary text-primary-foreground'}`}>
-                    {badge}
-                  </span>
-                )}
-
-                {/* Completed check */}
+                {/* Completion indicator */}
                 {isCompleted && (
-                  <span className="absolute -top-2 right-3 px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-500 text-white flex items-center gap-1">
-                    <Check className="w-3 h-3" />
-                    Done
-                  </span>
+                  <div className="absolute top-3 right-3">
+                    <div className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                      <Check className="w-3 h-3 text-emerald-400" />
+                    </div>
+                  </div>
                 )}
 
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 transition-colors ${
-                  isCompleted ? 'bg-emerald-500/20' : `bg-${info.color}/10 group-hover:bg-${info.color}/20`
+                <div className={`w-11 h-11 rounded-lg flex items-center justify-center mb-4 transition-all ${
+                  isCompleted 
+                    ? 'bg-emerald-500/10' 
+                    : 'bg-primary/5 group-hover:bg-primary/10'
                 }`}>
-                  <Icon className={`w-5 h-5 ${isCompleted ? 'text-emerald-400' : `text-${info.color}`}`} />
+                  <Icon className={`w-5 h-5 ${isCompleted ? 'text-emerald-400' : 'text-primary/70 group-hover:text-primary'}`} />
                 </div>
-                <p className="font-semibold text-foreground mb-1">{info.title}</p>
-                <p className="text-muted-foreground text-sm mb-2">{info.framework}</p>
-                <div className="flex items-center justify-between text-xs text-muted-foreground/70">
-                  <span>{info.questionCount} questions • {info.timeMinutes} min</span>
-                  {isCompleted && (
-                    <span className="text-emerald-400 font-medium">Complete</span>
-                  )}
+                
+                <h3 className="font-semibold text-foreground mb-1 text-sm">{info.title}</h3>
+                <p className="text-primary/60 text-xs font-medium mb-3">{research}</p>
+                
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground/60 text-xs">
+                    {info.questionCount} items • {info.timeMinutes} min
+                  </span>
+                  <ChevronRight className={`w-4 h-4 transition-transform ${
+                    isCompleted ? 'text-emerald-400/50' : 'text-muted-foreground/30 group-hover:text-primary/50 group-hover:translate-x-0.5'
+                  }`} />
                 </div>
               </motion.button>
             );
           })}
         </motion.div>
 
-        {/* ANCHORING - Bundle savings */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.55 }}
-          className="flex items-center justify-center gap-3 mb-10"
-        >
-          <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
-            <TrendingUp className="w-4 h-4 text-primary" />
-            <span className="text-sm">
-              <span className="text-muted-foreground line-through">$12</span>
-              <span className="text-foreground font-bold ml-2">$9.99 for all 4</span>
-              <span className="text-emerald-400 font-medium ml-2">Save 17%</span>
-            </span>
-          </div>
-        </motion.div>
-
-        {/* Full Assessment CTA - LOSS AVERSION */}
+        {/* Primary CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="mb-10"
+          transition={{ delay: 0.55 }}
+          className="mb-8"
         >
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Button
               onClick={onStart}
               size="lg"
-              className="group bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-lg px-10 py-7 rounded-xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] transition-all"
+              className="group bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-base px-8 py-6 rounded-lg transition-all"
             >
-              {hasStarted ? 'Continue Your Assessment' : 'Start Free Assessment'}
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-0.5 transition-transform" />
+              {hasStarted ? 'Continue Assessment' : 'Begin Free Assessment'}
+              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
             </Button>
             <Button
               onClick={onStart}
               size="lg"
-              className="group bg-gradient-to-r from-yellow to-yellow/80 hover:from-yellow/90 hover:to-yellow/70 text-yellow-foreground font-semibold text-lg px-10 py-7 rounded-xl shadow-lg shadow-yellow/25 hover:shadow-xl hover:shadow-yellow/30 hover:scale-[1.02] transition-all"
+              variant="outline"
+              className="group border-primary/30 hover:border-primary/50 hover:bg-primary/5 font-medium text-base px-8 py-6 rounded-lg transition-all"
             >
-              Start Paid Assessment
-              <Sparkles className="w-5 h-5 ml-2 group-hover:scale-110 transition-transform" />
+              Full Premium Analysis
+              <Sparkles className="w-4 h-4 ml-2 text-primary" />
             </Button>
           </div>
-          <p className="text-muted-foreground text-sm mt-4">
+          
+          <p className="text-muted-foreground/60 text-sm mt-4 max-w-md mx-auto">
             {hasStarted 
-              ? `${completedCount}/4 complete • Unlock your full Cognitive DNA report` 
-              : 'Free: Limited insights • Paid: Full premium report'
+              ? `${completedCount} of 4 assessments complete` 
+              : 'Basic analysis included • Premium unlocks detailed insights'
             }
           </p>
         </motion.div>
 
-        {/* INCOMPLETE PROFILE warning - ZEIGARNIK EFFECT */}
+        {/* Incomplete profile notice */}
         {hasStarted && completedCount < 4 && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.65 }}
-            className="mb-10 max-w-md mx-auto"
+            transition={{ delay: 0.6 }}
+            className="mb-10 max-w-lg mx-auto"
           >
-            <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
-              <div className="flex items-start gap-3">
-                <div className="p-2 rounded-lg bg-amber-500/20">
-                  <Lock className="w-4 h-4 text-amber-400" />
-                </div>
-                <div className="text-left">
-                  <p className="text-amber-300 font-medium text-sm">Your profile is incomplete</p>
-                  <p className="text-amber-400/70 text-xs mt-1">
-                    Complete all 4 assessments to unlock cross-test insights, synergy profiles, and your full Career Intelligence Report.
-                  </p>
-                </div>
-              </div>
+            <div className="p-4 rounded-lg bg-muted/20 border border-border/30">
+              <p className="text-muted-foreground text-sm">
+                <span className="text-foreground font-medium">Multi-dimensional analysis available:</span>{' '}
+                Complete all four assessments to receive cross-domain cognitive insights and your integrated profile report.
+              </p>
             </div>
           </motion.div>
         )}
 
-        {/* Research backing - AUTHORITY */}
+        {/* Scientific Footer */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
-          className="flex flex-col items-center gap-4"
+          className="pt-8 border-t border-border/20"
         >
-          <p className="text-muted-foreground/70 text-sm font-medium">Backed by peer-reviewed research</p>
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-muted-foreground/50 text-xs">
-            {['OCEAN Deep Profile', "Raven's Matrices", 'Neurodivergent Patterns', 'ASRS-v1.1'].map((name, i) => (
-              <div key={i} className="flex items-center gap-1.5">
-                <Check className="w-3 h-3 text-primary/70" />
-                <span>{name}</span>
-              </div>
-            ))}
+          <div className="flex flex-col items-center gap-4">
+            <p className="text-muted-foreground/50 text-xs uppercase tracking-wider font-medium">
+              Methodological Framework
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-6 text-muted-foreground/40 text-xs">
+              {[
+                { label: 'OCEAN / Big Five', detail: 'Personality Structure' },
+                { label: "Raven's Matrices", detail: 'Fluid Intelligence' },
+                { label: 'ASRS-v1.1', detail: 'Attentional Screening' },
+                { label: 'Cognitive Load Theory', detail: 'Processing Patterns' },
+              ].map((item, i) => (
+                <div key={i} className="flex flex-col items-center gap-0.5">
+                  <span className="text-muted-foreground/60 font-medium">{item.label}</span>
+                  <span className="text-muted-foreground/30 text-[10px]">{item.detail}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </motion.div>
       </motion.div>
