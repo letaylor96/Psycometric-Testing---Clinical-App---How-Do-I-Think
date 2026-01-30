@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Brain, Sparkles, ArrowRight, Check, ChevronRight, Atom, FlaskConical, Target, Network } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo, allAssessmentTypes } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
@@ -19,20 +18,6 @@ interface LandingHeroProps {
   adhdResults?: ADHDResults | null;
   cognitiveStyleResults?: CognitiveStyleResults | null;
 }
-
-const assessmentIcons: Record<AssessmentType, React.ElementType> = {
-  personality: Target,
-  iq: Brain,
-  cognitive: Network,
-  adhd: Atom,
-};
-
-const researchLabels: Record<AssessmentType, string> = {
-  personality: 'Big Five / OCEAN Model',
-  iq: "Raven's Progressive Matrices",
-  cognitive: 'Dual-Process Theory',
-  adhd: 'ASRS-v1.1 Clinical Scale',
-};
 
 export const LandingHero = ({ 
   onStart, 
@@ -54,269 +39,271 @@ export const LandingHero = ({
   const hasStarted = completedCount > 0;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 relative overflow-hidden bg-background">
-      {/* Auth Button - Top Right */}
-      <div className="absolute top-6 right-6 z-20">
-        <AuthButton />
-      </div>
-
-      {/* Scientific Background Pattern */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Primary gradient orb */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[700px] bg-gradient-radial from-primary/8 via-primary/3 to-transparent rounded-full blur-[100px]" />
-        
-        {/* Grid pattern overlay */}
-        <div 
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, hsl(var(--foreground)) 1px, transparent 1px),
-              linear-gradient(to bottom, hsl(var(--foreground)) 1px, transparent 1px)
-            `,
-            backgroundSize: '60px 60px'
-          }}
-        />
-        
-        {/* Floating molecular nodes */}
-        <svg className="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="nodeGradient" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.6"/>
-              <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0"/>
-            </radialGradient>
-          </defs>
-          {/* Scattered dots representing data points */}
-          {[...Array(20)].map((_, i) => (
-            <motion.circle
-              key={i}
-              cx={`${10 + (i * 4.5) % 90}%`}
-              cy={`${15 + (i * 7.3) % 70}%`}
-              r={2 + (i % 3)}
-              fill="url(#nodeGradient)"
-              initial={{ opacity: 0.1 }}
-              animate={{ opacity: [0.1, 0.4, 0.1] }}
-              transition={{ duration: 4 + (i % 3), repeat: Infinity, delay: i * 0.2 }}
-            />
-          ))}
-        </svg>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="text-center z-10 max-w-5xl w-full"
-      >
-        {/* Progress Indicator */}
-        <AssessmentProgress
-          iqResults={iqResults ?? null}
-          personalityResults={personalityResults ?? null}
-          adhdResults={adhdResults ?? null}
-          cognitiveStyleResults={cognitiveStyleResults ?? null}
-          onSelectAssessment={onSelectAssessment}
-          onViewDashboard={onViewDashboard}
-        />
-
-        {/* Research Institution Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.5 }}
-          className="flex items-center justify-center gap-3 mb-8"
-        >
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 bg-card/30 backdrop-blur-sm">
-            <FlaskConical className="w-4 h-4 text-primary" />
-            <span className="text-muted-foreground text-sm font-medium tracking-wide uppercase">
-              Cognitive Assessment Laboratory
+    <div className="min-h-screen bg-background">
+      {/* Top Navigation Bar */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border/50">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+              <span className="text-primary font-serif font-bold text-lg">H</span>
+            </div>
+            <span className="font-serif text-lg font-semibold text-foreground tracking-tight">
+              How Do I Think
             </span>
           </div>
-        </motion.div>
+          <AuthButton />
+        </div>
+      </header>
 
-        {/* Title with scientific typography */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.6 }}
-          className="mb-6"
-        >
-          <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.0]">
-            <span className="block text-foreground">How Do I</span>
-            <span className="block bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent mt-2">
-              Think?
-            </span>
-          </h1>
-        </motion.div>
+      {/* Hero Section */}
+      <section className="relative pt-24 pb-20 min-h-[85vh] flex items-center justify-center">
+        {/* Subtle gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.03] via-transparent to-transparent" />
+        
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+          {/* Progress if started */}
+          <div className="mb-8">
+            <AssessmentProgress
+              iqResults={iqResults ?? null}
+              personalityResults={personalityResults ?? null}
+              adhdResults={adhdResults ?? null}
+              cognitiveStyleResults={cognitiveStyleResults ?? null}
+              onSelectAssessment={onSelectAssessment}
+              onViewDashboard={onViewDashboard}
+            />
+          </div>
 
-        {/* Scientific subtitle */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.25 }}
-          className="max-w-2xl mx-auto mb-12"
-        >
-          <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
-            A comprehensive psychometric analysis of your cognitive architecture, personality structure, and neurological processing patterns.
-          </p>
-        </motion.div>
+          {/* Main Headline - Serif, Grand */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-[1.1] tracking-tight mb-8"
+          >
+            Discover Your
+            <br />
+            <span className="text-primary">Cognitive Profile</span>
+          </motion.h1>
 
-        {/* Research Framework Badges */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="flex flex-wrap items-center justify-center gap-3 mb-12"
-        >
-          {['Big Five Factor Model', 'Fluid Intelligence (Gf)', 'Executive Function', 'Attentional Control'].map((framework, i) => (
-            <div 
-              key={i} 
-              className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-muted/30 border border-border/30"
-            >
-              <div className="w-1.5 h-1.5 rounded-full bg-primary/60" />
-              <span className="text-muted-foreground text-xs font-medium tracking-wide">{framework}</span>
-            </div>
-          ))}
-        </motion.div>
+          {/* Subtitle - Clean, Professional */}
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+          >
+            A comprehensive suite of scientifically-validated assessments measuring 
+            intelligence, personality, cognitive style, and attentional patterns.
+          </motion.p>
 
-        {/* Assessment Grid - Scientific Cards */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mb-12"
-        >
-          {allAssessmentTypes.map((type, i) => {
-            const info = assessmentInfo[type];
-            const Icon = assessmentIcons[type];
-            const research = researchLabels[type];
-            const isCompleted = completionStatus[type];
-            
-            return (
-              <motion.button
-                key={type}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + i * 0.08 }}
-                whileHover={{ y: -4 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => onSelectAssessment(type)}
-                className={`relative group p-5 rounded-xl border backdrop-blur-sm transition-all text-left cursor-pointer ${
-                  isCompleted 
-                    ? 'border-emerald-500/30 bg-emerald-500/5' 
-                    : 'border-border/40 bg-card/40 hover:border-primary/30 hover:bg-card/60'
-                }`}
-              >
-                {/* Completion indicator */}
-                {isCompleted && (
-                  <div className="absolute top-3 right-3">
-                    <div className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-emerald-400" />
-                    </div>
-                  </div>
-                )}
-
-                <div className={`w-11 h-11 rounded-lg flex items-center justify-center mb-4 transition-all ${
-                  isCompleted 
-                    ? 'bg-emerald-500/10' 
-                    : 'bg-primary/5 group-hover:bg-primary/10'
-                }`}>
-                  <Icon className={`w-5 h-5 ${isCompleted ? 'text-emerald-400' : 'text-primary/70 group-hover:text-primary'}`} />
-                </div>
-                
-                <h3 className="font-semibold text-foreground mb-1 text-sm">{info.title}</h3>
-                <p className="text-primary/60 text-xs font-medium mb-3">{research}</p>
-                
-                <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground/60 text-xs">
-                    {info.questionCount} items • {info.timeMinutes} min
-                  </span>
-                  <ChevronRight className={`w-4 h-4 transition-transform ${
-                    isCompleted ? 'text-emerald-400/50' : 'text-muted-foreground/30 group-hover:text-primary/50 group-hover:translate-x-0.5'
-                  }`} />
-                </div>
-              </motion.button>
-            );
-          })}
-        </motion.div>
-
-        {/* Primary CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.55 }}
-          className="mb-8"
-        >
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center mb-6"
+          >
             <Button
               onClick={onStart}
               size="lg"
-              className="group bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-base px-8 py-6 rounded-lg transition-all"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-8 py-6 text-base"
             >
-              {hasStarted ? 'Continue Assessment' : 'Begin Free Assessment'}
-              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
+              {hasStarted ? 'Continue Assessment' : 'Begin Assessment'}
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
             <Button
               onClick={onStart}
               size="lg"
               variant="outline"
-              className="group border-primary/30 hover:border-primary/50 hover:bg-primary/5 font-medium text-base px-8 py-6 rounded-lg transition-all"
+              className="border-yellow bg-yellow/10 hover:bg-yellow/20 text-yellow font-medium px-8 py-6 text-base"
             >
-              Full Premium Analysis
-              <Sparkles className="w-4 h-4 ml-2 text-primary" />
+              Premium Access
             </Button>
-          </div>
-          
-          <p className="text-muted-foreground/60 text-sm mt-4 max-w-md mx-auto">
-            {hasStarted 
-              ? `${completedCount} of 4 assessments complete` 
-              : 'Basic analysis included • Premium unlocks detailed insights'
-            }
-          </p>
-        </motion.div>
-
-        {/* Incomplete profile notice */}
-        {hasStarted && completedCount < 4 && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="mb-10 max-w-lg mx-auto"
-          >
-            <div className="p-4 rounded-lg bg-muted/20 border border-border/30">
-              <p className="text-muted-foreground text-sm">
-                <span className="text-foreground font-medium">Multi-dimensional analysis available:</span>{' '}
-                Complete all four assessments to receive cross-domain cognitive insights and your integrated profile report.
-              </p>
-            </div>
           </motion.div>
-        )}
 
-        {/* Scientific Footer */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.7 }}
-          className="pt-8 border-t border-border/20"
-        >
-          <div className="flex flex-col items-center gap-4">
-            <p className="text-muted-foreground/50 text-xs uppercase tracking-wider font-medium">
-              Methodological Framework
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="text-muted-foreground/70 text-sm"
+          >
+            First assessment free · Premium bundle $9.99
+          </motion.p>
+        </div>
+      </section>
+
+      {/* About Section - Dark Band */}
+      <section className="bg-card py-20 border-y border-border/50">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <p className="text-primary/80 text-sm font-medium tracking-widest uppercase mb-6">
+            About Our Assessments
+          </p>
+          <h2 className="font-serif text-2xl md:text-3xl lg:text-4xl font-semibold text-foreground leading-relaxed max-w-3xl mx-auto">
+            Four validated instruments providing a comprehensive analysis of your cognitive 
+            architecture, personality structure, and neurological processing patterns.
+          </h2>
+        </div>
+      </section>
+
+      {/* Assessment Grid */}
+      <section className="py-20 bg-background">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <p className="text-primary/80 text-sm font-medium tracking-widest uppercase mb-4">
+              Assessment Suite
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-6 text-muted-foreground/40 text-xs">
-              {[
-                { label: 'OCEAN / Big Five', detail: 'Personality Structure' },
-                { label: "Raven's Matrices", detail: 'Fluid Intelligence' },
-                { label: 'ASRS-v1.1', detail: 'Attentional Screening' },
-                { label: 'Cognitive Load Theory', detail: 'Processing Patterns' },
-              ].map((item, i) => (
-                <div key={i} className="flex flex-col items-center gap-0.5">
-                  <span className="text-muted-foreground/60 font-medium">{item.label}</span>
-                  <span className="text-muted-foreground/30 text-[10px]">{item.detail}</span>
-                </div>
-              ))}
-            </div>
+            <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">
+              Choose Your Assessment
+            </h2>
           </div>
-        </motion.div>
-      </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {allAssessmentTypes.map((type, i) => {
+              const info = assessmentInfo[type];
+              const isCompleted = completionStatus[type];
+              
+              const methodologies: Record<AssessmentType, string> = {
+                personality: 'Based on the Big Five Factor Model (OCEAN), the gold standard in personality psychology research.',
+                iq: "Derived from Raven's Progressive Matrices, measuring fluid intelligence and abstract reasoning.",
+                cognitive: 'Examines processing patterns through Dual-Process Theory and executive function assessment.',
+                adhd: 'Utilizes the ASRS-v1.1 clinical screening scale developed by the World Health Organization.',
+              };
+
+              return (
+                <motion.button
+                  key={type}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                  onClick={() => onSelectAssessment(type)}
+                  className={`group relative text-left p-8 border transition-all ${
+                    isCompleted 
+                      ? 'border-emerald-500/30 bg-emerald-500/5' 
+                      : 'border-border hover:border-primary/40 bg-card hover:bg-card/80'
+                  }`}
+                >
+                  {isCompleted && (
+                    <div className="absolute top-6 right-6 flex items-center gap-2 text-emerald-500">
+                      <Check className="w-4 h-4" />
+                      <span className="text-xs font-medium uppercase tracking-wide">Completed</span>
+                    </div>
+                  )}
+                  
+                  <h3 className="font-serif text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+                    {info.title}
+                  </h3>
+                  <p className="text-primary/70 text-sm font-medium mb-4">
+                    {info.framework}
+                  </p>
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+                    {methodologies[type]}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground/60 text-xs">
+                      {info.questionCount} questions · {info.timeMinutes} minutes
+                    </span>
+                    <span className="text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                      Begin →
+                    </span>
+                  </div>
+                </motion.button>
+              );
+            })}
+          </div>
+
+          {/* Incomplete notice */}
+          {hasStarted && completedCount < 4 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mt-12 max-w-2xl mx-auto text-center"
+            >
+              <div className="inline-block px-6 py-4 bg-muted/30 border border-border/50">
+                <p className="text-muted-foreground text-sm">
+                  <span className="text-foreground font-medium">{completedCount} of 4 assessments complete.</span>
+                  {' '}Complete all four to unlock your integrated cognitive profile and cross-domain insights.
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </div>
+      </section>
+
+      {/* Methodology Section */}
+      <section className="py-20 bg-card border-y border-border/50">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <p className="text-primary/80 text-sm font-medium tracking-widest uppercase mb-4">
+              Scientific Foundation
+            </p>
+            <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-6">
+              Research-Based Methodology
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Our assessments are built on decades of peer-reviewed research in cognitive 
+              psychology, psychometrics, and neuroscience.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                title: 'Big Five Model',
+                description: 'The most validated personality framework in modern psychology, measuring five core dimensions.',
+              },
+              {
+                title: "Raven's Matrices",
+                description: 'Non-verbal assessment of fluid intelligence, used globally for cognitive evaluation.',
+              },
+              {
+                title: 'ASRS-v1.1',
+                description: 'WHO-developed screening tool for adult attention-deficit patterns and executive function.',
+              },
+              {
+                title: 'Cognitive Load Theory',
+                description: 'Framework for understanding how individuals process and retain complex information.',
+              },
+            ].map((item, i) => (
+              <div key={i} className="text-center">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-primary font-serif font-bold">{i + 1}</span>
+                </div>
+                <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer CTA */}
+      <section className="py-20 bg-background">
+        <div className="max-w-2xl mx-auto px-6 text-center">
+          <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-6">
+            Ready to Begin?
+          </h2>
+          <p className="text-muted-foreground mb-8">
+            Start with a free assessment and discover insights about your cognitive profile.
+          </p>
+          <Button
+            onClick={onStart}
+            size="lg"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-10 py-6 text-base"
+          >
+            Start Free Assessment
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-8 border-t border-border/50">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <p className="text-muted-foreground/60 text-sm">
+            © {new Date().getFullYear()} How Do I Think. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
