@@ -30,10 +30,32 @@ serve(async (req) => {
   try {
     logStep("Function started");
 
-    const { sessionId } = await req.json() as { sessionId: string };
+    // === INPUT VALIDATION ===
+    let body: { sessionId?: string };
+    try {
+      body = await req.json();
+    } catch {
+      return new Response(
+        JSON.stringify({ error: 'Invalid request body' }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const { sessionId } = body;
     
-    if (!sessionId) {
-      throw new Error("Session ID is required");
+    if (!sessionId || typeof sessionId !== 'string') {
+      return new Response(
+        JSON.stringify({ error: 'Session ID is required' }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Validate Stripe session ID format (starts with cs_)
+    if (!sessionId.startsWith('cs_')) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid session ID format' }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
     logStep("Verifying session", { sessionId });
@@ -84,13 +106,24 @@ serve(async (req) => {
       if (assessmentType === "bundle") {
         const bundleTypes = ["personality", "iq", "cognitive", "adhd"];
         for (const type of bundleTypes) {
-          await supabaseAdmin.from("purchases").upsert({
-            user_id: user.id,
-            assessment_type: type,
-            stripe_session_id: `${sessionId}_bundle_${type}`,
-            amount_cents: 0,
-            status: "completed",
-          }, { onConflict: "user_id,assessment_type" });
+          // Check if record already exists before inserting
+          const { data: existing } = await supabaseAdmin
+            .from("purchases")
+            .select("id")
+            .eq("user_id", user.id)
+            .eq("assessment_type", type)
+            .eq("status", "completed")
+            .maybeSingle();
+
+          if (!existing) {
+            await supabaseAdmin.from("purchases").insert({
+              user_id: user.id,
+              assessment_type: type,
+              stripe_session_id: null, // No synthetic session ID - reference bundle via user_id
+              amount_cents: 0,
+              status: "completed",
+            });
+          }
         }
         logStep("Bundle access granted for all assessments");
       }

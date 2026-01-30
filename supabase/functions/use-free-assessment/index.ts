@@ -29,10 +29,33 @@ serve(async (req) => {
   try {
     logStep("Function started");
 
-    const { assessmentType } = await req.json() as { assessmentType: string };
+    // === INPUT VALIDATION ===
+    const VALID_ASSESSMENT_TYPES = ['personality', 'iq', 'cognitive', 'adhd'] as const;
     
-    if (!assessmentType) {
-      throw new Error("Assessment type is required");
+    let body: { assessmentType?: string };
+    try {
+      body = await req.json();
+    } catch {
+      return new Response(
+        JSON.stringify({ error: 'Invalid request body' }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const { assessmentType } = body;
+    
+    if (!assessmentType || typeof assessmentType !== 'string') {
+      return new Response(
+        JSON.stringify({ error: 'Assessment type is required' }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (!VALID_ASSESSMENT_TYPES.includes(assessmentType as typeof VALID_ASSESSMENT_TYPES[number])) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid assessment type. Must be one of: personality, iq, cognitive, adhd' }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
     logStep("Marking free assessment as used", { assessmentType });
