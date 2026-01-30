@@ -2,7 +2,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
 interface CognitiveProfile {
@@ -13,6 +13,11 @@ interface CognitiveProfile {
   divergentProfile: Array<{ dimension: string; percentage: number }>;
 }
 
+const logStep = (step: string, details?: Record<string, unknown>) => {
+  const detailsStr = details ? ` - ${JSON.stringify(details)}` : '';
+  console.log(`[ANALYZE-CV] ${step}${detailsStr}`);
+};
+
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -20,6 +25,66 @@ Deno.serve(async (req) => {
   }
 
   try {
+    logStep("Function started");
+
+    // === AUTHENTICATION CHECK ===
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      logStep("No auth header - rejecting request");
+      return new Response(
+        JSON.stringify({ error: 'Authentication required' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const token = authHeader.replace("Bearer ", "");
+    const supabaseClient = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_ANON_KEY") ?? ""
+    );
+
+    const { data: userData, error: userError } = await supabaseClient.auth.getUser(token);
+    
+    if (userError || !userData.user) {
+      logStep("Invalid auth token");
+      return new Response(
+        JSON.stringify({ error: 'Invalid authentication' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const user = userData.user;
+    logStep("User authenticated", { userId: user.id });
+
+    // === PREMIUM ACCESS CHECK ===
+    const supabaseAdmin = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+    );
+
+    const { data: purchase, error: purchaseError } = await supabaseAdmin
+      .from('purchases')
+      .select('*')
+      .eq('user_id', user.id)
+      .eq('status', 'completed')
+      .eq('assessment_type', 'bundle')
+      .maybeSingle();
+
+    if (purchaseError) {
+      logStep("Error checking premium access", { error: purchaseError.message });
+    }
+
+    if (!purchase) {
+      logStep("User does not have premium access");
+      return new Response(
+        JSON.stringify({ error: 'Premium access required' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    logStep("Premium access verified");
+
+    // === PROCESS CV ANALYSIS ===
     const formData = await req.formData();
     const cvFile = formData.get('cv') as File;
     const cognitiveProfileStr = formData.get('cognitiveProfile') as string;
