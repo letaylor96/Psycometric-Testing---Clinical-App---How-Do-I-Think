@@ -76,8 +76,68 @@ serve(async (req) => {
 
     logStep("Premium access verified");
 
-    // === PROCESS AI REQUEST ===
-    const { messages, resultsContext } = await req.json();
+    // === INPUT VALIDATION ===
+    const MAX_MESSAGES = 50;
+    const MAX_MESSAGE_LENGTH = 2000;
+    const MAX_CONTEXT_LENGTH = 10000;
+
+    let body: { messages?: unknown; resultsContext?: unknown };
+    try {
+      body = await req.json();
+    } catch {
+      return new Response(
+        JSON.stringify({ error: 'Invalid request body' }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const { messages, resultsContext } = body;
+
+    // Validate messages array
+    if (!Array.isArray(messages)) {
+      return new Response(
+        JSON.stringify({ error: 'Messages must be an array' }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (messages.length > MAX_MESSAGES) {
+      return new Response(
+        JSON.stringify({ error: `Too many messages. Maximum is ${MAX_MESSAGES}` }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Validate each message
+    for (const msg of messages) {
+      if (!msg || typeof msg !== 'object' || !('role' in msg) || !('content' in msg)) {
+        return new Response(
+          JSON.stringify({ error: 'Invalid message format' }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      if (typeof msg.content === 'string' && msg.content.length > MAX_MESSAGE_LENGTH) {
+        return new Response(
+          JSON.stringify({ error: `Message too long. Maximum is ${MAX_MESSAGE_LENGTH} characters` }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    }
+
+    // Validate resultsContext
+    if (typeof resultsContext !== 'string') {
+      return new Response(
+        JSON.stringify({ error: 'Results context must be a string' }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (resultsContext.length > MAX_CONTEXT_LENGTH) {
+      return new Response(
+        JSON.stringify({ error: `Results context too long. Maximum is ${MAX_CONTEXT_LENGTH} characters` }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
     
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {

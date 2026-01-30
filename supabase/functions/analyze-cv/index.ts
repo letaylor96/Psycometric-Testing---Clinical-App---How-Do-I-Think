@@ -84,19 +84,65 @@ Deno.serve(async (req) => {
 
     logStep("Premium access verified");
 
-    // === PROCESS CV ANALYSIS ===
-    const formData = await req.formData();
+    // === INPUT VALIDATION ===
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    
+    let formData: FormData;
+    try {
+      formData = await req.formData();
+    } catch {
+      return new Response(
+        JSON.stringify({ error: 'Invalid form data' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
     const cvFile = formData.get('cv') as File;
     const cognitiveProfileStr = formData.get('cognitiveProfile') as string;
 
     if (!cvFile || !cognitiveProfileStr) {
-      throw new Error('Missing CV file or cognitive profile');
+      return new Response(
+        JSON.stringify({ error: 'Missing CV file or cognitive profile' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    const cognitiveProfile: CognitiveProfile = JSON.parse(cognitiveProfileStr);
+    // Validate file size
+    if (cvFile.size > MAX_FILE_SIZE) {
+      return new Response(
+        JSON.stringify({ error: 'File too large. Maximum size is 5MB' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Validate cognitive profile JSON
+    let cognitiveProfile: CognitiveProfile;
+    try {
+      cognitiveProfile = JSON.parse(cognitiveProfileStr);
+      // Validate required fields
+      if (typeof cognitiveProfile.iq !== 'number' || 
+          typeof cognitiveProfile.primaryStrength !== 'string' ||
+          typeof cognitiveProfile.divergentType !== 'string') {
+        throw new Error('Invalid cognitive profile structure');
+      }
+    } catch {
+      return new Response(
+        JSON.stringify({ error: 'Invalid cognitive profile format' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     // Read the CV file content
     const cvText = await cvFile.text();
+    
+    // Validate CV content length
+    const MAX_CV_LENGTH = 50000; // ~50KB of text
+    if (cvText.length > MAX_CV_LENGTH) {
+      return new Response(
+        JSON.stringify({ error: 'CV content too large' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     console.log('Processing CV analysis for profile:', cognitiveProfile.divergentType);
 
