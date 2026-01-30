@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
-import { ArrowRight, Check, Brain, Lightbulb, Sparkles, Target, Zap, ChevronDown, Crown, MessageCircle, FileText } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Check, Brain, Lightbulb, Sparkles, Target, Zap, ChevronDown, Crown, MessageCircle, FileText, Info, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo, allAssessmentTypes } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
@@ -37,6 +38,7 @@ export const LandingHero = ({
   cognitiveStyleResults,
 }: LandingHeroProps) => {
   const { hasPremiumAccess } = usePremiumAccess();
+  const [showAbout, setShowAbout] = useState(false);
 
   const completionStatus: Record<AssessmentType, boolean> = {
     personality: !!personalityResults,
@@ -180,34 +182,64 @@ export const LandingHero = ({
         </div>
       </section>
 
-      {/* About Section - Dark Band with Gold Accent */}
-      <section className="bg-card py-20 border-y border-yellow/20">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <div className="flex justify-center gap-4 mb-8">
-            <div className="w-12 h-12 rounded-full bg-yellow/10 flex items-center justify-center">
-              <Lightbulb className="w-6 h-6 text-yellow" />
-            </div>
-          </div>
-          <p className="text-yellow text-sm font-medium tracking-widest uppercase mb-6">
-            About Our Assessments
-          </p>
-          <h2 className="font-serif text-2xl md:text-3xl lg:text-4xl font-semibold text-foreground leading-relaxed max-w-3xl mx-auto">
-            Four validated instruments providing a comprehensive analysis of your cognitive 
-            architecture, personality structure, and neurological processing patterns.
-          </h2>
-        </div>
-      </section>
+      {/* About Button & Modal */}
+      <AnimatePresence>
+        {showAbout && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4"
+            onClick={() => setShowAbout(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative max-w-2xl w-full bg-card border border-yellow/20 p-8 md:p-12"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowAbout(false)}
+                className="absolute top-4 right-4 p-2 text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <div className="flex justify-center gap-4 mb-6">
+                <div className="w-12 h-12 rounded-full bg-yellow/10 flex items-center justify-center">
+                  <Lightbulb className="w-6 h-6 text-yellow" />
+                </div>
+              </div>
+              <p className="text-yellow text-sm font-medium tracking-widest uppercase mb-4 text-center">
+                About Our Assessments
+              </p>
+              <h2 className="font-serif text-xl md:text-2xl lg:text-3xl font-semibold text-foreground leading-relaxed text-center">
+                Four validated instruments providing a comprehensive analysis of your cognitive 
+                architecture, personality structure, and neurological processing patterns.
+              </h2>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Assessment Grid */}
       <section id="assessment-grid" className="py-20 bg-background">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
             <p className="text-yellow text-sm font-medium tracking-widest uppercase mb-4">
               Assessment Suite
             </p>
-            <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">
+            <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
               Choose Your Assessment
             </h2>
+            <button
+              onClick={() => setShowAbout(true)}
+              className="inline-flex items-center gap-2 text-muted-foreground hover:text-yellow transition-colors text-sm"
+            >
+              <Info className="w-4 h-4" />
+              <span>About our assessments</span>
+            </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
