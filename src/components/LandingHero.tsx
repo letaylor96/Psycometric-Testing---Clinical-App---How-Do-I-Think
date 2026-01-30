@@ -102,7 +102,7 @@ export const LandingHero = ({
           >
             How Do I
             <br />
-            <span className="text-yellow">Think?</span>
+            <span className="text-primary">Think?</span>
           </motion.h1>
 
           {/* Subtitle - Clean, Professional */}
@@ -126,7 +126,7 @@ export const LandingHero = ({
             <Button
               onClick={onStart}
               size="lg"
-              className="bg-yellow hover:bg-yellow/90 text-yellow-foreground font-medium px-8 py-6 text-base"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-8 py-6 text-base"
             >
               {hasStarted ? 'Continue Assessment' : 'Begin Assessment'}
               <ArrowRight className="w-4 h-4 ml-2" />
@@ -327,7 +327,7 @@ export const LandingHero = ({
           <Button
             onClick={onStart}
             size="lg"
-            className="bg-yellow hover:bg-yellow/90 text-yellow-foreground font-medium px-10 py-6 text-base"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-10 py-6 text-base"
           >
             Start Free Assessment
             <ArrowRight className="w-4 h-4 ml-2" />
