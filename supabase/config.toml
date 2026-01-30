@@ -14,3 +14,6 @@ verify_jwt = false
 
 [functions.use-free-assessment]
 verify_jwt = false
+
+[functions.check-premium-access]
+verify_jwt = false

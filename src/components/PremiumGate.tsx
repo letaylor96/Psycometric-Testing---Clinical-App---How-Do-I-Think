@@ -34,14 +34,32 @@ export const PremiumGate = ({ isOpen, onClose, onUnlocked, feature }: PremiumGat
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const handlePromoSubmit = (e: React.FormEvent) => {
+  const [isApplyingCode, setIsApplyingCode] = useState(false);
+
+  const handlePromoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (unlockWithCode(promoCode)) {
-      toast.success('Premium access unlocked!');
-      onUnlocked?.();
+    
+    if (!user) {
+      toast.error('Please sign in to use a promo code');
       onClose();
-    } else {
-      toast.error('Invalid code');
+      navigate('/auth');
+      return;
+    }
+
+    setIsApplyingCode(true);
+    try {
+      const success = await unlockWithCode(promoCode);
+      if (success) {
+        toast.success('Premium access unlocked!');
+        onUnlocked?.();
+        onClose();
+      } else {
+        toast.error('Invalid code');
+      }
+    } catch {
+      toast.error('Failed to apply code');
+    } finally {
+      setIsApplyingCode(false);
     }
   };
 
@@ -189,11 +207,17 @@ export const PremiumGate = ({ isOpen, onClose, onUnlocked, feature }: PremiumGat
                     variant="ghost" 
                     className="flex-1"
                     onClick={() => setShowPromoInput(false)}
+                    disabled={isApplyingCode}
                   >
                     Cancel
                   </Button>
-                  <Button type="submit" variant="secondary" className="flex-1">
-                    Apply Code
+                  <Button 
+                    type="submit" 
+                    variant="secondary" 
+                    className="flex-1"
+                    disabled={isApplyingCode}
+                  >
+                    {isApplyingCode ? 'Applying...' : 'Apply Code'}
                   </Button>
                 </div>
               </form>
