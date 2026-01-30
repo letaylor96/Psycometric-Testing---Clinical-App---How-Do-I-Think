@@ -6,8 +6,10 @@ import { TestResults, categoryLabels } from '@/data/quizQuestions';
 import { PersonalityResults, personalityTraitLabels, PersonalityTrait } from '@/data/personalityQuestions';
 import { ADHDResults, adhdDomainLabels } from '@/data/adhdQuestions';
 import { CognitiveStyleResults, dimensionLabels } from '@/data/cognitiveStyleQuestions';
-import { FileText, Download, Copy, Check, ClipboardList } from 'lucide-react';
+import { FileText, Download, Copy, Check, ClipboardList, Lock } from 'lucide-react';
 import { toast } from 'sonner';
+import { usePremiumAccess } from '@/hooks/usePremiumAccess';
+import { PremiumGate } from '@/components/PremiumGate';
 
 interface TherapistReportProps {
   iqResults: TestResults | null;
@@ -24,8 +26,18 @@ export const TherapistReport = ({
 }: TherapistReportProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showPremiumGate, setShowPremiumGate] = useState(false);
+  const { hasPremiumAccess } = usePremiumAccess();
 
   const hasAnyResults = iqResults || personalityResults || adhdResults || cognitiveStyleResults;
+  
+  const handleClick = () => {
+    if (!hasPremiumAccess) {
+      setShowPremiumGate(true);
+      return;
+    }
+    setIsOpen(true);
+  };
   
   const generateDate = () => new Date().toLocaleDateString('en-US', { 
     year: 'numeric', 
@@ -237,14 +249,22 @@ export const TherapistReport = ({
   return (
     <>
       <Button
-        onClick={() => setIsOpen(true)}
+        onClick={handleClick}
         disabled={!hasAnyResults}
         variant="outline"
         className="border-emerald-500/50 hover:bg-emerald-500/10 text-emerald-600"
       >
+        {!hasPremiumAccess && <Lock className="w-3 h-3 mr-1.5" />}
         <ClipboardList className="w-4 h-4 mr-2" />
         Therapist Report
       </Button>
+
+      <PremiumGate
+        isOpen={showPremiumGate}
+        onClose={() => setShowPremiumGate(false)}
+        onUnlocked={() => setIsOpen(true)}
+        feature="Therapist Report"
+      />
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="max-w-4xl max-h-[85vh] overflow-hidden flex flex-col">
