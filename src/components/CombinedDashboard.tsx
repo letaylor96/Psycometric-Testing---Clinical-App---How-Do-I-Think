@@ -28,6 +28,10 @@ import { TherapistReport } from './TherapistReport';
 import { AskAIAboutResults } from './AskAIAboutResults';
 import { BlindSpotAnalysis } from './BlindSpotAnalysis';
 import { PeerComparison } from './PeerComparison';
+import { WhenYourMindWorksBest } from './WhenYourMindWorksBest';
+import { CognitiveFrictionAlerts } from './CognitiveFrictionAlerts';
+import { WeeklyCheckIn } from './WeeklyCheckIn';
+import { ExportableOnePager } from './ExportableOnePager';
 import { cn } from '@/lib/utils';
 import {
   RadarChart,
@@ -576,6 +580,28 @@ export const CombinedDashboard = ({
           }}
         />
 
+        {/* When Your Mind Works Best - Dynamic Insights */}
+        {(iqResults || personalityResults || adhdResults || cognitiveStyleResults) && (
+          <WhenYourMindWorksBest
+            iqResults={iqResults}
+            personalityResults={personalityResults}
+            adhdResults={adhdResults}
+            cognitiveStyleResults={cognitiveStyleResults}
+            className="mb-8"
+          />
+        )}
+
+        {/* Cognitive Friction Alerts - Inner Coach */}
+        {(iqResults || personalityResults || adhdResults || cognitiveStyleResults) && (
+          <CognitiveFrictionAlerts
+            iqResults={iqResults}
+            personalityResults={personalityResults}
+            adhdResults={adhdResults}
+            cognitiveStyleResults={cognitiveStyleResults}
+            className="mb-8"
+          />
+        )}
+
         {/* Blind Spot Analysis - Directly under score visualization */}
         {(iqResults || personalityResults || adhdResults || cognitiveStyleResults) && (
           <BlindSpotAnalysis
@@ -586,6 +612,9 @@ export const CombinedDashboard = ({
             className="mb-8"
           />
         )}
+
+        {/* Weekly Cognitive Check-In */}
+        <WeeklyCheckIn className="mb-8" />
 
         {/* AI Insight Tools Section */}
         <motion.div
@@ -733,6 +762,17 @@ export const CombinedDashboard = ({
           </motion.div>
         )}
 
+        {/* Exportable One-Pager */}
+        {(iqResults || personalityResults || adhdResults || cognitiveStyleResults) && (
+          <ExportableOnePager
+            iqResults={iqResults}
+            personalityResults={personalityResults}
+            adhdResults={adhdResults}
+            cognitiveStyleResults={cognitiveStyleResults}
+            className="mb-8"
+          />
+        )}
+
         {/* Actions */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -745,16 +785,10 @@ export const CombinedDashboard = ({
             Start Over
           </Button>
           {completedCount === totalAssessments && (
-            <>
-              <Button variant="outline" size="lg">
-                <Download className="w-4 h-4 mr-2" />
-                Download Report
-              </Button>
-              <Button size="lg" className="bg-gradient-to-r from-primary to-accent hover:opacity-90">
-                <Share2 className="w-4 h-4 mr-2" />
-                Share Results
-              </Button>
-            </>
+            <Button size="lg" className="bg-gradient-to-r from-primary to-accent hover:opacity-90">
+              <Share2 className="w-4 h-4 mr-2" />
+              Share Results
+            </Button>
           )}
         </motion.div>
       </div>
