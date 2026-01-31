@@ -52,37 +52,60 @@ export const QuizQuestion = ({
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8">
-      {/* Timer Bar - Fixed at top */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
+      {/* Timer Bar - Fixed at top - MORE PROMINENT */}
+      <div className={cn(
+        "fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b transition-colors duration-300",
+        isCriticalTime 
+          ? "bg-destructive/10 border-destructive/30" 
+          : isLowTime 
+            ? "bg-amber-500/10 border-amber-500/30" 
+            : "bg-background/90 border-border"
+      )}>
         <div className="max-w-4xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
+            {/* Timer - More Prominent */}
+            <div className={cn(
+              "flex items-center gap-3 px-4 py-2 rounded-xl border transition-all",
+              isCriticalTime 
+                ? "bg-destructive/20 border-destructive/50 animate-pulse" 
+                : isLowTime 
+                  ? "bg-amber-500/20 border-amber-500/40" 
+                  : "bg-primary/10 border-primary/30"
+            )}>
               <Clock className={cn(
-                "w-4 h-4 transition-colors",
-                isCriticalTime ? "text-destructive animate-pulse" : isLowTime ? "text-yellow-500" : "text-muted-foreground"
+                "w-5 h-5 transition-colors",
+                isCriticalTime ? "text-destructive" : isLowTime ? "text-amber-500" : "text-primary"
               )} />
               <span className={cn(
-                "font-mono font-semibold text-lg transition-colors",
-                isCriticalTime ? "text-destructive" : isLowTime ? "text-yellow-500" : "text-foreground"
+                "font-mono font-bold text-xl tracking-wide transition-colors",
+                isCriticalTime ? "text-destructive" : isLowTime ? "text-amber-500" : "text-foreground"
               )}>
                 {formatTime(totalTimeRemaining)}
               </span>
               {isCriticalTime && (
-                <span className="text-xs text-destructive flex items-center gap-1">
+                <span className="text-xs text-destructive font-semibold flex items-center gap-1 bg-destructive/20 px-2 py-0.5 rounded-full">
                   <AlertTriangle className="w-3 h-3" />
                   Hurry!
                 </span>
               )}
+              {isLowTime && !isCriticalTime && (
+                <span className="text-xs text-amber-600 dark:text-amber-400 font-medium">
+                  Low time
+                </span>
+              )}
             </div>
-            <span className="text-sm text-muted-foreground">
-              {currentIndex + 1} / {totalQuestions}
+            
+            <span className="text-sm text-muted-foreground font-medium">
+              Question {currentIndex + 1} of {totalQuestions}
             </span>
           </div>
-          <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+          
+          {/* Time Progress Bar */}
+          <div className="h-2 bg-muted rounded-full overflow-hidden">
             <motion.div
               className={cn(
                 "h-full transition-colors duration-300",
-                isCriticalTime ? "bg-destructive" : isLowTime ? "bg-yellow-500" : "bg-gradient-to-r from-primary to-secondary"
+                isCriticalTime ? "bg-destructive" : isLowTime ? "bg-amber-500" : "bg-gradient-to-r from-primary to-secondary"
               )}
               initial={{ width: '100%' }}
               animate={{ width: `${timePercentage}%` }}
