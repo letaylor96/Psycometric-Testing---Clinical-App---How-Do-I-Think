@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, Brain, UserCheck, Lightbulb, Activity, Check, X, Sparkles, Crown, Shield, CreditCard, Users, Zap, TrendingUp } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Brain, UserCheck, Lightbulb, Activity, Check, X, Sparkles, Crown, Shield, CreditCard, Users, Zap, TrendingUp, Clock, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo } from '@/data/assessmentTypes';
 
@@ -130,7 +130,7 @@ const assessmentTiers: Record<AssessmentType, {
   },
 };
 
-const assessmentDescriptions: Record<AssessmentType, { tagline: string; what: string }> = {
+const assessmentDescriptions: Record<AssessmentType, { tagline: string; what: string; isTimed?: boolean }> = {
   personality: {
     tagline: 'Discover what makes you uniquely you',
     what: 'This 30-question assessment maps your personality across the Big Five dimensions (Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism) and derives your Myers-Briggs type.',
@@ -138,6 +138,7 @@ const assessmentDescriptions: Record<AssessmentType, { tagline: string; what: st
   iq: {
     tagline: 'Measure your cognitive potential',
     what: "This Mensa-style assessment uses 25 progressive pattern recognition puzzles based on Raven's Matrices to estimate your IQ and cognitive ranking.",
+    isTimed: true,
   },
   cognitive: {
     tagline: 'Understand how your mind processes information',
@@ -197,6 +198,19 @@ export const AssessmentPreview = ({ type, onStart, onBack }: AssessmentPreviewPr
             <span>•</span>
             <span className="text-muted-foreground/70">{info.framework}</span>
           </div>
+          
+          {/* Timed Assessment Warning - IQ Only */}
+          {desc.isTimed && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400"
+            >
+              <Clock className="w-4 h-4" />
+              <span className="text-sm font-medium">Timed Assessment — {info.timeMinutes} minute limit</span>
+            </motion.div>
+          )}
         </div>
 
         {/* What this test measures */}
