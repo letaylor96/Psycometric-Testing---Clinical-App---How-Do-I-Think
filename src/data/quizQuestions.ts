@@ -451,9 +451,10 @@ export interface TestResults {
   timeUsed: number;
   timeBonusApplied: boolean;
   answers: number[]; // User's answers for question review
+  questions: Question[]; // The actual questions used (for variant support)
 }
 
-export const calculateResults = (answers: number[], timeUsed: number): TestResults => {
+export const calculateResults = (answers: number[], timeUsed: number, questions: Question[] = quizQuestions): TestResults => {
   const categoryScores: Record<CognitiveCategory, { correct: number; total: number }> = {
     number_sequence: { correct: 0, total: 0 },
     shape_pattern: { correct: 0, total: 0 },
@@ -471,7 +472,7 @@ export const calculateResults = (answers: number[], timeUsed: number): TestResul
 
   let totalCorrect = 0;
 
-  quizQuestions.forEach((question, index) => {
+  questions.forEach((question, index) => {
     const userAnswer = answers[index];
     if (userAnswer === undefined) return; // Skip unanswered
     
@@ -508,7 +509,7 @@ export const calculateResults = (answers: number[], timeUsed: number): TestResul
   ).category;
 
   // Calculate IQ with time bonus (Mensa-style scoring)
-  const overallPercentage = (totalCorrect / quizQuestions.length) * 100;
+  const overallPercentage = (totalCorrect / questions.length) * 100;
   const timeBonusApplied = timeUsed < TOTAL_TEST_TIME * 0.7; // Finished with 30%+ time remaining
   
   let baseIQ: number;
@@ -538,7 +539,7 @@ export const calculateResults = (answers: number[], timeUsed: number): TestResul
 
   return {
     totalCorrect,
-    totalQuestions: quizQuestions.length,
+    totalQuestions: questions.length,
     iq,
     categoryScores: categoryResults,
     divergentProfile,
@@ -548,6 +549,7 @@ export const calculateResults = (answers: number[], timeUsed: number): TestResul
     timeUsed,
     timeBonusApplied,
     answers,
+    questions, // Store the questions used for variant-aware review
   };
 };
 

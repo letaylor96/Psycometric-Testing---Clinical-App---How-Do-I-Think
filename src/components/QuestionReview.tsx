@@ -1,21 +1,23 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, X, ChevronDown, ChevronUp, Lock, Crown, Lightbulb, BookOpen } from 'lucide-react';
-import { Question, quizQuestions, categoryLabels } from '@/data/quizQuestions';
+import { Question, categoryLabels } from '@/data/quizQuestions';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { usePremiumAccess } from '@/hooks/usePremiumAccess';
 
 interface QuestionReviewProps {
   answers: number[];
+  questions: Question[]; // Now receives the actual questions used
 }
 
-export const QuestionReview = ({ answers }: QuestionReviewProps) => {
+export const QuestionReview = ({ answers, questions }: QuestionReviewProps) => {
   const { hasPremiumAccess, isLoading } = usePremiumAccess();
   const [expandedQuestion, setExpandedQuestion] = useState<number | null>(null);
   const [showAll, setShowAll] = useState(false);
+  const [showOnlyWrong, setShowOnlyWrong] = useState(false);
 
-  const reviewData = quizQuestions.map((question, index) => ({
+  const reviewData = questions.map((question, index) => ({
     question,
     userAnswer: answers[index],
     isCorrect: answers[index] === question.correctAnswer,
@@ -24,8 +26,13 @@ export const QuestionReview = ({ answers }: QuestionReviewProps) => {
   const correctCount = reviewData.filter(r => r.isCorrect).length;
   const incorrectCount = reviewData.filter(r => !r.isCorrect).length;
 
+  // Apply filters for display
+  const filteredQuestions = showOnlyWrong 
+    ? reviewData.filter(r => !r.isCorrect)
+    : reviewData;
+
   // Free users can only see summary, premium users see full review
-  const displayedQuestions = showAll ? reviewData : reviewData.slice(0, 3);
+  const displayedQuestions = showAll ? filteredQuestions : filteredQuestions.slice(0, 3);
 
   if (isLoading) {
     return (
@@ -107,21 +114,35 @@ export const QuestionReview = ({ answers }: QuestionReviewProps) => {
       </div>
 
       {/* Summary Stats */}
-      <div className="grid grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-emerald-500/10 rounded-xl p-4 text-center border border-emerald-500/20">
           <div className="flex items-center justify-center gap-2 mb-1">
             <Check className="w-5 h-5 text-emerald-500" />
             <span className="font-display text-2xl font-bold text-emerald-500">{correctCount}</span>
           </div>
-          <p className="text-xs text-muted-foreground">Correct Answers</p>
+          <p className="text-xs text-muted-foreground">Correct</p>
         </div>
         <div className="bg-red-500/10 rounded-xl p-4 text-center border border-red-500/20">
           <div className="flex items-center justify-center gap-2 mb-1">
             <X className="w-5 h-5 text-red-500" />
             <span className="font-display text-2xl font-bold text-red-500">{incorrectCount}</span>
           </div>
-          <p className="text-xs text-muted-foreground">Need Review</p>
+          <p className="text-xs text-muted-foreground">Incorrect</p>
         </div>
+        <button 
+          onClick={() => setShowOnlyWrong(!showOnlyWrong)}
+          className={cn(
+            "rounded-xl p-4 text-center border transition-colors",
+            showOnlyWrong 
+              ? "bg-red-500/20 border-red-500/40 text-red-500" 
+              : "bg-muted/30 border-border text-muted-foreground hover:bg-muted/50"
+          )}
+        >
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <Lightbulb className="w-5 h-5" />
+          </div>
+          <p className="text-xs">{showOnlyWrong ? 'Showing Wrong' : 'Show Wrong Only'}</p>
+        </button>
       </div>
 
       {/* Question List */}
@@ -238,13 +259,26 @@ export const QuestionReview = ({ answers }: QuestionReviewProps) => {
                       })}
                     </div>
 
-                    {/* Explanation (only for wrong answers) */}
-                    {!item.isCorrect && item.question.explanation && (
-                      <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                    {/* Explanation - shown for all questions in premium */}
+                    {item.question.explanation && (
+                      <div className={cn(
+                        "rounded-lg p-3 border",
+                        item.isCorrect 
+                          ? "bg-emerald-500/10 border-emerald-500/20" 
+                          : "bg-amber-500/10 border-amber-500/20"
+                      )}>
                         <div className="flex items-start gap-2">
-                          <Lightbulb className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                          <Lightbulb className={cn(
+                            "w-4 h-4 mt-0.5 flex-shrink-0",
+                            item.isCorrect ? "text-emerald-500" : "text-amber-500"
+                          )} />
                           <div>
-                            <p className="text-xs font-semibold text-amber-500 mb-1">Explanation</p>
+                            <p className={cn(
+                              "text-xs font-semibold mb-1",
+                              item.isCorrect ? "text-emerald-500" : "text-amber-500"
+                            )}>
+                              {item.isCorrect ? 'Why this is correct' : 'Explanation'}
+                            </p>
                             <p className="text-sm text-foreground">{item.question.explanation}</p>
                           </div>
                         </div>
@@ -259,7 +293,7 @@ export const QuestionReview = ({ answers }: QuestionReviewProps) => {
       </div>
 
       {/* Show More/Less */}
-      {reviewData.length > 3 && (
+      {filteredQuestions.length > 3 && (
         <Button
           variant="ghost"
           onClick={() => setShowAll(!showAll)}
@@ -273,7 +307,7 @@ export const QuestionReview = ({ answers }: QuestionReviewProps) => {
           ) : (
             <>
               <ChevronDown className="w-4 h-4 mr-2" />
-              Show All {reviewData.length} Questions
+              Show All {filteredQuestions.length} Questions
             </>
           )}
         </Button>

@@ -374,7 +374,7 @@ Fascinating insights into how I think and solve problems. Try it yourself 👇`)
         </div>
 
         {/* Question Review - Premium Feature */}
-        <QuestionReview answers={results.answers} />
+        <QuestionReview answers={results.answers} questions={results.questions} />
 
         {/* Career Intelligence Report - Premium Feature */}
         <CareerIntelligenceReport results={results} />
