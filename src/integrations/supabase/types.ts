@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      cognitive_checkins: {
+        Row: {
+          checkin_date: string
+          created_at: string
+          emotional_load: number | null
+          energy_level: number | null
+          focus_quality: number | null
+          id: string
+          mental_clarity: number | null
+          pattern_task_score: number | null
+          reflection_note: string | null
+          user_id: string
+        }
+        Insert: {
+          checkin_date?: string
+          created_at?: string
+          emotional_load?: number | null
+          energy_level?: number | null
+          focus_quality?: number | null
+          id?: string
+          mental_clarity?: number | null
+          pattern_task_score?: number | null
+          reflection_note?: string | null
+          user_id: string
+        }
+        Update: {
+          checkin_date?: string
+          created_at?: string
+          emotional_load?: number | null
+          energy_level?: number | null
+          focus_quality?: number | null
+          id?: string
+          mental_clarity?: number | null
+          pattern_task_score?: number | null
+          reflection_note?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       free_assessments: {
         Row: {
           assessment_type: string
