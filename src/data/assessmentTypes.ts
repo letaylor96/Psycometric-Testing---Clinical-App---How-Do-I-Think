@@ -27,6 +27,7 @@ export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
     questionCount: 30,
     timeMinutes: Math.ceil((30 * TIME_PER_QUESTION_SECONDS) / 60), // 15 min
     color: 'primary',
+    isPremiumOnly: true,
   },
   iq: {
     id: 'iq',
@@ -47,6 +48,7 @@ export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
     questionCount: 38, // 20 cognitive + 18 ADHD
     timeMinutes: Math.ceil((38 * TIME_PER_QUESTION_SECONDS) / 60), // 19 min
     color: 'primary',
+    isPremiumOnly: true,
   },
   depth: {
     id: 'depth',
