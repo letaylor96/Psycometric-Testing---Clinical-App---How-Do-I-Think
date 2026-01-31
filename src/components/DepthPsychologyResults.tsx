@@ -13,10 +13,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, LayoutDashboard, TrendingUp, Sparkles, RefreshCw, ChevronDown, ChevronUp, BookOpen } from 'lucide-react';
+import { SaveAssessmentButton } from '@/components/SaveAssessmentButton';
 import { cn } from '@/lib/utils';
 
 interface DepthPsychologyResultsProps {
   results: Results;
+  answers?: { questionId: number; answer: string }[];
   onRestart: () => void;
   onViewDashboard: () => void;
   onTryFramework?: (framework: AnalysisFramework) => void;
@@ -622,7 +624,8 @@ const NietzscheanResultsView = ({ results }: { results: NietzscheanResults }) =>
 };
 
 export const DepthPsychologyResultsScreen = ({ 
-  results, 
+  results,
+  answers,
   onRestart, 
   onViewDashboard,
   onTryFramework,
@@ -744,8 +747,16 @@ export const DepthPsychologyResultsScreen = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center pt-4"
+          className="flex flex-col sm:flex-row gap-4 justify-center pt-4 flex-wrap"
         >
+          {answers && (
+            <SaveAssessmentButton
+              assessmentType="depth"
+              answers={answers}
+              results={results}
+              framework={results.framework}
+            />
+          )}
           <Button variant="outline" onClick={onRestart} className="gap-2">
             <ArrowLeft className="w-4 h-4" />
             Start New Assessment

@@ -7,10 +7,12 @@ import { useState } from 'react';
 import { CareerIntelligenceReport } from '@/components/CareerIntelligenceReport';
 import { PremiumFeatureTeaser } from '@/components/PremiumFeatureTeaser';
 import { QuestionReview } from '@/components/QuestionReview';
+import { SaveAssessmentButton } from '@/components/SaveAssessmentButton';
 import { cn } from '@/lib/utils';
 
 interface ResultsScreenProps {
   results: TestResults;
+  answers?: number[];
   onRestart: () => void;
   onViewDashboard?: () => void;
 }
@@ -39,7 +41,7 @@ const getIQTier = (iq: number): { tier: string; color: string; description: stri
   return { tier: 'Developing', color: 'text-foreground', description: 'Room for growth', tagline: 'Intelligence is malleable and can be developed' };
 };
 
-export const ResultsScreen = ({ results, onRestart, onViewDashboard }: ResultsScreenProps) => {
+export const ResultsScreen = ({ results, answers, onRestart, onViewDashboard }: ResultsScreenProps) => {
   const [copied, setCopied] = useState(false);
   
   const radarData = results.categoryScores.map((score) => ({
@@ -418,8 +420,16 @@ Fascinating insights into how I think and solve problems. Try it yourself 👇`)
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap"
         >
+          {answers && (
+            <SaveAssessmentButton
+              assessmentType="iq"
+              answers={answers}
+              results={results}
+              className="font-display font-semibold py-6 px-8 rounded-xl"
+            />
+          )}
           <Button
             onClick={onRestart}
             variant="outline"

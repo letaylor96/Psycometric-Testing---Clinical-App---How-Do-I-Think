@@ -10,9 +10,11 @@ import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer } fro
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { PremiumFeatureTeaser } from '@/components/PremiumFeatureTeaser';
+import { SaveAssessmentButton } from '@/components/SaveAssessmentButton';
 
 interface PersonalityResultsScreenProps {
   results: PersonalityResults;
+  answers?: number[];
   onRestart: () => void;
   onViewDashboard?: () => void;
 }
@@ -25,7 +27,7 @@ const traitColors: Record<PersonalityTrait, string> = {
   neuroticism: '#EC4899',
 };
 
-export const PersonalityResultsScreen = ({ results, onRestart, onViewDashboard }: PersonalityResultsScreenProps) => {
+export const PersonalityResultsScreen = ({ results, answers, onRestart, onViewDashboard }: PersonalityResultsScreenProps) => {
   const [copied, setCopied] = useState(false);
   const [expandedTrait, setExpandedTrait] = useState<PersonalityTrait | null>(null);
 
@@ -538,6 +540,13 @@ Take the free assessment yourself 👇`);
           transition={{ delay: 0.6 }}
           className="flex flex-wrap justify-center gap-4"
         >
+          {answers && (
+            <SaveAssessmentButton
+              assessmentType="personality"
+              answers={answers}
+              results={results}
+            />
+          )}
           <Button onClick={onRestart} variant="outline" size="lg">
             <RotateCcw className="w-4 h-4 mr-2" />
             Take Another Assessment

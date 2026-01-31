@@ -16,6 +16,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { NeurodivergentMindResults, processingStyleLabels, dimensionLabels } from '@/data/neurodivergentMindQuestions';
+import { SaveAssessmentButton } from '@/components/SaveAssessmentButton';
 import {
   RadarChart,
   PolarGrid,
@@ -27,6 +28,8 @@ import {
 
 interface NeurodivergentMindResultsScreenProps {
   results: NeurodivergentMindResults;
+  cognitiveAnswers?: number[];
+  adhdAnswers?: number[];
   onRestart: () => void;
   onViewDashboard?: () => void;
 }
@@ -60,6 +63,8 @@ const likelihoodConfig = {
 
 export const NeurodivergentMindResultsScreen = ({ 
   results, 
+  cognitiveAnswers,
+  adhdAnswers,
   onRestart,
   onViewDashboard 
 }: NeurodivergentMindResultsScreenProps) => {
@@ -392,8 +397,15 @@ export const NeurodivergentMindResultsScreen = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap"
         >
+          {cognitiveAnswers && adhdAnswers && (
+            <SaveAssessmentButton
+              assessmentType="neurodivergent"
+              answers={{ cognitiveAnswers, adhdAnswers }}
+              results={{ cognitiveStyle: results.cognitiveStyle, adhd: results.adhd }}
+            />
+          )}
           <Button
             onClick={handleShare}
             variant="outline"
