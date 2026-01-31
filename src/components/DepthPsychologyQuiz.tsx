@@ -152,35 +152,92 @@ export const DepthPsychologyQuiz = ({
   }
 
   if (isAnalyzing) {
+    const analysisStages = framework === 'freudian' 
+      ? [
+          { label: 'Reading your responses...', icon: '📖' },
+          { label: 'Analyzing structural dynamics (Id, Ego, Superego)...', icon: '🧠' },
+          { label: 'Identifying defense mechanisms...', icon: '🛡️' },
+          { label: 'Tracing psychosexual development patterns...', icon: '🔍' },
+          { label: 'Uncovering unconscious themes...', icon: '🌙' },
+          { label: 'Synthesizing psychoanalytic profile...', icon: '✨' },
+        ]
+      : framework === 'jungian'
+      ? [
+          { label: 'Reading your responses...', icon: '📖' },
+          { label: 'Identifying archetypal patterns...', icon: '🎭' },
+          { label: 'Mapping shadow content...', icon: '🌑' },
+          { label: 'Analyzing psychological functions...', icon: '🧭' },
+          { label: 'Assessing individuation stage...', icon: '🌓' },
+          { label: 'Synthesizing analytical profile...', icon: '✨' },
+        ]
+      : [
+          { label: 'Reading your responses...', icon: '📖' },
+          { label: 'Evaluating will to power dynamics...', icon: '⚡' },
+          { label: 'Analyzing moral orientation...', icon: '⚖️' },
+          { label: 'Detecting ressentiment patterns...', icon: '🔥' },
+          { label: 'Testing eternal recurrence stance...', icon: '♾️' },
+          { label: 'Synthesizing philosophical profile...', icon: '✨' },
+        ];
+
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 bg-background">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="text-center"
+          className="text-center w-full max-w-lg"
         >
-          <div className="relative mb-8">
-            <div className="text-6xl mb-4">{fwInfo.icon}</div>
+          <div className="relative mb-8 flex justify-center">
+            <div className="text-6xl">{fwInfo.icon}</div>
             <motion.div
               className="absolute inset-0 flex items-center justify-center"
               animate={{ rotate: 360 }}
               transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
             >
-              <div className="w-32 h-32 border-4 border-primary/20 border-t-primary rounded-full" />
+              <div className="w-24 h-24 border-4 border-primary/20 border-t-primary rounded-full" />
             </motion.div>
           </div>
+          
           <h2 className="font-display text-2xl font-bold mb-2">
-            Analyzing Through {fwInfo.thinker}'s Lens
+            {fwInfo.thinker} is Analyzing Your Psyche
           </h2>
-          <p className="text-muted-foreground max-w-md mx-auto mb-4">
-            {framework === 'freudian' && 'Applying psychoanalytic theory: structural model, defense mechanisms, drive theory...'}
-            {framework === 'jungian' && 'Examining archetypes, shadow integration, typology, and individuation stage...'}
-            {framework === 'nietzschean' && 'Evaluating will to power, ressentiment, master/slave morality, eternal recurrence...'}
+          <p className="text-muted-foreground max-w-md mx-auto mb-8">
+            Your 20 responses are being interpreted through the lens of {fwInfo.name}
           </p>
-          <div className="flex items-center justify-center gap-2 mt-6 text-sm text-muted-foreground">
-            <Loader2 className="w-4 h-4 animate-spin" />
-            <span>Deep analysis in progress...</span>
+
+          {/* Animated Analysis Stages */}
+          <div className="space-y-3 text-left bg-muted/30 rounded-xl p-6 border border-border">
+            {analysisStages.map((stage, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: idx * 2.5, duration: 0.5 }}
+                className="flex items-center gap-3"
+              >
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: idx * 2.5 + 0.3, type: 'spring' }}
+                  className="text-lg"
+                >
+                  {stage.icon}
+                </motion.span>
+                <span className="text-sm text-muted-foreground">{stage.label}</span>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: [0, 1, 0] }}
+                  transition={{ delay: idx * 2.5 + 0.5, duration: 2, repeat: idx === analysisStages.length - 1 ? Infinity : 0 }}
+                  className="ml-auto"
+                >
+                  <Loader2 className="w-3 h-3 animate-spin text-primary" />
+                </motion.div>
+              </motion.div>
+            ))}
           </div>
+
+          <p className="text-xs text-muted-foreground mt-6">
+            This typically takes 15-30 seconds. The AI may ask follow-up questions for deeper insight.
+          </p>
         </motion.div>
       </div>
     );
