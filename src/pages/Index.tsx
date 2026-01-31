@@ -52,6 +52,12 @@ const Index = () => {
   const [answers, setAnswers] = useState<number[]>([]);
   const [depthFramework, setDepthFramework] = useState<AnalysisFramework | null>(null);
   const [depthResults, setDepthResults] = useState<DepthPsychologyResults | null>(null);
+  const [depthAnswers, setDepthAnswers] = useState<{ questionId: number; answer: string }[]>([]);
+  const [clarificationRequest, setClarificationRequest] = useState<{
+    question: string;
+    context: string;
+    conversationHistory: any[];
+  } | null>(null);
   
   // Use persisted results to prevent data loss during premium upgrade
   const { 
@@ -215,17 +221,30 @@ const Index = () => {
     setGameState('depth-quiz');
   }, []);
 
-  const handleDepthComplete = useCallback(async (depthAnswers: { questionId: number; answer: string }[]) => {
+  const handleDepthComplete = useCallback(async (answers: { questionId: number; answer: string }[]) => {
     if (!depthFramework) return;
     
+    setDepthAnswers(answers);
     setGameState('depth-analyzing');
+    setClarificationRequest(null);
     
     try {
       const { data, error } = await supabase.functions.invoke('analyze-freudian', {
-        body: { answers: depthAnswers, framework: depthFramework },
+        body: { answers, framework: depthFramework },
       });
 
       if (error) throw error;
+
+      // Check if clarification is needed
+      if (data.needsClarification) {
+        setClarificationRequest({
+          question: data.question,
+          context: data.context,
+          conversationHistory: data.conversationHistory,
+        });
+        setGameState('depth-quiz'); // Return to quiz view to show clarification
+        return;
+      }
 
       setDepthResults(data as DepthPsychologyResults);
       setGameState('depth-results');
@@ -239,6 +258,48 @@ const Index = () => {
       setGameState('depth-quiz');
     }
   }, [depthFramework, toast]);
+
+  const handleClarificationResponse = useCallback(async (response: string) => {
+    if (!depthFramework || !clarificationRequest) return;
+    
+    setGameState('depth-analyzing');
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('analyze-freudian', {
+        body: { 
+          answers: depthAnswers, 
+          framework: depthFramework,
+          conversationHistory: clarificationRequest.conversationHistory,
+          clarificationResponse: response,
+        },
+      });
+
+      if (error) throw error;
+
+      // Check if more clarification is needed
+      if (data.needsClarification) {
+        setClarificationRequest({
+          question: data.question,
+          context: data.context,
+          conversationHistory: data.conversationHistory,
+        });
+        setGameState('depth-quiz');
+        return;
+      }
+
+      setClarificationRequest(null);
+      setDepthResults(data as DepthPsychologyResults);
+      setGameState('depth-results');
+    } catch (err) {
+      console.error('Error processing clarification:', err);
+      toast({
+        title: 'Analysis Failed',
+        description: 'There was an error processing your response. Please try again.',
+        variant: 'destructive',
+      });
+      setGameState('depth-quiz');
+    }
+  }, [depthFramework, depthAnswers, clarificationRequest, toast]);
 
   const handleRestart = useCallback(() => {
     setGameState('landing');
@@ -469,6 +530,8 @@ const Index = () => {
               onComplete={handleDepthComplete} 
               onBack={handleRestart}
               isAnalyzing={gameState === 'depth-analyzing'}
+              clarificationRequest={clarificationRequest}
+              onClarificationResponse={handleClarificationResponse}
             />
           </motion.div>
         )}

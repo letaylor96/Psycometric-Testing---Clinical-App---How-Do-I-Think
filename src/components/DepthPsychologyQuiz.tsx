@@ -2,16 +2,25 @@ import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { depthQuestions, categoryLabels, AnalysisFramework, frameworkInfo } from '@/data/depthPsychologyQuestions';
 import { cn } from '@/lib/utils';
-import { ArrowLeft, ArrowRight, Brain, Loader2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Brain, Loader2, MessageCircle, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+interface ClarificationRequest {
+  question: string;
+  context: string;
+  conversationHistory: any[];
+}
 
 interface DepthPsychologyQuizProps {
   framework: AnalysisFramework;
   onComplete: (answers: { questionId: number; answer: string }[]) => void;
   onBack: () => void;
   isAnalyzing?: boolean;
+  clarificationRequest?: ClarificationRequest | null;
+  onClarificationResponse?: (response: string) => void;
 }
 
 const categoryColors: Record<string, string> = {
@@ -34,13 +43,16 @@ export const DepthPsychologyQuiz = ({
   framework, 
   onComplete, 
   onBack, 
-  isAnalyzing = false 
+  isAnalyzing = false,
+  clarificationRequest = null,
+  onClarificationResponse,
 }: DepthPsychologyQuizProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<{ questionId: number; answer: string }[]>(
     depthQuestions.map(q => ({ questionId: q.id, answer: '' }))
   );
   const [currentAnswer, setCurrentAnswer] = useState('');
+  const [clarificationAnswer, setClarificationAnswer] = useState('');
 
   const currentQuestion = depthQuestions[currentIndex];
   const progress = ((currentIndex + 1) / depthQuestions.length) * 100;
@@ -73,6 +85,72 @@ export const DepthPsychologyQuiz = ({
   const canProceed = currentAnswer.trim().length >= 20;
   const isLastQuestion = currentIndex === depthQuestions.length - 1;
 
+  const handleSendClarification = useCallback(() => {
+    if (clarificationAnswer.trim().length >= 10 && onClarificationResponse) {
+      onClarificationResponse(clarificationAnswer);
+      setClarificationAnswer('');
+    }
+  }, [clarificationAnswer, onClarificationResponse]);
+
+  // Show clarification dialog
+  if (clarificationRequest) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 bg-background">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-2xl"
+        >
+          <Card className="border-primary/20">
+            <CardHeader className="text-center">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <MessageCircle className="w-6 h-6 text-primary" />
+                <span className="text-lg">{fwInfo.icon}</span>
+              </div>
+              <CardTitle className="font-display text-xl">
+                {fwInfo.thinker} Seeks Clarification
+              </CardTitle>
+              <p className="text-sm text-muted-foreground mt-2">
+                {clarificationRequest.context}
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="p-4 rounded-xl bg-muted/50 border border-border">
+                <p className="text-foreground leading-relaxed">
+                  {clarificationRequest.question}
+                </p>
+              </div>
+              
+              <Textarea
+                value={clarificationAnswer}
+                onChange={(e) => setClarificationAnswer(e.target.value)}
+                placeholder="Take your time to provide additional clarity..."
+                className="min-h-[120px] resize-none"
+                autoFocus
+              />
+              
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">
+                  {clarificationAnswer.length < 10 
+                    ? `At least ${10 - clarificationAnswer.length} more characters` 
+                    : '✓ Ready to submit'}
+                </span>
+                <Button
+                  onClick={handleSendClarification}
+                  disabled={clarificationAnswer.trim().length < 10}
+                  className="gap-2"
+                >
+                  <Send className="w-4 h-4" />
+                  Continue Analysis
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
+    );
+  }
+
   if (isAnalyzing) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 bg-background">
@@ -95,13 +173,13 @@ export const DepthPsychologyQuiz = ({
             Analyzing Through {fwInfo.thinker}'s Lens
           </h2>
           <p className="text-muted-foreground max-w-md mx-auto mb-4">
-            {framework === 'freudian' && 'Examining unconscious drives, defense mechanisms, and psychic structures...'}
-            {framework === 'jungian' && 'Exploring archetypes, shadow content, and your individuation journey...'}
-            {framework === 'nietzschean' && 'Assessing will to power, authenticity, and capacity for self-overcoming...'}
+            {framework === 'freudian' && 'Applying psychoanalytic theory: structural model, defense mechanisms, drive theory...'}
+            {framework === 'jungian' && 'Examining archetypes, shadow integration, typology, and individuation stage...'}
+            {framework === 'nietzschean' && 'Evaluating will to power, ressentiment, master/slave morality, eternal recurrence...'}
           </p>
           <div className="flex items-center justify-center gap-2 mt-6 text-sm text-muted-foreground">
             <Loader2 className="w-4 h-4 animate-spin" />
-            <span>This may take a moment</span>
+            <span>Deep analysis in progress...</span>
           </div>
         </motion.div>
       </div>
