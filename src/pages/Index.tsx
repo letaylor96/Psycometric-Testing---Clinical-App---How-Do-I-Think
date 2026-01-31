@@ -210,8 +210,47 @@ const Index = () => {
 
   const handleSelectFramework = useCallback((framework: AnalysisFramework) => {
     setDepthFramework(framework);
+    setClarificationRequest(null);
     setGameState('depth-quiz');
   }, []);
+
+  // Handler for trying a different framework with existing answers
+  const handleTryDifferentFramework = useCallback(async (framework: AnalysisFramework) => {
+    if (depthAnswers.length === 0) return;
+    
+    setDepthFramework(framework);
+    setClarificationRequest(null);
+    setGameState('depth-analyzing');
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('analyze-freudian', {
+        body: { answers: depthAnswers, framework },
+      });
+
+      if (error) throw error;
+
+      if (data.needsClarification) {
+        setClarificationRequest({
+          question: data.question,
+          context: data.context,
+          conversationHistory: data.conversationHistory,
+        });
+        setGameState('depth-quiz');
+        return;
+      }
+
+      setDepthResults(data as DepthPsychologyResults);
+      setGameState('depth-results');
+    } catch (err) {
+      console.error('Error analyzing with new framework:', err);
+      toast({
+        title: 'Analysis Failed',
+        description: 'There was an error analyzing through this framework. Please try again.',
+        variant: 'destructive',
+      });
+      setGameState('depth-results');
+    }
+  }, [depthAnswers, toast]);
 
   const handleDepthComplete = useCallback(async (answers: { questionId: number; answer: string }[]) => {
     if (!depthFramework) return;
@@ -516,6 +555,8 @@ const Index = () => {
               results={depthResults} 
               onRestart={handleRestart}
               onViewDashboard={handleViewDashboard}
+              onTryFramework={handleTryDifferentFramework}
+              hasStoredAnswers={depthAnswers.length > 0}
             />
           </motion.div>
         )}
