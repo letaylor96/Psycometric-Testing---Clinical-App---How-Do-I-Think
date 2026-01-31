@@ -6,6 +6,7 @@ import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, BarC
 import { useState } from 'react';
 import { CareerIntelligenceReport } from '@/components/CareerIntelligenceReport';
 import { PremiumFeatureTeaser } from '@/components/PremiumFeatureTeaser';
+import { QuestionReview } from '@/components/QuestionReview';
 import { cn } from '@/lib/utils';
 
 interface ResultsScreenProps {
@@ -371,6 +372,9 @@ Fascinating insights into how I think and solve problems. Try it yourself 👇`)
             </div>
           </motion.div>
         </div>
+
+        {/* Question Review - Premium Feature */}
+        <QuestionReview answers={results.answers} />
 
         {/* Career Intelligence Report - Premium Feature */}
         <CareerIntelligenceReport results={results} />

@@ -11,6 +11,7 @@ export interface Question {
   correctAnswer: number;
   divergentScores?: number[];
   timeLimit: number;
+  explanation: string; // Explanation for the correct answer (shown in premium review)
 }
 
 export const categoryLabels: Record<CognitiveCategory, string> = {
@@ -63,6 +64,7 @@ export const quizQuestions: Question[] = [
     options: ['10', '9', '12', '11'],
     correctAnswer: 0, // Arithmetic progression: +2
     timeLimit: 30,
+    explanation: 'This is an arithmetic progression where each number increases by 2. Starting from 2: 2+2=4, 4+2=6, 6+2=8, 8+2=10.',
   },
   {
     id: 2,
@@ -77,6 +79,7 @@ What belongs in the empty cell?
     options: ['△', '○', '□', '●'],
     correctAnswer: 0, // Latin square completion
     timeLimit: 30,
+    explanation: 'This is a Latin Square puzzle. Row 3 already has □ and ○, so it needs △. Column 3 has □ and ○, confirming △ is the missing symbol.',
   },
   {
     id: 3,
@@ -88,6 +91,7 @@ What belongs in the empty cell?
     options: ['9', '8', '10', '11'],
     correctAnswer: 0, // Odd numbers: +2
     timeLimit: 30,
+    explanation: 'These are consecutive odd numbers. Each number increases by 2: 1, 3, 5, 7... The next odd number is 9.',
   },
   {
     id: 4,
@@ -99,6 +103,7 @@ What belongs in the empty cell?
     options: ['← (Left)', '↑ (Up)', '↘ (Diagonal)', '→ (Right)'],
     correctAnswer: 0, // 90° clockwise rotation
     timeLimit: 30,
+    explanation: 'The arrow rotates 90° clockwise each step: Up → Right → Down → Left. After pointing down (↓), the next rotation gives left (←).',
   },
   {
     id: 5,
@@ -110,6 +115,7 @@ What belongs in the empty cell?
     options: ['16', '10', '12', '15'],
     correctAnswer: 0, // Geometric progression: ×2
     timeLimit: 30,
+    explanation: 'This is a geometric progression where each term is multiplied by 2: 1×2=2, 2×2=4, 4×2=8, 8×2=16.',
   },
 
   // ╔═══════════════════════════════════════════════════════════════════════════╗
@@ -130,6 +136,7 @@ What completes the pattern?
     options: ['◧ (Half-filled)', '□ (Empty)', '■ (Filled)', '▣ (Dotted)'],
     correctAnswer: 0, // Rule: empty + filled = half-filled
     timeLimit: 30,
+    explanation: 'The pattern shows: empty shape + filled shape = half-filled shape. Circle: ○+●=◐. Triangle: △+▲=◭. Square: □+■=◧.',
   },
   {
     id: 7,
@@ -141,6 +148,7 @@ What completes the pattern?
     options: ['37', '35', '38', '40'],
     correctAnswer: 0, // n² + 1 sequence: 1²+1, 2²+1, 3²+1, 4²+1, 5²+1, 6²+1=37
     timeLimit: 30,
+    explanation: 'This follows the pattern n² + 1. Position 1: 1²+1=2. Position 2: 2²+1=5. Position 6: 6²+1=37.',
   },
   {
     id: 8,
@@ -155,6 +163,7 @@ What completes the pattern?
     correctAnswer: 0, // Triangle = 3 sides; others = 4 sides
     divergentScores: [3, 1, 1, 1],
     timeLimit: 30,
+    explanation: 'The triangle has 3 sides while all other shapes (diamond, square, rectangle) have 4 sides. This makes the triangle the odd one out.',
   },
   {
     id: 9,
@@ -166,6 +175,7 @@ What completes the pattern?
     options: ['36', '30', '35', '49'],
     correctAnswer: 0, // Square numbers: 1², 2², 3², 4², 5², 6²=36
     timeLimit: 30,
+    explanation: 'These are perfect squares: 1²=1, 2²=4, 3²=9, 4²=16, 5²=25, 6²=36. The next number is 36.',
   },
   {
     id: 10,
@@ -181,6 +191,7 @@ What completes the pattern?
     correctAnswer: 0, // 5×3 = 15
     divergentScores: [3, 1, 2, 0],
     timeLimit: 30,
+    explanation: 'Each row multiplies the first number by 1, 2, and 3. Row 3: 5×1=5, 5×2=10, 5×3=15.',
   },
 
   // ╔═══════════════════════════════════════════════════════════════════════════╗
@@ -198,6 +209,7 @@ What completes the pattern?
     options: ['21', '18', '20', '15'],
     correctAnswer: 0, // Fibonacci sequence: 8+13=21
     timeLimit: 30,
+    explanation: 'This is the Fibonacci sequence where each number is the sum of the two preceding ones: 8+13=21.',
   },
   {
     id: 12,
@@ -213,6 +225,7 @@ What completes the pattern?
     correctAnswer: 0, // Pattern: add one element per column
     divergentScores: [3, 1, 0, 1],
     timeLimit: 30,
+    explanation: 'Each column adds one more element to the shape. Column 1: 1 element, Column 2: 2 elements, Column 3: 3 elements. So △··· (3 dots).',
   },
   {
     id: 13,
@@ -224,6 +237,7 @@ What completes the pattern?
     options: ['42', '40', '44', '36'],
     correctAnswer: 0, // 1×2, 2×3, 3×4, 4×5, 5×6, 6×7=42
     timeLimit: 30,
+    explanation: 'Pronic numbers are n×(n+1): 1×2=2, 2×3=6, 3×4=12, 4×5=20, 5×6=30, 6×7=42.',
   },
   {
     id: 14,
@@ -235,6 +249,7 @@ What completes the pattern?
     correctAnswer: 0, // 2 folds = 2² = 4 layers = 4 holes
     divergentScores: [3, 1, 2, 0],
     timeLimit: 30,
+    explanation: 'Each fold doubles the layers. 2 folds = 2² = 4 layers. Punching through all 4 layers creates 4 holes when unfolded.',
   },
   {
     id: 15,
@@ -248,6 +263,7 @@ What completes the pattern?
     options: ['▲ (Filled)', '△ (Empty)', '◭ (Half)', '▽ (Inverted)'],
     correctAnswer: 0, // Empty → Half-filled → Fully filled
     timeLimit: 30,
+    explanation: 'Each row shows: empty → half-filled → fully filled. The triangle follows this pattern: △ → ◭ → ▲.',
   },
 
   // ╔═══════════════════════════════════════════════════════════════════════════╗
@@ -265,6 +281,7 @@ What completes the pattern?
     options: ['17', '15', '19', '14'],
     correctAnswer: 0, // Next prime after 13 is 17
     timeLimit: 30,
+    explanation: 'Prime numbers are only divisible by 1 and themselves. After 13, the next prime is 17 (14, 15, 16 are not prime).',
   },
   {
     id: 17,
@@ -282,6 +299,7 @@ What completes the pattern?
     correctAnswer: 0, // 3 × 3 = 9
     divergentScores: [3, 1, 2, 0],
     timeLimit: 30,
+    explanation: 'In a multiplication table, each cell is row × column. Position (3,3) = 3 × 3 = 9.',
   },
   {
     id: 18,
@@ -293,6 +311,7 @@ What completes the pattern?
     options: ['720', '600', '240', '144'],
     correctAnswer: 0, // 1!, 2!, 3!, 4!, 5!, 6!=720
     timeLimit: 30,
+    explanation: 'Factorials: 1!=1, 2!=2, 3!=6, 4!=24, 5!=120, 6!=720. Each factorial is n × (n-1)!, so 6! = 6×120 = 720.',
   },
   {
     id: 19,
@@ -308,6 +327,7 @@ What completes the pattern?
     correctAnswer: 0, // Order of operations: 5 + (3×2) = 5 + 6 = 11
     divergentScores: [3, 1, 1, 0],
     timeLimit: 30,
+    explanation: 'Order of operations (PEMDAS): multiplication before addition. 5 + (3×2) = 5 + 6 = 11.',
   },
   {
     id: 20,
@@ -317,6 +337,7 @@ What completes the pattern?
     options: ['12', '8', '6', '24'],
     correctAnswer: 0, // Edge cubes (not corners): 12 edges × 1 middle cube = 12
     timeLimit: 30,
+    explanation: 'Cubes with exactly 2 painted faces are on the edges (not corners). A cube has 12 edges, each with 1 middle cube = 12 cubes.',
   },
 
   // ╔═══════════════════════════════════════════════════════════════════════════╗
@@ -339,6 +360,7 @@ What completes the pattern?
     correctAnswer: 0, // Describe "111221": three 1s, two 2s, one 1 = 312211
     divergentScores: [3, 1, 1, 0],
     timeLimit: 30,
+    explanation: 'Describe "111221": three 1s (31), two 2s (22), one 1 (11) = 312211.',
   },
   {
     id: 22,
@@ -354,6 +376,7 @@ What completes the pattern?
     options: ['225 (15²)', '196 (14²)', '256 (16²)', '169 (13²)'],
     correctAnswer: 0, // Triangular(5) = 15, so answer = 15² = 225
     timeLimit: 30,
+    explanation: 'The 5th triangular number is 1+2+3+4+5=15. Sum of first 5 cubes = 15² = 225.',
   },
   {
     id: 23,
@@ -367,6 +390,7 @@ What completes the pattern?
     correctAnswer: 0, // 4+7+13 = 24
     divergentScores: [3, 1, 2, 0],
     timeLimit: 30,
+    explanation: 'Tribonacci adds the previous three terms: 4 + 7 + 13 = 24.',
   },
   {
     id: 24,
@@ -385,6 +409,7 @@ What completes the pattern?
     correctAnswer: 0, // Column 3 follows doubling: Col2 × 2 = 6 × 2 = 12
     divergentScores: [3, 2, 1, 0],
     timeLimit: 30,
+    explanation: 'Following the column doubling rule: Column 3 = Column 2 × 2. So 6 × 2 = 12.',
   },
   {
     id: 25,
@@ -396,6 +421,7 @@ What completes the pattern?
     options: ['D', 'J', 'M', 'L'],
     correctAnswer: 0, // First letters of months: January through December
     timeLimit: 30,
+    explanation: 'These are the first letters of the months: January, February, March... November, December. D for December.',
   },
 ];
 
@@ -424,6 +450,7 @@ export interface TestResults {
   divergentDescription: string;
   timeUsed: number;
   timeBonusApplied: boolean;
+  answers: number[]; // User's answers for question review
 }
 
 export const calculateResults = (answers: number[], timeUsed: number): TestResults => {
@@ -520,6 +547,7 @@ export const calculateResults = (answers: number[], timeUsed: number): TestResul
     divergentDescription,
     timeUsed,
     timeBonusApplied,
+    answers,
   };
 };
 
