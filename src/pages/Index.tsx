@@ -9,15 +9,16 @@ import { AssessmentType } from '@/data/assessmentTypes';
 import { personalityQuestions, calculatePersonalityResults, PersonalityResults } from '@/data/personalityQuestions';
 import { adhdQuestions, calculateADHDResults, ADHDResults } from '@/data/adhdQuestions';
 import { calculateCognitiveStyleResults, CognitiveStyleResults } from '@/data/cognitiveStyleQuestions';
-import { FreudianResults } from '@/data/freudianQuestions';
+import { AnalysisFramework, DepthPsychologyResults } from '@/data/depthPsychologyQuestions';
 import { PersonalityQuiz } from '@/components/PersonalityQuiz';
 import { ADHDQuiz } from '@/components/ADHDQuiz';
 import { CognitiveStyleQuiz } from '@/components/CognitiveStyleQuiz';
-import { FreudianQuiz } from '@/components/FreudianQuiz';
+import { FrameworkSelector } from '@/components/FrameworkSelector';
+import { DepthPsychologyQuiz } from '@/components/DepthPsychologyQuiz';
+import { DepthPsychologyResultsScreen } from '@/components/DepthPsychologyResults';
 import { PersonalityResultsScreen } from '@/components/PersonalityResultsScreen';
 import { ADHDResultsScreen } from '@/components/ADHDResultsScreen';
 import { CognitiveStyleResultsScreen } from '@/components/CognitiveStyleResultsScreen';
-import { FreudianResultsScreen } from '@/components/FreudianResultsScreen';
 import { CombinedDashboard } from '@/components/CombinedDashboard';
 import { usePersistedResults } from '@/hooks/usePersistedResults';
 import { iqQuestionVariants } from '@/data/iqQuestionVariants';
@@ -36,9 +37,10 @@ type GameState =
   | 'adhd-results' 
   | 'cognitive-quiz' 
   | 'cognitive-results' 
-  | 'freudian-quiz'
-  | 'freudian-analyzing'
-  | 'freudian-results'
+  | 'depth-framework-select'
+  | 'depth-quiz'
+  | 'depth-analyzing'
+  | 'depth-results'
   | 'dashboard';
 
 const Index = () => {
@@ -48,7 +50,8 @@ const Index = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answers, setAnswers] = useState<number[]>([]);
-  const [freudianResults, setFreudianResults] = useState<FreudianResults | null>(null);
+  const [depthFramework, setDepthFramework] = useState<AnalysisFramework | null>(null);
+  const [depthResults, setDepthResults] = useState<DepthPsychologyResults | null>(null);
   
   // Use persisted results to prevent data loss during premium upgrade
   const { 
@@ -76,7 +79,7 @@ const Index = () => {
   );
 
   // Check if this is user's first assessment (for free tier)
-  const hasCompletedAny = !!results || !!personalityResults || !!adhdResults || !!cognitiveStyleResults || !!freudianResults;
+  const hasCompletedAny = !!results || !!personalityResults || !!adhdResults || !!cognitiveStyleResults || !!depthResults;
 
   // Timer effect
   useEffect(() => {
@@ -138,7 +141,7 @@ const Index = () => {
         setGameState('adhd-quiz');
         break;
       case 'freudian':
-        setGameState('freudian-quiz');
+        setGameState('depth-framework-select');
         break;
     }
   }, [previewType, handleStartQuiz]);
@@ -207,28 +210,35 @@ const Index = () => {
     setGameState('cognitive-results');
   }, [persistCognitive]);
 
-  const handleFreudianComplete = useCallback(async (freudianAnswers: { questionId: number; answer: string }[]) => {
-    setGameState('freudian-analyzing');
+  const handleSelectFramework = useCallback((framework: AnalysisFramework) => {
+    setDepthFramework(framework);
+    setGameState('depth-quiz');
+  }, []);
+
+  const handleDepthComplete = useCallback(async (depthAnswers: { questionId: number; answer: string }[]) => {
+    if (!depthFramework) return;
+    
+    setGameState('depth-analyzing');
     
     try {
       const { data, error } = await supabase.functions.invoke('analyze-freudian', {
-        body: { answers: freudianAnswers },
+        body: { answers: depthAnswers, framework: depthFramework },
       });
 
       if (error) throw error;
 
-      setFreudianResults(data as FreudianResults);
-      setGameState('freudian-results');
+      setDepthResults(data as DepthPsychologyResults);
+      setGameState('depth-results');
     } catch (err) {
-      console.error('Error analyzing Freudian assessment:', err);
+      console.error('Error analyzing depth assessment:', err);
       toast({
         title: 'Analysis Failed',
         description: 'There was an error analyzing your responses. Please try again.',
         variant: 'destructive',
       });
-      setGameState('freudian-quiz');
+      setGameState('depth-quiz');
     }
-  }, [toast]);
+  }, [depthFramework, toast]);
 
   const handleRestart = useCallback(() => {
     setGameState('landing');
@@ -253,7 +263,8 @@ const Index = () => {
     setPersonalityResults(null);
     setADHDResults(null);
     setCognitiveStyleResults(null);
-    setFreudianResults(null);
+    setDepthResults(null);
+    setDepthFramework(null);
     setTimeRemaining(TOTAL_TEST_TIME);
     setSessionQuestions(selectRandomVariants(iqQuestionVariants));
     clearPersistedResults(); // Clear localStorage
@@ -430,32 +441,48 @@ const Index = () => {
           </motion.div>
         )}
 
-        {(gameState === 'freudian-quiz' || gameState === 'freudian-analyzing') && (
+        {gameState === 'depth-framework-select' && (
           <motion.div
-            key="freudian-quiz"
+            key="depth-framework-select"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <FreudianQuiz 
-              onComplete={handleFreudianComplete} 
+            <FrameworkSelector 
+              onSelect={handleSelectFramework} 
               onBack={handleRestart}
-              isAnalyzing={gameState === 'freudian-analyzing'}
             />
           </motion.div>
         )}
 
-        {gameState === 'freudian-results' && freudianResults && (
+        {(gameState === 'depth-quiz' || gameState === 'depth-analyzing') && depthFramework && (
           <motion.div
-            key="freudian-results"
+            key="depth-quiz"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <FreudianResultsScreen 
-              results={freudianResults} 
+            <DepthPsychologyQuiz 
+              framework={depthFramework}
+              onComplete={handleDepthComplete} 
+              onBack={handleRestart}
+              isAnalyzing={gameState === 'depth-analyzing'}
+            />
+          </motion.div>
+        )}
+
+        {gameState === 'depth-results' && depthResults && (
+          <motion.div
+            key="depth-results"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <DepthPsychologyResultsScreen 
+              results={depthResults} 
               onRestart={handleRestart}
               onViewDashboard={handleViewDashboard}
             />
