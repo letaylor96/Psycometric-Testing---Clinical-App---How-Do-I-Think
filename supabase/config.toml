@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.check-premium-access]
 verify_jwt = false
+
+[functions.analyze-freudian]
+verify_jwt = false
