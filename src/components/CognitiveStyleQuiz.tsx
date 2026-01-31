@@ -1,14 +1,15 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Brain, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { 
-  cognitiveStyleQuestions, 
   CognitiveStyleQuestion,
   dimensionLabels,
   ThinkingDimension
 } from '@/data/cognitiveStyleQuestions';
+import { cognitiveStyleQuestionVariants } from '@/data/cognitiveStyleQuestionVariants';
+import { selectRandomVariants } from '@/lib/questionVariants';
 
 interface CognitiveStyleQuizProps {
   onComplete: (answers: number[]) => void;
@@ -25,12 +26,15 @@ const dimensionColors: Record<ThinkingDimension, string> = {
 };
 
 export const CognitiveStyleQuiz = ({ onComplete, onBack }: CognitiveStyleQuizProps) => {
+  // Generate randomized questions for this session
+  const sessionQuestions = useMemo(() => selectRandomVariants(cognitiveStyleQuestionVariants), []);
+  
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
 
-  const currentQuestion = cognitiveStyleQuestions[currentIndex];
-  const progressPercentage = ((currentIndex + 1) / cognitiveStyleQuestions.length) * 100;
+  const currentQuestion = sessionQuestions[currentIndex];
+  const progressPercentage = ((currentIndex + 1) / sessionQuestions.length) * 100;
 
   const handleSelectAnswer = useCallback((index: number) => {
     setSelectedAnswer(index);
@@ -43,12 +47,12 @@ export const CognitiveStyleQuiz = ({ onComplete, onBack }: CognitiveStyleQuizPro
     setAnswers(newAnswers);
     setSelectedAnswer(null);
 
-    if (currentIndex < cognitiveStyleQuestions.length - 1) {
+    if (currentIndex < sessionQuestions.length - 1) {
       setCurrentIndex(prev => prev + 1);
     } else {
       onComplete(newAnswers);
     }
-  }, [selectedAnswer, answers, currentIndex, onComplete]);
+  }, [selectedAnswer, answers, currentIndex, onComplete, sessionQuestions.length]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8">
@@ -82,7 +86,7 @@ export const CognitiveStyleQuiz = ({ onComplete, onBack }: CognitiveStyleQuizPro
           />
         </div>
         <div className="flex justify-between text-xs text-muted-foreground">
-          <span>Question {currentIndex + 1} of {cognitiveStyleQuestions.length}</span>
+          <span>Question {currentIndex + 1} of {sessionQuestions.length}</span>
           <span>{Math.round(progressPercentage)}% complete</span>
         </div>
       </div>
@@ -156,7 +160,7 @@ export const CognitiveStyleQuiz = ({ onComplete, onBack }: CognitiveStyleQuizPro
                     : 'bg-muted text-muted-foreground cursor-not-allowed'
                 )}
               >
-                {currentIndex === cognitiveStyleQuestions.length - 1 ? 'See Results' : 'Next →'}
+                {currentIndex === sessionQuestions.length - 1 ? 'See Results' : 'Next →'}
               </button>
             </motion.div>
           </div>
