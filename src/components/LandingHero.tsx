@@ -16,7 +16,7 @@ const assessmentIcons: Record<AssessmentType, React.ElementType> = {
   iq: Brain,
   cognitive: Lightbulb,
   adhd: Zap,
-  freudian: Brain,
+  depth: Sparkles,
 };
 
 interface LandingHeroProps {
@@ -46,7 +46,7 @@ export const LandingHero = ({
     iq: !!iqResults,
     cognitive: !!cognitiveStyleResults,
     adhd: !!adhdResults,
-    freudian: false, // TODO: Add freudian results prop
+    depth: false, // TODO: Add depth psychology results prop
   };
 
   const completedCount = Object.values(completionStatus).filter(Boolean).length;
@@ -255,8 +255,10 @@ export const LandingHero = ({
                 iq: "Derived from Raven's Progressive Matrices, measuring fluid intelligence and abstract reasoning.",
                 cognitive: 'Examines processing patterns through Dual-Process Theory and executive function assessment.',
                 adhd: 'Utilizes the ASRS-v1.1 clinical screening scale developed by the World Health Organization.',
-                freudian: 'AI-powered psychoanalytic assessment based on Freudian structural theory and defense mechanisms.',
+                depth: 'AI-powered depth psychology through the lens of Freud, Jung, or Nietzsche. Premium only.',
               };
+              
+              const isPremiumOnly = info.isPremiumOnly;
 
               return (
                 <motion.button
@@ -268,9 +270,17 @@ export const LandingHero = ({
                 className={`group relative text-left p-8 border transition-all ${
                   isCompleted 
                     ? 'border-emerald-500/30 bg-emerald-500/5' 
-                    : 'border-border hover:border-yellow/40 bg-card hover:bg-card/80'
+                    : isPremiumOnly
+                      ? 'border-purple-500/30 hover:border-purple-500/50 bg-gradient-to-br from-purple-500/5 to-purple-500/10 hover:from-purple-500/10 hover:to-purple-500/15'
+                      : 'border-border hover:border-yellow/40 bg-card hover:bg-card/80'
                 }`}
               >
+                {isPremiumOnly && !isCompleted && (
+                  <div className="absolute top-6 right-6 flex items-center gap-2 text-purple-400">
+                    <Crown className="w-4 h-4" />
+                    <span className="text-xs font-medium uppercase tracking-wide">Premium</span>
+                  </div>
+                )}
                 {isCompleted && (
                   <div className="absolute top-6 right-6 flex items-center gap-2 text-emerald-500">
                     <Check className="w-4 h-4" />
@@ -278,8 +288,10 @@ export const LandingHero = ({
                   </div>
                 )}
                 
-                <div className="w-12 h-12 rounded-lg bg-yellow/10 flex items-center justify-center mb-4">
-                  <Icon className="w-6 h-6 text-yellow" />
+                <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${
+                  isPremiumOnly ? 'bg-purple-500/20' : 'bg-yellow/10'
+                }`}>
+                  <Icon className={`w-6 h-6 ${isPremiumOnly ? 'text-purple-400' : 'text-yellow'}`} />
                 </div>
                 
                 <h3 className="font-serif text-xl font-semibold text-foreground mb-2 group-hover:text-yellow transition-colors">
