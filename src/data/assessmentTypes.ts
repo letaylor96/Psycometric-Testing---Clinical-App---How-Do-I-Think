@@ -1,6 +1,6 @@
 // Assessment Type Definitions
 
-export type AssessmentType = 'personality' | 'iq' | 'cognitive' | 'adhd' | 'depth';
+export type AssessmentType = 'personality' | 'iq' | 'neurodivergent' | 'depth';
 
 export interface AssessmentInfo {
   id: AssessmentType;
@@ -38,25 +38,15 @@ export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
     timeMinutes: Math.ceil((25 * TIME_PER_QUESTION_SECONDS) / 60), // 13 min
     color: 'accent',
   },
-  cognitive: {
-    id: 'cognitive',
+  neurodivergent: {
+    id: 'neurodivergent',
     title: 'How Do I Think?',
-    shortTitle: 'Cognitive',
-    description: 'Discover how your mind naturally processes information - exploring thinking patterns often associated with neurodivergent minds.',
-    framework: 'Neurodivergent Thinking Patterns',
-    questionCount: 25,
-    timeMinutes: Math.ceil((25 * TIME_PER_QUESTION_SECONDS) / 60), // 13 min
+    shortTitle: 'Neurodivergent',
+    description: 'Comprehensive assessment of your cognitive style, thinking patterns, attention, and focus using clinical screening tools.',
+    framework: 'Cognitive Style + ASRS-v1.1',
+    questionCount: 38, // 20 cognitive + 18 ADHD
+    timeMinutes: Math.ceil((38 * TIME_PER_QUESTION_SECONDS) / 60), // 19 min
     color: 'primary',
-  },
-  adhd: {
-    id: 'adhd',
-    title: 'Am I Neurodivergent?',
-    shortTitle: 'ADHD',
-    description: 'Explore attention and focus patterns with a validated screening tool.',
-    framework: 'ASRS-v1.1 (WHO)',
-    questionCount: 18,
-    timeMinutes: Math.ceil((18 * TIME_PER_QUESTION_SECONDS) / 60), // 9 min
-    color: 'accent',
   },
   depth: {
     id: 'depth',
@@ -71,4 +61,4 @@ export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
   },
 };
 
-export const allAssessmentTypes: AssessmentType[] = ['personality', 'iq', 'cognitive', 'adhd', 'depth'];
+export const allAssessmentTypes: AssessmentType[] = ['personality', 'iq', 'neurodivergent', 'depth'];

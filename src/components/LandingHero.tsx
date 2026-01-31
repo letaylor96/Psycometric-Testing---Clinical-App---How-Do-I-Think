@@ -14,8 +14,7 @@ import { usePremiumAccess } from '@/hooks/usePremiumAccess';
 const assessmentIcons: Record<AssessmentType, React.ElementType> = {
   personality: Target,
   iq: Brain,
-  cognitive: Lightbulb,
-  adhd: Zap,
+  neurodivergent: Zap,
   depth: Sparkles,
 };
 
@@ -44,8 +43,7 @@ export const LandingHero = ({
   const completionStatus: Record<AssessmentType, boolean> = {
     personality: !!personalityResults,
     iq: !!iqResults,
-    cognitive: !!cognitiveStyleResults,
-    adhd: !!adhdResults,
+    neurodivergent: !!cognitiveStyleResults, // Combined assessment
     depth: false, // TODO: Add depth psychology results prop
   };
 
@@ -253,8 +251,7 @@ export const LandingHero = ({
               const methodologies: Record<AssessmentType, string> = {
                 personality: 'Based on the Big Five Factor Model (OCEAN), the gold standard in personality psychology research.',
                 iq: "Derived from Raven's Progressive Matrices, measuring fluid intelligence and abstract reasoning.",
-                cognitive: 'Examines processing patterns through Dual-Process Theory and executive function assessment.',
-                adhd: 'Utilizes the ASRS-v1.1 clinical screening scale developed by the World Health Organization.',
+                neurodivergent: 'Combines Cognitive Style profiling with the WHO ASRS-v1.1 clinical screening for comprehensive neurodivergent assessment.',
                 depth: 'AI-powered depth psychology through the lens of Freud, Jung, or Nietzsche. Premium only.',
               };
               

@@ -14,8 +14,7 @@ interface AssessmentPreviewProps {
 const assessmentIcons: Record<AssessmentType, React.ElementType> = {
   personality: UserCheck,
   iq: Brain,
-  cognitive: Lightbulb,
-  adhd: Activity,
+  neurodivergent: Zap,
   depth: Sparkles,
 };
 
@@ -77,57 +76,31 @@ const assessmentTiers: Record<AssessmentType, {
     ],
     premiumStats: { percentage: 84, benefit: 'scored higher than they expected' },
   },
-  cognitive: {
+  neurodivergent: {
     free: {
       included: [
         'Primary thinking style',
-        'Basic processing type',
+        'Basic ADHD indicator',
       ],
       excluded: [
-        'Full 6-dimension profile',
-        'Hyperfocus analysis',
-        'Productivity strategies',
-        'Cognitive archetype',
-        'Strengths deep-dive',
+        'Full 6-dimension cognitive profile',
+        'Clinical ASRS-v1.1 report',
+        'Integrated neurodivergent insights',
+        'Processing style analysis',
+        'Personalized strategies',
       ],
     },
     paid: [
       'Complete 6-dimension cognitive map',
-      'Hyperfocus pattern analysis',
-      'Divergent thinking score',
-      'Sensory processing insights',
-      'Personalized productivity strategies',
-      'Your cognitive archetype title',
-      'Career Match Recommendations',
-      'Work environment recommendations',
-    ],
-    premiumStats: { percentage: 91, benefit: 'finally understood why they think differently' },
-  },
-  adhd: {
-    free: {
-      included: [
-        'Basic ADHD indicator',
-        'General attention score',
-      ],
-      excluded: [
-        'Clinical-grade report',
-        'Domain breakdown',
-        'Severity analysis',
-        'Coping strategies',
-        'Professional guidance',
-      ],
-    },
-    paid: [
-      'Full ASRS-v1.1 clinical report',
+      'Full ASRS-v1.1 clinical screening report',
       'Inattention vs Hyperactivity breakdown',
-      'Symptom severity by domain',
+      'Hyperfocus pattern analysis',
+      'Integrated neurodivergent profile',
       'Evidence-based coping strategies',
-      'When to seek professional help',
       'Career Match Recommendations',
       'Workplace accommodation guide',
-      'PDF report for healthcare providers',
     ],
-    premiumStats: { percentage: 73, benefit: 'took their results to a healthcare provider' },
+    premiumStats: { percentage: 89, benefit: 'finally understood their unique cognitive style' },
   },
   depth: {
     free: {
@@ -164,13 +137,9 @@ const assessmentDescriptions: Record<AssessmentType, { tagline: string; what: st
     what: "This Mensa-style assessment uses 25 progressive pattern recognition puzzles based on Raven's Matrices to estimate your IQ and cognitive ranking.",
     isTimed: true,
   },
-  cognitive: {
-    tagline: 'Understand how your mind processes information',
-    what: 'This 25-question assessment explores thinking patterns often associated with neurodivergent minds, measuring dimensions like hyperfocus, divergent thinking, and sensory processing.',
-  },
-  adhd: {
-    tagline: 'Explore your attention and focus patterns',
-    what: "This screening uses the WHO's validated ASRS-v1.1 framework with 18 questions to assess attention patterns and identify potential ADHD indicators.",
+  neurodivergent: {
+    tagline: 'Understand your unique cognitive style and attention patterns',
+    what: 'This comprehensive 38-question assessment combines cognitive style profiling (thinking patterns, hyperfocus, divergent thinking) with the WHO ASRS-v1.1 clinical ADHD screening.',
   },
   depth: {
     tagline: 'Journey into the depths of your unconscious mind',
