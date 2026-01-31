@@ -16,6 +16,7 @@ const assessmentIcons: Record<AssessmentType, React.ElementType> = {
   iq: Brain,
   cognitive: Lightbulb,
   adhd: Activity,
+  freudian: Brain,
 };
 
 // What users get for free vs paid for each assessment
@@ -128,6 +129,32 @@ const assessmentTiers: Record<AssessmentType, {
     ],
     premiumStats: { percentage: 73, benefit: 'took their results to a healthcare provider' },
   },
+  freudian: {
+    free: {
+      included: [
+        'Basic structural balance',
+        'Primary defense style',
+      ],
+      excluded: [
+        'Full Id/Ego/Superego analysis',
+        'Defense mechanism breakdown',
+        'Core conflicts deep-dive',
+        'Unconscious themes',
+        'Growth recommendations',
+      ],
+    },
+    paid: [
+      'Complete psychic structure analysis',
+      'All defense mechanisms identified',
+      'Core psychological conflicts',
+      'Unconscious pattern themes',
+      'Detailed strengths profile',
+      'Growth area recommendations',
+      'AI-powered psychoanalytic insights',
+      'Exportable summary report',
+    ],
+    premiumStats: { percentage: 82, benefit: 'gained new insight into their unconscious patterns' },
+  },
 };
 
 const assessmentDescriptions: Record<AssessmentType, { tagline: string; what: string; isTimed?: boolean }> = {
@@ -147,6 +174,10 @@ const assessmentDescriptions: Record<AssessmentType, { tagline: string; what: st
   adhd: {
     tagline: 'Explore your attention and focus patterns',
     what: "This screening uses the WHO's validated ASRS-v1.1 framework with 18 questions to assess attention patterns and identify potential ADHD indicators.",
+  },
+  freudian: {
+    tagline: 'Explore the depths of your unconscious mind',
+    what: 'This 20-question free-form assessment uses AI-powered Freudian psychoanalysis to explore your unconscious patterns, defense mechanisms, and psychic structure (Id, Ego, Superego).',
   },
 };
 

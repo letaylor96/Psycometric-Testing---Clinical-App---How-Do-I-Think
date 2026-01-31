@@ -16,6 +16,7 @@ const assessmentIcons: Record<AssessmentType, React.ElementType> = {
   iq: Brain,
   cognitive: Lightbulb,
   adhd: Zap,
+  freudian: Brain,
 };
 
 interface LandingHeroProps {
@@ -45,6 +46,7 @@ export const LandingHero = ({
     iq: !!iqResults,
     cognitive: !!cognitiveStyleResults,
     adhd: !!adhdResults,
+    freudian: false, // TODO: Add freudian results prop
   };
 
   const completedCount = Object.values(completionStatus).filter(Boolean).length;
@@ -253,6 +255,7 @@ export const LandingHero = ({
                 iq: "Derived from Raven's Progressive Matrices, measuring fluid intelligence and abstract reasoning.",
                 cognitive: 'Examines processing patterns through Dual-Process Theory and executive function assessment.',
                 adhd: 'Utilizes the ASRS-v1.1 clinical screening scale developed by the World Health Organization.',
+                freudian: 'AI-powered psychoanalytic assessment based on Freudian structural theory and defense mechanisms.',
               };
 
               return (

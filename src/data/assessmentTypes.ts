@@ -1,6 +1,6 @@
 // Assessment Type Definitions
 
-export type AssessmentType = 'personality' | 'iq' | 'cognitive' | 'adhd';
+export type AssessmentType = 'personality' | 'iq' | 'cognitive' | 'adhd' | 'freudian';
 
 export interface AssessmentInfo {
   id: AssessmentType;
@@ -57,6 +57,16 @@ export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
     timeMinutes: Math.ceil((18 * TIME_PER_QUESTION_SECONDS) / 60), // 9 min
     color: 'accent',
   },
+  freudian: {
+    id: 'freudian',
+    title: 'The Unconscious Mind',
+    shortTitle: 'Freudian',
+    description: 'Explore your unconscious patterns, defense mechanisms, and psychic structure through AI-powered psychoanalytic assessment.',
+    framework: 'Freudian Psychoanalysis',
+    questionCount: 20,
+    timeMinutes: 15, // Free-form takes longer
+    color: 'primary',
+  },
 };
 
-export const allAssessmentTypes: AssessmentType[] = ['personality', 'iq', 'cognitive', 'adhd'];
+export const allAssessmentTypes: AssessmentType[] = ['personality', 'iq', 'cognitive', 'adhd', 'freudian'];

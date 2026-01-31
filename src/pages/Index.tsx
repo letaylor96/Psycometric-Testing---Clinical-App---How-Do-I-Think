@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { LandingHero } from '@/components/LandingHero';
 import { QuizQuestion } from '@/components/QuizQuestion';
@@ -9,16 +9,21 @@ import { AssessmentType } from '@/data/assessmentTypes';
 import { personalityQuestions, calculatePersonalityResults, PersonalityResults } from '@/data/personalityQuestions';
 import { adhdQuestions, calculateADHDResults, ADHDResults } from '@/data/adhdQuestions';
 import { calculateCognitiveStyleResults, CognitiveStyleResults } from '@/data/cognitiveStyleQuestions';
+import { FreudianResults } from '@/data/freudianQuestions';
 import { PersonalityQuiz } from '@/components/PersonalityQuiz';
 import { ADHDQuiz } from '@/components/ADHDQuiz';
 import { CognitiveStyleQuiz } from '@/components/CognitiveStyleQuiz';
+import { FreudianQuiz } from '@/components/FreudianQuiz';
 import { PersonalityResultsScreen } from '@/components/PersonalityResultsScreen';
 import { ADHDResultsScreen } from '@/components/ADHDResultsScreen';
 import { CognitiveStyleResultsScreen } from '@/components/CognitiveStyleResultsScreen';
+import { FreudianResultsScreen } from '@/components/FreudianResultsScreen';
 import { CombinedDashboard } from '@/components/CombinedDashboard';
 import { usePersistedResults } from '@/hooks/usePersistedResults';
 import { iqQuestionVariants } from '@/data/iqQuestionVariants';
 import { selectRandomVariants } from '@/lib/questionVariants';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 type GameState = 
   | 'landing' 
@@ -31,14 +36,19 @@ type GameState =
   | 'adhd-results' 
   | 'cognitive-quiz' 
   | 'cognitive-results' 
+  | 'freudian-quiz'
+  | 'freudian-analyzing'
+  | 'freudian-results'
   | 'dashboard';
 
 const Index = () => {
+  const { toast } = useToast();
   const [gameState, setGameState] = useState<GameState>('landing');
   const [previewType, setPreviewType] = useState<AssessmentType | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answers, setAnswers] = useState<number[]>([]);
+  const [freudianResults, setFreudianResults] = useState<FreudianResults | null>(null);
   
   // Use persisted results to prevent data loss during premium upgrade
   const { 
@@ -66,7 +76,7 @@ const Index = () => {
   );
 
   // Check if this is user's first assessment (for free tier)
-  const hasCompletedAny = !!results || !!personalityResults || !!adhdResults || !!cognitiveStyleResults;
+  const hasCompletedAny = !!results || !!personalityResults || !!adhdResults || !!cognitiveStyleResults || !!freudianResults;
 
   // Timer effect
   useEffect(() => {
@@ -126,6 +136,9 @@ const Index = () => {
         break;
       case 'adhd':
         setGameState('adhd-quiz');
+        break;
+      case 'freudian':
+        setGameState('freudian-quiz');
         break;
     }
   }, [previewType, handleStartQuiz]);
@@ -194,6 +207,29 @@ const Index = () => {
     setGameState('cognitive-results');
   }, [persistCognitive]);
 
+  const handleFreudianComplete = useCallback(async (freudianAnswers: { questionId: number; answer: string }[]) => {
+    setGameState('freudian-analyzing');
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('analyze-freudian', {
+        body: { answers: freudianAnswers },
+      });
+
+      if (error) throw error;
+
+      setFreudianResults(data as FreudianResults);
+      setGameState('freudian-results');
+    } catch (err) {
+      console.error('Error analyzing Freudian assessment:', err);
+      toast({
+        title: 'Analysis Failed',
+        description: 'There was an error analyzing your responses. Please try again.',
+        variant: 'destructive',
+      });
+      setGameState('freudian-quiz');
+    }
+  }, [toast]);
+
   const handleRestart = useCallback(() => {
     setGameState('landing');
     setPreviewType(null);
@@ -217,6 +253,7 @@ const Index = () => {
     setPersonalityResults(null);
     setADHDResults(null);
     setCognitiveStyleResults(null);
+    setFreudianResults(null);
     setTimeRemaining(TOTAL_TEST_TIME);
     setSessionQuestions(selectRandomVariants(iqQuestionVariants));
     clearPersistedResults(); // Clear localStorage
@@ -227,7 +264,7 @@ const Index = () => {
     setGameState('dashboard');
   }, []);
 
-  const handleTakeAssessmentFromDashboard = useCallback((type: 'iq' | 'personality' | 'adhd' | 'cognitive') => {
+  const handleTakeAssessmentFromDashboard = useCallback((type: AssessmentType) => {
     setPreviewType(type);
     setGameState('preview');
   }, []);
@@ -387,6 +424,38 @@ const Index = () => {
           >
             <CognitiveStyleResultsScreen 
               results={cognitiveStyleResults} 
+              onRestart={handleRestart}
+              onViewDashboard={handleViewDashboard}
+            />
+          </motion.div>
+        )}
+
+        {(gameState === 'freudian-quiz' || gameState === 'freudian-analyzing') && (
+          <motion.div
+            key="freudian-quiz"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <FreudianQuiz 
+              onComplete={handleFreudianComplete} 
+              onBack={handleRestart}
+              isAnalyzing={gameState === 'freudian-analyzing'}
+            />
+          </motion.div>
+        )}
+
+        {gameState === 'freudian-results' && freudianResults && (
+          <motion.div
+            key="freudian-results"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <FreudianResultsScreen 
+              results={freudianResults} 
               onRestart={handleRestart}
               onViewDashboard={handleViewDashboard}
             />
