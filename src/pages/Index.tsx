@@ -244,9 +244,10 @@ const Index = () => {
       console.error('Error analyzing depth assessment:', err);
       toast({
         title: 'Analysis Failed',
-        description: 'There was an error analyzing your responses. Please try again.',
+        description: 'There was an error analyzing your responses. Your answers are saved - you can try again.',
         variant: 'destructive',
       });
+      // Stay in quiz state but preserve answers for retry
       setGameState('depth-quiz');
     }
   }, [depthFramework, toast]);
@@ -286,9 +287,11 @@ const Index = () => {
       console.error('Error processing clarification:', err);
       toast({
         title: 'Analysis Failed',
-        description: 'There was an error processing your response. Please try again.',
+        description: 'There was an error processing your response. You can try submitting again.',
         variant: 'destructive',
       });
+      // Keep the clarification request state so user can retry
+      // Don't clear clarificationRequest - allow retry with same context
       setGameState('depth-quiz');
     }
   }, [depthFramework, depthAnswers, clarificationRequest, toast]);
