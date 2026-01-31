@@ -7,18 +7,17 @@ import { AssessmentPreview } from '@/components/AssessmentPreview';
 import { Question, calculateResults, TestResults, TOTAL_TEST_TIME } from '@/data/quizQuestions';
 import { AssessmentType } from '@/data/assessmentTypes';
 import { personalityQuestions, calculatePersonalityResults, PersonalityResults } from '@/data/personalityQuestions';
-import { adhdQuestions, calculateADHDResults, ADHDResults } from '@/data/adhdQuestions';
-import { calculateCognitiveStyleResults, CognitiveStyleResults } from '@/data/cognitiveStyleQuestions';
+import { ADHDResults } from '@/data/adhdQuestions';
+import { CognitiveStyleResults } from '@/data/cognitiveStyleQuestions';
 import { AnalysisFramework, DepthPsychologyResults } from '@/data/depthPsychologyQuestions';
+import { NeurodivergentMindResults, calculateNeurodivergentMindResults } from '@/data/neurodivergentMindQuestions';
 import { PersonalityQuiz } from '@/components/PersonalityQuiz';
-import { ADHDQuiz } from '@/components/ADHDQuiz';
-import { CognitiveStyleQuiz } from '@/components/CognitiveStyleQuiz';
+import { NeurodivergentMindQuiz } from '@/components/NeurodivergentMindQuiz';
+import { NeurodivergentMindResultsScreen } from '@/components/NeurodivergentMindResultsScreen';
 import { FrameworkSelector } from '@/components/FrameworkSelector';
 import { DepthPsychologyQuiz } from '@/components/DepthPsychologyQuiz';
 import { DepthPsychologyResultsScreen } from '@/components/DepthPsychologyResults';
 import { PersonalityResultsScreen } from '@/components/PersonalityResultsScreen';
-import { ADHDResultsScreen } from '@/components/ADHDResultsScreen';
-import { CognitiveStyleResultsScreen } from '@/components/CognitiveStyleResultsScreen';
 import { CombinedDashboard } from '@/components/CombinedDashboard';
 import { usePersistedResults } from '@/hooks/usePersistedResults';
 import { iqQuestionVariants } from '@/data/iqQuestionVariants';
@@ -33,10 +32,8 @@ type GameState =
   | 'results' 
   | 'personality-quiz' 
   | 'personality-results' 
-  | 'adhd-quiz' 
-  | 'adhd-results' 
-  | 'cognitive-quiz' 
-  | 'cognitive-results' 
+  | 'neurodivergent-quiz' 
+  | 'neurodivergent-results'
   | 'depth-framework-select'
   | 'depth-quiz'
   | 'depth-analyzing'
@@ -53,6 +50,7 @@ const Index = () => {
   const [depthFramework, setDepthFramework] = useState<AnalysisFramework | null>(null);
   const [depthResults, setDepthResults] = useState<DepthPsychologyResults | null>(null);
   const [depthAnswers, setDepthAnswers] = useState<{ questionId: number; answer: string }[]>([]);
+  const [neurodivergentResults, setNeurodivergentResults] = useState<NeurodivergentMindResults | null>(null);
   const [clarificationRequest, setClarificationRequest] = useState<{
     question: string;
     context: string;
@@ -85,7 +83,7 @@ const Index = () => {
   );
 
   // Check if this is user's first assessment (for free tier)
-  const hasCompletedAny = !!results || !!personalityResults || !!adhdResults || !!cognitiveStyleResults || !!depthResults;
+  const hasCompletedAny = !!results || !!personalityResults || !!neurodivergentResults || !!depthResults;
 
   // Timer effect
   useEffect(() => {
@@ -140,11 +138,8 @@ const Index = () => {
       case 'iq':
         handleStartQuiz();
         break;
-      case 'cognitive':
-        setGameState('cognitive-quiz');
-        break;
-      case 'adhd':
-        setGameState('adhd-quiz');
+      case 'neurodivergent':
+        setGameState('neurodivergent-quiz');
         break;
       case 'depth':
         setGameState('depth-framework-select');
@@ -202,19 +197,16 @@ const Index = () => {
     setGameState('personality-results');
   }, [persistPersonality]);
 
-  const handleADHDComplete = useCallback((adhdAnswers: number[]) => {
-    const results = calculateADHDResults(adhdAnswers);
-    setADHDResults(results);
-    persistADHD(results, adhdAnswers); // Persist to localStorage
-    setGameState('adhd-results');
-  }, [persistADHD]);
-
-  const handleCognitiveStyleComplete = useCallback((cognitiveAnswers: number[]) => {
-    const results = calculateCognitiveStyleResults(cognitiveAnswers);
-    setCognitiveStyleResults(results);
-    persistCognitive(results, cognitiveAnswers); // Persist to localStorage
-    setGameState('cognitive-results');
-  }, [persistCognitive]);
+  const handleNeurodivergentComplete = useCallback((cognitiveAnswers: number[], adhdAnswers: number[]) => {
+    const results = calculateNeurodivergentMindResults(cognitiveAnswers, adhdAnswers);
+    setNeurodivergentResults(results);
+    // Also set the individual results for dashboard compatibility
+    setCognitiveStyleResults(results.cognitiveStyle);
+    setADHDResults(results.adhd);
+    persistCognitive(results.cognitiveStyle, cognitiveAnswers);
+    persistADHD(results.adhd, adhdAnswers);
+    setGameState('neurodivergent-results');
+  }, [persistCognitive, persistADHD]);
 
   const handleSelectFramework = useCallback((framework: AnalysisFramework) => {
     setDepthFramework(framework);
@@ -324,6 +316,7 @@ const Index = () => {
     setPersonalityResults(null);
     setADHDResults(null);
     setCognitiveStyleResults(null);
+    setNeurodivergentResults(null);
     setDepthResults(null);
     setDepthFramework(null);
     setTimeRemaining(TOTAL_TEST_TIME);
@@ -446,56 +439,28 @@ const Index = () => {
           </motion.div>
         )}
 
-        {gameState === 'adhd-quiz' && (
+        {gameState === 'neurodivergent-quiz' && (
           <motion.div
-            key="adhd-quiz"
+            key="neurodivergent-quiz"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <ADHDQuiz onComplete={handleADHDComplete} onBack={handleRestart} />
+            <NeurodivergentMindQuiz onComplete={handleNeurodivergentComplete} onBack={handleRestart} />
           </motion.div>
         )}
 
-        {gameState === 'adhd-results' && adhdResults && (
+        {gameState === 'neurodivergent-results' && neurodivergentResults && (
           <motion.div
-            key="adhd-results"
+            key="neurodivergent-results"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <ADHDResultsScreen 
-              results={adhdResults} 
-              onRestart={handleRestart}
-              onViewDashboard={handleViewDashboard}
-            />
-          </motion.div>
-        )}
-
-        {gameState === 'cognitive-quiz' && (
-          <motion.div
-            key="cognitive-quiz"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <CognitiveStyleQuiz onComplete={handleCognitiveStyleComplete} onBack={handleRestart} />
-          </motion.div>
-        )}
-
-        {gameState === 'cognitive-results' && cognitiveStyleResults && (
-          <motion.div
-            key="cognitive-results"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <CognitiveStyleResultsScreen 
-              results={cognitiveStyleResults} 
+            <NeurodivergentMindResultsScreen 
+              results={neurodivergentResults} 
               onRestart={handleRestart}
               onViewDashboard={handleViewDashboard}
             />

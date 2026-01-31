@@ -55,7 +55,7 @@ interface CombinedDashboardProps {
   adhdResults: ADHDResults | null;
   cognitiveStyleResults?: CognitiveStyleResults | null;
   onRestart: () => void;
-  onTakeAssessment: (type: 'iq' | 'personality' | 'adhd' | 'cognitive') => void;
+  onTakeAssessment: (type: 'iq' | 'personality' | 'neurodivergent' | 'depth') => void;
 }
 
 const getIQPercentile = (iq: number): number => {
@@ -233,7 +233,7 @@ export const CombinedDashboard = ({
                 'rounded-xl p-4 border transition-all cursor-pointer hover:border-yellow-500/50',
                 adhdResults ? 'bg-yellow-500/5 border-yellow-500/20' : 'bg-muted/30 border-border'
               )}
-              onClick={() => !adhdResults && onTakeAssessment('adhd')}
+              onClick={() => !adhdResults && onTakeAssessment('neurodivergent')}
             >
               <div className="flex items-center gap-3 mb-2">
                 {adhdResults ? (

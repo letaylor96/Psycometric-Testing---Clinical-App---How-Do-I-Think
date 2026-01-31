@@ -18,8 +18,7 @@ interface AssessmentProgressProps {
 const assessmentIcons: Record<AssessmentType, React.ElementType> = {
   personality: UserCheck,
   iq: Brain,
-  cognitive: Lightbulb,
-  adhd: Activity,
+  neurodivergent: Sparkles,
   depth: Sparkles,
 };
 
@@ -34,8 +33,7 @@ export const AssessmentProgress = ({
   const completionStatus: Record<AssessmentType, boolean> = {
     personality: !!personalityResults,
     iq: !!iqResults,
-    cognitive: !!cognitiveStyleResults,
-    adhd: !!adhdResults,
+    neurodivergent: !!cognitiveStyleResults, // Combined assessment stores in cognitive
     depth: false, // TODO: Add depth psychology results prop
   };
 
