@@ -121,7 +121,7 @@ export const LandingHero = ({
             className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
           >
             A comprehensive suite of scientifically-validated assessments measuring 
-            intelligence, personality, cognitive style, and attentional patterns.
+            intelligence, personality, cognitive style, attentional patterns, and the unconscious mind.
           </motion.p>
 
           {/* CTAs */}
