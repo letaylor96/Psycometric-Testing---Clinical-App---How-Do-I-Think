@@ -146,7 +146,7 @@ const Index = () => {
       case 'adhd':
         setGameState('adhd-quiz');
         break;
-      case 'freudian':
+      case 'depth':
         setGameState('depth-framework-select');
         break;
     }

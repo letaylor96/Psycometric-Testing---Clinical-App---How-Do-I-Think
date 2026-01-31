@@ -20,7 +20,7 @@ const assessmentIcons: Record<AssessmentType, React.ElementType> = {
   iq: Brain,
   cognitive: Lightbulb,
   adhd: Activity,
-  freudian: Brain,
+  depth: Sparkles,
 };
 
 export const AssessmentProgress = ({
@@ -36,7 +36,7 @@ export const AssessmentProgress = ({
     iq: !!iqResults,
     cognitive: !!cognitiveStyleResults,
     adhd: !!adhdResults,
-    freudian: false, // TODO: Add freudian results prop
+    depth: false, // TODO: Add depth psychology results prop
   };
 
   const completedCount = Object.values(completionStatus).filter(Boolean).length;
