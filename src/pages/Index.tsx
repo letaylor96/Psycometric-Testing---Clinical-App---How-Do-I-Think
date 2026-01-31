@@ -1,10 +1,10 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { LandingHero } from '@/components/LandingHero';
 import { QuizQuestion } from '@/components/QuizQuestion';
 import { ResultsScreen } from '@/components/ResultsScreen';
 import { AssessmentPreview } from '@/components/AssessmentPreview';
-import { quizQuestions, calculateResults, TestResults, TOTAL_TEST_TIME } from '@/data/quizQuestions';
+import { Question, calculateResults, TestResults, TOTAL_TEST_TIME } from '@/data/quizQuestions';
 import { AssessmentType } from '@/data/assessmentTypes';
 import { personalityQuestions, calculatePersonalityResults, PersonalityResults } from '@/data/personalityQuestions';
 import { adhdQuestions, calculateADHDResults, ADHDResults } from '@/data/adhdQuestions';
@@ -16,6 +16,9 @@ import { PersonalityResultsScreen } from '@/components/PersonalityResultsScreen'
 import { ADHDResultsScreen } from '@/components/ADHDResultsScreen';
 import { CognitiveStyleResultsScreen } from '@/components/CognitiveStyleResultsScreen';
 import { CombinedDashboard } from '@/components/CombinedDashboard';
+import { usePersistedResults } from '@/hooks/usePersistedResults';
+import { iqQuestionVariants } from '@/data/iqQuestionVariants';
+import { selectRandomVariants } from '@/lib/questionVariants';
 
 type GameState = 
   | 'landing' 
@@ -36,13 +39,31 @@ const Index = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answers, setAnswers] = useState<number[]>([]);
-  const [results, setResults] = useState<TestResults | null>(null);
-  const [personalityResults, setPersonalityResults] = useState<PersonalityResults | null>(null);
-  const [adhdResults, setADHDResults] = useState<ADHDResults | null>(null);
-  const [cognitiveStyleResults, setCognitiveStyleResults] = useState<CognitiveStyleResults | null>(null);
+  
+  // Use persisted results to prevent data loss during premium upgrade
+  const { 
+    results: persistedResults, 
+    setIQResults, 
+    setPersonalityResults: persistPersonality, 
+    setADHDResults: persistADHD, 
+    setCognitiveResults: persistCognitive,
+    clearResults: clearPersistedResults 
+  } = usePersistedResults();
+  
+  // Local state derived from persisted results
+  const [results, setResults] = useState<TestResults | null>(persistedResults.iq);
+  const [personalityResults, setPersonalityResults] = useState<PersonalityResults | null>(persistedResults.personality);
+  const [adhdResults, setADHDResults] = useState<ADHDResults | null>(persistedResults.adhd);
+  const [cognitiveStyleResults, setCognitiveStyleResults] = useState<CognitiveStyleResults | null>(persistedResults.cognitive);
+  
   const [timeRemaining, setTimeRemaining] = useState(TOTAL_TEST_TIME);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number>(0);
+  
+  // Generate randomized questions for this session
+  const [sessionQuestions, setSessionQuestions] = useState<Question[]>(() => 
+    selectRandomVariants(iqQuestionVariants)
+  );
 
   // Check if this is user's first assessment (for free tier)
   const hasCompletedAny = !!results || !!personalityResults || !!adhdResults || !!cognitiveStyleResults;
@@ -118,13 +139,14 @@ const Index = () => {
     setSelectedAnswer(index);
   }, []);
 
-  const finishQuiz = useCallback((finalAnswers: number[]) => {
+  const finishQuiz = useCallback((finalAnswers: number[], questions: Question[]) => {
     if (timerRef.current) clearInterval(timerRef.current);
     const timeUsed = TOTAL_TEST_TIME - timeRemaining;
-    const finalResults = calculateResults(finalAnswers, timeUsed);
+    const finalResults = calculateResults(finalAnswers, timeUsed, questions);
     setResults(finalResults);
+    setIQResults(finalResults, finalAnswers); // Persist to localStorage
     setGameState('results');
-  }, [timeRemaining]);
+  }, [timeRemaining, setIQResults]);
 
   const handleNextQuestion = useCallback(() => {
     if (selectedAnswer === null) return;
@@ -133,41 +155,44 @@ const Index = () => {
     setAnswers(newAnswers);
     setSelectedAnswer(null);
 
-    if (currentQuestionIndex < quizQuestions.length - 1) {
+    if (currentQuestionIndex < sessionQuestions.length - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
     } else {
-      finishQuiz(newAnswers);
+      finishQuiz(newAnswers, sessionQuestions);
     }
-  }, [selectedAnswer, answers, currentQuestionIndex, finishQuiz]);
+  }, [selectedAnswer, answers, currentQuestionIndex, finishQuiz, sessionQuestions]);
 
   const handleTimeUp = useCallback(() => {
     const finalAnswers = [...answers];
     if (selectedAnswer !== null) {
       finalAnswers.push(selectedAnswer);
     }
-    while (finalAnswers.length < quizQuestions.length) {
+    while (finalAnswers.length < sessionQuestions.length) {
       finalAnswers.push(-1);
     }
-    finishQuiz(finalAnswers);
-  }, [answers, selectedAnswer, finishQuiz]);
+    finishQuiz(finalAnswers, sessionQuestions);
+  }, [answers, selectedAnswer, finishQuiz, sessionQuestions]);
 
-  const handlePersonalityComplete = useCallback((answers: number[]) => {
-    const results = calculatePersonalityResults(answers);
+  const handlePersonalityComplete = useCallback((personalityAnswers: number[]) => {
+    const results = calculatePersonalityResults(personalityAnswers);
     setPersonalityResults(results);
+    persistPersonality(results, personalityAnswers); // Persist to localStorage
     setGameState('personality-results');
-  }, []);
+  }, [persistPersonality]);
 
-  const handleADHDComplete = useCallback((answers: number[]) => {
-    const results = calculateADHDResults(answers);
+  const handleADHDComplete = useCallback((adhdAnswers: number[]) => {
+    const results = calculateADHDResults(adhdAnswers);
     setADHDResults(results);
+    persistADHD(results, adhdAnswers); // Persist to localStorage
     setGameState('adhd-results');
-  }, []);
+  }, [persistADHD]);
 
-  const handleCognitiveStyleComplete = useCallback((answers: number[]) => {
-    const results = calculateCognitiveStyleResults(answers);
+  const handleCognitiveStyleComplete = useCallback((cognitiveAnswers: number[]) => {
+    const results = calculateCognitiveStyleResults(cognitiveAnswers);
     setCognitiveStyleResults(results);
+    persistCognitive(results, cognitiveAnswers); // Persist to localStorage
     setGameState('cognitive-results');
-  }, []);
+  }, [persistCognitive]);
 
   const handleRestart = useCallback(() => {
     setGameState('landing');
@@ -176,6 +201,8 @@ const Index = () => {
     setAnswers([]);
     setSelectedAnswer(null);
     setTimeRemaining(TOTAL_TEST_TIME);
+    // Generate fresh randomized questions for the next attempt
+    setSessionQuestions(selectRandomVariants(iqQuestionVariants));
     if (timerRef.current) clearInterval(timerRef.current);
     // Note: We preserve results for the dashboard
   }, []);
@@ -191,8 +218,10 @@ const Index = () => {
     setADHDResults(null);
     setCognitiveStyleResults(null);
     setTimeRemaining(TOTAL_TEST_TIME);
+    setSessionQuestions(selectRandomVariants(iqQuestionVariants));
+    clearPersistedResults(); // Clear localStorage
     if (timerRef.current) clearInterval(timerRef.current);
-  }, []);
+  }, [clearPersistedResults]);
 
   const handleViewDashboard = useCallback(() => {
     setGameState('dashboard');
@@ -252,9 +281,9 @@ const Index = () => {
             transition={{ duration: 0.4 }}
           >
             <QuizQuestion
-              question={quizQuestions[currentQuestionIndex]}
+              question={sessionQuestions[currentQuestionIndex]}
               currentIndex={currentQuestionIndex}
-              totalQuestions={quizQuestions.length}
+              totalQuestions={sessionQuestions.length}
               selectedAnswer={selectedAnswer}
               onSelectAnswer={handleSelectAnswer}
               onNext={handleNextQuestion}
