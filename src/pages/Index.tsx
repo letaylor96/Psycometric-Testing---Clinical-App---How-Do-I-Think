@@ -47,6 +47,9 @@ const Index = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answers, setAnswers] = useState<number[]>([]);
+  const [personalityAnswersState, setPersonalityAnswersState] = useState<number[]>([]);
+  const [cognitiveAnswersState, setCognitiveAnswersState] = useState<number[]>([]);
+  const [adhdAnswersState, setAdhdAnswersState] = useState<number[]>([]);
   const [depthFramework, setDepthFramework] = useState<AnalysisFramework | null>(null);
   const [depthResults, setDepthResults] = useState<DepthPsychologyResults | null>(null);
   const [depthAnswers, setDepthAnswers] = useState<{ questionId: number; answer: string }[]>([]);
@@ -193,6 +196,7 @@ const Index = () => {
   const handlePersonalityComplete = useCallback((personalityAnswers: number[]) => {
     const results = calculatePersonalityResults(personalityAnswers);
     setPersonalityResults(results);
+    setPersonalityAnswersState(personalityAnswers); // Store answers for save feature
     persistPersonality(results, personalityAnswers); // Persist to localStorage
     setGameState('personality-results');
   }, [persistPersonality]);
@@ -203,6 +207,9 @@ const Index = () => {
     // Also set the individual results for dashboard compatibility
     setCognitiveStyleResults(results.cognitiveStyle);
     setADHDResults(results.adhd);
+    // Store answers for save feature
+    setCognitiveAnswersState(cognitiveAnswers);
+    setAdhdAnswersState(adhdAnswers);
     persistCognitive(results.cognitiveStyle, cognitiveAnswers);
     persistADHD(results.adhd, adhdAnswers);
     setGameState('neurodivergent-results');
@@ -447,6 +454,7 @@ const Index = () => {
           >
             <ResultsScreen
               results={results}
+              answers={answers}
               onRestart={handleRestart}
               onViewDashboard={handleViewDashboard}
             />
@@ -474,7 +482,8 @@ const Index = () => {
             transition={{ duration: 0.4 }}
           >
             <PersonalityResultsScreen 
-              results={personalityResults} 
+              results={personalityResults}
+              answers={personalityAnswersState}
               onRestart={handleRestart}
               onViewDashboard={handleViewDashboard}
             />
@@ -502,7 +511,9 @@ const Index = () => {
             transition={{ duration: 0.4 }}
           >
             <NeurodivergentMindResultsScreen 
-              results={neurodivergentResults} 
+              results={neurodivergentResults}
+              cognitiveAnswers={cognitiveAnswersState}
+              adhdAnswers={adhdAnswersState}
               onRestart={handleRestart}
               onViewDashboard={handleViewDashboard}
             />
@@ -552,7 +563,8 @@ const Index = () => {
             transition={{ duration: 0.4 }}
           >
             <DepthPsychologyResultsScreen 
-              results={depthResults} 
+              results={depthResults}
+              answers={depthAnswers}
               onRestart={handleRestart}
               onViewDashboard={handleViewDashboard}
               onTryFramework={handleTryDifferentFramework}

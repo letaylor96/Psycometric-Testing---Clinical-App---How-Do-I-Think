@@ -113,6 +113,42 @@ export type Database = {
         }
         Relationships: []
       }
+      saved_assessments: {
+        Row: {
+          answers: Json
+          assessment_type: string
+          created_at: string
+          framework: string | null
+          id: string
+          name: string | null
+          results: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          answers: Json
+          assessment_type: string
+          created_at?: string
+          framework?: string | null
+          id?: string
+          name?: string | null
+          results?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          answers?: Json
+          assessment_type?: string
+          created_at?: string
+          framework?: string | null
+          id?: string
+          name?: string | null
+          results?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

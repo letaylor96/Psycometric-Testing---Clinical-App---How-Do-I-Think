@@ -32,6 +32,7 @@ import { WhenYourMindWorksBest } from './WhenYourMindWorksBest';
 import { CognitiveFrictionAlerts } from './CognitiveFrictionAlerts';
 import { WeeklyCheckIn } from './WeeklyCheckIn';
 import { ExportableOnePager } from './ExportableOnePager';
+import { SavedAssessmentsPanel } from './SavedAssessmentsPanel';
 import { cn } from '@/lib/utils';
 import {
   RadarChart,
@@ -772,6 +773,9 @@ export const CombinedDashboard = ({
             className="mb-8"
           />
         )}
+
+        {/* Saved Assessments Panel - Premium Feature */}
+        <SavedAssessmentsPanel className="mb-8" />
 
         {/* Actions */}
         <motion.div
