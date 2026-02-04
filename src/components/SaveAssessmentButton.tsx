@@ -165,6 +165,7 @@ export function SaveAssessmentButton({
           setShowDialog(true);
         }}
         feature="Save Assessment Results"
+        currentGameState="dashboard"
       />
     </>
   );

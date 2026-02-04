@@ -297,6 +297,7 @@ export function SavedAssessmentsPanel({
         onClose={() => setShowPremiumGate(false)}
         onUnlocked={() => setShowPremiumGate(false)}
         feature="Saved Assessments"
+        currentGameState="dashboard"
       />
     </>
   );

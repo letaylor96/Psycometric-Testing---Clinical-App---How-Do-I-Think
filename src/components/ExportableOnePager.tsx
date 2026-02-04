@@ -473,6 +473,7 @@ export const ExportableOnePager = ({
           handleExport();
         }}
         feature="Exportable Profile Report"
+        currentGameState="dashboard"
       />
     </>
   );

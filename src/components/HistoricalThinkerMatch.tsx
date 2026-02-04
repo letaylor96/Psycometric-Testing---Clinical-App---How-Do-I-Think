@@ -92,6 +92,7 @@ export const HistoricalThinkerMatch = ({
         onClose={() => setShowPremiumGate(false)}
         onUnlocked={handleGenerateReport}
         feature="Historical Mind Match"
+        currentGameState="dashboard"
       />
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>

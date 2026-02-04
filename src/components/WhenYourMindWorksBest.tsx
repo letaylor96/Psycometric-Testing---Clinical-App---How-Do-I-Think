@@ -172,6 +172,7 @@ export const WhenYourMindWorksBest = ({
           setShowPremiumGate(false);
         }}
         feature="Optimal Condition Insights"
+        currentGameState="dashboard"
       />
     </>
   );

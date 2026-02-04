@@ -264,6 +264,7 @@ export const TherapistReport = ({
         onClose={() => setShowPremiumGate(false)}
         onUnlocked={() => setIsOpen(true)}
         feature="Therapist Report"
+        currentGameState="dashboard"
       />
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
