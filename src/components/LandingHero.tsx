@@ -54,12 +54,12 @@ export const LandingHero = ({
     <div className="min-h-screen bg-background">
       {/* Top Navigation Bar */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-yellow/20">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-yellow/20 flex items-center justify-center">
-              <Brain className="w-5 h-5 text-yellow" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-yellow/20 flex items-center justify-center flex-shrink-0">
+              <Brain className="w-4 h-4 sm:w-5 sm:h-5 text-yellow" />
             </div>
-            <span className="font-serif text-lg font-semibold text-foreground tracking-tight">
+            <span className="font-serif text-base sm:text-lg font-semibold text-foreground tracking-tight">
               How Do I Think
             </span>
           </div>
@@ -68,15 +68,15 @@ export const LandingHero = ({
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-24 pb-20 min-h-[85vh] flex items-center justify-center">
+      <section className="relative pt-20 sm:pt-24 pb-12 sm:pb-20 min-h-[80vh] sm:min-h-[85vh] flex items-center justify-center">
         {/* Subtle gradient background with gold accent */}
         <div className="absolute inset-0 bg-gradient-to-b from-yellow/[0.04] via-transparent to-transparent" />
-        <div className="absolute top-40 left-1/4 w-64 h-64 bg-yellow/5 rounded-full blur-[100px]" />
-        <div className="absolute bottom-40 right-1/4 w-48 h-48 bg-primary/5 rounded-full blur-[80px]" />
+        <div className="absolute top-40 left-1/4 w-32 sm:w-64 h-32 sm:h-64 bg-yellow/5 rounded-full blur-[60px] sm:blur-[100px]" />
+        <div className="absolute bottom-40 right-1/4 w-24 sm:w-48 h-24 sm:h-48 bg-primary/5 rounded-full blur-[50px] sm:blur-[80px]" />
         
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
           {/* Progress if started */}
-          <div className="mb-8">
+          <div className="mb-6 sm:mb-8">
             <AssessmentProgress
               iqResults={iqResults ?? null}
               personalityResults={personalityResults ?? null}
@@ -92,10 +92,10 @@ export const LandingHero = ({
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="flex justify-center mb-8"
+            className="flex justify-center mb-6 sm:mb-8"
           >
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-yellow/20 to-yellow/5 border border-yellow/30 flex items-center justify-center">
-              <Brain className="w-10 h-10 text-yellow" />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-yellow/20 to-yellow/5 border border-yellow/30 flex items-center justify-center">
+              <Brain className="w-8 h-8 sm:w-10 sm:h-10 text-yellow" />
             </div>
           </motion.div>
 
@@ -104,7 +104,7 @@ export const LandingHero = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-[1.1] tracking-tight mb-8"
+            className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground leading-[1.1] tracking-tight mb-6 sm:mb-8"
           >
             How Do I
             <br />
@@ -116,10 +116,10 @@ export const LandingHero = ({
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+            className="text-muted-foreground text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed px-2"
           >
-            A comprehensive suite of scientifically-validated assessments measuring 
-            intelligence, personality, cognitive style, attentional patterns, and the unconscious mind.
+            Free IQ test, learning style quiz, and scientifically-validated psychology assessments. 
+            Discover your cognitive style, personality, and thinking patterns.
           </motion.p>
 
           {/* CTAs */}
@@ -127,14 +127,14 @@ export const LandingHero = ({
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center mb-6"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-4 sm:mb-6 px-4 sm:px-0"
           >
             <Button
               onClick={onStart}
               size="lg"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-8 py-6 text-base"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base w-full sm:w-auto"
             >
-              {hasStarted ? 'Continue Assessment' : 'Begin Assessment'}
+              {hasStarted ? 'Continue Assessment' : 'Start Free IQ Test'}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </motion.div>
@@ -157,9 +157,9 @@ export const LandingHero = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="mt-10 flex flex-col items-center"
+            className="mt-6 sm:mt-10 flex flex-col items-center"
           >
-            <span className="text-muted-foreground/50 text-xs uppercase tracking-wider mb-2">Choose your assessment</span>
+            <span className="text-muted-foreground/50 text-[10px] sm:text-xs uppercase tracking-wider mb-2">Choose your assessment</span>
             <button
               type="button"
               onClick={() => {
@@ -169,13 +169,13 @@ export const LandingHero = ({
                 }
               }}
               aria-label="Scroll down to assessment options"
-              className="relative flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 border border-primary/30 cursor-pointer hover:bg-primary/20 hover:border-primary/50 hover:scale-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
+              className="relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 border border-primary/30 cursor-pointer hover:bg-primary/20 hover:border-primary/50 hover:scale-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
             >
               <motion.div
                 animate={{ y: [0, 6, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
               >
-                <ChevronDown className="w-6 h-6 text-primary" />
+                <ChevronDown className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
               </motion.div>
             </button>
           </motion.div>
@@ -224,25 +224,25 @@ export const LandingHero = ({
       </AnimatePresence>
 
       {/* Assessment Grid */}
-      <section id="assessment-grid" className="py-20 bg-background">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <p className="text-yellow text-sm font-medium tracking-widest uppercase mb-4">
+      <section id="assessment-grid" className="py-12 sm:py-20 bg-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-12">
+            <p className="text-yellow text-xs sm:text-sm font-medium tracking-widest uppercase mb-3 sm:mb-4">
               Assessment Suite
             </p>
-            <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground mb-3 sm:mb-4">
               Choose Your Assessment
             </h2>
             <button
               onClick={() => setShowAbout(true)}
-              className="inline-flex items-center gap-2 text-muted-foreground hover:text-yellow transition-colors text-sm"
+              className="inline-flex items-center gap-2 text-muted-foreground hover:text-yellow transition-colors text-xs sm:text-sm"
             >
-              <Info className="w-4 h-4" />
+              <Info className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span>About our assessments</span>
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto">
             {allAssessmentTypes.map((type, i) => {
               const info = assessmentInfo[type];
               const Icon = assessmentIcons[type];
@@ -264,7 +264,7 @@ export const LandingHero = ({
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 + i * 0.1 }}
                   onClick={() => onSelectAssessment(type)}
-                className={`group relative text-left p-8 border transition-all ${
+                className={`group relative text-left p-5 sm:p-8 border transition-all rounded-lg sm:rounded-none ${
                   isCompleted 
                     ? 'border-emerald-500/30 bg-emerald-500/5' 
                     : isPremiumOnly
@@ -273,41 +273,41 @@ export const LandingHero = ({
                 }`}
               >
                 {isPremiumOnly && !isCompleted && (
-                  <div className="absolute top-6 right-6 flex items-center gap-2 text-purple-400">
-                    <Crown className="w-4 h-4" />
-                    <span className="text-xs font-medium uppercase tracking-wide">Premium</span>
+                  <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-1.5 sm:gap-2 text-purple-400">
+                    <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span className="text-[10px] sm:text-xs font-medium uppercase tracking-wide">Premium</span>
                   </div>
                 )}
                 {isCompleted && (
-                  <div className="absolute top-6 right-6 flex items-center gap-2 text-emerald-500">
-                    <Check className="w-4 h-4" />
-                    <span className="text-xs font-medium uppercase tracking-wide">Completed</span>
+                  <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-1.5 sm:gap-2 text-emerald-500">
+                    <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span className="text-[10px] sm:text-xs font-medium uppercase tracking-wide">Done</span>
                   </div>
                 )}
                 
-                <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center mb-3 sm:mb-4 ${
                   isPremiumOnly ? 'bg-purple-500/20' : 'bg-yellow/10'
                 }`}>
-                  <Icon className={`w-6 h-6 ${isPremiumOnly ? 'text-purple-400' : 'text-yellow'}`} />
+                  <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${isPremiumOnly ? 'text-purple-400' : 'text-yellow'}`} />
                 </div>
                 
-                <h3 className="font-serif text-xl font-semibold text-foreground mb-2 group-hover:text-yellow transition-colors">
+                <h3 className="font-serif text-lg sm:text-xl font-semibold text-foreground mb-1.5 sm:mb-2 group-hover:text-yellow transition-colors pr-16 sm:pr-20">
                   {info.title}
-                  </h3>
-                <p className="text-yellow/80 text-sm font-medium mb-4">
+                </h3>
+                <p className="text-yellow/80 text-xs sm:text-sm font-medium mb-3 sm:mb-4">
                   {info.framework}
                 </p>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+                <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-none">
                   {methodologies[type]}
                 </p>
                 <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground/60 text-xs">
-                    {info.questionCount} questions · {info.timeMinutes} minutes
+                  <span className="text-muted-foreground/60 text-[10px] sm:text-xs">
+                    {info.questionCount} questions · {info.timeMinutes} min
                   </span>
-                  <span className="text-yellow text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-yellow text-xs sm:text-sm font-medium sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                     Begin →
                   </span>
-                  </div>
+                </div>
                 </motion.button>
               );
             })}
@@ -332,71 +332,68 @@ export const LandingHero = ({
       </section>
 
       {/* AI Insights Section - NEW */}
-      <section className="py-20 bg-gradient-to-b from-background via-purple-500/[0.03] to-background">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm font-medium mb-4">
-              <Sparkles className="w-4 h-4" />
+      <section className="py-12 sm:py-20 bg-gradient-to-b from-background via-purple-500/[0.03] to-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-16">
+            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs sm:text-sm font-medium mb-3 sm:mb-4">
+              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               AI-Powered Insights
             </div>
-            <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground mb-3 sm:mb-4">
               Go Beyond the Numbers
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto px-2">
               After completing your assessments, unlock powerful AI-driven tools to 
               understand your unique cognitive profile.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8">
             {/* Historical Mind Match */}
-            <div className="p-8 rounded-xl bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/20 text-center">
-              <div className="w-16 h-16 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center mx-auto mb-6">
-                <Crown className="w-8 h-8 text-amber-500" />
+            <div className="p-5 sm:p-8 rounded-xl bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/20 text-center">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <Crown className="w-6 h-6 sm:w-8 sm:h-8 text-amber-500" />
               </div>
-              <h3 className="font-serif text-xl font-semibold text-foreground mb-3">
+              <h3 className="font-serif text-lg sm:text-xl font-semibold text-foreground mb-2 sm:mb-3">
                 Historical Mind Match
               </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                Discover which great minds from history—Einstein, Da Vinci, Curie—share 
-                your cognitive patterns and thinking style.
+              <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4">
+                Discover which great minds from history share your cognitive patterns.
               </p>
-              <span className="text-amber-500 text-sm font-medium">
-                Match with 20+ historical figures
+              <span className="text-amber-500 text-xs sm:text-sm font-medium">
+                20+ historical figures
               </span>
             </div>
 
             {/* Therapist Report */}
-            <div className="p-8 rounded-xl bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20 text-center">
-              <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center mx-auto mb-6">
-                <FileText className="w-8 h-8 text-emerald-500" />
+            <div className="p-5 sm:p-8 rounded-xl bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20 text-center">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-500" />
               </div>
-              <h3 className="font-serif text-xl font-semibold text-foreground mb-3">
+              <h3 className="font-serif text-lg sm:text-xl font-semibold text-foreground mb-2 sm:mb-3">
                 Therapist Report
               </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                Generate a professional clinical summary of your results, formatted 
-                for mental health providers and therapists.
+              <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4">
+                Professional clinical summary for mental health providers.
               </p>
-              <span className="text-emerald-500 text-sm font-medium">
-                Export-ready clinical format
+              <span className="text-emerald-500 text-xs sm:text-sm font-medium">
+                Export-ready format
               </span>
             </div>
 
             {/* Ask AI */}
-            <div className="p-8 rounded-xl bg-gradient-to-br from-violet-500/10 to-violet-500/5 border border-violet-500/20 text-center">
-              <div className="w-16 h-16 rounded-full bg-violet-500/20 border border-violet-500/30 flex items-center justify-center mx-auto mb-6">
-                <MessageCircle className="w-8 h-8 text-violet-500" />
+            <div className="p-5 sm:p-8 rounded-xl bg-gradient-to-br from-violet-500/10 to-violet-500/5 border border-violet-500/20 text-center sm:col-span-2 md:col-span-1">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-violet-500/20 border border-violet-500/30 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <MessageCircle className="w-6 h-6 sm:w-8 sm:h-8 text-violet-500" />
               </div>
-              <h3 className="font-serif text-xl font-semibold text-foreground mb-3">
+              <h3 className="font-serif text-lg sm:text-xl font-semibold text-foreground mb-2 sm:mb-3">
                 Ask AI About Results
               </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                Chat directly with AI to understand what your results mean for your 
-                career, relationships, and personal growth.
+              <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4">
+                Chat with AI to understand what your results mean for your life.
               </p>
-              <span className="text-violet-500 text-sm font-medium">
-                Personalized insights on demand
+              <span className="text-violet-500 text-xs sm:text-sm font-medium">
+                Personalized insights
               </span>
             </div>
           </div>
@@ -404,50 +401,50 @@ export const LandingHero = ({
       </section>
 
       {/* Methodology Section */}
-      <section className="py-20 bg-card border-y border-yellow/20">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <p className="text-yellow text-sm font-medium tracking-widest uppercase mb-4">
+      <section className="py-12 sm:py-20 bg-card border-y border-yellow/20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-16">
+            <p className="text-yellow text-xs sm:text-sm font-medium tracking-widest uppercase mb-3 sm:mb-4">
               Scientific Foundation
             </p>
-            <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-6">
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground mb-4 sm:mb-6">
               Research-Based Methodology
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto px-2">
               Our assessments are built on decades of peer-reviewed research in cognitive 
               psychology, psychometrics, and neuroscience.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
             {[
               {
                 title: 'Big Five Model',
                 icon: Target,
-                description: 'The most validated personality framework in modern psychology, measuring five core dimensions.',
+                description: 'The most validated personality framework in modern psychology.',
               },
               {
                 title: "Raven's Matrices",
                 icon: Brain,
-                description: 'Non-verbal assessment of fluid intelligence, used globally for cognitive evaluation.',
+                description: 'Non-verbal assessment of fluid intelligence used globally.',
               },
               {
                 title: 'ASRS-v1.1',
                 icon: Zap,
-                description: 'WHO-developed screening tool for adult attention-deficit patterns and executive function.',
+                description: 'WHO screening for attention patterns.',
               },
               {
-                title: 'Cognitive Load Theory',
+                title: 'Cognitive Load',
                 icon: Lightbulb,
-                description: 'Framework for understanding how individuals process and retain complex information.',
+                description: 'How you process information.',
               },
             ].map((item, i) => (
               <div key={i} className="text-center">
-                <div className="w-14 h-14 rounded-full bg-yellow/10 border border-yellow/20 flex items-center justify-center mx-auto mb-4">
-                  <item.icon className="w-6 h-6 text-yellow" />
+                <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-yellow/10 border border-yellow/20 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                  <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-yellow" />
                 </div>
-                <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
+                <h3 className="font-semibold text-foreground text-xs sm:text-base mb-1 sm:mb-2">{item.title}</h3>
+                <p className="text-muted-foreground text-[10px] sm:text-sm leading-relaxed">{item.description}</p>
               </div>
             ))}
           </div>
@@ -455,33 +452,33 @@ export const LandingHero = ({
       </section>
 
       {/* Footer CTA */}
-      <section className="py-20 bg-background relative">
+      <section className="py-12 sm:py-20 bg-background relative">
         <div className="absolute inset-0 bg-gradient-to-t from-yellow/[0.03] to-transparent" />
-        <div className="max-w-2xl mx-auto px-6 text-center relative z-10">
-          <div className="w-16 h-16 rounded-full bg-yellow/10 border border-yellow/30 flex items-center justify-center mx-auto mb-6">
-            <Brain className="w-8 h-8 text-yellow" />
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center relative z-10">
+          <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-yellow/10 border border-yellow/30 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+            <Brain className="w-6 h-6 sm:w-8 sm:h-8 text-yellow" />
           </div>
-          <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-6">
+          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground mb-4 sm:mb-6">
             Ready to Begin?
           </h2>
-          <p className="text-muted-foreground mb-8">
-            Start with a free assessment and discover insights about your cognitive profile.
+          <p className="text-muted-foreground text-sm sm:text-base mb-6 sm:mb-8 px-2">
+            Start with a free IQ test and discover insights about your cognitive profile.
           </p>
           <Button
             onClick={onStart}
             size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-10 py-6 text-base"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-8 sm:px-10 py-5 sm:py-6 text-sm sm:text-base w-full sm:w-auto"
           >
-            Start Free Assessment
+            Start Free IQ Test
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8 border-t border-yellow/20 bg-card/50">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <p className="text-muted-foreground/60 text-sm">
+      <footer className="py-6 sm:py-8 border-t border-yellow/20 bg-card/50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+          <p className="text-muted-foreground/60 text-xs sm:text-sm">
             © {new Date().getFullYear()} How Do I Think. All rights reserved.
           </p>
         </div>
