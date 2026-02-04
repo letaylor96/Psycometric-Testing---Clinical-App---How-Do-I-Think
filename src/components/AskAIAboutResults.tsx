@@ -303,6 +303,7 @@ export const AskAIAboutResults = ({
         onClose={() => setShowPremiumGate(false)}
         onUnlocked={handleOpen}
         feature="Ask AI About Results"
+        currentGameState="dashboard"
       />
     </>
   );

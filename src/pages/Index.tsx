@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
 import { LandingHero } from '@/components/LandingHero';
 import { QuizQuestion } from '@/components/QuizQuestion';
 import { ResultsScreen } from '@/components/ResultsScreen';
@@ -24,6 +25,7 @@ import { iqQuestionVariants } from '@/data/iqQuestionVariants';
 import { selectRandomVariants } from '@/lib/questionVariants';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { clearPremiumReturnState } from '@/pages/PaymentSuccess';
 
 type GameState = 
   | 'landing' 
@@ -42,6 +44,7 @@ type GameState =
 
 const Index = () => {
   const { toast } = useToast();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [gameState, setGameState] = useState<GameState>('landing');
   const [previewType, setPreviewType] = useState<AssessmentType | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -87,6 +90,52 @@ const Index = () => {
 
   // Check if this is user's first assessment (for free tier)
   const hasCompletedAny = !!results || !!personalityResults || !!neurodivergentResults || !!depthResults;
+
+  // Handle return from premium payment - restore to results view
+  useEffect(() => {
+    const returnTo = searchParams.get('returnTo');
+    if (returnTo) {
+      // Map the return state to appropriate game state
+      const validReturnStates: GameState[] = [
+        'results', 
+        'personality-results', 
+        'neurodivergent-results', 
+        'depth-results',
+        'dashboard'
+      ];
+      
+      if (validReturnStates.includes(returnTo as GameState)) {
+        // Only navigate if we have the data to show
+        const canShow = 
+          (returnTo === 'results' && persistedResults.iq) ||
+          (returnTo === 'personality-results' && persistedResults.personality) ||
+          (returnTo === 'neurodivergent-results' && (persistedResults.cognitive || persistedResults.adhd)) ||
+          (returnTo === 'depth-results') ||
+          (returnTo === 'dashboard');
+        
+        if (canShow) {
+          // Restore neurodivergent results if needed
+          if (returnTo === 'neurodivergent-results' && !neurodivergentResults && 
+              persistedResults.cognitive && persistedResults.adhd && 
+              persistedResults.cognitiveAnswers && persistedResults.adhdAnswers) {
+            const restored = calculateNeurodivergentMindResults(
+              persistedResults.cognitiveAnswers,
+              persistedResults.adhdAnswers
+            );
+            setNeurodivergentResults(restored);
+          }
+          
+          setGameState(returnTo as GameState);
+        }
+      }
+      
+      // Clear the URL params
+      searchParams.delete('returnTo');
+      searchParams.delete('assessmentType');
+      setSearchParams(searchParams, { replace: true });
+      clearPremiumReturnState();
+    }
+  }, [searchParams, setSearchParams, persistedResults, neurodivergentResults]);
 
   // Timer effect
   useEffect(() => {

@@ -9,12 +9,15 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
+import { savePremiumReturnState } from '@/pages/PaymentSuccess';
 
 interface PremiumGateProps {
   isOpen: boolean;
   onClose: () => void;
   onUnlocked?: () => void;
   feature?: string;
+  currentGameState?: string;
+  currentAssessmentType?: string;
 }
 
 const premiumFeatures = [
@@ -26,7 +29,7 @@ const premiumFeatures = [
   { icon: Sparkles, label: 'Cross-test synergy analysis', color: 'text-pink-500' },
 ];
 
-export const PremiumGate = ({ isOpen, onClose, onUnlocked, feature }: PremiumGateProps) => {
+export const PremiumGate = ({ isOpen, onClose, onUnlocked, feature, currentGameState, currentAssessmentType }: PremiumGateProps) => {
   const [promoCode, setPromoCode] = useState('');
   const [showPromoInput, setShowPromoInput] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -72,6 +75,12 @@ export const PremiumGate = ({ isOpen, onClose, onUnlocked, feature }: PremiumGat
     }
 
     setIsLoading(true);
+    
+    // Save the current state so we can return after payment
+    if (currentGameState) {
+      savePremiumReturnState(currentGameState, currentAssessmentType);
+    }
+    
     try {
       const { data, error } = await supabase.functions.invoke('create-assessment-payment', {
         body: { assessmentType: 'bundle' },

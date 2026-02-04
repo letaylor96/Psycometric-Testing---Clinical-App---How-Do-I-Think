@@ -258,6 +258,7 @@ export const BlindSpotAnalysis = ({
           setShowPremiumGate(false);
         }}
         feature="Blind Spot Analysis"
+        currentGameState="dashboard"
       />
     </>
   );

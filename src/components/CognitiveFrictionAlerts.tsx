@@ -180,6 +180,7 @@ export const CognitiveFrictionAlerts = ({
           setShowPremiumGate(false);
         }}
         feature="Cognitive Friction Alerts"
+        currentGameState="dashboard"
       />
     </>
   );

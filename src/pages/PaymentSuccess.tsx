@@ -5,18 +5,73 @@ import { CheckCircle, Loader2, XCircle, Crown, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { usePremiumAccess } from '@/hooks/usePremiumAccess';
 
 type VerificationStatus = 'verifying' | 'success' | 'error';
+
+// Storage key for tracking where user came from
+const RETURN_STATE_KEY = 'premium_return_state';
+
+export interface PremiumReturnState {
+  gameState: string;
+  assessmentType?: string;
+  timestamp: number;
+}
+
+export const savePremiumReturnState = (gameState: string, assessmentType?: string) => {
+  const state: PremiumReturnState = {
+    gameState,
+    assessmentType,
+    timestamp: Date.now(),
+  };
+  try {
+    localStorage.setItem(RETURN_STATE_KEY, JSON.stringify(state));
+  } catch {
+    // Ignore storage errors
+  }
+};
+
+export const getPremiumReturnState = (): PremiumReturnState | null => {
+  try {
+    const stored = localStorage.getItem(RETURN_STATE_KEY);
+    if (!stored) return null;
+    const state = JSON.parse(stored) as PremiumReturnState;
+    // Only valid for 1 hour
+    if (Date.now() - state.timestamp > 60 * 60 * 1000) {
+      localStorage.removeItem(RETURN_STATE_KEY);
+      return null;
+    }
+    return state;
+  } catch {
+    return null;
+  }
+};
+
+export const clearPremiumReturnState = () => {
+  try {
+    localStorage.removeItem(RETURN_STATE_KEY);
+  } catch {
+    // Ignore storage errors
+  }
+};
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { refreshAccess } = usePremiumAccess();
   const [status, setStatus] = useState<VerificationStatus>('verifying');
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [returnState, setReturnState] = useState<PremiumReturnState | null>(null);
 
   const sessionId = searchParams.get('session_id');
   const assessmentType = searchParams.get('type');
+
+  useEffect(() => {
+    // Load return state on mount
+    const state = getPremiumReturnState();
+    setReturnState(state);
+  }, []);
 
   useEffect(() => {
     const verifyPayment = async () => {
@@ -42,8 +97,8 @@ const PaymentSuccess = () => {
         }
 
         if (data?.success) {
-          // Payment verified server-side - the purchase is now in the database
-          // The usePremiumAccess hook will pick this up on refresh
+          // Refresh premium access state so the app knows they're premium
+          await refreshAccess();
           setStatus('success');
         } else {
           setStatus('error');
@@ -57,10 +112,24 @@ const PaymentSuccess = () => {
     };
 
     verifyPayment();
-  }, [sessionId, user]);
+  }, [sessionId, user, refreshAccess]);
 
   const handleContinue = () => {
-    navigate('/');
+    // Clear the return state
+    clearPremiumReturnState();
+    
+    // If we have a return state, navigate with it as a query param
+    // The Index page will read this and restore the appropriate view
+    if (returnState) {
+      const params = new URLSearchParams();
+      params.set('returnTo', returnState.gameState);
+      if (returnState.assessmentType) {
+        params.set('assessmentType', returnState.assessmentType);
+      }
+      navigate(`/?${params.toString()}`);
+    } else {
+      navigate('/');
+    }
   };
 
   return (
@@ -134,12 +203,18 @@ const PaymentSuccess = () => {
               </ul>
             </motion.div>
 
+            {returnState && (
+              <p className="text-sm text-muted-foreground mb-4">
+                Your assessment results are waiting for you!
+              </p>
+            )}
+
             <Button
               onClick={handleContinue}
               className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
               size="lg"
             >
-              Start Exploring
+              {returnState ? 'Continue to Your Results' : 'Start Exploring'}
             </Button>
           </div>
         )}

@@ -292,6 +292,7 @@ export const PeerComparison = ({
         onClose={() => setShowPremiumGate(false)}
         onUnlocked={() => setShowPremiumGate(false)}
         feature="Peer Comparison"
+        currentGameState="dashboard"
       />
     </>
   );
