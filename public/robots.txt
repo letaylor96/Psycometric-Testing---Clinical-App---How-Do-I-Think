@@ -12,3 +12,5 @@ Allow: /
 
 User-agent: *
 Allow: /
+ 
+ Sitemap: https://how-do-i-think-clinical.lovable.app/sitemap.xml
