@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion';
-import { Brain, RotateCcw, Share2, Sparkles, Target, TrendingUp, Clock, Award, Download, Linkedin, Copy, Check, Crown, Zap } from 'lucide-react';
+import { Brain, RotateCcw, Sparkles, Target, TrendingUp, Clock, Award, Crown, Zap } from 'lucide-react';
 import { TestResults, categoryLabels, divergentLabels, getIQInterpretation, getPercentile } from '@/data/quizQuestions';
 import { Button } from '@/components/ui/button';
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Cell } from 'recharts';
-import { useState } from 'react';
 import { CareerIntelligenceReport } from '@/components/CareerIntelligenceReport';
 import { PremiumFeatureTeaser } from '@/components/PremiumFeatureTeaser';
 import { QuestionReview } from '@/components/QuestionReview';
 import { SaveAssessmentButton } from '@/components/SaveAssessmentButton';
+import { SocialShareButtons } from '@/components/SocialShareButtons';
 import { cn } from '@/lib/utils';
 
 interface ResultsScreenProps {
@@ -42,8 +42,6 @@ const getIQTier = (iq: number): { tier: string; color: string; description: stri
 };
 
 export const ResultsScreen = ({ results, answers, onRestart, onViewDashboard }: ResultsScreenProps) => {
-  const [copied, setCopied] = useState(false);
-  
   const radarData = results.categoryScores.map((score) => ({
     category: categoryLabels[score.category].replace(' Intelligence', '').replace(' Reasoning', '').replace(' Awareness', '').replace(' Recognition', '').replace(' Thinking', ''),
     value: score.percentage,
@@ -58,8 +56,7 @@ export const ResultsScreen = ({ results, answers, onRestart, onViewDashboard }: 
   const iqTier = getIQTier(results.iq);
   const percentile = getPercentile(results.iq);
 
-  const handleShare = async () => {
-    const shareText = `🧠 My Cognitive Profile Results
+  const shareText = `🧠 My Cognitive Profile Results
 
 📊 Cognitive Score: ${results.iq} (${iqTier.tier})
 🏆 Percentile: Top ${100 - percentile}%
@@ -69,36 +66,18 @@ export const ResultsScreen = ({ results, answers, onRestart, onViewDashboard }: 
 ${results.divergentDescription}
 
 Take the free assessment to discover your cognitive edge 👇
-${window.location.origin}
 
 #CognitiveAssessment #LeadershipDevelopment #PersonalGrowth`;
-    
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: 'My Cognitive Profile', text: shareText });
-      } catch (err) {
-        await navigator.clipboard.writeText(shareText);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      }
-    } else {
-      await navigator.clipboard.writeText(shareText);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  };
 
-  const handleLinkedInShare = () => {
-    const text = encodeURIComponent(`Just completed my Cognitive Profile assessment! 🧠
+  const linkedInText = `Just completed my Cognitive Profile assessment! 🧠
 
 📊 Score: ${results.iq} (${iqTier.tier} - Top ${100 - percentile}%)
 ✨ Archetype: ${results.divergentType}
 🎯 Strength: ${categoryLabels[results.primaryStrength]}
 
-Fascinating insights into how I think and solve problems. Try it yourself 👇`);
-    
-    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.origin)}&summary=${text}`, '_blank');
-  };
+Fascinating insights into how I think and solve problems. Try it yourself!`;
+
+  const twitterText = `Just scored ${results.iq} (${iqTier.tier}) on the cognitive assessment! 🧠 My archetype: ${results.divergentType}. Discover your cognitive edge:`;
 
   return (
     <div className="min-h-screen px-4 py-12 relative overflow-hidden">
@@ -396,22 +375,12 @@ Fascinating insights into how I think and solve problems. Try it yourself 👇`)
             <p className="text-muted-foreground text-sm">Let your network know about your cognitive strengths</p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              onClick={handleLinkedInShare}
-              className="bg-[#0A66C2] hover:bg-[#004182] text-white font-display font-semibold py-6 px-8 rounded-xl hover:scale-105 transition-all"
-            >
-              <Linkedin className="w-5 h-5 mr-2" />
-              Share on LinkedIn
-            </Button>
-            <Button
-              onClick={handleShare}
-              variant="outline"
-              className="border-primary text-primary hover:bg-primary/10 font-display font-semibold py-6 px-8 rounded-xl"
-            >
-              {copied ? <Check className="w-5 h-5 mr-2" /> : <Copy className="w-5 h-5 mr-2" />}
-              {copied ? 'Copied!' : 'Copy Results'}
-            </Button>
+          <div className="flex justify-center">
+            <SocialShareButtons
+              shareText={shareText}
+              linkedInText={linkedInText}
+              twitterText={twitterText}
+            />
           </div>
         </motion.div>
 
