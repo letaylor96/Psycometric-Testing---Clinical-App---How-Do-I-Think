@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo, allAssessmentTypes } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
 import { AuthButton } from '@/components/AuthButton';
+import { QuizTeaser } from '@/components/QuizTeaser';
 import { TestResults } from '@/data/quizQuestions';
 import { PersonalityResults } from '@/data/personalityQuestions';
 import { ADHDResults } from '@/data/adhdQuestions';
@@ -181,6 +182,9 @@ export const LandingHero = ({
           </motion.div>
         </div>
       </section>
+
+      {/* Quiz Teaser - Hook visitors with an interactive sample */}
+      <QuizTeaser onStartQuiz={onStart} />
 
       {/* About Button & Modal */}
       <AnimatePresence>
