@@ -14,6 +14,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, LayoutDashboard, TrendingUp, Sparkles, RefreshCw, ChevronDown, ChevronUp, BookOpen } from 'lucide-react';
 import { SaveAssessmentButton } from '@/components/SaveAssessmentButton';
+import { SocialShareButtons } from '@/components/SocialShareButtons';
 import { cn } from '@/lib/utils';
 
 interface DepthPsychologyResultsProps {
@@ -747,8 +748,23 @@ export const DepthPsychologyResultsScreen = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center pt-4 flex-wrap"
+          className="space-y-6 pt-4"
         >
+          {/* Social Share */}
+          <Card className="border-border">
+            <CardHeader className="text-center pb-2">
+              <CardTitle className="text-lg">Share Your Analysis</CardTitle>
+            </CardHeader>
+            <CardContent className="flex justify-center">
+              <SocialShareButtons
+                shareText={`🧠 Just completed my ${frameworkInfo[results.framework].thinker} depth psychology analysis!\n\n${frameworkInfo[results.framework].description}\n\nDiscover the hidden patterns in your psyche!`}
+                linkedInText={`Just explored my unconscious mind through ${frameworkInfo[results.framework].thinker}'s lens! 🧠\n\nFascinating insights into the unconscious mind.\n\nDiscover your own depth psychology profile!`}
+                twitterText={`Explored my psyche through ${frameworkInfo[results.framework].thinker}'s lens 🧠 Fascinating insights into the unconscious mind. Discover yours:`}
+              />
+            </CardContent>
+          </Card>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
           {answers && (
             <SaveAssessmentButton
               assessmentType="depth"
@@ -765,6 +781,7 @@ export const DepthPsychologyResultsScreen = ({
             <LayoutDashboard className="w-4 h-4" />
             View Full Dashboard
           </Button>
+          </div>
         </motion.div>
       </div>
     </div>

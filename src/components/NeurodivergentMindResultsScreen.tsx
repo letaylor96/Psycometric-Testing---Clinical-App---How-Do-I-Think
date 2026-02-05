@@ -6,7 +6,6 @@ import {
   Sparkles, 
   ArrowRight, 
   RotateCcw, 
-  Share2,
   ChevronDown,
   ChevronUp,
   AlertCircle,
@@ -17,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { NeurodivergentMindResults, processingStyleLabels, dimensionLabels } from '@/data/neurodivergentMindQuestions';
 import { SaveAssessmentButton } from '@/components/SaveAssessmentButton';
+import { SocialShareButtons } from '@/components/SocialShareButtons';
 import {
   RadarChart,
   PolarGrid,
@@ -81,19 +81,22 @@ export const NeurodivergentMindResultsScreen = ({
     fullMark: 100,
   }));
 
-  const handleShare = async () => {
-    const shareText = `🧠 My Neurodivergent Mind Profile\n\nCognitive Style: ${cognitiveStyle.primaryProfile.name}\nProcessing: ${processingStyleLabels[cognitiveStyle.processingStyle]}\nNeurodivergent Likelihood: ${likelihoodInfo.label}\n\nDiscover your cognitive profile!`;
-    
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: 'My Neurodivergent Mind Results', text: shareText });
-      } catch (err) {
-        console.log('Share cancelled');
-      }
-    } else {
-      navigator.clipboard.writeText(shareText);
-    }
-  };
+  const shareText = `🧠 My Neurodivergent Mind Profile
+
+Cognitive Style: ${cognitiveStyle.primaryProfile.name}
+Processing: ${processingStyleLabels[cognitiveStyle.processingStyle]}
+Neurodivergent Likelihood: ${likelihoodInfo.label}
+
+Discover your cognitive profile!`;
+
+  const linkedInText = `Just completed my Neurodivergent Mind assessment! 🧠
+
+Cognitive Style: ${cognitiveStyle.primaryProfile.name}
+Processing: ${processingStyleLabels[cognitiveStyle.processingStyle]}
+
+Understanding how my mind works differently. Discover your profile!`;
+
+  const twitterText = `My cognitive style: ${cognitiveStyle.primaryProfile.name} 🧠 Processing: ${processingStyleLabels[cognitiveStyle.processingStyle]}. Discover your profile:`;
 
   return (
     <div className="min-h-screen bg-background px-4 py-8">
@@ -397,8 +400,21 @@ export const NeurodivergentMindResultsScreen = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap"
+          className="space-y-6"
         >
+          {/* Social Share */}
+          <div className="card-elevated rounded-2xl p-6 border border-border">
+            <h3 className="font-display font-semibold text-lg mb-4 text-center">Share Your Profile</h3>
+            <div className="flex justify-center">
+              <SocialShareButtons
+                shareText={shareText}
+                linkedInText={linkedInText}
+                twitterText={twitterText}
+              />
+            </div>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
           {cognitiveAnswers && adhdAnswers && (
             <SaveAssessmentButton
               assessmentType="neurodivergent"
@@ -406,14 +422,6 @@ export const NeurodivergentMindResultsScreen = ({
               results={{ cognitiveStyle: results.cognitiveStyle, adhd: results.adhd }}
             />
           )}
-          <Button
-            onClick={handleShare}
-            variant="outline"
-            className="flex items-center gap-2"
-          >
-            <Share2 className="w-4 h-4" />
-            Share Results
-          </Button>
           
           {onViewDashboard && (
             <Button
@@ -433,6 +441,7 @@ export const NeurodivergentMindResultsScreen = ({
             <RotateCcw className="w-4 h-4" />
             Take Another Assessment
           </Button>
+          </div>
         </motion.div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { PersonalityResults, personalityTraitLabels, PersonalityTrait, facetLabels, MBTIType } from '@/data/personalityQuestions';
 import { Button } from '@/components/ui/button';
 import { 
-  RotateCcw, Share2, UserCheck, Sparkles, Copy, Check, Linkedin, LayoutDashboard,
+  RotateCcw, UserCheck, Sparkles, LayoutDashboard,
   Briefcase, MessageSquare, Crown, Zap, Users, Brain, Target, Shield, ChevronDown, ChevronUp,
   Puzzle, Heart, Lightbulb, Compass
 } from 'lucide-react';
@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { PremiumFeatureTeaser } from '@/components/PremiumFeatureTeaser';
 import { SaveAssessmentButton } from '@/components/SaveAssessmentButton';
+import { SocialShareButtons } from '@/components/SocialShareButtons';
 
 interface PersonalityResultsScreenProps {
   results: PersonalityResults;
@@ -28,7 +29,6 @@ const traitColors: Record<PersonalityTrait, string> = {
 };
 
 export const PersonalityResultsScreen = ({ results, answers, onRestart, onViewDashboard }: PersonalityResultsScreenProps) => {
-  const [copied, setCopied] = useState(false);
   const [expandedTrait, setExpandedTrait] = useState<PersonalityTrait | null>(null);
 
   const radarData = (Object.keys(results.scores) as PersonalityTrait[]).map((trait) => ({
@@ -37,8 +37,7 @@ export const PersonalityResultsScreen = ({ results, answers, onRestart, onViewDa
     fullMark: 100,
   }));
 
-  const handleShare = async () => {
-    const shareText = `🧠 My Personality Profile
+  const shareText = `🧠 My Personality Profile
 
 🎭 Archetype: ${results.personalityType}
 "${results.archetype.tagline}"
@@ -56,26 +55,18 @@ export const PersonalityResultsScreen = ({ results, answers, onRestart, onViewDa
 ${results.archetype.rarity}
 
 Take the free assessment 👇
-${window.location.origin}
 
 #WhoAmI #MBTI #BigFive #PersonalityTest`;
 
-    await navigator.clipboard.writeText(shareText);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleLinkedInShare = () => {
-    const text = encodeURIComponent(`Just discovered my personality profile: ${results.mbti.type} (${results.mbti.name}) + ${results.personalityType} 🧠
+  const linkedInText = `Just discovered my personality profile: ${results.mbti.type} (${results.mbti.name}) + ${results.personalityType} 🧠
 
 "${results.archetype.tagline}"
 
 ${results.archetype.rarity} — joining the ranks of ${results.archetype.famousExamples.slice(0, 2).join(' and ')}.
 
-Take the free assessment yourself 👇`);
-    
-    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.origin)}&summary=${text}`, '_blank');
-  };
+Take the free assessment yourself!`;
+
+  const twitterText = `My personality: ${results.mbti.type} (${results.mbti.name}) 🎭 "${results.archetype.tagline}" — ${results.archetype.rarity}. Discover yours:`;
 
   return (
     <div className="min-h-screen px-4 py-12 relative overflow-hidden">
@@ -521,15 +512,12 @@ Take the free assessment yourself 👇`);
           className="card-elevated rounded-2xl p-6 border border-border mb-8"
         >
           <h3 className="font-display font-semibold text-lg mb-4 text-center">Share Your Archetype</h3>
-          <div className="flex flex-wrap justify-center gap-3">
-            <Button onClick={handleLinkedInShare} className="bg-[#0A66C2] hover:bg-[#004182]">
-              <Linkedin className="w-4 h-4 mr-2" />
-              Share on LinkedIn
-            </Button>
-            <Button onClick={handleShare} variant="outline">
-              {copied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
-              {copied ? 'Copied!' : 'Copy Results'}
-            </Button>
+          <div className="flex justify-center">
+            <SocialShareButtons
+              shareText={shareText}
+              linkedInText={linkedInText}
+              twitterText={twitterText}
+            />
           </div>
         </motion.div>
 
