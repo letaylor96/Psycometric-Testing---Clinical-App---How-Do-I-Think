@@ -1,10 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, UserCheck, Lightbulb, Activity, Check, Lock, Sparkles } from 'lucide-react';
+import { Brain, UserCheck, Lightbulb, Activity, Check, Lock, Sparkles, Zap } from 'lucide-react';
 import { TestResults } from '@/data/quizQuestions';
 import { PersonalityResults } from '@/data/personalityQuestions';
 import { ADHDResults } from '@/data/adhdQuestions';
 import { CognitiveStyleResults } from '@/data/cognitiveStyleQuestions';
-import { AssessmentType, assessmentInfo } from '@/data/assessmentTypes';
+import { AssessmentType, assessmentInfo, allAssessmentTypes } from '@/data/assessmentTypes';
 
 interface AssessmentProgressProps {
   iqResults: TestResults | null;
@@ -18,7 +18,7 @@ interface AssessmentProgressProps {
 const assessmentIcons: Record<AssessmentType, React.ElementType> = {
   personality: UserCheck,
   iq: Brain,
-  neurodivergent: Sparkles,
+  neurodivergent: Zap,
   depth: Sparkles,
 };
 
@@ -99,7 +99,7 @@ export const AssessmentProgress = ({
 
           {/* Assessment Pills */}
           <div className="flex flex-wrap gap-2 mb-4">
-            {(['personality', 'iq', 'cognitive', 'adhd'] as AssessmentType[]).map((type) => {
+            {allAssessmentTypes.map((type) => {
               const Icon = assessmentIcons[type];
               const isCompleted = completionStatus[type];
               const info = assessmentInfo[type];
