@@ -6,6 +6,8 @@ import { AssessmentType, assessmentInfo, allAssessmentTypes } from '@/data/asses
 import { AssessmentProgress } from '@/components/AssessmentProgress';
 import { AuthButton } from '@/components/AuthButton';
 import { QuizTeaser } from '@/components/QuizTeaser';
+import { HomeFAQ } from '@/components/HomeFAQ';
+import { SEOFooter } from '@/components/SEOFooter';
 import { TestResults } from '@/data/quizQuestions';
 import { PersonalityResults } from '@/data/personalityQuestions';
 import { ADHDResults } from '@/data/adhdQuestions';
@@ -479,14 +481,11 @@ export const LandingHero = ({
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-6 sm:py-8 border-t border-yellow/20 bg-card/50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
-          <p className="text-muted-foreground/60 text-xs sm:text-sm">
-            © {new Date().getFullYear()} How Do I Think. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      {/* FAQ Section */}
+      <HomeFAQ />
+
+      {/* Footer with internal links */}
+      <SEOFooter />
     </div>
   );
 };
