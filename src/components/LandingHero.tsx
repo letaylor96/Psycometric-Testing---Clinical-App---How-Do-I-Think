@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Check, Brain, Lightbulb, Sparkles, Target, Zap, ChevronDown, Crown, MessageCircle, FileText, Info, X } from 'lucide-react';
+import { ArrowRight, Check, Brain, Lightbulb, Sparkles, Target, Zap, Crown, MessageCircle, FileText, Info, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo, allAssessmentTypes } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
@@ -19,6 +19,13 @@ const assessmentIcons: Record<AssessmentType, React.ElementType> = {
   iq: Brain,
   neurodivergent: Zap,
   depth: Sparkles,
+};
+
+const assessmentGradients: Record<AssessmentType, { bg: string; border: string; text: string; icon: string }> = {
+  iq: { bg: 'from-blue-500/10 to-cyan-500/5', border: 'border-blue-500/25 hover:border-blue-500/50', text: 'text-blue-400', icon: 'bg-blue-500/15' },
+  personality: { bg: 'from-amber-500/10 to-orange-500/5', border: 'border-amber-500/25 hover:border-amber-500/50', text: 'text-amber-400', icon: 'bg-amber-500/15' },
+  neurodivergent: { bg: 'from-emerald-500/10 to-teal-500/5', border: 'border-emerald-500/25 hover:border-emerald-500/50', text: 'text-emerald-400', icon: 'bg-emerald-500/15' },
+  depth: { bg: 'from-purple-500/10 to-violet-500/5', border: 'border-purple-500/25 hover:border-purple-500/50', text: 'text-purple-400', icon: 'bg-purple-500/15' },
 };
 
 interface LandingHeroProps {
@@ -46,12 +53,19 @@ export const LandingHero = ({
   const completionStatus: Record<AssessmentType, boolean> = {
     personality: !!personalityResults,
     iq: !!iqResults,
-    neurodivergent: !!cognitiveStyleResults, // Combined assessment
-    depth: false, // TODO: Add depth psychology results prop
+    neurodivergent: !!cognitiveStyleResults,
+    depth: false,
   };
 
   const completedCount = Object.values(completionStatus).filter(Boolean).length;
   const hasStarted = completedCount > 0;
+
+  const methodologies: Record<AssessmentType, string> = {
+    personality: 'Big Five (OCEAN) personality model — the gold standard in psychology research.',
+    iq: "Raven's Progressive Matrices — measuring fluid intelligence & abstract reasoning.",
+    neurodivergent: 'WHO ASRS-v1.1 + Cognitive Style profiling for neurodivergent assessment.',
+    depth: 'AI-powered analysis through Freud, Jung, or Nietzsche. Premium only.',
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -70,125 +84,161 @@ export const LandingHero = ({
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative pt-20 sm:pt-24 pb-12 sm:pb-20 min-h-[80vh] sm:min-h-[85vh] flex items-center justify-center">
-        {/* Subtle gradient background with gold accent */}
+      {/* Compact Hero + Assessment Grid — Above the Fold */}
+      <section className="relative pt-20 sm:pt-24 pb-8 sm:pb-12">
         <div className="absolute inset-0 bg-gradient-to-b from-yellow/[0.04] via-transparent to-transparent" />
         <div className="absolute top-40 left-1/4 w-32 sm:w-64 h-32 sm:h-64 bg-yellow/5 rounded-full blur-[60px] sm:blur-[100px]" />
-        <div className="absolute bottom-40 right-1/4 w-24 sm:w-48 h-24 sm:h-48 bg-primary/5 rounded-full blur-[50px] sm:blur-[80px]" />
         
-        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
           {/* Progress if started */}
-          <div className="mb-6 sm:mb-8">
-            <AssessmentProgress
-              iqResults={iqResults ?? null}
-              personalityResults={personalityResults ?? null}
-              adhdResults={adhdResults ?? null}
-              cognitiveStyleResults={cognitiveStyleResults ?? null}
-              onSelectAssessment={onSelectAssessment}
-              onViewDashboard={onViewDashboard}
-            />
+          {hasStarted && (
+            <div className="mb-4 sm:mb-6">
+              <AssessmentProgress
+                iqResults={iqResults ?? null}
+                personalityResults={personalityResults ?? null}
+                adhdResults={adhdResults ?? null}
+                cognitiveStyleResults={cognitiveStyleResults ?? null}
+                onSelectAssessment={onSelectAssessment}
+                onViewDashboard={onViewDashboard}
+              />
+            </div>
+          )}
+
+          {/* Tight Headline */}
+          <div className="text-center mb-6 sm:mb-8">
+            <motion.h1
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-[1.1] tracking-tight mb-3 sm:mb-4"
+            >
+              How Do I <span className="text-primary">Think?</span>
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed"
+            >
+              Four scientifically-validated assessments to map your cognitive architecture.
+              {' '}
+              <button
+                onClick={() => setShowAbout(true)}
+                className="inline-flex items-center gap-1 text-yellow hover:text-yellow/80 transition-colors"
+              >
+                <Info className="w-3.5 h-3.5" />
+                <span className="underline underline-offset-2">Learn more</span>
+              </button>
+            </motion.p>
+
+            {hasPremiumAccess && (
+              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="mt-2 text-sm">
+                <span className="text-emerald-500 font-medium">✓ Premium access active</span>
+              </motion.p>
+            )}
           </div>
 
-          {/* Brain Icon */}
+          {/* Assessment Grid — Front & Center */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="flex justify-center mb-6 sm:mb-8"
-          >
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-yellow/20 to-yellow/5 border border-yellow/30 flex items-center justify-center">
-              <Brain className="w-8 h-8 sm:w-10 sm:h-10 text-yellow" />
-            </div>
-          </motion.div>
-
-          {/* Main Headline - Serif, Grand */}
-          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground leading-[1.1] tracking-tight mb-6 sm:mb-8"
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6"
           >
-            How Do I
-            <br />
-            <span className="text-primary">Think?</span>
-          </motion.h1>
+            {allAssessmentTypes.map((type, i) => {
+              const info = assessmentInfo[type];
+              const Icon = assessmentIcons[type];
+              const isCompleted = completionStatus[type];
+              const isPremiumOnly = info.isPremiumOnly;
+              const colors = assessmentGradients[type];
 
-          {/* Subtitle - Clean, Professional */}
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-muted-foreground text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed px-2"
-          >
-            Free IQ test, learning style quiz, and scientifically-validated psychology assessments. 
-            Discover your cognitive style, personality, and thinking patterns.
-          </motion.p>
+              return (
+                <motion.button
+                  key={type}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + i * 0.06 }}
+                  onClick={() => onSelectAssessment(type)}
+                  className={`group relative text-left p-4 sm:p-5 rounded-xl border bg-gradient-to-br transition-all duration-200 ${colors.bg} ${
+                    isCompleted
+                      ? 'border-emerald-500/40 ring-1 ring-emerald-500/20'
+                      : colors.border
+                  }`}
+                >
+                  {/* Status Badge */}
+                  {isCompleted && (
+                    <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3">
+                      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                        <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-500" />
+                      </div>
+                    </div>
+                  )}
+                  {isPremiumOnly && !isCompleted && (
+                    <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3">
+                      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-purple-500/20 flex items-center justify-center">
+                        <Crown className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-purple-400" />
+                      </div>
+                    </div>
+                  )}
 
-          {/* CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-4 sm:mb-6 px-4 sm:px-0"
-          >
-            <Button
-              onClick={onStart}
-              size="lg"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base w-full sm:w-auto"
-            >
-              {hasStarted ? 'Continue Assessment' : 'Start Free IQ Test'}
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
+                  {/* Icon */}
+                  <div className={`w-9 h-9 sm:w-11 sm:h-11 rounded-lg ${colors.icon} flex items-center justify-center mb-3`}>
+                    <Icon className={`w-4.5 h-4.5 sm:w-5 sm:h-5 ${colors.text}`} />
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="font-serif text-sm sm:text-base font-semibold text-foreground mb-1 leading-tight group-hover:text-yellow transition-colors pr-6">
+                    {info.title}
+                  </h3>
+                  
+                  {/* Methodology — visible on larger screens */}
+                  <p className="hidden sm:block text-muted-foreground text-xs leading-relaxed mb-3 line-clamp-2">
+                    {methodologies[type]}
+                  </p>
+
+                  {/* Meta */}
+                  <div className="flex items-center justify-between mt-auto">
+                    <span className="text-muted-foreground/60 text-[10px] sm:text-xs">
+                      {info.questionCount}q · {info.timeMinutes}m
+                    </span>
+                    <ArrowRight className={`w-3.5 h-3.5 ${colors.text} opacity-0 group-hover:opacity-100 transition-opacity`} />
+                  </div>
+                </motion.button>
+              );
+            })}
           </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="text-muted-foreground/70 text-sm"
-          >
-            {hasPremiumAccess ? (
-              <span className="text-emerald-500 font-medium">✓ Premium access active</span>
-            ) : (
-              'First assessment free · Premium unlocks all features'
-            )}
-          </motion.p>
-
-          {/* Scroll indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="mt-6 sm:mt-10 flex flex-col items-center"
-          >
-            <span className="text-muted-foreground/50 text-[10px] sm:text-xs uppercase tracking-wider mb-2">Choose your assessment</span>
-            <button
-              type="button"
-              onClick={() => {
-                const target = document.getElementById('assessment-grid');
-                if (target) {
-                  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-              }}
-              aria-label="Scroll down to assessment options"
-              className="relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 border border-primary/30 cursor-pointer hover:bg-primary/20 hover:border-primary/50 hover:scale-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
+          {/* Completion Progress */}
+          {hasStarted && completedCount < 4 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center mb-4"
             >
-              <motion.div
-                animate={{ y: [0, 6, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <ChevronDown className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-              </motion.div>
-            </button>
-          </motion.div>
+              <p className="text-muted-foreground text-xs sm:text-sm">
+                <span className="text-foreground font-medium">{completedCount}/4 complete</span>
+                {' '}— finish all four to unlock your integrated cognitive profile.
+              </p>
+            </motion.div>
+          )}
+
+          {!hasPremiumAccess && !hasStarted && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="text-center text-muted-foreground/60 text-xs sm:text-sm"
+            >
+              First assessment free · No sign-up required
+            </motion.p>
+          )}
         </div>
       </section>
 
       {/* Quiz Teaser - Hook visitors with an interactive sample */}
       <QuizTeaser onStartQuiz={onStart} />
 
-      {/* About Button & Modal */}
+      {/* About Modal */}
       <AnimatePresence>
         {showAbout && (
           <motion.div
@@ -202,7 +252,7 @@ export const LandingHero = ({
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative max-w-2xl w-full bg-card border border-yellow/20 p-8 md:p-12"
+              className="relative max-w-2xl w-full bg-card border border-yellow/20 rounded-xl p-8 md:p-12"
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -229,115 +279,7 @@ export const LandingHero = ({
         )}
       </AnimatePresence>
 
-      {/* Assessment Grid */}
-      <section id="assessment-grid" className="py-12 sm:py-20 bg-background">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-8 sm:mb-12">
-            <p className="text-yellow text-xs sm:text-sm font-medium tracking-widest uppercase mb-3 sm:mb-4">
-              Assessment Suite
-            </p>
-            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground mb-3 sm:mb-4">
-              Choose Your Assessment
-            </h2>
-            <button
-              onClick={() => setShowAbout(true)}
-              className="inline-flex items-center gap-2 text-muted-foreground hover:text-yellow transition-colors text-xs sm:text-sm"
-            >
-              <Info className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span>About our assessments</span>
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto">
-            {allAssessmentTypes.map((type, i) => {
-              const info = assessmentInfo[type];
-              const Icon = assessmentIcons[type];
-              const isCompleted = completionStatus[type];
-              
-              const methodologies: Record<AssessmentType, string> = {
-                personality: 'Based on the Big Five Factor Model (OCEAN), the gold standard in personality psychology research.',
-                iq: "Derived from Raven's Progressive Matrices, measuring fluid intelligence and abstract reasoning.",
-                neurodivergent: 'Combines Cognitive Style profiling with the WHO ASRS-v1.1 clinical screening for comprehensive neurodivergent assessment.',
-                depth: 'AI-powered depth psychology through the lens of Freud, Jung, or Nietzsche. Premium only.',
-              };
-              
-              const isPremiumOnly = info.isPremiumOnly;
-
-              return (
-                <motion.button
-                  key={type}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + i * 0.1 }}
-                  onClick={() => onSelectAssessment(type)}
-                className={`group relative text-left p-5 sm:p-8 border transition-all rounded-lg sm:rounded-none ${
-                  isCompleted 
-                    ? 'border-emerald-500/30 bg-emerald-500/5' 
-                    : isPremiumOnly
-                      ? 'border-purple-500/30 hover:border-purple-500/50 bg-gradient-to-br from-purple-500/5 to-purple-500/10 hover:from-purple-500/10 hover:to-purple-500/15'
-                      : 'border-border hover:border-yellow/40 bg-card hover:bg-card/80'
-                }`}
-              >
-                {isPremiumOnly && !isCompleted && (
-                  <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-1.5 sm:gap-2 text-purple-400">
-                    <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                    <span className="text-[10px] sm:text-xs font-medium uppercase tracking-wide">Premium</span>
-                  </div>
-                )}
-                {isCompleted && (
-                  <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-1.5 sm:gap-2 text-emerald-500">
-                    <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                    <span className="text-[10px] sm:text-xs font-medium uppercase tracking-wide">Done</span>
-                  </div>
-                )}
-                
-                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center mb-3 sm:mb-4 ${
-                  isPremiumOnly ? 'bg-purple-500/20' : 'bg-yellow/10'
-                }`}>
-                  <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${isPremiumOnly ? 'text-purple-400' : 'text-yellow'}`} />
-                </div>
-                
-                <h3 className="font-serif text-lg sm:text-xl font-semibold text-foreground mb-1.5 sm:mb-2 group-hover:text-yellow transition-colors pr-16 sm:pr-20">
-                  {info.title}
-                </h3>
-                <p className="text-yellow/80 text-xs sm:text-sm font-medium mb-3 sm:mb-4">
-                  {info.framework}
-                </p>
-                <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-none">
-                  {methodologies[type]}
-                </p>
-                <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground/60 text-[10px] sm:text-xs">
-                    {info.questionCount} questions · {info.timeMinutes} min
-                  </span>
-                  <span className="text-yellow text-xs sm:text-sm font-medium sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
-                    Begin →
-                  </span>
-                </div>
-                </motion.button>
-              );
-            })}
-          </div>
-
-          {/* Incomplete notice */}
-          {hasStarted && completedCount < 4 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mt-12 max-w-2xl mx-auto text-center"
-            >
-              <div className="inline-block px-6 py-4 bg-muted/30 border border-border/50">
-                <p className="text-muted-foreground text-sm">
-                  <span className="text-foreground font-medium">{completedCount} of 4 assessments complete.</span>
-                  {' '}Complete all four to unlock your integrated cognitive profile and cross-domain insights.
-                </p>
-              </div>
-            </motion.div>
-          )}
-        </div>
-      </section>
-
-      {/* AI Insights Section - NEW */}
+      {/* AI Insights Section */}
       <section className="py-12 sm:py-20 bg-gradient-to-b from-background via-purple-500/[0.03] to-background">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-10 sm:mb-16">
@@ -468,7 +410,7 @@ export const LandingHero = ({
             Ready to Begin?
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base mb-6 sm:mb-8 px-2">
-            Start with a free IQ test and discover insights about your cognitive profile.
+            Pick any assessment above, or start with the free IQ test.
           </p>
           <Button
             onClick={onStart}
