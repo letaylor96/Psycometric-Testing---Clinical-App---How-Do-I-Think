@@ -8,6 +8,7 @@ import { PremiumFeatureTeaser } from '@/components/PremiumFeatureTeaser';
 import { QuestionReview } from '@/components/QuestionReview';
 import { SaveAssessmentButton } from '@/components/SaveAssessmentButton';
 import { SocialShareButtons } from '@/components/SocialShareButtons';
+import { ShareableResultCard } from '@/components/ShareableResultCard';
 import { cn } from '@/lib/utils';
 
 interface ResultsScreenProps {
@@ -363,7 +364,7 @@ Fascinating insights into how I think and solve problems. Try it yourself!`;
         {/* Premium Features Teaser */}
         <PremiumFeatureTeaser className="mb-8" />
 
-        {/* Share Section - LinkedIn focused */}
+        {/* Shareable Result Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -372,11 +373,21 @@ Fascinating insights into how I think and solve problems. Try it yourself!`;
         >
           <div className="text-center mb-6">
             <h3 className="font-display text-xl font-semibold mb-2">Share Your Cognitive Profile</h3>
-            <p className="text-muted-foreground text-sm">Let your network know about your cognitive strengths</p>
+            <p className="text-muted-foreground text-sm">Download your result card or share it with your network</p>
           </div>
           
           <div className="flex justify-center">
-            <SocialShareButtons
+            <ShareableResultCard
+              variant="iq"
+              iqScore={results.iq}
+              iqTier={iqTier.tier}
+              percentile={100 - percentile}
+              archetype={results.divergentType}
+              traits={results.categoryScores.map((s) => ({
+                label: categoryLabels[s.category].replace(' Intelligence', '').replace(' Reasoning', ''),
+                value: s.percentage,
+                color: categoryColors[s.category],
+              }))}
               shareText={shareText}
               linkedInText={linkedInText}
               twitterText={twitterText}

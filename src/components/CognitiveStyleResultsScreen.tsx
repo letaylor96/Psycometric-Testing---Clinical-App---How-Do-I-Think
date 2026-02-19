@@ -32,6 +32,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { PremiumFeatureTeaser } from '@/components/PremiumFeatureTeaser';
+import { ShareableResultCard } from '@/components/ShareableResultCard';
 
 interface CognitiveStyleResultsScreenProps {
   results: CognitiveStyleResults;
@@ -339,6 +340,31 @@ export const CognitiveStyleResultsScreen = ({
           <p className="text-sm text-muted-foreground">
             {results.primaryProfile.communicationStyle}
           </p>
+        </motion.div>
+
+        {/* Shareable Result Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.55 }}
+          className="card-elevated rounded-2xl p-6 border border-border mb-6"
+        >
+          <h3 className="font-display font-semibold text-lg mb-4 text-center">Share Your Cognitive Profile</h3>
+          <div className="flex justify-center">
+            <ShareableResultCard
+              variant="cognitive"
+              cognitiveProfile={results.primaryProfile.name}
+              processingStyle={processingStyleLabels[results.processingStyle]}
+              traits={results.dimensionScores.map((s) => ({
+                label: dimensionLabels[s.dimension].label.split(' ')[0],
+                value: s.percentage,
+                color: dimensionColors[s.dimension],
+              }))}
+              shareText={`🧠 My Cognitive Style: ${results.primaryProfile.name}\n\n"${results.primaryProfile.tagline}"\n\nTop Strengths:\n${results.insights.strengths.map(s => '• ' + s).join('\n')}\n\nDiscover your thinking style 👇`}
+              linkedInText={`Just discovered my cognitive style: ${results.primaryProfile.name}! "${results.primaryProfile.tagline}" — Fascinating insights into how my mind processes information.`}
+              twitterText={`My cognitive style: ${results.primaryProfile.name} 🧠 "${results.primaryProfile.tagline}" Discover yours:`}
+            />
+          </div>
         </motion.div>
 
         {/* Premium Features Teaser */}
