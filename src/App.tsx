@@ -11,6 +11,7 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import FreeIQTest from "./pages/FreeIQTest";
 import PersonalityTest from "./pages/PersonalityTest";
 import ADHDTest from "./pages/ADHDTest";
+import PersonalityTypePage from "./pages/PersonalityTypePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
               <Route path="/free-iq-test" element={<FreeIQTest />} />
               <Route path="/personality-test" element={<PersonalityTest />} />
               <Route path="/adhd-test" element={<ADHDTest />} />
+              <Route path="/personality/:typeCode" element={<PersonalityTypePage />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/payment-success" element={<PaymentSuccess />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Target, ArrowRight, CheckCircle, Clock, Users, Fingerprint } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { SEOFooter } from '@/components/SEOFooter';
+import { allMBTICodes, mbtiTypes } from '@/data/mbtiTypes';
 
 const faqs = [
   {
@@ -102,6 +103,30 @@ const PersonalityTest = () => {
                   <p className="text-muted-foreground text-sm leading-relaxed">{faq.a}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Browse All 16 Types */}
+        <section className="py-12 sm:py-16">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-6">
+              Explore All 16 Personality Types
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto">
+              {allMBTICodes.map((code) => {
+                const t = mbtiTypes[code];
+                return (
+                  <Link
+                    key={code}
+                    to={`/personality/${code}`}
+                    className="p-3 bg-card border border-border rounded-xl hover:border-primary/30 transition-colors text-center group"
+                  >
+                    <p className="font-mono font-bold text-lg text-primary group-hover:text-primary/80">{t.code}</p>
+                    <p className="text-xs text-muted-foreground">{t.name}</p>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
