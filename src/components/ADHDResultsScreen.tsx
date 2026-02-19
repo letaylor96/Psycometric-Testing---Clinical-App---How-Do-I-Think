@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { RotateCcw, AlertTriangle, CheckCircle, Activity, Info, LayoutDashboard, Brain, Sparkles, HelpCircle, ThumbsUp, ThumbsDown, Minus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PremiumFeatureTeaser } from '@/components/PremiumFeatureTeaser';
+import { ShareableResultCard } from '@/components/ShareableResultCard';
 
 interface ADHDResultsScreenProps {
   results: ADHDResults;
@@ -217,6 +218,27 @@ export const ADHDResultsScreen = ({ results, onRestart, onViewDashboard }: ADHDR
               </li>
             ))}
           </ul>
+        </motion.div>
+
+        {/* Shareable Result Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+          className="card-elevated rounded-2xl p-6 border border-border mb-8"
+        >
+          <h3 className="font-display font-semibold text-lg mb-4 text-center">Share Your Results</h3>
+          <div className="flex justify-center">
+            <ShareableResultCard
+              variant="neurodivergent"
+              adhdLikelihood={config.answer}
+              inattentionPct={inattentionPercentage}
+              hyperactivityPct={hyperactivityPercentage}
+              shareText={`🧠 My Neurodivergent Screening Results\n\nResult: ${config.answer}\nInattention: ${inattentionPercentage}% | Hyperactivity: ${hyperactivityPercentage}%\n\n${config.explanation}\n\nTake the free screening 👇`}
+              linkedInText={`Just completed a neurodivergent screening! Result: ${config.answer}. Fascinating insights into how my mind works. Try it yourself!`}
+              twitterText={`My neurodivergent screening: ${config.answer} 🧠 Inattention ${inattentionPercentage}% | Hyperactivity ${hyperactivityPercentage}%. Discover your thinking patterns:`}
+            />
+          </div>
         </motion.div>
 
         {/* Premium Features Teaser */}

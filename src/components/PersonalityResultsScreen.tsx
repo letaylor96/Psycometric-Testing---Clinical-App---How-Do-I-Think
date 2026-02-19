@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 import { PremiumFeatureTeaser } from '@/components/PremiumFeatureTeaser';
 import { SaveAssessmentButton } from '@/components/SaveAssessmentButton';
 import { SocialShareButtons } from '@/components/SocialShareButtons';
+import { ShareableResultCard } from '@/components/ShareableResultCard';
 
 interface PersonalityResultsScreenProps {
   results: PersonalityResults;
@@ -504,7 +505,7 @@ Take the free assessment yourself!`;
         {/* Premium Features Teaser */}
         <PremiumFeatureTeaser className="mb-8" />
 
-        {/* Share Section */}
+        {/* Shareable Result Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -513,7 +514,18 @@ Take the free assessment yourself!`;
         >
           <h3 className="font-display font-semibold text-lg mb-4 text-center">Share Your Archetype</h3>
           <div className="flex justify-center">
-            <SocialShareButtons
+            <ShareableResultCard
+              variant="personality"
+              personalityType={results.personalityType}
+              mbtiType={results.mbti.type}
+              mbtiName={results.mbti.name}
+              tagline={results.archetype.tagline}
+              rarity={results.archetype.rarity}
+              traits={(Object.keys(results.scores) as PersonalityTrait[]).map((trait) => ({
+                label: personalityTraitLabels[trait].label,
+                value: results.scores[trait],
+                color: traitColors[trait],
+              }))}
               shareText={shareText}
               linkedInText={linkedInText}
               twitterText={twitterText}
