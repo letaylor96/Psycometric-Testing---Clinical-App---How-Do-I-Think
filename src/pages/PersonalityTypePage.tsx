@@ -6,10 +6,13 @@ import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { SEOFooter } from '@/components/SEOFooter';
 import { mbtiTypes, allMBTICodes } from '@/data/mbtiTypes';
+import { usePersistedResults } from '@/hooks/usePersistedResults';
+import { PersonalInsightBanner } from '@/components/PersonalInsightBanner';
 
 const PersonalityTypePage = () => {
   const { typeCode } = useParams<{ typeCode: string }>();
   const navigate = useNavigate();
+  const { results: persistedResults } = usePersistedResults();
   const type = typeCode ? mbtiTypes[typeCode.toLowerCase()] : null;
 
   useEffect(() => {
@@ -65,6 +68,14 @@ const PersonalityTypePage = () => {
           </Link>
         </div>
 
+        {/* Personal Insight Banner — only shows when user has eval data */}
+        {persistedResults.personality && typeCode && (
+          <PersonalInsightBanner
+            pageTypeCode={typeCode}
+            personalityResults={persistedResults.personality}
+          />
+        )}
+
         {/* Hero */}
         <section className="pt-8 pb-10 sm:pt-12 sm:pb-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
@@ -80,10 +91,12 @@ const PersonalityTypePage = () => {
               <p className="text-muted-foreground text-base italic mb-6">"{type.tagline}"</p>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed mb-8">{type.description}</p>
 
-              <Button onClick={handleStart} size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-6 text-base">
-                Discover Your Type
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
+              {!persistedResults.personality && (
+                <Button onClick={handleStart} size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-6 text-base">
+                  Discover Your Type
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              )}
             </motion.div>
           </div>
         </section>
@@ -257,12 +270,23 @@ const PersonalityTypePage = () => {
         {/* CTA */}
         <section className="py-12 sm:py-16 bg-primary/5">
           <div className="max-w-2xl mx-auto px-4 text-center">
-            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-4">
-              Are You Really {type.code}?
-            </h2>
-            <p className="text-muted-foreground mb-6">Take the full Big Five + MBTI personality assessment to find out.</p>
+            {persistedResults.personality?.mbti.type.toLowerCase() === typeCode?.toLowerCase() ? (
+              <>
+                <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-4">
+                  You are {type.code} — Now Go Deeper
+                </h2>
+                <p className="text-muted-foreground mb-6">Retake the assessment to track how your personality evolves over time.</p>
+              </>
+            ) : (
+              <>
+                <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-4">
+                  Are You Really {type.code}?
+                </h2>
+                <p className="text-muted-foreground mb-6">Take the full Big Five + MBTI personality assessment to find out.</p>
+              </>
+            )}
             <Button onClick={handleStart} size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-6 text-base">
-              Take the Personality Test
+              {persistedResults.personality ? 'Retake the Personality Test' : 'Take the Personality Test'}
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </div>
