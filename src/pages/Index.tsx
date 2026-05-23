@@ -493,7 +493,6 @@ const Index = () => {
           >
             <AssessmentPreview
               type={previewType}
-              isFree={!hasCompletedAny}
               onStart={handleStartFromPreview}
               onBack={handleBackFromPreview}
             />
