@@ -158,6 +158,15 @@ export const LandingHero = ({
             )}
           </div>
 
+          {/* ===== MAP MY MIND — Unified Guided Funnel ===== */}
+          <MapMyMindSpine
+            status={mapStatus}
+            onStart={onSelectAssessment}
+            onViewDashboard={onViewDashboard}
+          />
+
+
+
           {/* ===== PRIMARY CTA: Interactive Quiz Teaser ===== */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
