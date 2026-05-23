@@ -159,55 +159,22 @@ export const CareerMatchRecommendations = ({
             rank={index + 1}
             isExpanded={expandedCareer === career.title}
             onToggle={() => setExpandedCareer(expandedCareer === career.title ? null : career.title)}
-            isPremium={isPremium}
-            isBlurred={!isPremium && index >= 2}
+            isPremium={true}
+            isBlurred={false}
           />
         ))}
       </div>
 
-      {/* Show More / Locked State */}
-      {isPremium ? (
-        allMatches.length > 5 && (
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={() => setShowAll(!showAll)}
-          >
-            {showAll ? 'Show Less' : `Show ${allMatches.length - 5} More Careers`}
-            {showAll ? <ChevronUp className="w-4 h-4 ml-2" /> : <ChevronDown className="w-4 h-4 ml-2" />}
-          </Button>
-        )
-      ) : (
-        <div className="relative">
-          {/* Blurred preview of locked careers */}
-          <div className="absolute inset-0 backdrop-blur-sm bg-gradient-to-t from-background via-background/80 to-transparent z-10 flex flex-col items-center justify-center rounded-2xl">
-            <Lock className="w-8 h-8 text-yellow-400 mb-3" />
-            <p className="font-display font-bold text-lg mb-1">+{hiddenCount} More Career Matches</p>
-            <p className="text-sm text-muted-foreground mb-4">Unlock premium to see all recommendations</p>
-            <Button 
-              onClick={onUnlockPremium}
-              className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-semibold"
-            >
-              <Sparkles className="w-4 h-4 mr-2" />
-              Unlock Full Analysis
-            </Button>
-          </div>
-          <div className="opacity-30 pointer-events-none">
-            {allMatches.slice(3, 5).map((career, index) => (
-              <div key={career.title} className="card-elevated rounded-xl p-4 mb-3 border border-border">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-                    <span className="font-bold text-muted-foreground">#{index + 4}</span>
-                  </div>
-                  <div>
-                    <p className="font-semibold">{career.title}</p>
-                    <p className="text-sm text-muted-foreground">{career.category}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* Show More */}
+      {allMatches.length > 5 && (
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={() => setShowAll(!showAll)}
+        >
+          {showAll ? 'Show Less' : `Show ${allMatches.length - 5} More Careers`}
+          {showAll ? <ChevronUp className="w-4 h-4 ml-2" /> : <ChevronDown className="w-4 h-4 ml-2" />}
+        </Button>
       )}
     </motion.div>
   );

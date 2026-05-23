@@ -52,9 +52,6 @@ export const CognitiveFrictionAlerts = ({
   className
 }: CognitiveFrictionAlertsProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [showPremiumGate, setShowPremiumGate] = useState(false);
-  const { hasPremiumAccess } = usePremiumAccess();
-  
   const alerts = generateCognitiveFrictionAlerts(
     iqResults || null,
     personalityResults || null,
@@ -64,18 +61,9 @@ export const CognitiveFrictionAlerts = ({
   
   if (alerts.length === 0) return null;
   
-  // Show first 2 alerts free
-  const freeAlerts = alerts.slice(0, 2);
-  const premiumAlerts = alerts.slice(2);
-  const hasMoreAlerts = premiumAlerts.length > 0;
-  
-  const handleUnlock = () => {
-    if (!hasPremiumAccess) {
-      setShowPremiumGate(true);
-      return;
-    }
-    setIsExpanded(true);
-  };
+  // All alerts shown — app is 100% free
+  const hasMoreAlerts = alerts.length > 2;
+  const displayedAlerts = isExpanded ? alerts : alerts.slice(0, 2);
   
   return (
     <>
