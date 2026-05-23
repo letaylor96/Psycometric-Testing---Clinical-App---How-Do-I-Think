@@ -148,14 +148,8 @@ export const LandingHero = ({
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed"
             >
-              Discover your cognitive profile in under 10 minutes.
+              Uncover How Your Mind Works & How to Set Yourself Up for Success
             </motion.p>
-
-            {hasPremiumAccess && (
-              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="mt-2 text-sm">
-                <span className="text-emerald-500 font-medium">✓ Premium access active</span>
-              </motion.p>
-            )}
           </div>
 
           {/* ===== MAP MY MIND — Unified Guided Funnel ===== */}
