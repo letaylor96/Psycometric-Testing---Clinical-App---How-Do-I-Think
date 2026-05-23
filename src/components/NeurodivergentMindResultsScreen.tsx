@@ -81,7 +81,7 @@ export const NeurodivergentMindResultsScreen = ({
     fullMark: 100,
   }));
 
-  const shareText = `🧠 My Neurodivergent Mind Profile
+  const shareText = `🧠 My Neurodivergence Level Profile
 
 Cognitive Style: ${cognitiveStyle.primaryProfile.name}
 Processing: ${processingStyleLabels[cognitiveStyle.processingStyle]}
@@ -89,7 +89,7 @@ Neurodivergent Likelihood: ${likelihoodInfo.label}
 
 Discover your cognitive profile!`;
 
-  const linkedInText = `Just completed my Neurodivergent Mind assessment! 🧠
+  const linkedInText = `Just completed my Neurodivergence Level assessment! 🧠
 
 Cognitive Style: ${cognitiveStyle.primaryProfile.name}
 Processing: ${processingStyleLabels[cognitiveStyle.processingStyle]}
@@ -109,7 +109,7 @@ Understanding how my mind works differently. Discover your profile!`;
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/10 to-cyan-500/10 border border-purple-500/20 mb-4">
             <Brain className="w-5 h-5 text-purple-400" />
-            <span className="text-sm font-medium text-purple-300">Neurodivergent Mind Assessment</span>
+            <span className="text-sm font-medium text-purple-300">Neurodivergence Level Assessment</span>
           </div>
           <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-2">
             Your Cognitive Profile
