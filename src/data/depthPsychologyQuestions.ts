@@ -141,6 +141,32 @@ export const depthQuestions: DepthQuestion[] = [
     category: 'meaning',
     probes: ['inner wisdom', 'suppressed knowledge', 'self-confrontation'],
   },
+
+  // NARCISSISTIC SIGNALING (grandiose / vulnerable / empathy / admiration)
+  {
+    id: 21,
+    question: "When you imagine your ideal future self, what role do you play and how do others see, recognize, or respond to you in it?",
+    category: 'self',
+    probes: ['grandiose fantasy', 'specialness', 'need for recognition'],
+  },
+  {
+    id: 22,
+    question: "How do you typically react — internally and externally — when someone criticizes you, ignores you, or fails to acknowledge something you did well?",
+    category: 'self',
+    probes: ['narcissistic injury', 'rage vs withdrawal', 'fragility of self-esteem'],
+  },
+  {
+    id: 23,
+    question: "When a close friend describes a painful experience that has nothing to do with you, what actually happens inside you while they talk?",
+    category: 'morality',
+    probes: ['empathy capacity', 'attunement vs self-reference', 'emotional resonance'],
+  },
+  {
+    id: 24,
+    question: "Be honest: in what ways do you feel meaningfully different from, more capable than, or misunderstood by 'most people' — and where does that sense come from?",
+    category: 'self',
+    probes: ['entitlement', 'specialness vs isolation', 'grandiose vs vulnerable presentation'],
+  },
 ];
 
 // Framework-specific result structures
