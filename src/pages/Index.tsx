@@ -434,7 +434,7 @@ const Index = () => {
     setGameState('preview');
   }, []);
 
-  // Map My Mind funnel — derive completed list from existing results
+  // Discover My Mind funnel — derive completed list from existing results
   const completedAssessments: AssessmentType[] = [
     results ? 'iq' : null,
     cognitiveStyleResults ? 'neurodivergent' : null,
@@ -442,7 +442,7 @@ const Index = () => {
     depthResults ? 'depth' : null,
   ].filter(Boolean) as AssessmentType[];
 
-  const mapStatus = useMapMyMind(completedAssessments);
+  const mapStatus = useDiscoverMyMind(completedAssessments);
 
   // Show the sticky banner only on result screens (where it's most useful)
   const showMapBanner =
