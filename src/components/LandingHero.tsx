@@ -59,8 +59,6 @@ export const LandingHero = ({
 }: LandingHeroProps) => {
   const { hasPremiumAccess } = usePremiumAccess();
   const [showAbout, setShowAbout] = useState(false);
-  const [teaserAnswer, setTeaserAnswer] = useState<number | null>(null);
-  const [teaserRevealed, setTeaserRevealed] = useState(false);
 
   const completionStatus: Record<AssessmentType, boolean> = {
     personality: !!personalityResults,
@@ -77,23 +75,6 @@ export const LandingHero = ({
     .map(([t]) => t);
   const mapStatus = useDiscoverMyMind(completedAssessments);
 
-  const handleTeaserAnswer = (index: number) => {
-    if (teaserRevealed) return;
-    setTeaserAnswer(index);
-    setTeaserRevealed(true);
-  };
-
-  const teaserIsCorrect = teaserAnswer === SAMPLE_QUESTION.correctAnswer;
-
-  // Secondary assessments (everything except IQ)
-  const secondaryAssessments: AssessmentType[] = ['personality', 'neurodivergent', 'depth'];
-
-  const assessmentTooltips: Record<AssessmentType, string> = {
-    iq: 'Mensa-style pattern recognition & abstract reasoning',
-    personality: 'Big Five traits + Myers-Briggs archetype — what makes you, you',
-    neurodivergent: 'Cognitive style + clinical ADHD screening (ASRS-v1.1)',
-    depth: 'Psychoanalytic-style analysis through Freud, Jung, or Nietzsche',
-  };
 
   return (
     <div className="min-h-screen bg-background">
