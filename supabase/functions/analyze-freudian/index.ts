@@ -308,9 +308,9 @@ When providing final results, use this JSON format:
 }`;
 
 const frameworkPrompts: Record<Framework, string> = {
-  freudian: freudianSystemPrompt,
-  jungian: jungianSystemPrompt,
-  nietzschean: nietzscheanSystemPrompt,
+  freudian: freudianSystemPrompt + narcissismModule,
+  jungian: jungianSystemPrompt + narcissismModule,
+  nietzschean: nietzscheanSystemPrompt + narcissismModule,
 };
 
 interface ConversationMessage {
