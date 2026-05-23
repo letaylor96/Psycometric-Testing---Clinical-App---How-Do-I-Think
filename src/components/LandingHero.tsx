@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, Lightbulb, Sparkles, Info, X } from 'lucide-react';
+import { ArrowRight, Brain, Lightbulb, Sparkles, Target, Zap, Crown, MessageCircle, FileText, Info, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo, allAssessmentTypes } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
 import { AuthButton } from '@/components/AuthButton';
