@@ -40,7 +40,7 @@ const NarcissismSignalingCard = ({ profile }: { profile?: NarcissismProfile }) =
   const bars: Array<{ label: string; value: number; hint: string }> = [
     { label: 'Grandiose spectrum', value: profile.grandiositySpectrum, hint: 'Overt specialness, status, admiration-seeking' },
     { label: 'Vulnerable spectrum', value: profile.vulnerableSpectrum, hint: 'Covert sensitivity, hidden superiority, fragility' },
-    { label: 'Empathy capacity', value: profile.empathyCapacity, hint: 'Attunement to others\u2019 inner states' },
+    { label: 'Empathy capacity', value: profile.empathyCapacity, hint: 'Attunement to others’ inner states' },
     { label: 'Admiration need', value: profile.admirationNeed, hint: 'Dependence on external recognition' },
   ];
 
@@ -51,7 +51,7 @@ const NarcissismSignalingCard = ({ profile }: { profile?: NarcissismProfile }) =
           <Eye className="w-5 h-5 text-amber-500" />
           Narcissistic Signaling
           <Badge variant="outline" className="ml-auto text-[10px] uppercase tracking-wide">
-            Educational \u2014 not diagnostic
+            Educational — not diagnostic
           </Badge>
         </CardTitle>
       </CardHeader>
@@ -61,7 +61,7 @@ const NarcissismSignalingCard = ({ profile }: { profile?: NarcissismProfile }) =
           <Badge variant="outline" className={cn('font-medium', elevation.tone)}>
             {elevation.label}
           </Badge>
-          <span className="text-sm text-muted-foreground">\u00b7</span>
+          <span className="text-sm text-muted-foreground">·</span>
           <span className="text-sm font-medium">
             {presentationLabels[profile.presentationStyle] ?? profile.presentationStyle}
           </span>
