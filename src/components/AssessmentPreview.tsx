@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, Brain, UserCheck, Lightbulb, Activity, Check, X, Sparkles, Crown, Shield, CreditCard, Users, Zap, TrendingUp, Clock, AlertCircle } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Brain, UserCheck, Lightbulb, Activity, Check, Sparkles, Crown, Shield, CreditCard, Users, Zap, TrendingUp, Clock, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo } from '@/data/assessmentTypes';
 
 interface AssessmentPreviewProps {
   type: AssessmentType;
-  isFree: boolean;
   onStart: (tier: 'free' | 'premium') => void;
   onBack: () => void;
 }
