@@ -52,7 +52,7 @@ export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
   },
   depth: {
     id: 'depth',
-    title: 'The Unconscious Mind',
+    title: 'Discover Your Unconscious Mind',
     shortTitle: 'Depth Psychology',
     description: 'Explore your unconscious patterns through the lens of Freud, Jung, or Nietzsche with AI-powered psychoanalytic assessment.',
     framework: 'Freud · Jung · Nietzsche',
