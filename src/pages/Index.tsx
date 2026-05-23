@@ -6,15 +6,20 @@ import { QuizQuestion } from '@/components/QuizQuestion';
 import { ResultsScreen } from '@/components/ResultsScreen';
 import { AssessmentPreview } from '@/components/AssessmentPreview';
 import { Question, calculateResults, TestResults, TOTAL_TEST_TIME } from '@/data/quizQuestions';
-import { AssessmentType } from '@/data/assessmentTypes';
+import { AssessmentType, SelectableTestKey } from '@/data/assessmentTypes';
 import { personalityQuestions, calculatePersonalityResults, PersonalityResults } from '@/data/personalityQuestions';
-import { ADHDResults } from '@/data/adhdQuestions';
+import { ADHDResults, calculateADHDResults } from '@/data/adhdQuestions';
 import { CognitiveStyleResults } from '@/data/cognitiveStyleQuestions';
 import { AnalysisFramework, DepthPsychologyResults } from '@/data/depthPsychologyQuestions';
 import { NeurodivergentMindResults, calculateNeurodivergentMindResults } from '@/data/neurodivergentMindQuestions';
+import { AQResults, calculateAQResults } from '@/data/autismQuestions';
 import { PersonalityQuiz } from '@/components/PersonalityQuiz';
 import { NeurodivergentMindQuiz } from '@/components/NeurodivergentMindQuiz';
 import { NeurodivergentMindResultsScreen } from '@/components/NeurodivergentMindResultsScreen';
+import { ADHDQuiz } from '@/components/ADHDQuiz';
+import { ADHDResultsScreen } from '@/components/ADHDResultsScreen';
+import { AutismQuiz } from '@/components/AutismQuiz';
+import { AutismResultsScreen } from '@/components/AutismResultsScreen';
 import { FrameworkSelector } from '@/components/FrameworkSelector';
 import { DepthPsychologyQuiz } from '@/components/DepthPsychologyQuiz';
 import { DepthPsychologyResultsScreen } from '@/components/DepthPsychologyResults';
@@ -42,6 +47,10 @@ type GameState =
   | 'depth-quiz'
   | 'depth-analyzing'
   | 'depth-results'
+  | 'adhd-quiz'
+  | 'adhd-results'
+  | 'autism-quiz'
+  | 'autism-results'
   | 'dashboard';
 
 const Index = () => {
