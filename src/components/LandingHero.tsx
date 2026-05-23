@@ -12,6 +12,8 @@ import { PersonalityResults } from '@/data/personalityQuestions';
 import { ADHDResults } from '@/data/adhdQuestions';
 import { CognitiveStyleResults } from '@/data/cognitiveStyleQuestions';
 import { usePremiumAccess } from '@/hooks/usePremiumAccess';
+import { useMapMyMind } from '@/hooks/useMapMyMind';
+import { MapMyMindSpine } from '@/components/MapMyMindSpine';
 import { cn } from '@/lib/utils';
 
 const assessmentIcons: Record<AssessmentType, React.ElementType> = {
