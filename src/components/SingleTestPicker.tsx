@@ -23,7 +23,7 @@ interface TestOption {
 const OPTIONS: TestOption[] = [
   {
     key: 'iq',
-    routeTo: 'iq',
+
     title: 'IQ',
     blurb: 'Mensa-style pattern recognition and abstract reasoning.',
     meta: '25 questions · ~13 min',
@@ -35,7 +35,7 @@ const OPTIONS: TestOption[] = [
   },
   {
     key: 'neurodivergent',
-    routeTo: 'neurodivergent',
+
     title: 'Neurodivergence Level',
     blurb: 'Cognitive style + attention screening across the full spectrum.',
     meta: '38 questions · ~19 min',
@@ -47,7 +47,7 @@ const OPTIONS: TestOption[] = [
   },
   {
     key: 'personality',
-    routeTo: 'personality',
+
     title: 'Personality Type',
     blurb: 'Big Five + MBTI archetype and trait breakdown.',
     meta: '30 questions · ~15 min',
@@ -59,7 +59,7 @@ const OPTIONS: TestOption[] = [
   },
   {
     key: 'adhd',
-    routeTo: 'neurodivergent',
+
     title: 'ADHD Evaluation',
     blurb: 'WHO ASRS-v1.1 screening for attention patterns.',
     meta: '18 questions · ~9 min',
@@ -68,11 +68,11 @@ const OPTIONS: TestOption[] = [
     iconBg: 'bg-rose-500/15',
     border: 'border-rose-500/25',
     hoverBorder: 'hover:border-rose-500/60',
-    note: 'Included in Neurodivergence Level',
+    note: 'Standalone 18-item WHO ASRS-v1.1 screener',
   },
   {
     key: 'autism',
-    routeTo: 'neurodivergent',
+
     title: 'Autism Spectrum Evaluation',
     blurb: 'Cognitive-style signals across the autism spectrum.',
     meta: '20 questions · ~10 min',
@@ -81,11 +81,11 @@ const OPTIONS: TestOption[] = [
     iconBg: 'bg-cyan-500/15',
     border: 'border-cyan-500/25',
     hoverBorder: 'hover:border-cyan-500/60',
-    note: 'Included in Neurodivergence Level',
+    note: 'Standalone 18-item WHO ASRS-v1.1 screener',
   },
   {
     key: 'depth',
-    routeTo: 'depth',
+
     title: 'Psychoanalytical Insights',
     blurb: 'Freud · Jung · Nietzsche lenses with AI-powered analysis.',
     meta: '24 questions · ~20 min',
