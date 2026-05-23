@@ -68,6 +68,8 @@ const Index = () => {
   const [depthResults, setDepthResults] = useState<DepthPsychologyResults | null>(null);
   const [depthAnswers, setDepthAnswers] = useState<{ questionId: number; answer: string }[]>([]);
   const [neurodivergentResults, setNeurodivergentResults] = useState<NeurodivergentMindResults | null>(null);
+  const [autismResults, setAutismResults] = useState<AQResults | null>(null);
+  const [standaloneAdhdResults, setStandaloneAdhdResults] = useState<ADHDResults | null>(null);
   const [clarificationRequest, setClarificationRequest] = useState<{
     question: string;
     context: string;
