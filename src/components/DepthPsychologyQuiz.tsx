@@ -201,7 +201,7 @@ export const DepthPsychologyQuiz = ({
             {fwInfo.thinker} is Analyzing Your Psyche
           </h2>
           <p className="text-muted-foreground max-w-md mx-auto mb-8">
-            Your 20 responses are being interpreted through the lens of {fwInfo.name}
+            Your {depthQuestions.length} responses are being interpreted through the lens of {fwInfo.name}
           </p>
 
           {/* Animated Analysis Stages */}
