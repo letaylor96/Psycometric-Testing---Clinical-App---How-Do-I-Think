@@ -169,6 +169,20 @@ export const depthQuestions: DepthQuestion[] = [
   },
 ];
 
+// Shared narcissism signaling profile — non-diagnostic, educational only.
+// Surfaces tendencies along grandiose/vulnerable spectra across all
+// depth psychology frameworks. NOT a clinical NPD assessment.
+export interface NarcissismProfile {
+  grandiositySpectrum: number;        // 0-100: overt grandiose signaling
+  vulnerableSpectrum: number;         // 0-100: covert/vulnerable signaling
+  empathyCapacity: number;            // 0-100: attunement to others
+  admirationNeed: number;             // 0-100: dependence on external validation
+  overallElevation: 'low' | 'moderate' | 'elevated' | 'pronounced';
+  presentationStyle: 'healthy-confidence' | 'grandiose-leaning' | 'vulnerable-leaning' | 'mixed' | 'minimal';
+  signalingPatterns: string[];        // 2-4 short concrete patterns observed
+  educationalNote: string;            // plain-language, non-diagnostic interpretation
+}
+
 // Framework-specific result structures
 export interface FreudianResults {
   framework: 'freudian';
@@ -183,6 +197,7 @@ export interface FreudianResults {
   profileSummary: string;
   strengths: string[];
   growthAreas: string[];
+  narcissismProfile?: NarcissismProfile;
   answers: { questionId: number; answer: string }[];
 }
 
@@ -199,6 +214,7 @@ export interface JungianResults {
   profileSummary: string;
   strengths: string[];
   growthAreas: string[];
+  narcissismProfile?: NarcissismProfile;
   answers: { questionId: number; answer: string }[];
 }
 
@@ -217,6 +233,7 @@ export interface NietzscheanResults {
   profileSummary: string;
   strengths: string[];
   growthAreas: string[];
+  narcissismProfile?: NarcissismProfile;
   answers: { questionId: number; answer: string }[];
 }
 
