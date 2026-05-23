@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Brain, Target, Zap, Sparkles, Check, ArrowRight, Map } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo } from '@/data/assessmentTypes';
-import { MAP_MY_MIND_ORDER, MapMyMindStatus } from '@/hooks/useMapMyMind';
+import { MAP_MY_MIND_ORDER, DiscoverMyMindStatus } from '@/hooks/useDiscoverMyMind';
 import { cn } from '@/lib/utils';
 
 const stepIcons: Record<AssessmentType, React.ElementType> = {
@@ -19,17 +19,17 @@ const stepAccent: Record<AssessmentType, string> = {
   depth: 'text-purple-400',
 };
 
-interface MapMyMindSpineProps {
-  status: MapMyMindStatus;
+interface DiscoverMyMindSpineProps {
+  status: DiscoverMyMindStatus;
   onStart: (type: AssessmentType) => void;
   onViewDashboard?: () => void;
 }
 
-export const MapMyMindSpine = ({
+export const DiscoverMyMindSpine = ({
   status,
   onStart,
   onViewDashboard,
-}: MapMyMindSpineProps) => {
+}: DiscoverMyMindSpineProps) => {
   const { active, completed, nextStep, completedCount, totalSteps, isFinished, start } = status;
 
   const handlePrimary = () => {
@@ -68,7 +68,7 @@ export const MapMyMindSpine = ({
                   ? 'Your Full Profile is Ready'
                   : active
                     ? 'Continue Mapping Your Mind'
-                    : 'Map My Mind — Full Guided Profile'}
+                    : 'Discover My Mind — Full Guided Profile'}
               </h2>
               <p className="text-muted-foreground text-xs sm:text-sm leading-snug mt-0.5">
                 {isFinished

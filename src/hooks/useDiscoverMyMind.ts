@@ -10,7 +10,7 @@ export const MAP_MY_MIND_ORDER: AssessmentType[] = [
   'depth',
 ];
 
-const STORAGE_KEY = 'mapMyMind:v1';
+const STORAGE_KEY = 'discoverMyMind:v1';
 
 interface MapState {
   active: boolean;
@@ -38,7 +38,7 @@ function writeState(state: MapState) {
   }
 }
 
-export interface MapMyMindStatus {
+export interface DiscoverMyMindStatus {
   active: boolean;
   completed: AssessmentType[];
   nextStep: AssessmentType | null;
@@ -55,7 +55,7 @@ export interface MapMyMindStatus {
  * `completedAssessments` is derived from the parent's persisted results
  * so we don't double-source state.
  */
-export function useMapMyMind(completedAssessments: AssessmentType[]): MapMyMindStatus {
+export function useDiscoverMyMind(completedAssessments: AssessmentType[]): DiscoverMyMindStatus {
   const [state, setState] = useState<MapState>(() => readState());
 
   // Auto-activate if the user has completed at least one but not all 4

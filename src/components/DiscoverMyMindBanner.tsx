@@ -2,10 +2,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Check, X, Map } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo } from '@/data/assessmentTypes';
-import { MapMyMindStatus } from '@/hooks/useMapMyMind';
+import { DiscoverMyMindStatus } from '@/hooks/useDiscoverMyMind';
 
-interface MapMyMindBannerProps {
-  status: MapMyMindStatus;
+interface DiscoverMyMindBannerProps {
+  status: DiscoverMyMindStatus;
   onContinue: (next: AssessmentType) => void;
   onViewDashboard?: () => void;
   onDismiss?: () => void;
@@ -13,15 +13,15 @@ interface MapMyMindBannerProps {
 
 /**
  * Sticky bottom banner shown on result screens when the guided
- * "Map My Mind" funnel is active. Surfaces the next step so users
+ * "Discover My Mind" funnel is active. Surfaces the next step so users
  * don't have to navigate back to the landing page.
  */
-export const MapMyMindBanner = ({
+export const DiscoverMyMindBanner = ({
   status,
   onContinue,
   onViewDashboard,
   onDismiss,
-}: MapMyMindBannerProps) => {
+}: DiscoverMyMindBannerProps) => {
   if (!status.active) return null;
 
   const { nextStep, completedCount, totalSteps, isFinished } = status;
@@ -44,7 +44,7 @@ export const MapMyMindBanner = ({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 mb-0.5">
               <span className="text-yellow text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
-                Map My Mind
+                Discover My Mind
               </span>
               <div className="flex items-center gap-0.5">
                 {Array.from({ length: totalSteps }).map((_, i) => (
@@ -92,7 +92,7 @@ export const MapMyMindBanner = ({
           {onDismiss && (
             <button
               onClick={onDismiss}
-              aria-label="Dismiss Map My Mind"
+              aria-label="Dismiss Discover My Mind"
               className="p-1 text-muted-foreground hover:text-foreground transition-colors flex-shrink-0"
             >
               <X className="w-3.5 h-3.5" />
