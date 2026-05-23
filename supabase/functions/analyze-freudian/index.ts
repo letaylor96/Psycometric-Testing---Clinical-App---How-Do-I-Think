@@ -530,6 +530,7 @@ ${formattedAnswers}`;
             educationalNote: 'A complete narcissism signaling analysis could not be parsed from this response. This is an educational profile only and is not a clinical diagnosis. Consider retaking the assessment for a fuller picture.',
           };
 
+          if (framework === 'jungian') {
             parsedResponse = {
               framework: 'jungian',
               dominantArchetypes: extractArray('dominantArchetypes').length > 0 ? extractArray('dominantArchetypes') : ['The Seeker', 'The Creator'],
