@@ -544,6 +544,7 @@ ${formattedAnswers}`;
               profileSummary,
               strengths: extractArray('strengths').length > 0 ? extractArray('strengths') : ['Self-reflection capacity', 'Openness to exploration'],
               growthAreas: extractArray('growthAreas').length > 0 ? extractArray('growthAreas') : ['Continue shadow integration work'],
+              narcissismProfile: defaultNarcissismProfile,
             };
             console.log("Lenient extraction produced jungian results");
           } else if (framework === 'freudian') {
@@ -560,6 +561,7 @@ ${formattedAnswers}`;
               profileSummary,
               strengths: extractArray('strengths').length > 0 ? extractArray('strengths') : ['Ego resilience'],
               growthAreas: extractArray('growthAreas').length > 0 ? extractArray('growthAreas') : ['Continued self-exploration'],
+              narcissismProfile: defaultNarcissismProfile,
             };
             console.log("Lenient extraction produced freudian results");
           } else if (framework === 'nietzschean') {
@@ -578,6 +580,7 @@ ${formattedAnswers}`;
               profileSummary,
               strengths: extractArray('strengths').length > 0 ? extractArray('strengths') : ['Capacity for self-reflection'],
               growthAreas: extractArray('growthAreas').length > 0 ? extractArray('growthAreas') : ['Continue value creation'],
+              narcissismProfile: defaultNarcissismProfile,
             };
             console.log("Lenient extraction produced nietzschean results");
           }
