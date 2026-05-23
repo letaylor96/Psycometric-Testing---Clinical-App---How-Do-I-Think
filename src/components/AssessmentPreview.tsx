@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, ArrowLeft, Brain, UserCheck, Sparkles, Crown, Zap, Clock } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Brain, UserCheck, Check, Sparkles, Crown, Zap, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo } from '@/data/assessmentTypes';
 
