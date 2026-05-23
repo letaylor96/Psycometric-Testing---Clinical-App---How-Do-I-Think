@@ -498,6 +498,7 @@ const Index = () => {
             <LandingHero 
               onStart={() => handleSelectAssessment('iq')} 
               onSelectAssessment={handleSelectAssessment}
+              onSelectTest={handleSelectTest}
               onViewDashboard={handleViewDashboard}
               iqResults={results}
               personalityResults={personalityResults}
