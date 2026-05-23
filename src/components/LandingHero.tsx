@@ -124,7 +124,7 @@ export const LandingHero = ({
           />
 
           {/* ===== Single-test picker — alternative to the full guided flow ===== */}
-          <SingleTestPicker onSelectAssessment={onSelectAssessment} />
+          <SingleTestPicker onSelectTest={onSelectTest} />
 
           {/* Returning-user progress hint */}
           {hasStarted && completedCount < 4 && (
