@@ -14,6 +14,7 @@ import { CognitiveStyleResults } from '@/data/cognitiveStyleQuestions';
 import { usePremiumAccess } from '@/hooks/usePremiumAccess';
 import { useDiscoverMyMind } from '@/hooks/useDiscoverMyMind';
 import { DiscoverMyMindSpine } from '@/components/DiscoverMyMindSpine';
+import { SingleTestPicker } from '@/components/SingleTestPicker';
 import { cn } from '@/lib/utils';
 
 
@@ -119,6 +120,9 @@ export const LandingHero = ({
             onStart={onSelectAssessment}
             onViewDashboard={onViewDashboard}
           />
+
+          {/* ===== Single-test picker — alternative to the full guided flow ===== */}
+          <SingleTestPicker onSelectAssessment={onSelectAssessment} />
 
           {/* Returning-user progress hint */}
           {hasStarted && completedCount < 4 && (
