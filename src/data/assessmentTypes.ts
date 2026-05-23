@@ -56,7 +56,7 @@ export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
     shortTitle: 'Psychoanalytical Analysis',
     description: 'Explore your unconscious patterns through the lens of Freud, Jung, or Nietzsche with AI-powered psychoanalytic assessment.',
     framework: 'Freud · Jung · Nietzsche',
-    questionCount: 20,
+    questionCount: 24,
     timeMinutes: 20, // Free-form + AI analysis takes longer
     color: 'primary',
     isPremiumOnly: true,
