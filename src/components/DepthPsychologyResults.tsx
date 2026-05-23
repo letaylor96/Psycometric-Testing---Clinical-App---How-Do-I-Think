@@ -755,6 +755,17 @@ export const DepthPsychologyResultsScreen = ({
           {results.framework === 'nietzschean' && <NietzscheanResultsView results={results} />}
         </motion.div>
 
+        {/* Narcissism signaling — shared across all frameworks (educational, not diagnostic) */}
+        {(results as any).narcissismProfile && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <NarcissismSignalingCard profile={(results as any).narcissismProfile} />
+          </motion.div>
+        )}
+
         {/* Strengths and Growth Areas */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
