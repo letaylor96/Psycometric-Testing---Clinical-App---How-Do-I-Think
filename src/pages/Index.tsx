@@ -669,6 +669,15 @@ const Index = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {showMapBanner && (
+        <MapMyMindBanner
+          status={mapStatus}
+          onContinue={handleMapContinue}
+          onViewDashboard={handleViewDashboard}
+          onDismiss={mapStatus.stop}
+        />
+      )}
     </div>
   );
 };
