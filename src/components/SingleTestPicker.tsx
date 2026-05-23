@@ -1,17 +1,14 @@
 import { motion } from 'framer-motion';
 import { Brain, Target, Zap, Sparkles, Activity, Puzzle, ArrowRight } from 'lucide-react';
-import { AssessmentType } from '@/data/assessmentTypes';
+import { SelectableTestKey } from '@/data/assessmentTypes';
 import { cn } from '@/lib/utils';
 
 interface SingleTestPickerProps {
-  onSelectAssessment: (type: AssessmentType) => void;
+  onSelectTest: (key: SelectableTestKey) => void;
 }
 
-type TestKey = 'iq' | 'neurodivergent' | 'personality' | 'adhd' | 'autism' | 'depth';
-
 interface TestOption {
-  key: TestKey;
-  routeTo: AssessmentType;
+  key: SelectableTestKey;
   title: string;
   blurb: string;
   meta: string;
