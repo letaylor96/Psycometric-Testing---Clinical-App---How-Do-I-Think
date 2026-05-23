@@ -518,8 +518,18 @@ ${formattedAnswers}`;
             }
             return [];
           };
-          
-          if (framework === 'jungian') {
+
+          const defaultNarcissismProfile = {
+            grandiositySpectrum: 40,
+            vulnerableSpectrum: 40,
+            empathyCapacity: 55,
+            admirationNeed: 45,
+            overallElevation: 'moderate' as const,
+            presentationStyle: 'mixed' as const,
+            signalingPatterns: ['Partial signal — full analysis was malformed'],
+            educationalNote: 'A complete narcissism signaling analysis could not be parsed from this response. This is an educational profile only and is not a clinical diagnosis. Consider retaking the assessment for a fuller picture.',
+          };
+
             parsedResponse = {
               framework: 'jungian',
               dominantArchetypes: extractArray('dominantArchetypes').length > 0 ? extractArray('dominantArchetypes') : ['The Seeker', 'The Creator'],
