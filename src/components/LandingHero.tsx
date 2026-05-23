@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Check, Brain, Lightbulb, Sparkles, Target, Zap, Crown, MessageCircle, FileText, Info, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Brain, Lightbulb, Sparkles, Info, X } from 'lucide-react';
 import { AssessmentType, assessmentInfo, allAssessmentTypes } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
 import { AuthButton } from '@/components/AuthButton';
@@ -16,27 +15,7 @@ import { useDiscoverMyMind } from '@/hooks/useDiscoverMyMind';
 import { DiscoverMyMindSpine } from '@/components/DiscoverMyMindSpine';
 import { cn } from '@/lib/utils';
 
-const assessmentIcons: Record<AssessmentType, React.ElementType> = {
-  personality: Target,
-  iq: Brain,
-  neurodivergent: Zap,
-  depth: Sparkles,
-};
 
-const assessmentGradients: Record<AssessmentType, { bg: string; border: string; text: string; icon: string }> = {
-  iq: { bg: 'from-blue-500/10 to-cyan-500/5', border: 'border-blue-500/25 hover:border-blue-500/50', text: 'text-blue-400', icon: 'bg-blue-500/15' },
-  personality: { bg: 'from-amber-500/10 to-orange-500/5', border: 'border-amber-500/25 hover:border-amber-500/50', text: 'text-amber-400', icon: 'bg-amber-500/15' },
-  neurodivergent: { bg: 'from-emerald-500/10 to-teal-500/5', border: 'border-emerald-500/25 hover:border-emerald-500/50', text: 'text-emerald-400', icon: 'bg-emerald-500/15' },
-  depth: { bg: 'from-purple-500/10 to-violet-500/5', border: 'border-purple-500/25 hover:border-purple-500/50', text: 'text-purple-400', icon: 'bg-purple-500/15' },
-};
-
-// Inline sample question for instant engagement
-const SAMPLE_QUESTION = {
-  question: `2,  4,  8,  16,  __`,
-  options: ['24', '32', '20', '18'],
-  correctAnswer: 1,
-  explanation: 'Each number doubles: 2×2=4, 4×2=8, 8×2=16, 16×2=32',
-};
 
 interface LandingHeroProps {
   onStart: () => void;
