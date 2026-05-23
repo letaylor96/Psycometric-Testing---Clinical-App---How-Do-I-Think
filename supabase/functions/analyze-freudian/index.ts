@@ -12,7 +12,39 @@ interface Answer {
 
 type Framework = 'freudian' | 'jungian' | 'nietzschean';
 
-// Comprehensive Freudian theoretical framework
+// Shared narcissism assessment module appended to every framework prompt.
+// Educational, non-diagnostic — surfaces tendencies, never labels a person.
+const narcissismModule = `
+
+## NARCISSISM SIGNALING MODULE (REQUIRED — ALL FRAMEWORKS)
+
+Across ALL 24 responses, separately assess narcissistic signaling patterns along TWO independent spectra. This is educational, NOT a clinical NPD diagnosis. You must always include narcissismProfile in your final JSON.
+
+**Grandiose spectrum (overt):** specialness fantasies, entitlement, dismissiveness of "ordinary" people, need to be admired, status orientation, exaggeration of achievements, reactive rage to slights.
+
+**Vulnerable spectrum (covert):** hypersensitivity to criticism, hidden superiority paired with shame, envy, victim-orientation, social withdrawal after perceived slights, fragile self-esteem masked by humility.
+
+**Empathy capacity:** genuine attunement to others' inner states vs. self-referential listening (using others' stories as mirrors for the self).
+
+**Admiration need:** degree to which self-worth depends on external recognition vs. internal sources.
+
+Pay special attention to responses to Q21 (idealized future + recognition), Q22 (reaction to criticism / not being acknowledged), Q23 (empathic response to a friend's pain), and Q24 (specialness / feeling different from "most people"). But also weigh signals across ALL prior answers (e.g., dream content, conflicts, moral voice, projections).
+
+Use neutral, educational, non-stigmatizing language. Frame as "tendencies," "signaling patterns," or "leanings" — never as a diagnosis.
+
+Add this object to your final JSON output:
+"narcissismProfile": {
+  "grandiositySpectrum": <0-100>,
+  "vulnerableSpectrum": <0-100>,
+  "empathyCapacity": <0-100>,
+  "admirationNeed": <0-100>,
+  "overallElevation": <"low"|"moderate"|"elevated"|"pronounced">,
+  "presentationStyle": <"healthy-confidence"|"grandiose-leaning"|"vulnerable-leaning"|"mixed"|"minimal">,
+  "signalingPatterns": [<2-4 short concrete patterns observed in the responses>],
+  "educationalNote": <80-120 word plain-language interpretation; explicitly non-diagnostic; explains what was observed and what it may suggest about self-image, validation needs, and relating to others>
+}`;
+
+
 const freudianSystemPrompt = `You are a psychoanalyst rigorously trained in Sigmund Freud's complete body of work. Your analysis must adhere strictly to classical Freudian psychoanalytic theory.
 
 ## THEORETICAL FOUNDATION
