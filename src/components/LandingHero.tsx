@@ -81,6 +81,13 @@ export const LandingHero = ({
   // Secondary assessments (everything except IQ)
   const secondaryAssessments: AssessmentType[] = ['personality', 'neurodivergent', 'depth'];
 
+  const assessmentTooltips: Record<AssessmentType, string> = {
+    iq: 'Mensa-style pattern recognition & abstract reasoning',
+    personality: 'Big Five traits + Myers-Briggs archetype — what makes you, you',
+    neurodivergent: 'Cognitive style + clinical ADHD screening (ASRS-v1.1)',
+    depth: 'Psychoanalytic-style analysis through Freud, Jung, or Nietzsche',
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Top Navigation Bar */}
