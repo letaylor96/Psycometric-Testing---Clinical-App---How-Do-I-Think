@@ -12,6 +12,8 @@ import { PersonalityResults } from '@/data/personalityQuestions';
 import { ADHDResults } from '@/data/adhdQuestions';
 import { CognitiveStyleResults } from '@/data/cognitiveStyleQuestions';
 import { usePremiumAccess } from '@/hooks/usePremiumAccess';
+import { useMapMyMind } from '@/hooks/useMapMyMind';
+import { MapMyMindSpine } from '@/components/MapMyMindSpine';
 import { cn } from '@/lib/utils';
 
 const assessmentIcons: Record<AssessmentType, React.ElementType> = {
@@ -69,6 +71,11 @@ export const LandingHero = ({
 
   const completedCount = Object.values(completionStatus).filter(Boolean).length;
   const hasStarted = completedCount > 0;
+
+  const completedAssessments = (Object.entries(completionStatus) as [AssessmentType, boolean][])
+    .filter(([, done]) => done)
+    .map(([t]) => t);
+  const mapStatus = useMapMyMind(completedAssessments);
 
   const handleTeaserAnswer = (index: number) => {
     if (teaserRevealed) return;
@@ -150,6 +157,15 @@ export const LandingHero = ({
               </motion.p>
             )}
           </div>
+
+          {/* ===== MAP MY MIND — Unified Guided Funnel ===== */}
+          <MapMyMindSpine
+            status={mapStatus}
+            onStart={onSelectAssessment}
+            onViewDashboard={onViewDashboard}
+          />
+
+
 
           {/* ===== PRIMARY CTA: Interactive Quiz Teaser ===== */}
           <motion.div
