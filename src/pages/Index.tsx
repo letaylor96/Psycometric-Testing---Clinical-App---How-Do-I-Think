@@ -26,8 +26,8 @@ import { selectRandomVariants } from '@/lib/questionVariants';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { clearPremiumReturnState } from '@/pages/PaymentSuccess';
-import { useMapMyMind } from '@/hooks/useMapMyMind';
-import { MapMyMindBanner } from '@/components/MapMyMindBanner';
+import { useDiscoverMyMind } from '@/hooks/useDiscoverMyMind';
+import { DiscoverMyMindBanner } from '@/components/DiscoverMyMindBanner';
 
 type GameState = 
   | 'landing' 
@@ -434,7 +434,7 @@ const Index = () => {
     setGameState('preview');
   }, []);
 
-  // Map My Mind funnel — derive completed list from existing results
+  // Discover My Mind funnel — derive completed list from existing results
   const completedAssessments: AssessmentType[] = [
     results ? 'iq' : null,
     cognitiveStyleResults ? 'neurodivergent' : null,
@@ -442,7 +442,7 @@ const Index = () => {
     depthResults ? 'depth' : null,
   ].filter(Boolean) as AssessmentType[];
 
-  const mapStatus = useMapMyMind(completedAssessments);
+  const mapStatus = useDiscoverMyMind(completedAssessments);
 
   // Show the sticky banner only on result screens (where it's most useful)
   const showMapBanner =
@@ -670,7 +670,7 @@ const Index = () => {
       </AnimatePresence>
 
       {showMapBanner && (
-        <MapMyMindBanner
+        <DiscoverMyMindBanner
           status={mapStatus}
           onContinue={handleMapContinue}
           onViewDashboard={handleViewDashboard}

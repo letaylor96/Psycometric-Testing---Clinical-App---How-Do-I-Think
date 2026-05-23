@@ -12,8 +12,8 @@ import { PersonalityResults } from '@/data/personalityQuestions';
 import { ADHDResults } from '@/data/adhdQuestions';
 import { CognitiveStyleResults } from '@/data/cognitiveStyleQuestions';
 import { usePremiumAccess } from '@/hooks/usePremiumAccess';
-import { useMapMyMind } from '@/hooks/useMapMyMind';
-import { MapMyMindSpine } from '@/components/MapMyMindSpine';
+import { useDiscoverMyMind } from '@/hooks/useDiscoverMyMind';
+import { DiscoverMyMindSpine } from '@/components/DiscoverMyMindSpine';
 import { cn } from '@/lib/utils';
 
 const assessmentIcons: Record<AssessmentType, React.ElementType> = {
@@ -75,7 +75,7 @@ export const LandingHero = ({
   const completedAssessments = (Object.entries(completionStatus) as [AssessmentType, boolean][])
     .filter(([, done]) => done)
     .map(([t]) => t);
-  const mapStatus = useMapMyMind(completedAssessments);
+  const mapStatus = useDiscoverMyMind(completedAssessments);
 
   const handleTeaserAnswer = (index: number) => {
     if (teaserRevealed) return;
@@ -159,7 +159,7 @@ export const LandingHero = ({
           </div>
 
           {/* ===== MAP MY MIND — Unified Guided Funnel ===== */}
-          <MapMyMindSpine
+          <DiscoverMyMindSpine
             status={mapStatus}
             onStart={onSelectAssessment}
             onViewDashboard={onViewDashboard}
