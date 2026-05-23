@@ -674,6 +674,56 @@ const Index = () => {
           </motion.div>
         )}
 
+        {gameState === 'adhd-quiz' && (
+          <motion.div key="adhd-quiz" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            <ADHDQuiz
+              onComplete={(answers) => {
+                const r = calculateADHDResults(answers);
+                setStandaloneAdhdResults(r);
+                setADHDResults(r);
+                setAdhdAnswersState(answers);
+                persistADHD(r, answers);
+                setGameState('adhd-results');
+              }}
+              onBack={handleRestart}
+            />
+          </motion.div>
+        )}
+
+        {gameState === 'adhd-results' && standaloneAdhdResults && (
+          <motion.div key="adhd-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            <ADHDResultsScreen
+              results={standaloneAdhdResults}
+              onRestart={handleRestart}
+              onViewDashboard={handleViewDashboard}
+            />
+          </motion.div>
+        )}
+
+        {gameState === 'autism-quiz' && (
+          <motion.div key="autism-quiz" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            <AutismQuiz
+              onComplete={(answers) => {
+                const r = calculateAQResults(answers);
+                setAutismResults(r);
+                setGameState('autism-results');
+              }}
+              onBack={handleRestart}
+            />
+          </motion.div>
+        )}
+
+        {gameState === 'autism-results' && autismResults && (
+          <motion.div key="autism-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            <AutismResultsScreen
+              results={autismResults}
+              onRestart={handleRestart}
+              onViewDashboard={handleViewDashboard}
+            />
+          </motion.div>
+        )}
+
+
         {gameState === 'dashboard' && (
           <motion.div
             key="dashboard"
