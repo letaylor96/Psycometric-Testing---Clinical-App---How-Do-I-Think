@@ -434,6 +434,32 @@ const Index = () => {
     setGameState('preview');
   }, []);
 
+  // Map My Mind funnel — derive completed list from existing results
+  const completedAssessments: AssessmentType[] = [
+    results ? 'iq' : null,
+    cognitiveStyleResults ? 'neurodivergent' : null,
+    personalityResults ? 'personality' : null,
+    depthResults ? 'depth' : null,
+  ].filter(Boolean) as AssessmentType[];
+
+  const mapStatus = useMapMyMind(completedAssessments);
+
+  // Show the sticky banner only on result screens (where it's most useful)
+  const showMapBanner =
+    mapStatus.active &&
+    (gameState === 'results' ||
+      gameState === 'personality-results' ||
+      gameState === 'neurodivergent-results' ||
+      gameState === 'depth-results');
+
+  const handleMapContinue = useCallback(
+    (next: AssessmentType) => {
+      setPreviewType(next);
+      setGameState('preview');
+    },
+    [],
+  );
+
   return (
     <div className="min-h-screen bg-background">
       <AnimatePresence mode="wait">
