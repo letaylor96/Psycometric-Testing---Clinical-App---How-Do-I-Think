@@ -364,7 +364,7 @@ serve(async (req) => {
         .map((a, idx) => `Question ${idx + 1}: ${a.answer}`)
         .join("\n\n");
 
-      const userPrompt = `Analyze these 20 responses using strict ${framework === 'freudian' ? 'Freudian psychoanalytic' : framework === 'jungian' ? 'Jungian analytical' : 'Nietzschean philosophical'} principles. 
+      const userPrompt = `Analyze these ${answers.length} responses using strict ${framework === 'freudian' ? 'Freudian psychoanalytic' : framework === 'jungian' ? 'Jungian analytical' : 'Nietzschean philosophical'} principles, AND complete the narcissism signaling module described in your system instructions. 
 
 IMPORTANT: If ANY response is unclear, ambiguous, or requires deeper exploration to make an accurate assessment according to ${framework === 'freudian' ? 'psychoanalytic' : framework === 'jungian' ? 'analytical psychological' : 'philosophical'} standards, you MUST ask a clarifying question before providing your final assessment. Do not guess or make assumptions about unclear material.
 
