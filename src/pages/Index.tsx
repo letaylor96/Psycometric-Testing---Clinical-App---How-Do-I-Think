@@ -26,6 +26,8 @@ import { selectRandomVariants } from '@/lib/questionVariants';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { clearPremiumReturnState } from '@/pages/PaymentSuccess';
+import { useMapMyMind } from '@/hooks/useMapMyMind';
+import { MapMyMindBanner } from '@/components/MapMyMindBanner';
 
 type GameState = 
   | 'landing' 
