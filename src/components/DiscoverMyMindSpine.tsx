@@ -76,7 +76,7 @@ export const DiscoverMyMindSpine = ({
                   ? 'All 4 assessments complete. Open your integrated dashboard.'
                   : active
                     ? `${completedCount} of ${totalSteps} done · pick any step to continue`
-                    : 'Four assessments, ~45 min total. Take them in order or jump straight to whichever interests you — resume anytime.'}
+                    : 'Four assessments. Start and Resume Anytime — take them in order or jump straight to whichever interests you.'}
               </p>
             </div>
           </div>
