@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Check, Brain, Lightbulb, Sparkles, Target, Zap, Crown, MessageCircle, FileText, Info, X } from 'lucide-react';
+import { ArrowRight, Brain, Lightbulb, Sparkles, Target, Zap, Crown, MessageCircle, FileText, Info, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo, allAssessmentTypes } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
@@ -16,27 +16,7 @@ import { useDiscoverMyMind } from '@/hooks/useDiscoverMyMind';
 import { DiscoverMyMindSpine } from '@/components/DiscoverMyMindSpine';
 import { cn } from '@/lib/utils';
 
-const assessmentIcons: Record<AssessmentType, React.ElementType> = {
-  personality: Target,
-  iq: Brain,
-  neurodivergent: Zap,
-  depth: Sparkles,
-};
 
-const assessmentGradients: Record<AssessmentType, { bg: string; border: string; text: string; icon: string }> = {
-  iq: { bg: 'from-blue-500/10 to-cyan-500/5', border: 'border-blue-500/25 hover:border-blue-500/50', text: 'text-blue-400', icon: 'bg-blue-500/15' },
-  personality: { bg: 'from-amber-500/10 to-orange-500/5', border: 'border-amber-500/25 hover:border-amber-500/50', text: 'text-amber-400', icon: 'bg-amber-500/15' },
-  neurodivergent: { bg: 'from-emerald-500/10 to-teal-500/5', border: 'border-emerald-500/25 hover:border-emerald-500/50', text: 'text-emerald-400', icon: 'bg-emerald-500/15' },
-  depth: { bg: 'from-purple-500/10 to-violet-500/5', border: 'border-purple-500/25 hover:border-purple-500/50', text: 'text-purple-400', icon: 'bg-purple-500/15' },
-};
-
-// Inline sample question for instant engagement
-const SAMPLE_QUESTION = {
-  question: `2,  4,  8,  16,  __`,
-  options: ['24', '32', '20', '18'],
-  correctAnswer: 1,
-  explanation: 'Each number doubles: 2×2=4, 4×2=8, 8×2=16, 16×2=32',
-};
 
 interface LandingHeroProps {
   onStart: () => void;
@@ -59,8 +39,6 @@ export const LandingHero = ({
 }: LandingHeroProps) => {
   const { hasPremiumAccess } = usePremiumAccess();
   const [showAbout, setShowAbout] = useState(false);
-  const [teaserAnswer, setTeaserAnswer] = useState<number | null>(null);
-  const [teaserRevealed, setTeaserRevealed] = useState(false);
 
   const completionStatus: Record<AssessmentType, boolean> = {
     personality: !!personalityResults,
@@ -77,23 +55,6 @@ export const LandingHero = ({
     .map(([t]) => t);
   const mapStatus = useDiscoverMyMind(completedAssessments);
 
-  const handleTeaserAnswer = (index: number) => {
-    if (teaserRevealed) return;
-    setTeaserAnswer(index);
-    setTeaserRevealed(true);
-  };
-
-  const teaserIsCorrect = teaserAnswer === SAMPLE_QUESTION.correctAnswer;
-
-  // Secondary assessments (everything except IQ)
-  const secondaryAssessments: AssessmentType[] = ['personality', 'neurodivergent', 'depth'];
-
-  const assessmentTooltips: Record<AssessmentType, string> = {
-    iq: 'Mensa-style pattern recognition & abstract reasoning',
-    personality: 'Big Five traits + Myers-Briggs archetype — what makes you, you',
-    neurodivergent: 'Cognitive style + clinical ADHD screening (ASRS-v1.1)',
-    depth: 'Psychoanalytic-style analysis through Freud, Jung, or Nietzsche',
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -152,189 +113,14 @@ export const LandingHero = ({
             </motion.p>
           </div>
 
-          {/* ===== MAP MY MIND — Unified Guided Funnel ===== */}
+          {/* ===== DISCOVER MY MIND — Unified Guided Funnel (also the engagement surface) ===== */}
           <DiscoverMyMindSpine
             status={mapStatus}
             onStart={onSelectAssessment}
             onViewDashboard={onViewDashboard}
           />
 
-
-
-          {/* ===== PRIMARY CTA: Interactive Quiz Teaser ===== */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="max-w-lg mx-auto mb-6 sm:mb-10"
-          >
-            <div className="bg-card border border-blue-500/20 rounded-2xl p-5 sm:p-7 shadow-lg relative overflow-hidden">
-              {/* Subtle gradient accent */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500" />
-              
-              {/* Badge */}
-              <div className="flex items-center justify-between mb-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium">
-                  <Brain className="w-3.5 h-3.5" />
-                  Try it now — free
-                </div>
-                <span className="text-muted-foreground/50 text-xs">25 questions · 10 min</span>
-              </div>
-
-              {/* Question */}
-              <p className="text-muted-foreground text-xs mb-2">What comes next?</p>
-              <p className="font-mono text-lg sm:text-xl text-foreground mb-5 tracking-wider">
-                {SAMPLE_QUESTION.question}
-              </p>
-
-              {/* Answer grid */}
-              <div className="grid grid-cols-4 gap-2 sm:gap-3 mb-4">
-                {SAMPLE_QUESTION.options.map((option, index) => {
-                  const isSelected = teaserAnswer === index;
-                  const isCorrectOption = index === SAMPLE_QUESTION.correctAnswer;
-                  
-                  let style = 'border-border hover:border-blue-500/50 hover:bg-blue-500/5';
-                  if (teaserRevealed) {
-                    if (isCorrectOption) {
-                      style = 'border-emerald-500 bg-emerald-500/10';
-                    } else if (isSelected && !isCorrectOption) {
-                      style = 'border-red-500 bg-red-500/10';
-                    } else {
-                      style = 'border-border opacity-40';
-                    }
-                  }
-
-                  return (
-                    <motion.button
-                      key={index}
-                      onClick={() => handleTeaserAnswer(index)}
-                      disabled={teaserRevealed}
-                      whileHover={!teaserRevealed ? { scale: 1.05 } : {}}
-                      whileTap={!teaserRevealed ? { scale: 0.95 } : {}}
-                      className={cn(
-                        'p-3 rounded-xl border-2 text-base sm:text-lg font-mono font-bold text-foreground transition-all',
-                        style,
-                        !teaserRevealed && 'cursor-pointer'
-                      )}
-                    >
-                      {option}
-                      {teaserRevealed && isCorrectOption && (
-                        <Check className="w-3 h-3 text-emerald-500 mx-auto mt-1" />
-                      )}
-                    </motion.button>
-                  );
-                })}
-              </div>
-
-              {/* Result or prompt */}
-              <AnimatePresence mode="wait">
-                {teaserRevealed ? (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="space-y-3"
-                  >
-                    <p className={cn(
-                      'text-sm font-medium',
-                      teaserIsCorrect ? 'text-emerald-500' : 'text-amber-500'
-                    )}>
-                      {teaserIsCorrect ? '✓ Correct!' : 'Not quite.'} {SAMPLE_QUESTION.explanation}
-                    </p>
-                    <Button
-                      onClick={() => onSelectAssessment('iq')}
-                      size="lg"
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-5 sm:py-6 text-sm sm:text-base"
-                    >
-                      {teaserIsCorrect ? 'Take the Full 25-Question Test' : 'Try the Full Assessment'}
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  </motion.div>
-                ) : (
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-center text-muted-foreground text-xs"
-                  >
-                    Tap an answer — no sign-up needed
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
-
-          {/* ===== SECONDARY ASSESSMENTS ===== */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <p className="text-center text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4">
-              Or explore our other assessments
-            </p>
-            <div className="grid grid-cols-3 gap-2 sm:gap-3 max-w-lg mx-auto">
-              {secondaryAssessments.map((type) => {
-                const info = assessmentInfo[type];
-                const Icon = assessmentIcons[type];
-                const isCompleted = completionStatus[type];
-                const isPremiumOnly = info.isPremiumOnly;
-                const colors = assessmentGradients[type];
-
-                return (
-                  <motion.button
-                    key={type}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => onSelectAssessment(type)}
-                    className={cn(
-                      'group relative text-center p-3 sm:p-4 rounded-xl border bg-gradient-to-br transition-all duration-200',
-                      colors.bg,
-                      isCompleted ? 'border-emerald-500/40 ring-1 ring-emerald-500/20' : colors.border
-                    )}
-                  >
-                    {/* Thought bubble tooltip */}
-                    <div className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200 z-20 w-48 sm:w-52">
-                      <div className="relative bg-popover border border-border rounded-2xl px-3 py-2 shadow-xl">
-                        <p className="text-[11px] sm:text-xs text-foreground leading-snug">
-                          {assessmentTooltips[type]}
-                        </p>
-                        {/* Bubble tail dots */}
-                        <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-popover border-r border-b border-border rotate-45" />
-                        <div className="absolute -bottom-3 left-[calc(50%-10px)] w-1.5 h-1.5 rounded-full bg-popover border border-border" />
-                        <div className="absolute -bottom-5 left-[calc(50%-14px)] w-1 h-1 rounded-full bg-popover border border-border" />
-                      </div>
-                    </div>
-
-                    {isCompleted && (
-                      <div className="absolute top-1.5 right-1.5">
-                        <div className="w-4 h-4 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                          <Check className="w-2.5 h-2.5 text-emerald-500" />
-                        </div>
-                      </div>
-                    )}
-                    {isPremiumOnly && !isCompleted && (
-                      <div className="absolute top-1.5 right-1.5">
-                        <div className="w-4 h-4 rounded-full bg-purple-500/20 flex items-center justify-center">
-                          <Crown className="w-2.5 h-2.5 text-purple-400" />
-                        </div>
-                      </div>
-                    )}
-
-                    <div className={cn('w-8 h-8 sm:w-10 sm:h-10 rounded-lg mx-auto mb-2', colors.icon, 'flex items-center justify-center')}>
-                      <Icon className={cn('w-4 h-4 sm:w-5 sm:h-5', colors.text)} />
-                    </div>
-                    <h3 className="font-serif text-xs sm:text-sm font-semibold text-foreground leading-tight group-hover:text-yellow transition-colors">
-                      {info.title}
-                    </h3>
-                    <span className="text-muted-foreground/50 text-[9px] sm:text-[10px] mt-1 block">
-                      {info.questionCount}q · {info.timeMinutes}m
-                    </span>
-                  </motion.button>
-                );
-              })}
-            </div>
-          </motion.div>
-
-          {/* Completion progress for returning users */}
+          {/* Returning-user progress hint */}
           {hasStarted && completedCount < 4 && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center mt-4">
               <p className="text-muted-foreground text-xs sm:text-sm">
