@@ -12,7 +12,39 @@ interface Answer {
 
 type Framework = 'freudian' | 'jungian' | 'nietzschean';
 
-// Comprehensive Freudian theoretical framework
+// Shared narcissism assessment module appended to every framework prompt.
+// Educational, non-diagnostic — surfaces tendencies, never labels a person.
+const narcissismModule = `
+
+## NARCISSISM SIGNALING MODULE (REQUIRED — ALL FRAMEWORKS)
+
+Across ALL 24 responses, separately assess narcissistic signaling patterns along TWO independent spectra. This is educational, NOT a clinical NPD diagnosis. You must always include narcissismProfile in your final JSON.
+
+**Grandiose spectrum (overt):** specialness fantasies, entitlement, dismissiveness of "ordinary" people, need to be admired, status orientation, exaggeration of achievements, reactive rage to slights.
+
+**Vulnerable spectrum (covert):** hypersensitivity to criticism, hidden superiority paired with shame, envy, victim-orientation, social withdrawal after perceived slights, fragile self-esteem masked by humility.
+
+**Empathy capacity:** genuine attunement to others' inner states vs. self-referential listening (using others' stories as mirrors for the self).
+
+**Admiration need:** degree to which self-worth depends on external recognition vs. internal sources.
+
+Pay special attention to responses to Q21 (idealized future + recognition), Q22 (reaction to criticism / not being acknowledged), Q23 (empathic response to a friend's pain), and Q24 (specialness / feeling different from "most people"). But also weigh signals across ALL prior answers (e.g., dream content, conflicts, moral voice, projections).
+
+Use neutral, educational, non-stigmatizing language. Frame as "tendencies," "signaling patterns," or "leanings" — never as a diagnosis.
+
+Add this object to your final JSON output:
+"narcissismProfile": {
+  "grandiositySpectrum": <0-100>,
+  "vulnerableSpectrum": <0-100>,
+  "empathyCapacity": <0-100>,
+  "admirationNeed": <0-100>,
+  "overallElevation": <"low"|"moderate"|"elevated"|"pronounced">,
+  "presentationStyle": <"healthy-confidence"|"grandiose-leaning"|"vulnerable-leaning"|"mixed"|"minimal">,
+  "signalingPatterns": [<2-4 short concrete patterns observed in the responses>],
+  "educationalNote": <80-120 word plain-language interpretation; explicitly non-diagnostic; explains what was observed and what it may suggest about self-image, validation needs, and relating to others>
+}`;
+
+
 const freudianSystemPrompt = `You are a psychoanalyst rigorously trained in Sigmund Freud's complete body of work. Your analysis must adhere strictly to classical Freudian psychoanalytic theory.
 
 ## THEORETICAL FOUNDATION
@@ -276,9 +308,9 @@ When providing final results, use this JSON format:
 }`;
 
 const frameworkPrompts: Record<Framework, string> = {
-  freudian: freudianSystemPrompt,
-  jungian: jungianSystemPrompt,
-  nietzschean: nietzscheanSystemPrompt,
+  freudian: freudianSystemPrompt + narcissismModule,
+  jungian: jungianSystemPrompt + narcissismModule,
+  nietzschean: nietzscheanSystemPrompt + narcissismModule,
 };
 
 interface ConversationMessage {
@@ -332,7 +364,7 @@ serve(async (req) => {
         .map((a, idx) => `Question ${idx + 1}: ${a.answer}`)
         .join("\n\n");
 
-      const userPrompt = `Analyze these 20 responses using strict ${framework === 'freudian' ? 'Freudian psychoanalytic' : framework === 'jungian' ? 'Jungian analytical' : 'Nietzschean philosophical'} principles. 
+      const userPrompt = `Analyze these ${answers.length} responses using strict ${framework === 'freudian' ? 'Freudian psychoanalytic' : framework === 'jungian' ? 'Jungian analytical' : 'Nietzschean philosophical'} principles, AND complete the narcissism signaling module described in your system instructions. 
 
 IMPORTANT: If ANY response is unclear, ambiguous, or requires deeper exploration to make an accurate assessment according to ${framework === 'freudian' ? 'psychoanalytic' : framework === 'jungian' ? 'analytical psychological' : 'philosophical'} standards, you MUST ask a clarifying question before providing your final assessment. Do not guess or make assumptions about unclear material.
 
@@ -486,7 +518,18 @@ ${formattedAnswers}`;
             }
             return [];
           };
-          
+
+          const defaultNarcissismProfile = {
+            grandiositySpectrum: 40,
+            vulnerableSpectrum: 40,
+            empathyCapacity: 55,
+            admirationNeed: 45,
+            overallElevation: 'moderate' as const,
+            presentationStyle: 'mixed' as const,
+            signalingPatterns: ['Partial signal — full analysis was malformed'],
+            educationalNote: 'A complete narcissism signaling analysis could not be parsed from this response. This is an educational profile only and is not a clinical diagnosis. Consider retaking the assessment for a fuller picture.',
+          };
+
           if (framework === 'jungian') {
             parsedResponse = {
               framework: 'jungian',
@@ -501,6 +544,7 @@ ${formattedAnswers}`;
               profileSummary,
               strengths: extractArray('strengths').length > 0 ? extractArray('strengths') : ['Self-reflection capacity', 'Openness to exploration'],
               growthAreas: extractArray('growthAreas').length > 0 ? extractArray('growthAreas') : ['Continue shadow integration work'],
+              narcissismProfile: defaultNarcissismProfile,
             };
             console.log("Lenient extraction produced jungian results");
           } else if (framework === 'freudian') {
@@ -517,6 +561,7 @@ ${formattedAnswers}`;
               profileSummary,
               strengths: extractArray('strengths').length > 0 ? extractArray('strengths') : ['Ego resilience'],
               growthAreas: extractArray('growthAreas').length > 0 ? extractArray('growthAreas') : ['Continued self-exploration'],
+              narcissismProfile: defaultNarcissismProfile,
             };
             console.log("Lenient extraction produced freudian results");
           } else if (framework === 'nietzschean') {
@@ -535,6 +580,7 @@ ${formattedAnswers}`;
               profileSummary,
               strengths: extractArray('strengths').length > 0 ? extractArray('strengths') : ['Capacity for self-reflection'],
               growthAreas: extractArray('growthAreas').length > 0 ? extractArray('growthAreas') : ['Continue value creation'],
+              narcissismProfile: defaultNarcissismProfile,
             };
             console.log("Lenient extraction produced nietzschean results");
           }

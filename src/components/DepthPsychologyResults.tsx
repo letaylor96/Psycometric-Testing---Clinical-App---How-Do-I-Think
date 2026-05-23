@@ -12,10 +12,101 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, LayoutDashboard, TrendingUp, Sparkles, RefreshCw, ChevronDown, ChevronUp, BookOpen } from 'lucide-react';
+import { ArrowLeft, LayoutDashboard, TrendingUp, Sparkles, RefreshCw, ChevronDown, ChevronUp, BookOpen, Eye, AlertCircle } from 'lucide-react';
 import { SaveAssessmentButton } from '@/components/SaveAssessmentButton';
 import { SocialShareButtons } from '@/components/SocialShareButtons';
 import { cn } from '@/lib/utils';
+import type { NarcissismProfile } from '@/data/depthPsychologyQuestions';
+
+const elevationLabels: Record<NarcissismProfile['overallElevation'], { label: string; tone: string }> = {
+  low: { label: 'Low signaling', tone: 'text-emerald-500' },
+  moderate: { label: 'Moderate signaling', tone: 'text-amber-500' },
+  elevated: { label: 'Elevated signaling', tone: 'text-orange-500' },
+  pronounced: { label: 'Pronounced signaling', tone: 'text-red-500' },
+};
+
+const presentationLabels: Record<NarcissismProfile['presentationStyle'], string> = {
+  'healthy-confidence': 'Healthy confidence',
+  'grandiose-leaning': 'Grandiose-leaning',
+  'vulnerable-leaning': 'Vulnerable-leaning',
+  mixed: 'Mixed presentation',
+  minimal: 'Minimal signaling',
+};
+
+const NarcissismSignalingCard = ({ profile }: { profile?: NarcissismProfile }) => {
+  if (!profile) return null;
+  const elevation = elevationLabels[profile.overallElevation] ?? elevationLabels.moderate;
+
+  const bars: Array<{ label: string; value: number; hint: string }> = [
+    { label: 'Grandiose spectrum', value: profile.grandiositySpectrum, hint: 'Overt specialness, status, admiration-seeking' },
+    { label: 'Vulnerable spectrum', value: profile.vulnerableSpectrum, hint: 'Covert sensitivity, hidden superiority, fragility' },
+    { label: 'Empathy capacity', value: profile.empathyCapacity, hint: 'Attunement to others’ inner states' },
+    { label: 'Admiration need', value: profile.admirationNeed, hint: 'Dependence on external recognition' },
+  ];
+
+  return (
+    <Card className="border-amber-500/30">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-lg">
+          <Eye className="w-5 h-5 text-amber-500" />
+          Narcissistic Signaling
+          <Badge variant="outline" className="ml-auto text-[10px] uppercase tracking-wide">
+            Educational — not diagnostic
+          </Badge>
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-5">
+        <div className="flex flex-wrap items-center gap-2 p-3 rounded-xl bg-muted/50">
+          <span className="text-sm text-muted-foreground">Overall:</span>
+          <Badge variant="outline" className={cn('font-medium', elevation.tone)}>
+            {elevation.label}
+          </Badge>
+          <span className="text-sm text-muted-foreground">·</span>
+          <span className="text-sm font-medium">
+            {presentationLabels[profile.presentationStyle] ?? profile.presentationStyle}
+          </span>
+        </div>
+
+        <div className="grid gap-3">
+          {bars.map((b) => (
+            <div key={b.label} className="space-y-1">
+              <div className="flex items-center justify-between text-sm">
+                <span className="font-medium">{b.label}</span>
+                <span className="font-mono">{b.value}%</span>
+              </div>
+              <Progress value={b.value} className="h-1.5" />
+              <p className="text-xs text-muted-foreground">{b.hint}</p>
+            </div>
+          ))}
+        </div>
+
+        {profile.signalingPatterns?.length > 0 && (
+          <div>
+            <p className="text-sm font-medium mb-2">Patterns observed:</p>
+            <div className="flex flex-wrap gap-2">
+              {profile.signalingPatterns.map((p, i) => (
+                <Badge key={i} variant="outline" className="text-xs">{p}</Badge>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 text-sm leading-relaxed">
+          {profile.educationalNote}
+        </div>
+
+        <div className="flex items-start gap-2 text-xs text-muted-foreground">
+          <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
+          <span>
+            This module surfaces tendencies along the grandiose / vulnerable spectra for self-reflection.
+            It is <strong>not</strong> a clinical diagnosis of Narcissistic Personality Disorder. Only a
+            licensed clinician can make that determination.
+          </span>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
 
 interface DepthPsychologyResultsProps {
   results: Results;
@@ -663,6 +754,17 @@ export const DepthPsychologyResultsScreen = ({
           {results.framework === 'jungian' && <JungianResultsView results={results} />}
           {results.framework === 'nietzschean' && <NietzscheanResultsView results={results} />}
         </motion.div>
+
+        {/* Narcissism signaling — shared across all frameworks (educational, not diagnostic) */}
+        {(results as any).narcissismProfile && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <NarcissismSignalingCard profile={(results as any).narcissismProfile} />
+          </motion.div>
+        )}
 
         {/* Strengths and Growth Areas */}
         <motion.div

@@ -141,7 +141,47 @@ export const depthQuestions: DepthQuestion[] = [
     category: 'meaning',
     probes: ['inner wisdom', 'suppressed knowledge', 'self-confrontation'],
   },
+
+  // NARCISSISTIC SIGNALING (grandiose / vulnerable / empathy / admiration)
+  {
+    id: 21,
+    question: "When you imagine your ideal future self, what role do you play and how do others see, recognize, or respond to you in it?",
+    category: 'self',
+    probes: ['grandiose fantasy', 'specialness', 'need for recognition'],
+  },
+  {
+    id: 22,
+    question: "How do you typically react — internally and externally — when someone criticizes you, ignores you, or fails to acknowledge something you did well?",
+    category: 'self',
+    probes: ['narcissistic injury', 'rage vs withdrawal', 'fragility of self-esteem'],
+  },
+  {
+    id: 23,
+    question: "When a close friend describes a painful experience that has nothing to do with you, what actually happens inside you while they talk?",
+    category: 'morality',
+    probes: ['empathy capacity', 'attunement vs self-reference', 'emotional resonance'],
+  },
+  {
+    id: 24,
+    question: "Be honest: in what ways do you feel meaningfully different from, more capable than, or misunderstood by 'most people' — and where does that sense come from?",
+    category: 'self',
+    probes: ['entitlement', 'specialness vs isolation', 'grandiose vs vulnerable presentation'],
+  },
 ];
+
+// Shared narcissism signaling profile — non-diagnostic, educational only.
+// Surfaces tendencies along grandiose/vulnerable spectra across all
+// depth psychology frameworks. NOT a clinical NPD assessment.
+export interface NarcissismProfile {
+  grandiositySpectrum: number;        // 0-100: overt grandiose signaling
+  vulnerableSpectrum: number;         // 0-100: covert/vulnerable signaling
+  empathyCapacity: number;            // 0-100: attunement to others
+  admirationNeed: number;             // 0-100: dependence on external validation
+  overallElevation: 'low' | 'moderate' | 'elevated' | 'pronounced';
+  presentationStyle: 'healthy-confidence' | 'grandiose-leaning' | 'vulnerable-leaning' | 'mixed' | 'minimal';
+  signalingPatterns: string[];        // 2-4 short concrete patterns observed
+  educationalNote: string;            // plain-language, non-diagnostic interpretation
+}
 
 // Framework-specific result structures
 export interface FreudianResults {
@@ -157,6 +197,7 @@ export interface FreudianResults {
   profileSummary: string;
   strengths: string[];
   growthAreas: string[];
+  narcissismProfile?: NarcissismProfile;
   answers: { questionId: number; answer: string }[];
 }
 
@@ -173,6 +214,7 @@ export interface JungianResults {
   profileSummary: string;
   strengths: string[];
   growthAreas: string[];
+  narcissismProfile?: NarcissismProfile;
   answers: { questionId: number; answer: string }[];
 }
 
@@ -191,6 +233,7 @@ export interface NietzscheanResults {
   profileSummary: string;
   strengths: string[];
   growthAreas: string[];
+  narcissismProfile?: NarcissismProfile;
   answers: { questionId: number; answer: string }[];
 }
 
