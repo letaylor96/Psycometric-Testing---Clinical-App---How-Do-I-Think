@@ -670,7 +670,7 @@ const Index = () => {
       </AnimatePresence>
 
       {showMapBanner && (
-        <MapMyMindBanner
+        <DiscoverMyMindBanner
           status={mapStatus}
           onContinue={handleMapContinue}
           onViewDashboard={handleViewDashboard}
