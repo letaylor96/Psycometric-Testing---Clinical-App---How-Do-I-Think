@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Require authentication for purchases" ON public.purchases;
