@@ -61,27 +61,26 @@ const OPTIONS: TestOption[] = [
     key: 'adhd',
 
     title: 'ADHD Evaluation',
-    blurb: 'WHO ASRS-v1.1 screening for attention patterns.',
+    blurb: 'WHO ASRS-v1.1 screening — the standard 18-item adult ADHD self-report scale.',
     meta: '18 questions · ~9 min',
     icon: Activity,
     text: 'text-rose-400',
     iconBg: 'bg-rose-500/15',
     border: 'border-rose-500/25',
     hoverBorder: 'hover:border-rose-500/60',
-    note: 'Standalone 18-item WHO ASRS-v1.1 screener',
+    note: 'Standalone WHO ASRS-v1.1 (Part A + Part B)',
   },
   {
     key: 'autism',
-
     title: 'Autism Spectrum Evaluation',
-    blurb: 'Cognitive-style signals across the autism spectrum.',
-    meta: '20 questions · ~10 min',
+    blurb: 'AQ-50 by Baron-Cohen et al. — 5 subscales mapping the autism spectrum.',
+    meta: '50 questions · ~25 min',
     icon: Puzzle,
     text: 'text-cyan-400',
     iconBg: 'bg-cyan-500/15',
     border: 'border-cyan-500/25',
     hoverBorder: 'hover:border-cyan-500/60',
-    note: 'Standalone 18-item WHO ASRS-v1.1 screener',
+    note: 'Standalone AQ-50 with subscale breakdown',
   },
   {
     key: 'depth',
@@ -97,7 +96,7 @@ const OPTIONS: TestOption[] = [
   },
 ];
 
-export const SingleTestPicker = ({ onSelectAssessment }: SingleTestPickerProps) => {
+export const SingleTestPicker = ({ onSelectTest }: SingleTestPickerProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -130,7 +129,7 @@ export const SingleTestPicker = ({ onSelectAssessment }: SingleTestPickerProps) 
             return (
               <motion.button
                 key={opt.key}
-                onClick={() => onSelectAssessment(opt.routeTo)}
+                onClick={() => onSelectTest(opt.key)}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 className={cn(
