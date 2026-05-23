@@ -49,9 +49,9 @@ const typeIcons: Record<AssessmentTypeKey, React.ReactNode> = {
 
 const typeLabels: Record<AssessmentTypeKey, string> = {
   iq: 'IQ Assessment',
-  personality: 'Personality',
-  neurodivergent: 'Neurodivergent Mind',
-  depth: 'Depth Psychology',
+  personality: 'Personality Type',
+  neurodivergent: 'Neurodivergence Level',
+  depth: 'Psychoanalytical Analysis',
 };
 
 export function SavedAssessmentsPanel({ 

@@ -75,7 +75,7 @@ export const MapMyMindSpine = ({
                   ? 'All 4 assessments complete. Open your integrated dashboard.'
                   : active
                     ? `${completedCount} of ${totalSteps} done · ~${totalSteps - completedCount * 1} steps left`
-                    : 'IQ → Neurodivergence → Personality → Unconscious. ~45 min total, resume anytime.'}
+                    : 'IQ → Neurodivergence Level → Personality Type → Psychoanalytical Analysis. ~45 min total, resume anytime.'}
               </p>
             </div>
           </div>

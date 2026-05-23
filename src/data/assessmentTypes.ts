@@ -20,8 +20,8 @@ export const TIME_PER_QUESTION_SECONDS = 30;
 export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
   personality: {
     id: 'personality',
-    title: 'Who Am I?',
-    shortTitle: 'Personality',
+    title: 'Personality Type',
+    shortTitle: 'Personality Type',
     description: 'Discover your personality archetype, Myers-Briggs type, and what makes you uniquely you.',
     framework: 'Big Five + MBTI',
     questionCount: 30,
@@ -41,8 +41,8 @@ export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
   },
   neurodivergent: {
     id: 'neurodivergent',
-    title: 'How Do I Think?',
-    shortTitle: 'Neurodivergent',
+    title: 'Neurodivergence Level',
+    shortTitle: 'Neurodivergence Level',
     description: 'Comprehensive assessment of your cognitive style, thinking patterns, attention, and focus using clinical screening tools.',
     framework: 'Cognitive Style + ASRS-v1.1',
     questionCount: 38, // 20 cognitive + 18 ADHD
@@ -52,8 +52,8 @@ export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
   },
   depth: {
     id: 'depth',
-    title: 'Discover Your Unconscious Mind',
-    shortTitle: 'Depth Psychology',
+    title: 'Psychoanalytical Analysis',
+    shortTitle: 'Psychoanalytical Analysis',
     description: 'Explore your unconscious patterns through the lens of Freud, Jung, or Nietzsche with AI-powered psychoanalytic assessment.',
     framework: 'Freud · Jung · Nietzsche',
     questionCount: 20,
