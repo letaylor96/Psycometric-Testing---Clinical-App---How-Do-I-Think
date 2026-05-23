@@ -185,6 +185,19 @@ const Index = () => {
     setGameState('preview');
   }, []);
 
+  // Single-test picker dispatch — routes standalone tests directly to their flow.
+  const handleSelectTest = useCallback((key: SelectableTestKey) => {
+    if (key === 'adhd') {
+      setGameState('adhd-quiz');
+      return;
+    }
+    if (key === 'autism') {
+      setGameState('autism-quiz');
+      return;
+    }
+    handleSelectAssessment(key);
+  }, [handleSelectAssessment]);
+
   // Start the actual quiz from preview
   const handleStartFromPreview = useCallback((tier: 'free' | 'premium') => {
     if (!previewType) return;
