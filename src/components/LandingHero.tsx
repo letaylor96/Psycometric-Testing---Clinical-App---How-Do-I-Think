@@ -72,6 +72,11 @@ export const LandingHero = ({
   const completedCount = Object.values(completionStatus).filter(Boolean).length;
   const hasStarted = completedCount > 0;
 
+  const completedAssessments = (Object.entries(completionStatus) as [AssessmentType, boolean][])
+    .filter(([, done]) => done)
+    .map(([t]) => t);
+  const mapStatus = useMapMyMind(completedAssessments);
+
   const handleTeaserAnswer = (index: number) => {
     if (teaserRevealed) return;
     setTeaserAnswer(index);
