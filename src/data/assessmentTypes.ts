@@ -2,6 +2,13 @@
 
 export type AssessmentType = 'personality' | 'iq' | 'neurodivergent' | 'depth';
 
+// Standalone tests offered via the SingleTestPicker. They live outside the
+// guided 4-step funnel so they don't break Record<AssessmentType,...> maps,
+// but share the same routing surface via SelectableTestKey below.
+export type StandaloneTestKey = 'adhd' | 'autism';
+
+export type SelectableTestKey = AssessmentType | StandaloneTestKey;
+
 export interface AssessmentInfo {
   id: AssessmentType;
   title: string;

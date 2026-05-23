@@ -6,15 +6,20 @@ import { QuizQuestion } from '@/components/QuizQuestion';
 import { ResultsScreen } from '@/components/ResultsScreen';
 import { AssessmentPreview } from '@/components/AssessmentPreview';
 import { Question, calculateResults, TestResults, TOTAL_TEST_TIME } from '@/data/quizQuestions';
-import { AssessmentType } from '@/data/assessmentTypes';
+import { AssessmentType, SelectableTestKey } from '@/data/assessmentTypes';
 import { personalityQuestions, calculatePersonalityResults, PersonalityResults } from '@/data/personalityQuestions';
-import { ADHDResults } from '@/data/adhdQuestions';
+import { ADHDResults, calculateADHDResults } from '@/data/adhdQuestions';
 import { CognitiveStyleResults } from '@/data/cognitiveStyleQuestions';
 import { AnalysisFramework, DepthPsychologyResults } from '@/data/depthPsychologyQuestions';
 import { NeurodivergentMindResults, calculateNeurodivergentMindResults } from '@/data/neurodivergentMindQuestions';
+import { AQResults, calculateAQResults } from '@/data/autismQuestions';
 import { PersonalityQuiz } from '@/components/PersonalityQuiz';
 import { NeurodivergentMindQuiz } from '@/components/NeurodivergentMindQuiz';
 import { NeurodivergentMindResultsScreen } from '@/components/NeurodivergentMindResultsScreen';
+import { ADHDQuiz } from '@/components/ADHDQuiz';
+import { ADHDResultsScreen } from '@/components/ADHDResultsScreen';
+import { AutismQuiz } from '@/components/AutismQuiz';
+import { AutismResultsScreen } from '@/components/AutismResultsScreen';
 import { FrameworkSelector } from '@/components/FrameworkSelector';
 import { DepthPsychologyQuiz } from '@/components/DepthPsychologyQuiz';
 import { DepthPsychologyResultsScreen } from '@/components/DepthPsychologyResults';
@@ -42,6 +47,10 @@ type GameState =
   | 'depth-quiz'
   | 'depth-analyzing'
   | 'depth-results'
+  | 'adhd-quiz'
+  | 'adhd-results'
+  | 'autism-quiz'
+  | 'autism-results'
   | 'dashboard';
 
 const Index = () => {
@@ -59,6 +68,8 @@ const Index = () => {
   const [depthResults, setDepthResults] = useState<DepthPsychologyResults | null>(null);
   const [depthAnswers, setDepthAnswers] = useState<{ questionId: number; answer: string }[]>([]);
   const [neurodivergentResults, setNeurodivergentResults] = useState<NeurodivergentMindResults | null>(null);
+  const [autismResults, setAutismResults] = useState<AQResults | null>(null);
+  const [standaloneAdhdResults, setStandaloneAdhdResults] = useState<ADHDResults | null>(null);
   const [clarificationRequest, setClarificationRequest] = useState<{
     question: string;
     context: string;
@@ -173,6 +184,19 @@ const Index = () => {
     setPreviewType(type);
     setGameState('preview');
   }, []);
+
+  // Single-test picker dispatch — routes standalone tests directly to their flow.
+  const handleSelectTest = useCallback((key: SelectableTestKey) => {
+    if (key === 'adhd') {
+      setGameState('adhd-quiz');
+      return;
+    }
+    if (key === 'autism') {
+      setGameState('autism-quiz');
+      return;
+    }
+    handleSelectAssessment(key);
+  }, [handleSelectAssessment]);
 
   // Start the actual quiz from preview
   const handleStartFromPreview = useCallback((tier: 'free' | 'premium') => {
@@ -474,6 +498,7 @@ const Index = () => {
             <LandingHero 
               onStart={() => handleSelectAssessment('iq')} 
               onSelectAssessment={handleSelectAssessment}
+              onSelectTest={handleSelectTest}
               onViewDashboard={handleViewDashboard}
               iqResults={results}
               personalityResults={personalityResults}
@@ -648,6 +673,56 @@ const Index = () => {
             />
           </motion.div>
         )}
+
+        {gameState === 'adhd-quiz' && (
+          <motion.div key="adhd-quiz" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            <ADHDQuiz
+              onComplete={(answers) => {
+                const r = calculateADHDResults(answers);
+                setStandaloneAdhdResults(r);
+                setADHDResults(r);
+                setAdhdAnswersState(answers);
+                persistADHD(r, answers);
+                setGameState('adhd-results');
+              }}
+              onBack={handleRestart}
+            />
+          </motion.div>
+        )}
+
+        {gameState === 'adhd-results' && standaloneAdhdResults && (
+          <motion.div key="adhd-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            <ADHDResultsScreen
+              results={standaloneAdhdResults}
+              onRestart={handleRestart}
+              onViewDashboard={handleViewDashboard}
+            />
+          </motion.div>
+        )}
+
+        {gameState === 'autism-quiz' && (
+          <motion.div key="autism-quiz" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            <AutismQuiz
+              onComplete={(answers) => {
+                const r = calculateAQResults(answers);
+                setAutismResults(r);
+                setGameState('autism-results');
+              }}
+              onBack={handleRestart}
+            />
+          </motion.div>
+        )}
+
+        {gameState === 'autism-results' && autismResults && (
+          <motion.div key="autism-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            <AutismResultsScreen
+              results={autismResults}
+              onRestart={handleRestart}
+              onViewDashboard={handleViewDashboard}
+            />
+          </motion.div>
+        )}
+
 
         {gameState === 'dashboard' && (
           <motion.div

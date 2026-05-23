@@ -1,17 +1,14 @@
 import { motion } from 'framer-motion';
 import { Brain, Target, Zap, Sparkles, Activity, Puzzle, ArrowRight } from 'lucide-react';
-import { AssessmentType } from '@/data/assessmentTypes';
+import { SelectableTestKey } from '@/data/assessmentTypes';
 import { cn } from '@/lib/utils';
 
 interface SingleTestPickerProps {
-  onSelectAssessment: (type: AssessmentType) => void;
+  onSelectTest: (key: SelectableTestKey) => void;
 }
 
-type TestKey = 'iq' | 'neurodivergent' | 'personality' | 'adhd' | 'autism' | 'depth';
-
 interface TestOption {
-  key: TestKey;
-  routeTo: AssessmentType;
+  key: SelectableTestKey;
   title: string;
   blurb: string;
   meta: string;
@@ -26,7 +23,7 @@ interface TestOption {
 const OPTIONS: TestOption[] = [
   {
     key: 'iq',
-    routeTo: 'iq',
+
     title: 'IQ',
     blurb: 'Mensa-style pattern recognition and abstract reasoning.',
     meta: '25 questions · ~13 min',
@@ -38,7 +35,7 @@ const OPTIONS: TestOption[] = [
   },
   {
     key: 'neurodivergent',
-    routeTo: 'neurodivergent',
+
     title: 'Neurodivergence Level',
     blurb: 'Cognitive style + attention screening across the full spectrum.',
     meta: '38 questions · ~19 min',
@@ -50,7 +47,7 @@ const OPTIONS: TestOption[] = [
   },
   {
     key: 'personality',
-    routeTo: 'personality',
+
     title: 'Personality Type',
     blurb: 'Big Five + MBTI archetype and trait breakdown.',
     meta: '30 questions · ~15 min',
@@ -62,33 +59,32 @@ const OPTIONS: TestOption[] = [
   },
   {
     key: 'adhd',
-    routeTo: 'neurodivergent',
+
     title: 'ADHD Evaluation',
-    blurb: 'WHO ASRS-v1.1 screening for attention patterns.',
+    blurb: 'WHO ASRS-v1.1 screening — the standard 18-item adult ADHD self-report scale.',
     meta: '18 questions · ~9 min',
     icon: Activity,
     text: 'text-rose-400',
     iconBg: 'bg-rose-500/15',
     border: 'border-rose-500/25',
     hoverBorder: 'hover:border-rose-500/60',
-    note: 'Included in Neurodivergence Level',
+    note: 'Standalone WHO ASRS-v1.1 (Part A + Part B)',
   },
   {
     key: 'autism',
-    routeTo: 'neurodivergent',
     title: 'Autism Spectrum Evaluation',
-    blurb: 'Cognitive-style signals across the autism spectrum.',
-    meta: '20 questions · ~10 min',
+    blurb: 'AQ-50 by Baron-Cohen et al. — 5 subscales mapping the autism spectrum.',
+    meta: '50 questions · ~25 min',
     icon: Puzzle,
     text: 'text-cyan-400',
     iconBg: 'bg-cyan-500/15',
     border: 'border-cyan-500/25',
     hoverBorder: 'hover:border-cyan-500/60',
-    note: 'Included in Neurodivergence Level',
+    note: 'Standalone AQ-50 with subscale breakdown',
   },
   {
     key: 'depth',
-    routeTo: 'depth',
+
     title: 'Psychoanalytical Insights',
     blurb: 'Freud · Jung · Nietzsche lenses with AI-powered analysis.',
     meta: '24 questions · ~20 min',
@@ -100,7 +96,7 @@ const OPTIONS: TestOption[] = [
   },
 ];
 
-export const SingleTestPicker = ({ onSelectAssessment }: SingleTestPickerProps) => {
+export const SingleTestPicker = ({ onSelectTest }: SingleTestPickerProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -133,7 +129,7 @@ export const SingleTestPicker = ({ onSelectAssessment }: SingleTestPickerProps) 
             return (
               <motion.button
                 key={opt.key}
-                onClick={() => onSelectAssessment(opt.routeTo)}
+                onClick={() => onSelectTest(opt.key)}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 className={cn(
