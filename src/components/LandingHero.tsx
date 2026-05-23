@@ -81,6 +81,13 @@ export const LandingHero = ({
   // Secondary assessments (everything except IQ)
   const secondaryAssessments: AssessmentType[] = ['personality', 'neurodivergent', 'depth'];
 
+  const assessmentTooltips: Record<AssessmentType, string> = {
+    iq: 'Mensa-style pattern recognition & abstract reasoning',
+    personality: 'Big Five traits + Myers-Briggs archetype — what makes you, you',
+    neurodivergent: 'Cognitive style + clinical ADHD screening (ASRS-v1.1)',
+    depth: 'Psychoanalytic-style analysis through Freud, Jung, or Nietzsche',
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Top Navigation Bar */}
@@ -274,6 +281,19 @@ export const LandingHero = ({
                       isCompleted ? 'border-emerald-500/40 ring-1 ring-emerald-500/20' : colors.border
                     )}
                   >
+                    {/* Thought bubble tooltip */}
+                    <div className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200 z-20 w-48 sm:w-52">
+                      <div className="relative bg-popover border border-border rounded-2xl px-3 py-2 shadow-xl">
+                        <p className="text-[11px] sm:text-xs text-foreground leading-snug">
+                          {assessmentTooltips[type]}
+                        </p>
+                        {/* Bubble tail dots */}
+                        <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-popover border-r border-b border-border rotate-45" />
+                        <div className="absolute -bottom-3 left-[calc(50%-10px)] w-1.5 h-1.5 rounded-full bg-popover border border-border" />
+                        <div className="absolute -bottom-5 left-[calc(50%-14px)] w-1 h-1 rounded-full bg-popover border border-border" />
+                      </div>
+                    </div>
+
                     {isCompleted && (
                       <div className="absolute top-1.5 right-1.5">
                         <div className="w-4 h-4 rounded-full bg-emerald-500/20 flex items-center justify-center">
