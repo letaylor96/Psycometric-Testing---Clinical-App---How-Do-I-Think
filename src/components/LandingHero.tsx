@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Brain, Lightbulb, Sparkles, Target, Zap, Crown, MessageCircle, FileText, Info, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { AssessmentType, assessmentInfo, allAssessmentTypes } from '@/data/assessmentTypes';
+import { AssessmentType, SelectableTestKey, assessmentInfo, allAssessmentTypes } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
 import { AuthButton } from '@/components/AuthButton';
 import { HomeFAQ } from '@/components/HomeFAQ';
@@ -22,6 +22,7 @@ import { cn } from '@/lib/utils';
 interface LandingHeroProps {
   onStart: () => void;
   onSelectAssessment: (type: AssessmentType) => void;
+  onSelectTest: (key: SelectableTestKey) => void;
   onViewDashboard?: () => void;
   iqResults?: TestResults | null;
   personalityResults?: PersonalityResults | null;
@@ -31,7 +32,8 @@ interface LandingHeroProps {
 
 export const LandingHero = ({ 
   onStart, 
-  onSelectAssessment, 
+  onSelectAssessment,
+  onSelectTest,
   onViewDashboard,
   iqResults,
   personalityResults,
