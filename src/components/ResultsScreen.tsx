@@ -66,7 +66,7 @@ export const ResultsScreen = ({ results, answers, onRestart, onViewDashboard }: 
 
 ${results.divergentDescription}
 
-Take the free assessment to discover your cognitive edge 👇
+Structured self-assessment for thinking patterns and program guidance 👇
 
 #CognitiveAssessment #LeadershipDevelopment #PersonalGrowth`;
 
@@ -78,7 +78,7 @@ Take the free assessment to discover your cognitive edge 👇
 
 Fascinating insights into how I think and solve problems. Try it yourself!`;
 
-  const twitterText = `Just scored ${results.iq} (${iqTier.tier}) on the cognitive assessment! 🧠 My archetype: ${results.divergentType}. Discover your cognitive edge:`;
+  const twitterText = `Cognitive reasoning module: ${results.iq} (${iqTier.tier}) 🧠 Archetype: ${results.divergentType}. Structured self-assessment for program guidance:`;
 
   return (
     <div className="min-h-screen px-4 py-12 relative overflow-hidden">
@@ -436,9 +436,9 @@ Fascinating insights into how I think and solve problems. Try it yourself!`;
           transition={{ delay: 0.8 }}
           className="text-center text-xs text-muted-foreground/60 mt-10 max-w-lg mx-auto leading-relaxed"
         >
-          <strong className="text-muted-foreground/80">Educational & Entertainment Purposes Only.</strong>{' '}
-          This assessment is not a standardized IQ test and does not provide a clinical measure of intelligence. 
-          Results are for self-reflection and entertainment, not professional, educational, or employment decisions. 
+          <strong className="text-muted-foreground/80">For self-understanding and program guidance only.</strong>{' '}
+          This module is part of a structured self-assessment, not a diagnostic instrument. It does not provide a clinical measure of intelligence.
+          Results are for self-reflection and program guidance, not professional, educational, or employment decisions.
           A formal cognitive evaluation requires administration by a licensed psychologist.
         </motion.p>
       </div>

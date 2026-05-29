@@ -63,7 +63,7 @@ export const CognitiveStyleResultsScreen = ({
   }));
 
   const handleShare = async () => {
-    const shareText = `🧠 My Cognitive Style: ${results.primaryProfile.name}\n\n"${results.primaryProfile.tagline}"\n\nTop Strengths:\n${results.insights.strengths.map(s => `• ${s}`).join('\n')}\n\nDiscover your thinking style!`;
+    const shareText = `🧠 My Cognitive Style: ${results.primaryProfile.name}\n\n"${results.primaryProfile.tagline}"\n\nTop Strengths:\n${results.insights.strengths.map(s => `• ${s}`).join('\n')}\n\nStructured self-assessment for thinking patterns →`;
     
     if (navigator.share) {
       try {
@@ -360,9 +360,9 @@ export const CognitiveStyleResultsScreen = ({
                 value: s.percentage,
                 color: dimensionColors[s.dimension],
               }))}
-              shareText={`🧠 My Cognitive Style: ${results.primaryProfile.name}\n\n"${results.primaryProfile.tagline}"\n\nTop Strengths:\n${results.insights.strengths.map(s => '• ' + s).join('\n')}\n\nDiscover your thinking style 👇`}
-              linkedInText={`Just discovered my cognitive style: ${results.primaryProfile.name}! "${results.primaryProfile.tagline}" — Fascinating insights into how my mind processes information.`}
-              twitterText={`My cognitive style: ${results.primaryProfile.name} 🧠 "${results.primaryProfile.tagline}" Discover yours:`}
+              shareText={`🧠 My Cognitive Style: ${results.primaryProfile.name}\n\n"${results.primaryProfile.tagline}"\n\nTop Strengths:\n${results.insights.strengths.map(s => '• ' + s).join('\n')}\n\nStructured self-assessment for thinking patterns 👇`}
+              linkedInText={`Completed the cognitive style module: ${results.primaryProfile.name}. "${results.primaryProfile.tagline}" — useful signals for strengths and support needs.`}
+              twitterText={`My cognitive style: ${results.primaryProfile.name} 🧠 "${results.primaryProfile.tagline}" Structured self-assessment →`}
             />
           </div>
         </motion.div>

@@ -69,7 +69,7 @@ export const TherapistReport = ({
       sections.push('');
       sections.push('SECTION 1: COGNITIVE ABILITY ASSESSMENT');
       sections.push('───────────────────────────────────────────────────────────────');
-      sections.push('Instrument: Pattern Recognition IQ Test (Raven\'s-style matrices)');
+      sections.push('Instrument: Cognitive Reasoning Module (Raven\'s-style matrices)');
       sections.push(`Questions Completed: ${iqResults.totalCorrect}/${iqResults.totalQuestions}`);
       sections.push(`Time Used: ${Math.round(iqResults.timeUsed / 60)} minutes`);
       sections.push('');

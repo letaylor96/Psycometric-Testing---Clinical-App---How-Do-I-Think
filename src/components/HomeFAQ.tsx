@@ -23,7 +23,7 @@ const faqs = [
     linkText: 'Open the attention-patterns module →',
   },
   {
-    q: 'Is the cognitive reasoning module an IQ test?',
+    q: 'What is the cognitive reasoning module?',
     a: "It is a structured reasoning module modelled on Raven's Progressive Matrices. It indicates how you approach abstract pattern problems under time pressure — useful as one signal in your profile, not a standalone IQ score.",
     link: '/free-iq-test',
     linkText: 'Open the reasoning module →',

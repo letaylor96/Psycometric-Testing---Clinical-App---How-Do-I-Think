@@ -236,7 +236,7 @@ export const ADHDResultsScreen = ({ results, onRestart, onViewDashboard }: ADHDR
               hyperactivityPct={hyperactivityPercentage}
               shareText={`🧠 My Neurodivergent Screening Results\n\nResult: ${config.answer}\nInattention: ${inattentionPercentage}% | Hyperactivity: ${hyperactivityPercentage}%\n\n${config.explanation}\n\nTake the free screening 👇`}
               linkedInText={`Just completed a neurodivergent screening! Result: ${config.answer}. Fascinating insights into how my mind works. Try it yourself!`}
-              twitterText={`My neurodivergent screening: ${config.answer} 🧠 Inattention ${inattentionPercentage}% | Hyperactivity ${hyperactivityPercentage}%. Discover your thinking patterns:`}
+              twitterText={`Attention & focus patterns: ${config.answer} 🧠 Inattention ${inattentionPercentage}% | Hyperactivity ${hyperactivityPercentage}%. Structured self-assessment for program guidance →`}
             />
           </div>
         </motion.div>

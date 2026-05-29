@@ -87,16 +87,16 @@ Cognitive Style: ${cognitiveStyle.primaryProfile.name}
 Processing: ${processingStyleLabels[cognitiveStyle.processingStyle]}
 Neurodivergent Likelihood: ${likelihoodInfo.label}
 
-Discover your cognitive profile!`;
+Build your cognitive style profile →`;
 
-  const linkedInText = `Just completed my Neurodivergence Level assessment! 🧠
+  const linkedInText = `Completed the Cognitive Style & Attention module 🧠
 
 Cognitive Style: ${cognitiveStyle.primaryProfile.name}
 Processing: ${processingStyleLabels[cognitiveStyle.processingStyle]}
 
-Understanding how my mind works differently. Discover your profile!`;
+A structured self-assessment for thinking patterns and program guidance.`;
 
-  const twitterText = `My cognitive style: ${cognitiveStyle.primaryProfile.name} 🧠 Processing: ${processingStyleLabels[cognitiveStyle.processingStyle]}. Discover your profile:`;
+  const twitterText = `Cognitive style: ${cognitiveStyle.primaryProfile.name} 🧠 Processing: ${processingStyleLabels[cognitiveStyle.processingStyle]}. Structured self-assessment →`;
 
   return (
     <div className="min-h-screen bg-background px-4 py-8">
