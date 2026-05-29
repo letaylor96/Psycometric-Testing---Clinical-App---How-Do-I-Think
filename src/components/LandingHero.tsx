@@ -20,6 +20,9 @@ import { ProfileIdentifiesSection } from '@/components/ProfileIdentifiesSection'
 import { WhyThisMattersSection } from '@/components/WhyThisMattersSection';
 import { ProgramConnectionSection } from '@/components/ProgramConnectionSection';
 import { DisclaimerSection } from '@/components/DisclaimerSection';
+import { SampleProfilePreview } from '@/components/landing/SampleProfilePreview';
+import { JourneyPathway } from '@/components/landing/JourneyPathway';
+import { JourneyStageChip } from '@/components/landing/JourneyStageChip';
 
 interface LandingHeroProps {
   onStart: () => void;
@@ -60,8 +63,8 @@ export const LandingHero = ({
     .map(([t]) => t);
   const mapStatus = useDiscoverMyMind(completedAssessments);
 
-  const scrollToProgram = () => {
-    document.getElementById('program-connection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const scrollToIncludes = () => {
+    document.getElementById('profile-includes')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
@@ -70,14 +73,14 @@ export const LandingHero = ({
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-9 h-9 rounded-md border border-border bg-card flex items-center justify-center flex-shrink-0">
-              <span className="font-serif text-[11px] font-semibold tracking-wider text-foreground">HDT</span>
+            <div className="w-9 h-9 rounded-md border border-navy-deep/20 bg-navy-deep flex items-center justify-center flex-shrink-0">
+              <span className="font-serif text-[11px] font-semibold tracking-wider text-cream">HDT</span>
             </div>
             <div className="leading-tight">
               <div className="font-serif text-base sm:text-lg font-medium text-foreground tracking-tight">
                 How Do I Think
               </div>
-              <div className="hidden sm:block text-[10px] uppercase tracking-[0.18em] text-muted-foreground/80">
+              <div className="hidden sm:block text-[10px] uppercase tracking-[0.18em] text-ink-muted">
                 An Applied AI Works Canada assessment
               </div>
             </div>
@@ -90,13 +93,26 @@ export const LandingHero = ({
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-24 sm:pt-32 pb-8 sm:pb-12">
-        <div className="absolute top-[64px] inset-x-0 h-px bg-border/60" />
+      <section className="relative pt-24 sm:pt-28 pb-12 sm:pb-16 overflow-hidden">
+        {/* faint connected-dots backdrop, "mapping" motif */}
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-0 opacity-[0.18]"
+          style={{
+            backgroundImage:
+              'radial-gradient(hsl(var(--teal) / 0.45) 1px, transparent 1px)',
+            backgroundSize: '22px 22px',
+            maskImage:
+              'radial-gradient(ellipse at 70% 30%, black 30%, transparent 75%)',
+            WebkitMaskImage:
+              'radial-gradient(ellipse at 70% 30%, black 30%, transparent 75%)',
+          }}
+        />
 
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
           {/* Progress bar for returning users */}
           {hasStarted && (
-            <div className="mb-6">
+            <div className="mb-8">
               <AssessmentProgress
                 iqResults={iqResults ?? null}
                 personalityResults={personalityResults ?? null}
@@ -108,78 +124,103 @@ export const LandingHero = ({
             </div>
           )}
 
-          {/* Eyebrow */}
-          <div className="text-center mb-4">
-            <span className="inline-block text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-muted-foreground font-medium">
-              Cognitive &amp; AI-Readiness Self-Assessment
-            </span>
-          </div>
+          <div className="grid lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-14 items-center">
+            {/* LEFT: copy + CTAs */}
+            <div>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-teal/30 bg-teal-soft/60 dark:bg-teal-soft/30">
+                <span className="w-1.5 h-1.5 rounded-full bg-teal" />
+                <span className="text-[10px] uppercase tracking-[0.24em] text-teal font-medium">
+                  Cognitive &amp; AI-Readiness Self-Assessment
+                </span>
+              </span>
 
-          {/* Headline */}
-          <div className="text-center mb-6 sm:mb-8 max-w-3xl mx-auto">
-            <motion.h1
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium text-foreground leading-[1.15] tracking-tight mb-5"
-            >
-              Understand how you think — so you can build from your strengths.
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.08 }}
-              className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
-            >
-              A structured cognitive and personality profile designed to help participants understand how they learn, solve problems, communicate, and adapt to AI-enabled work.
-            </motion.p>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3, delay: 0.16 }}
-              className="text-muted-foreground/70 text-sm max-w-2xl mx-auto leading-relaxed mt-4"
-            >
-              Built to support Applied AI Works Canada by helping participants identify where they may thrive, where they may need support, and how to start with the right AI-enabled tools and workflows.
-            </motion.p>
+              <motion.h1
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium text-foreground leading-[1.12] tracking-tight mt-5 mb-5"
+              >
+                Understand how you think — <span className="text-navy-deep dark:text-cream">so you can build from your strengths.</span>
+              </motion.h1>
 
-            {/* Primary + Secondary CTA */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-7">
-              <Button
-                onClick={onStart}
-                size="lg"
-                className="bg-foreground text-background hover:bg-foreground/90 font-medium px-7 py-5 text-sm"
+              <motion.p
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.08 }}
+                className="text-ink-muted text-base sm:text-lg max-w-xl leading-relaxed"
               >
-                Start the assessment
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-              <Button
-                onClick={scrollToProgram}
-                variant="outline"
-                size="lg"
-                className="border-border text-foreground hover:bg-card font-medium px-7 py-5 text-sm"
+                A structured cognitive and personality profile designed to help participants understand how they learn, solve problems, communicate, and adapt to AI-enabled work.
+              </motion.p>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.16 }}
+                className="text-ink-muted/85 text-sm max-w-xl leading-relaxed mt-4 border-l-2 border-gold/50 pl-4"
               >
-                Learn how it supports the program
-              </Button>
+                Built to support Applied AI Works Canada by helping participants identify where they may thrive, where they may need support, and how to start with the right AI-enabled tools and workflows.
+              </motion.p>
+
+              {/* Primary + Secondary CTA */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-7">
+                <Button
+                  onClick={onStart}
+                  size="lg"
+                  className="bg-navy-deep text-cream hover:bg-navy font-medium px-7 py-5 text-sm group"
+                >
+                  Start the assessment
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
+                </Button>
+                <Button
+                  onClick={scrollToIncludes}
+                  variant="outline"
+                  size="lg"
+                  className="border-navy-deep/30 text-foreground hover:bg-cream-warm font-medium px-7 py-5 text-sm"
+                >
+                  See what the profile includes
+                </Button>
+              </div>
+
+              {!hasPremiumAccess && !hasStarted && (
+                <p className="text-ink-muted/70 text-xs mt-5">
+                  No sign-up required to begin · ~25 min total across modules
+                </p>
+              )}
             </div>
 
-            {!hasPremiumAccess && !hasStarted && (
-              <p className="text-muted-foreground/60 text-xs mt-5">
-                No sign-up required to begin.
-              </p>
-            )}
+            {/* RIGHT: sample profile preview */}
+            <div className="relative">
+              <SampleProfilePreview />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* What this profile helps identify */}
-      <ProfileIdentifiesSection />
+      {/* Journey pathway */}
+      <JourneyPathway />
 
-      {/* Why this matters */}
-      <WhyThisMattersSection />
+      {/* Stage 01 — What your profile includes */}
+      <div id="profile-includes" className="scroll-mt-24">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-14 -mb-6 flex justify-center">
+          <JourneyStageChip stage={1} label="What it covers" />
+        </div>
+        <ProfileIdentifiesSection />
+      </div>
 
-      {/* Guided profile + single-module picker */}
-      <section className="py-16 sm:py-24 border-t border-border">
+      {/* Stage 02 — How your thinking is mapped */}
+      <div id="thinking-map" className="scroll-mt-24">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-14 -mb-6 flex justify-center">
+          <JourneyStageChip stage={2} label="How it maps" />
+        </div>
+        <WhyThisMattersSection />
+      </div>
+
+      {/* Stage 03 — Module picker */}
+      <section id="modules" className="py-16 sm:py-24 border-t border-border scroll-mt-24">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="flex justify-center mb-8">
+            <JourneyStageChip stage={3} label="Build your profile" />
+          </div>
           <DiscoverMyMindSpine
             status={mapStatus}
             onStart={onSelectAssessment}
@@ -190,7 +231,7 @@ export const LandingHero = ({
 
           {hasStarted && completedCount < 4 && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center mt-4">
-              <p className="text-muted-foreground text-xs sm:text-sm">
+              <p className="text-ink-muted text-xs sm:text-sm">
                 <span className="text-foreground font-medium">{completedCount} of 4 modules complete</span>
                 {' '}— finish all four for your integrated profile.
               </p>
@@ -199,21 +240,25 @@ export const LandingHero = ({
         </div>
       </section>
 
-      {/* Connection to Applied AI Works Canada */}
-      <ProgramConnectionSection />
-
+      {/* Stage 04 — Program connection */}
+      <div className="scroll-mt-24">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-14 -mb-6 flex justify-center">
+          <JourneyStageChip stage={4} label="Start with the right supports" />
+        </div>
+        <ProgramConnectionSection />
+      </div>
 
       {/* What You Get After the Assessment */}
-      <section className="py-16 sm:py-24">
+      <section className="py-16 sm:py-24 bg-cream-warm/40">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 max-w-2xl mx-auto">
-            <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-3">
-              Personalized Synthesis
+            <p className="text-[11px] uppercase tracking-[0.28em] text-gold mb-3">
+              Personalized synthesis
             </p>
             <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-foreground tracking-tight mb-4">
               What you get after the assessment.
             </h2>
-            <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+            <p className="text-ink-muted text-sm sm:text-base leading-relaxed">
               Once your modules are complete, your responses are synthesized into a structured profile you can reflect on, share, and apply.
             </p>
           </div>
@@ -239,11 +284,11 @@ export const LandingHero = ({
                 meta: 'Conversational guidance',
               },
             ].map((card) => (
-              <div key={card.title} className="p-7 bg-card border border-border rounded-md">
-                <card.icon className="w-5 h-5 text-muted-foreground mb-5" strokeWidth={1.5} />
+              <div key={card.title} className="p-7 bg-card border border-navy-deep/10 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                <card.icon className="w-5 h-5 text-teal mb-5" strokeWidth={1.5} />
                 <h3 className="font-serif text-base font-medium text-foreground mb-2">{card.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4">{card.body}</p>
-                <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground/70">{card.meta}</p>
+                <p className="text-ink-muted text-sm leading-relaxed mb-4">{card.body}</p>
+                <p className="text-[11px] uppercase tracking-[0.18em] text-gold/80">{card.meta}</p>
               </div>
             ))}
           </div>
@@ -251,31 +296,31 @@ export const LandingHero = ({
       </section>
 
       {/* Methodology Section */}
-      <section className="py-16 sm:py-24 border-y border-border bg-card/30">
+      <section className="py-16 sm:py-24 border-y border-border bg-background">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 max-w-2xl mx-auto">
-            <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-3">
-              Scientific Foundation
+            <p className="text-[11px] uppercase tracking-[0.28em] text-teal mb-3">
+              Scientific foundation
             </p>
             <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-foreground tracking-tight mb-4">
               Built on established instruments.
             </h2>
-            <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+            <p className="text-ink-muted text-sm sm:text-base leading-relaxed">
               Each module draws on peer-reviewed frameworks from cognitive psychology, psychometrics, and applied learning research.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-border border border-border bg-background">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {[
               { title: 'Big Five Model', description: 'The most validated personality framework in modern psychology.' },
               { title: "Raven's Matrices", description: 'Non-verbal assessment of fluid reasoning used globally.' },
               { title: 'ASRS-v1.1', description: 'WHO instrument for attention-pattern self-report.' },
               { title: 'Cognitive Load Theory', description: 'How information is processed under demand.' },
             ].map((item) => (
-              <div key={item.title} className="p-7">
-                <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground/70 mb-2">Reference</p>
+              <div key={item.title} className="p-7 bg-card border border-navy-deep/10 rounded-2xl">
+                <p className="text-[10px] uppercase tracking-[0.22em] text-teal mb-2">Reference</p>
                 <h3 className="font-serif text-base font-medium text-foreground mb-2">{item.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
+                <p className="text-ink-muted text-sm leading-relaxed">{item.description}</p>
               </div>
             ))}
           </div>
@@ -285,24 +330,23 @@ export const LandingHero = ({
       {/* Disclaimer */}
       <DisclaimerSection />
 
-
       {/* Footer CTA */}
-      <section className="py-16 sm:py-24">
+      <section className="py-16 sm:py-24 bg-cream-warm/50">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
-          <div className="w-12 h-px bg-border mx-auto mb-6" />
-          <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-3">
+          <div className="w-12 h-px bg-gold mx-auto mb-6" />
+          <p className="text-[11px] uppercase tracking-[0.28em] text-gold mb-3">
             Begin
           </p>
           <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-foreground tracking-tight mb-4">
             Ready to begin your profile?
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-base mb-8 leading-relaxed">
+          <p className="text-ink-muted text-sm sm:text-base mb-8 leading-relaxed">
             Start with any module — your profile builds as you complete each one.
           </p>
           <Button
             onClick={onStart}
             size="lg"
-            className="bg-foreground text-background hover:bg-foreground/90 font-medium px-8 py-5 text-sm"
+            className="bg-navy-deep text-cream hover:bg-navy font-medium px-8 py-5 text-sm"
           >
             Start the assessment
             <ArrowRight className="w-4 h-4 ml-2" />
