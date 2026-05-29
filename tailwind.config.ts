@@ -99,7 +99,27 @@ export default {
 			yellow: {
 				DEFAULT: 'hsl(var(--yellow))',
 				foreground: 'hsl(var(--yellow-foreground))'
+			},
+			navy: {
+				DEFAULT: 'hsl(var(--navy))',
+				deep: 'hsl(var(--navy-deep))'
+			},
+			cream: {
+				DEFAULT: 'hsl(var(--cream))',
+				warm: 'hsl(var(--cream-warm))'
+			},
+			teal: {
+				DEFAULT: 'hsl(var(--teal))',
+				soft: 'hsl(var(--teal-soft))'
+			},
+			gold: {
+				DEFAULT: 'hsl(var(--gold))',
+				soft: 'hsl(var(--gold-soft))'
+			},
+			ink: {
+				muted: 'hsl(var(--ink-muted))'
 			}
+
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
