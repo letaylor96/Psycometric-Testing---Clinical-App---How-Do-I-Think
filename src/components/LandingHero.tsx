@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { AssessmentType, SelectableTestKey } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
 import { AuthButton } from '@/components/AuthButton';
+import { ThemeToggle } from '@/components/ThemeToggle';
+
 import { HomeFAQ } from '@/components/HomeFAQ';
 import { SEOFooter } from '@/components/SEOFooter';
 import { TestResults } from '@/data/quizQuestions';
