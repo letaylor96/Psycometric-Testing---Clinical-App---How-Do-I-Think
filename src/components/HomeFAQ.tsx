@@ -3,73 +3,76 @@ import { Link } from 'react-router-dom';
 
 const faqs = [
   {
-    q: 'What is my IQ score?',
-    a: "Take our free 25-question IQ test based on Raven's Progressive Matrices. You'll get your IQ score, percentile ranking, and cognitive breakdown instantly.",
-    link: '/free-iq-test',
-    linkText: 'Take the free IQ test →',
+    q: 'How does this assessment fit into Applied AI Works Canada?',
+    a: 'It gives participants, facilitators, and program leads a shared picture of how each participant thinks, learns, and adapts to AI-enabled work — so guidance, tools, and workflows can be matched to the person.',
   },
   {
-    q: 'What is my personality type?',
-    a: 'Our Big Five (OCEAN) personality assessment reveals your unique combination of Openness, Conscientiousness, Extraversion, Agreeableness, and Neuroticism with your MBTI equivalent.',
+    q: 'What is my cognitive style?',
+    a: 'Your cognitive style is the consistent way you take in information, reason about problems, and make decisions. The cognitive style module surfaces your patterns and the conditions where you tend to do your best work.',
     link: '/personality-test',
-    linkText: 'Take the personality test →',
-  },
-  {
-    q: 'Do I have ADHD?',
-    a: 'Our clinically-validated screening uses the WHO ASRS-v1.1 questionnaire combined with cognitive style profiling to identify attention patterns and neurodivergent traits.',
-    link: '/adhd-test',
-    linkText: 'Take the ADHD screening →',
+    linkText: 'Begin the personality module →',
   },
   {
     q: 'How do I learn best?',
-    a: 'Our cognitive style assessment identifies your unique thinking patterns and processing preferences — whether you\'re a visual, analytical, or intuitive thinker.',
+    a: 'The cognitive style module identifies your processing preferences — visual, analytical, narrative, intuitive — and how you tend to consolidate new information.',
   },
   {
-    q: 'Are these assessments scientifically validated?',
-    a: "Yes. Our IQ test uses Raven's Progressive Matrices, personality uses the Big Five model, and ADHD screening uses the WHO ASRS-v1.1 — all backed by decades of peer-reviewed research.",
+    q: 'Does this diagnose ADHD, autism, or any mental health condition?',
+    a: 'No. This is a structured self-assessment, not a clinical instrument. The attention and sensory-processing modules use established self-report inventories (WHO ASRS-v1.1, AQ-50) for reflection only. A diagnosis can only be made by a qualified clinician.',
+    link: '/adhd-test',
+    linkText: 'Open the attention-patterns module →',
+  },
+  {
+    q: 'Is the cognitive reasoning module an IQ test?',
+    a: "It is a structured reasoning module modelled on Raven's Progressive Matrices. It indicates how you approach abstract pattern problems under time pressure — useful as one signal in your profile, not a standalone IQ score.",
+    link: '/free-iq-test',
+    linkText: 'Open the reasoning module →',
+  },
+  {
+    q: 'Are these modules scientifically grounded?',
+    a: "Yes. Each module draws on peer-reviewed frameworks: the Big Five (OCEAN) model for personality, Raven's Progressive Matrices for reasoning, the WHO ASRS-v1.1 for attention self-report, and the AQ-50 for social and sensory patterns.",
   },
   {
     q: 'Is my data private?',
-    a: 'Your results are stored locally in your browser by default. If you create an account, data is encrypted and stored securely. We never share personal assessment data with third parties.',
+    a: 'Your results are stored locally in your browser by default. If you create an account, data is encrypted and stored securely. We do not share individual assessment data with third parties.',
   },
 ];
 
 export const HomeFAQ = () => {
   return (
-    <section className="py-12 sm:py-20 bg-muted/20">
+    <section className="py-16 sm:py-24 border-t border-border">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 6 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-8 sm:mb-12"
+          className="text-center mb-10 sm:mb-12"
         >
-          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground mb-3">
-            Frequently Asked Questions
+          <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-3">
+            Questions
+          </p>
+          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-foreground tracking-tight mb-3">
+            Frequently asked.
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base">
-            Everything you need to know about our cognitive assessments.
+            What this assessment is, and what it is not.
           </p>
         </motion.div>
 
-        <div className="space-y-4">
+        <div className="divide-y divide-border border-y border-border">
           {faqs.map((faq, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05 }}
-              className="p-5 bg-card border border-border rounded-xl"
-            >
-              <h3 className="font-semibold text-foreground mb-2">{faq.q}</h3>
+            <div key={i} className="py-6">
+              <h3 className="font-serif text-base font-medium text-foreground mb-2">{faq.q}</h3>
               <p className="text-muted-foreground text-sm leading-relaxed">{faq.a}</p>
               {faq.link && (
-                <Link to={faq.link} className="inline-block mt-2 text-primary text-sm font-medium hover:underline">
+                <Link
+                  to={faq.link}
+                  className="inline-block mt-2 text-foreground text-sm font-medium underline-offset-4 hover:underline"
+                >
                   {faq.linkText}
                 </Link>
               )}
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
