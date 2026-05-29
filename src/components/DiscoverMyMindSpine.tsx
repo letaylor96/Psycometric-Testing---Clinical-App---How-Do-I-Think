@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion';
-import { Brain, Target, Zap, Sparkles, Check, ArrowRight, Layers } from 'lucide-react';
+import { Brain, Target, Zap, Sparkles, Check, ArrowRight, Layers, Compass } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo } from '@/data/assessmentTypes';
 import { MAP_MY_MIND_ORDER, DiscoverMyMindStatus } from '@/hooks/useDiscoverMyMind';
 import { cn } from '@/lib/utils';
 
 const stepIcons: Record<AssessmentType, React.ElementType> = {
+  'cognitive-profile': Compass,
   iq: Brain,
   neurodivergent: Zap,
   personality: Target,

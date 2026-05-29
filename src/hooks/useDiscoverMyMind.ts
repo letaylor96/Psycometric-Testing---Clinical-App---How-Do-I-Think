@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import { AssessmentType } from '@/data/assessmentTypes';
 
-// Optimal funnel order: warm-up with cognitive challenge, surface ND signals,
-// then identity/personality, finish with depth/unconscious for synthesis.
+// Funnel order: start with the structured Cognitive Profile (primary instrument
+// for AppliedAIWorks), then personality, attention patterns, depth reflection,
+// and finish with cognitive reasoning.
 export const MAP_MY_MIND_ORDER: AssessmentType[] = [
-  'iq',
-  'neurodivergent',
+  'cognitive-profile',
   'personality',
+  'neurodivergent',
   'depth',
+  'iq',
 ];
 
 const STORAGE_KEY = 'discoverMyMind:v1';

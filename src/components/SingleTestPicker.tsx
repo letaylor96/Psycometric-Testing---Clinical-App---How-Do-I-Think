@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Brain, Target, Zap, Sparkles, Activity, Puzzle, ArrowRight } from 'lucide-react';
+import { Brain, Target, Zap, Sparkles, Activity, Puzzle, ArrowRight, Compass } from 'lucide-react';
 import { SelectableTestKey } from '@/data/assessmentTypes';
 import { cn } from '@/lib/utils';
 
@@ -18,18 +18,12 @@ interface TestOption {
 
 const OPTIONS: TestOption[] = [
   {
-    key: 'iq',
-    title: 'Cognitive Reasoning',
-    blurb: 'Pattern recognition and abstract reasoning module.',
-    meta: '25 questions · ~13 min',
-    icon: Brain,
-  },
-  {
-    key: 'neurodivergent',
-    title: 'Cognitive Style & Attention',
-    blurb: 'Self-report inventory mapping thinking style and attention patterns.',
-    meta: '38 questions · ~19 min',
-    icon: Zap,
+    key: 'cognitive-profile',
+    title: 'Cognitive Profile',
+    blurb: 'Structured profile of how you think, learn, communicate, and adapt to AI-enabled work.',
+    meta: '40 questions · ~12 min',
+    icon: Compass,
+    note: 'Grounded in Kolb, Sternberg, KAI, MSTAT-II, and TRI 2.0.',
   },
   {
     key: 'personality',
@@ -37,6 +31,13 @@ const OPTIONS: TestOption[] = [
     blurb: 'Big Five (OCEAN) trait inventory with MBTI archetype mapping.',
     meta: '30 questions · ~15 min',
     icon: Target,
+  },
+  {
+    key: 'neurodivergent',
+    title: 'Cognitive Style & Attention',
+    blurb: 'Self-report inventory mapping thinking style and attention patterns.',
+    meta: '38 questions · ~19 min',
+    icon: Zap,
   },
   {
     key: 'adhd',
@@ -60,6 +61,13 @@ const OPTIONS: TestOption[] = [
     blurb: 'Free-form reflection module analysed through Freudian, Jungian, and Nietzschean lenses.',
     meta: '24 prompts · ~20 min',
     icon: Sparkles,
+  },
+  {
+    key: 'iq',
+    title: 'Cognitive Reasoning',
+    blurb: 'Pattern recognition and abstract reasoning module.',
+    meta: '25 questions · ~13 min',
+    icon: Brain,
   },
 ];
 

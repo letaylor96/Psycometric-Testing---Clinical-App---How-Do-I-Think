@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, ArrowLeft, Brain, UserCheck, Check, Sparkles, Crown, Zap, Clock } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Brain, UserCheck, Check, Sparkles, Crown, Zap, Clock, Compass } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo } from '@/data/assessmentTypes';
 
@@ -10,15 +10,25 @@ interface AssessmentPreviewProps {
 }
 
 const assessmentIcons: Record<AssessmentType, React.ElementType> = {
+  'cognitive-profile': Compass,
   personality: UserCheck,
   iq: Brain,
   neurodivergent: Zap,
   depth: Sparkles,
 };
 
-const assessmentTiers: Record<AssessmentType, { 
+const assessmentTiers: Record<AssessmentType, {
   paid: string[];
 }> = {
+  'cognitive-profile': {
+    paid: [
+      'Eight cognitive archetypes with primary + secondary match',
+      'Ten category scores across the full profile',
+      'Strengths, friction points, and AI workflow recommendations',
+      'Suggested starting point in Applied AI Works Canada',
+      'Practitioner-ready report layout',
+    ],
+  },
   personality: {
     paid: [
       'Full Big Five + all 30 facets',
@@ -70,6 +80,10 @@ const assessmentTiers: Record<AssessmentType, {
 };
 
 const assessmentDescriptions: Record<AssessmentType, { tagline: string; what: string; isTimed?: boolean }> = {
+  'cognitive-profile': {
+    tagline: 'A structured profile of how you think, learn, and work with AI',
+    what: 'Forty self-report items grouped into ten categories — information processing, learning style, problem-solving, communication, structure, ambiguity tolerance, divergent thinking, AI readiness, support preferences, and program-fit. Grounded in established psychometric instruments.',
+  },
   personality: {
     tagline: 'Discover what makes you uniquely you',
     what: 'This 30-question assessment maps your personality across the Big Five dimensions (Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism) and derives your Myers-Briggs type.',
@@ -88,6 +102,7 @@ const assessmentDescriptions: Record<AssessmentType, { tagline: string; what: st
     what: 'Choose your philosophical lens—Freud, Jung, or Nietzsche—and explore your unconscious patterns through 20 free-form questions analyzed by AI using rigorous psychoanalytic frameworks.',
   },
 };
+
 
 export const AssessmentPreview = ({ type, onStart, onBack }: AssessmentPreviewProps) => {
   const info = assessmentInfo[type];

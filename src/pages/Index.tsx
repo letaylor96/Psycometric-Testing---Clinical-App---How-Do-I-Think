@@ -50,7 +50,10 @@ type GameState =
   | 'adhd-quiz'
   | 'adhd-results'
   | 'autism-quiz'
+  | 'autism-quiz'
   | 'autism-results'
+  | 'cognitive-profile-quiz'
+  | 'cognitive-profile-results'
   | 'dashboard';
 
 const Index = () => {
@@ -183,17 +186,12 @@ const Index = () => {
   const handleSelectAssessment = useCallback((type: AssessmentType) => {
     setPreviewType(type);
     setGameState('preview');
-  }, []);
-
-  // Single-test picker dispatch — routes standalone tests directly to their flow.
   const handleSelectTest = useCallback((key: SelectableTestKey) => {
-    if (key === 'adhd') {
-      setGameState('adhd-quiz');
-      return;
-    }
-    if (key === 'autism') {
-      setGameState('autism-quiz');
-      return;
+    if (key === 'adhd') { setGameState('adhd-quiz'); return; }
+    if (key === 'autism') { setGameState('autism-quiz'); return; }
+    if (key === 'cognitive-profile') { setGameState('cognitive-profile-quiz'); return; }
+    handleSelectAssessment(key);
+  }, [handleSelectAssessment]);
     }
     handleSelectAssessment(key);
   }, [handleSelectAssessment]);
@@ -206,10 +204,10 @@ const Index = () => {
     console.log(`Starting ${previewType} assessment with tier: ${tier}`);
     
     setCurrentQuestionIndex(0);
-    setAnswers([]);
-    setSelectedAnswer(null);
-    
     switch (previewType) {
+      case 'cognitive-profile':
+        setGameState('cognitive-profile-quiz');
+        break;
       case 'personality':
         setGameState('personality-quiz');
         break;
@@ -220,6 +218,9 @@ const Index = () => {
         setGameState('neurodivergent-quiz');
         break;
       case 'depth':
+        setGameState('depth-framework-select');
+        break;
+    }
         setGameState('depth-framework-select');
         break;
     }

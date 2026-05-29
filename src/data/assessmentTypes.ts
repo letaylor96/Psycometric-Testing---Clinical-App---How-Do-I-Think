@@ -1,9 +1,9 @@
 // Assessment Type Definitions
 
-export type AssessmentType = 'personality' | 'iq' | 'neurodivergent' | 'depth';
+export type AssessmentType = 'cognitive-profile' | 'personality' | 'iq' | 'neurodivergent' | 'depth';
 
 // Standalone tests offered via the SingleTestPicker. They live outside the
-// guided 4-step funnel so they don't break Record<AssessmentType,...> maps,
+// guided funnel so they don't break Record<AssessmentType,...> maps,
 // but share the same routing surface via SelectableTestKey below.
 export type StandaloneTestKey = 'adhd' | 'autism';
 
@@ -25,6 +25,16 @@ export interface AssessmentInfo {
 export const TIME_PER_QUESTION_SECONDS = 30;
 
 export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
+  'cognitive-profile': {
+    id: 'cognitive-profile',
+    title: 'Cognitive Profile',
+    shortTitle: 'Cognitive Profile',
+    description: 'A structured self-report profile of how you think, learn, communicate, and adapt to AI-enabled work — built on established psychometric instruments.',
+    framework: 'Kolb · Sternberg · KAI · MSTAT-II · TRI 2.0',
+    questionCount: 40,
+    timeMinutes: 12,
+    color: 'primary',
+  },
   personality: {
     id: 'personality',
     title: 'Personality Type',
@@ -36,38 +46,39 @@ export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
     color: 'primary',
     isPremiumOnly: true,
   },
-  iq: {
-    id: 'iq',
-    title: 'IQ Assessment',
-    shortTitle: 'IQ',
-    description: 'Measure your cognitive abilities through Mensa-style pattern recognition and abstract reasoning.',
-    framework: "Raven's Progressive Matrices",
-    questionCount: 25,
-    timeMinutes: Math.ceil((25 * TIME_PER_QUESTION_SECONDS) / 60), // 13 min
-    color: 'accent',
-  },
   neurodivergent: {
     id: 'neurodivergent',
-    title: 'Neurodivergence Level',
-    shortTitle: 'Neurodivergence Level',
-    description: 'Comprehensive assessment of your cognitive style, thinking patterns, attention, and focus using clinical screening tools.',
+    title: 'Cognitive Style & Attention',
+    shortTitle: 'Cognitive Style & Attention',
+    description: 'Self-report inventory of thinking style, attention, and focus patterns.',
     framework: 'Cognitive Style + ASRS-v1.1',
-    questionCount: 38, // 20 cognitive + 18 ADHD
-    timeMinutes: Math.ceil((38 * TIME_PER_QUESTION_SECONDS) / 60), // 19 min
+    questionCount: 38,
+    timeMinutes: Math.ceil((38 * TIME_PER_QUESTION_SECONDS) / 60),
     color: 'primary',
     isPremiumOnly: true,
   },
   depth: {
     id: 'depth',
-    title: 'Psychoanalytical Analysis',
-    shortTitle: 'Psychoanalytical Analysis',
-    description: 'Explore your unconscious patterns through the lens of Freud, Jung, or Nietzsche with AI-powered psychoanalytic assessment.',
+    title: 'Depth-Psychology Reflection',
+    shortTitle: 'Depth Psychology',
+    description: 'Free-form reflection module analysed through Freudian, Jungian, and Nietzschean lenses.',
     framework: 'Freud · Jung · Nietzsche',
     questionCount: 24,
-    timeMinutes: 20, // Free-form + AI analysis takes longer
+    timeMinutes: 20,
     color: 'primary',
     isPremiumOnly: true,
   },
+  iq: {
+    id: 'iq',
+    title: 'Cognitive Reasoning',
+    shortTitle: 'Cognitive Reasoning',
+    description: 'Pattern recognition and abstract reasoning module.',
+    framework: "Raven's Progressive Matrices",
+    questionCount: 25,
+    timeMinutes: Math.ceil((25 * TIME_PER_QUESTION_SECONDS) / 60),
+    color: 'accent',
+  },
 };
 
-export const allAssessmentTypes: AssessmentType[] = ['personality', 'iq', 'neurodivergent', 'depth'];
+export const allAssessmentTypes: AssessmentType[] = ['cognitive-profile', 'personality', 'neurodivergent', 'depth', 'iq'];
+

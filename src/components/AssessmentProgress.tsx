@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, UserCheck, Lightbulb, Activity, Check, Lock, Sparkles, Zap } from 'lucide-react';
+import { Brain, UserCheck, Lightbulb, Activity, Check, Lock, Sparkles, Zap, Compass } from 'lucide-react';
 import { TestResults } from '@/data/quizQuestions';
 import { PersonalityResults } from '@/data/personalityQuestions';
 import { ADHDResults } from '@/data/adhdQuestions';
@@ -16,6 +16,7 @@ interface AssessmentProgressProps {
 }
 
 const assessmentIcons: Record<AssessmentType, React.ElementType> = {
+  'cognitive-profile': Compass,
   personality: UserCheck,
   iq: Brain,
   neurodivergent: Zap,
@@ -31,10 +32,11 @@ export const AssessmentProgress = ({
   onViewDashboard,
 }: AssessmentProgressProps) => {
   const completionStatus: Record<AssessmentType, boolean> = {
+    'cognitive-profile': false, // Surfaced via LandingHero; progress card focuses on the four core modules.
     personality: !!personalityResults,
     iq: !!iqResults,
-    neurodivergent: !!cognitiveStyleResults, // Combined assessment stores in cognitive
-    depth: false, // TODO: Add depth psychology results prop
+    neurodivergent: !!cognitiveStyleResults,
+    depth: false,
   };
 
   const completedCount = Object.values(completionStatus).filter(Boolean).length;
