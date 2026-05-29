@@ -23,6 +23,8 @@ import { DisclaimerSection } from '@/components/DisclaimerSection';
 import { SampleProfilePreview } from '@/components/landing/SampleProfilePreview';
 import { JourneyPathway } from '@/components/landing/JourneyPathway';
 import { JourneyStageChip } from '@/components/landing/JourneyStageChip';
+import { ProfileClaritySection } from '@/components/landing/ProfileClaritySection';
+
 
 interface LandingHeroProps {
   onStart: () => void;
@@ -196,8 +198,12 @@ export const LandingHero = ({
         </div>
       </section>
 
+      {/* How the profile creates clarity — 4-step process */}
+      <ProfileClaritySection />
+
       {/* Journey pathway */}
       <JourneyPathway />
+
 
       {/* Stage 01 — What your profile includes */}
       <div id="profile-includes" className="scroll-mt-24">
