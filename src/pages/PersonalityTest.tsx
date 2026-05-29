@@ -40,11 +40,11 @@ const PersonalityTest = () => {
   return (
     <>
       <Helmet>
-        <title>Personality Test — Big Five (OCEAN) Assessment | How Do I Think?</title>
-        <meta name="description" content="Discover your personality type with our Big Five (OCEAN) assessment. 30 questions, scientifically validated. Get your personality archetype, MBTI equivalent, and trait analysis." />
+        <title>Personality Module — Big Five (OCEAN) | How Do I Think?</title>
+        <meta name="description" content="A Big Five (OCEAN) personality module that contributes to your Cognitive Style & AI Readiness Profile. Structured self-assessment for program guidance." />
         <link rel="canonical" href="https://how-do-i-think-clinical.lovable.app/personality-test" />
-        <meta property="og:title" content="Personality Test — Big Five (OCEAN) Assessment" />
-        <meta property="og:description" content="Discover your personality archetype with our scientifically-validated Big Five assessment." />
+        <meta property="og:title" content="Personality Module — Big Five (OCEAN)" />
+        <meta property="og:description" content="A Big Five personality module within the Cognitive Style & AI Readiness Profile." />
         <meta property="og:url" content="https://how-do-i-think-clinical.lovable.app/personality-test" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
@@ -71,8 +71,8 @@ const PersonalityTest = () => {
               </h1>
 
               <p className="text-muted-foreground text-lg sm:text-xl max-w-2xl mx-auto mb-8 leading-relaxed">
-                Discover your personality archetype using the Big Five (OCEAN) model — 
-                the gold standard in personality psychology. Get your trait scores, MBTI equivalent, and detailed insights.
+                A Big Five (OCEAN) personality module — one lens within the broader Cognitive Style &amp; AI Readiness Profile.
+                Surfaces trait patterns that inform strengths and support needs for program participation.
               </p>
 
               <Button onClick={handleStart} size="lg" className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-8 py-6 text-base">

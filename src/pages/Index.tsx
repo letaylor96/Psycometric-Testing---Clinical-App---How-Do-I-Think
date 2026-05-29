@@ -24,6 +24,9 @@ import { FrameworkSelector } from '@/components/FrameworkSelector';
 import { DepthPsychologyQuiz } from '@/components/DepthPsychologyQuiz';
 import { DepthPsychologyResultsScreen } from '@/components/DepthPsychologyResults';
 import { PersonalityResultsScreen } from '@/components/PersonalityResultsScreen';
+import { CognitiveProfileQuiz } from '@/components/CognitiveProfileQuiz';
+import { CognitiveProfileResultsScreen } from '@/components/CognitiveProfileResults';
+import type { CognitiveProfileResults as CPResults } from '@/data/cognitiveProfileQuestions';
 import { CombinedDashboard } from '@/components/CombinedDashboard';
 import { usePersistedResults } from '@/hooks/usePersistedResults';
 import { iqQuestionVariants } from '@/data/iqQuestionVariants';
@@ -50,7 +53,6 @@ type GameState =
   | 'adhd-quiz'
   | 'adhd-results'
   | 'autism-quiz'
-  | 'autism-quiz'
   | 'autism-results'
   | 'cognitive-profile-quiz'
   | 'cognitive-profile-results'
@@ -73,6 +75,7 @@ const Index = () => {
   const [neurodivergentResults, setNeurodivergentResults] = useState<NeurodivergentMindResults | null>(null);
   const [autismResults, setAutismResults] = useState<AQResults | null>(null);
   const [standaloneAdhdResults, setStandaloneAdhdResults] = useState<ADHDResults | null>(null);
+  const [cognitiveProfileResults, setCognitiveProfileResults] = useState<CPResults | null>(null);
   const [clarificationRequest, setClarificationRequest] = useState<{
     question: string;
     context: string;
@@ -186,23 +189,19 @@ const Index = () => {
   const handleSelectAssessment = useCallback((type: AssessmentType) => {
     setPreviewType(type);
     setGameState('preview');
+  }, []);
+
   const handleSelectTest = useCallback((key: SelectableTestKey) => {
     if (key === 'adhd') { setGameState('adhd-quiz'); return; }
     if (key === 'autism') { setGameState('autism-quiz'); return; }
-    if (key === 'cognitive-profile') { setGameState('cognitive-profile-quiz'); return; }
-    handleSelectAssessment(key);
-  }, [handleSelectAssessment]);
-    }
     handleSelectAssessment(key);
   }, [handleSelectAssessment]);
 
   // Start the actual quiz from preview
   const handleStartFromPreview = useCallback((tier: 'free' | 'premium') => {
     if (!previewType) return;
-    
-    // TODO: Store tier selection for payment gating after quiz completion
     console.log(`Starting ${previewType} assessment with tier: ${tier}`);
-    
+
     setCurrentQuestionIndex(0);
     switch (previewType) {
       case 'cognitive-profile':
@@ -218,9 +217,6 @@ const Index = () => {
         setGameState('neurodivergent-quiz');
         break;
       case 'depth':
-        setGameState('depth-framework-select');
-        break;
-    }
         setGameState('depth-framework-select');
         break;
     }
@@ -718,6 +714,28 @@ const Index = () => {
           <motion.div key="autism-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
             <AutismResultsScreen
               results={autismResults}
+              onRestart={handleRestart}
+              onViewDashboard={handleViewDashboard}
+            />
+          </motion.div>
+        )}
+
+        {gameState === 'cognitive-profile-quiz' && (
+          <motion.div key="cognitive-profile-quiz" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            <CognitiveProfileQuiz
+              onComplete={(r) => {
+                setCognitiveProfileResults(r);
+                setGameState('cognitive-profile-results');
+              }}
+              onBack={handleRestart}
+            />
+          </motion.div>
+        )}
+
+        {gameState === 'cognitive-profile-results' && cognitiveProfileResults && (
+          <motion.div key="cognitive-profile-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            <CognitiveProfileResultsScreen
+              results={cognitiveProfileResults}
               onRestart={handleRestart}
               onViewDashboard={handleViewDashboard}
             />
