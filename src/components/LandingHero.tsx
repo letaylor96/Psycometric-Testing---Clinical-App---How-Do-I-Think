@@ -26,6 +26,7 @@ import { JourneyStageChip } from '@/components/landing/JourneyStageChip';
 import { ProfileClaritySection } from '@/components/landing/ProfileClaritySection';
 import { WhatYouLearnSection } from '@/components/landing/WhatYouLearnSection';
 import { SampleReportPreview } from '@/components/landing/SampleReportPreview';
+import { WhyThisMattersCompanion } from '@/components/landing/WhyThisMattersCompanion';
 
 
 interface LandingHeroProps {
@@ -228,6 +229,9 @@ export const LandingHero = ({
 
       {/* Sample report preview */}
       <SampleReportPreview />
+
+      {/* Why this matters — companion to the sample report */}
+      <WhyThisMattersCompanion />
 
       {/* Stage 03 — Module picker */}
       <section id="modules" className="py-16 sm:py-24 border-t border-border scroll-mt-24">
