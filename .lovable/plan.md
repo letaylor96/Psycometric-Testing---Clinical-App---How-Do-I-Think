@@ -1,33 +1,37 @@
-## Overview
-Add a visually strong, card-based 4-step process section immediately below the hero on the landing page. This section explains the assessment journey using numbered circles, a connecting progress line, professional icons, and concise copy — distinct from the existing `JourneyPathway` which remains further down the page.
+## Plan: Add "What you'll learn" Outcome Chips Section
 
-## Changes
+### Goal
+Add a compact, visually distinct section called **"What you'll learn"** that shows 8 outcome chips with subtle icons and soft background colours. This section communicates the value users receive from completing the assessment.
 
-### 1. New component: `src/components/landing/ProfileClaritySection.tsx`
-Build a 4-card horizontal process section (vertical on mobile) with:
-- **Numbered circles** (01–04) positioned above each card, connected by a subtle dotted/solid progress line
-- **Four cards** with distinct but restrained accent colours mapped to the design system:
-  - Step 1 (Answer): `teal-soft` accent, `ListChecks` icon
-  - Step 2 (Map): `teal` accent, `GitBranch` icon
-  - Step 3 (Understand): `navy-deep` accent, `FileText` icon  
-  - Step 4 (Start): `gold` accent, `Flag` icon
-- **Card content** matching the user's exact copy for each step
-- **Hover state**: `group-hover:-translate-y-1` + shadow elevation increase
-- **Responsive**: horizontal grid on desktop (`md:grid-cols-4`), vertical stack on mobile with a vertical connecting rail
-- Uses existing semantic tokens (`bg-card`, `border-navy-deep/10`, `font-serif`, `text-ink-muted`, etc.)
-- Framer Motion `whileInView` staggered entrance animation
+### Placement
+Insert the new section between the existing **ProfileClaritySection** and **JourneyPathway** on the landing page. Flow becomes:
+Hero → How the profile creates clarity → **What you'll learn** → Journey pathway → Stage sections.
 
-### 2. Update `src/components/LandingHero.tsx`
-Import `ProfileClaritySection` and insert it between the hero `</section>` (line 197) and `<JourneyPathway />` (line 200).
+### Component: `src/components/landing/WhatYouLearnSection.tsx`
+- **Layout**: Responsive grid — 4 columns on desktop (`lg:grid-cols-4`), 2 columns on tablet (`sm:grid-cols-2`), 1 column on mobile.
+- **8 outcome chips**:
+  1. Cognitive Style
+  2. Learning Pattern
+  3. Strengths
+  4. Friction Points
+  5. AI Workflow Fit
+  6. Support Needs
+  7. Starting Point
+- **Design per chip**:
+  - Small professional Lucide icon (e.g. Brain, BookOpen, Shield, AlertCircle, Workflow, HeartHandshake, MapPin)
+  - Chip title in `font-serif` medium
+  - Soft, themed background colour per chip (alternating between `teal-soft`, `gold-soft`, `cream-warm`, `navy-deep/5`)
+  - Rounded-xl container with subtle border (`border-navy-deep/8`)
+  - Compact padding (e.g. `p-5`)
+  - Hover: `group-hover:-translate-y-0.5` + `group-hover:shadow-md`
+- **Section header**: "What you'll learn" in serif, with short subtitle explaining purpose.
+- **Entrance animation**: Framer Motion `whileInView` staggered fade-in (`staggerChildren: 0.05`).
+- **Tokens**: Uses existing semantic tokens only (`bg-teal-soft`, `bg-gold-soft`, `bg-cream-warm`, `border-navy-deep/10`, `text-foreground`, `text-ink-muted`, `font-serif`). No hardcoded colours.
 
-## Design Details
-- **Section title**: "How the profile creates clarity" — centred, with `font-serif` heading and `text-[11px]` uppercase eyebrow label in `teal`
-- **Connecting line**: Desktop — horizontal gradient line (`from-teal-soft via-navy-deep/20 to-gold`) behind the numbered circles. Mobile — vertical gradient rail on the left of the cards.
-- **Numbered circles**: 40px diameter, filled with step accent colour, white/cream number, `ring-4 ring-background` to punch through the line.
-- **Cards**: cream background (`bg-card`), 1px `border-navy-deep/10`, 14px radius, generous padding (`p-7`), icon in accent colour with `strokeWidth={1.5}`.
-- **No new dependencies** — uses `framer-motion` and `lucide-react` already in the project.
+### Update: `src/components/LandingHero.tsx`
+- Import `WhatYouLearnSection`.
+- Insert `<WhatYouLearnSection />` between `<ProfileClaritySection />` (line 202) and `<JourneyPathway />` (line 205).
 
-## Out of Scope
-- No changes to assessment logic, routing, or data
-- No changes to the existing `JourneyPathway` — it stays as-is below the new section
-- No new npm packages
+### Out of Scope
+- No routing, data, or assessment logic changes.
+- No new dependencies (uses `lucide-react` and `framer-motion`, already installed).
