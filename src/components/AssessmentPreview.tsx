@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, ArrowLeft, Brain, UserCheck, Check, Sparkles, Crown, Zap, Clock } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Brain, UserCheck, Check, Sparkles, Crown, Zap, Clock, Compass } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo } from '@/data/assessmentTypes';
 
@@ -10,6 +10,7 @@ interface AssessmentPreviewProps {
 }
 
 const assessmentIcons: Record<AssessmentType, React.ElementType> = {
+  'cognitive-profile': Compass,
   personality: UserCheck,
   iq: Brain,
   neurodivergent: Zap,
@@ -17,9 +18,18 @@ const assessmentIcons: Record<AssessmentType, React.ElementType> = {
 };
 
 const assessmentTiers: Record<AssessmentType, { 
+const assessmentTiers: Record<AssessmentType, {
   paid: string[];
 }> = {
-  personality: {
+  'cognitive-profile': {
+    paid: [
+      'Eight cognitive archetypes with primary + secondary match',
+      'Ten category scores across the full profile',
+      'Strengths, friction points, and AI workflow recommendations',
+      'Suggested starting point in Applied AI Works Canada',
+      'Practitioner-ready report layout',
+    ],
+  },
     paid: [
       'Full Big Five + all 30 facets',
       'Your Myers-Briggs type with confidence %',
@@ -78,6 +88,10 @@ const assessmentDescriptions: Record<AssessmentType, { tagline: string; what: st
     tagline: 'Measure your cognitive potential',
     what: "This Mensa-style assessment uses 25 progressive pattern recognition puzzles based on Raven's Matrices to estimate your IQ and cognitive ranking.",
     isTimed: true,
+const assessmentDescriptions: Record<AssessmentType, { tagline: string; what: string; isTimed?: boolean }> = {
+  'cognitive-profile': {
+    tagline: 'A structured profile of how you think, learn, and work with AI',
+    what: 'Forty self-report items grouped into ten categories — information processing, learning style, problem-solving, communication, structure, ambiguity tolerance, divergent thinking, AI readiness, support preferences, and program-fit. Grounded in established psychometric instruments.',
   },
   neurodivergent: {
     tagline: 'Understand your unique cognitive style and attention patterns',

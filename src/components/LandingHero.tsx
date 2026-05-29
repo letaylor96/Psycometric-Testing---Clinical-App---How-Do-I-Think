@@ -45,6 +45,7 @@ export const LandingHero = ({
   const { hasPremiumAccess } = usePremiumAccess();
 
   const completionStatus: Record<AssessmentType, boolean> = {
+    'cognitive-profile': false,
     personality: !!personalityResults,
     iq: !!iqResults,
     neurodivergent: !!cognitiveStyleResults,
