@@ -1,106 +1,106 @@
 ## Goal
+Rebuild the homepage landing page to support the serious cognitive-assessment positioning by adding four new content sections, replacing the existing Program Context section, and keeping the overall tone calm, credible, and professional.
 
-Reposition the landing experience from "fun IQ quiz" to a credible, calm, structured **cognitive style + AI-readiness self-assessment** that supports Applied AI Works Canada participants. No clinical claims, no gamified energy.
+## Section Order on the Page
+1. Hero (existing, unchanged)
+2. **What this profile helps identify** — 8 clean cards, new section
+3. **Why this matters** — text section, new
+4. DiscoverMyMindSpine (existing, unchanged)
+5. SingleTestPicker (existing, unchanged)
+6. **Connection to Applied AI Works Canada** — 3 cards, new
+7. What you get after the assessment (existing, unchanged)
+8. Methodology (existing, unchanged)
+9. **Disclaimer** — exact copy, new
+10. Footer CTA (existing, unchanged)
+11. FAQ (existing, unchanged)
+12. SEOFooter (existing, unchanged)
 
-## Scope (this plan)
+The existing "Program Context" section will be removed and replaced by the new "Connection to Applied AI Works Canada" section.
 
-Frontend / copy / visual register only. No changes to assessment logic, scoring, backend, payments, or routing. Existing 4-assessment funnel stays intact — we change how it is *framed and presented*.
+---
 
-## 1. Hero rewrite (`src/components/LandingHero.tsx`)
+## Components to Create
 
-Replace the headline, subhead, and CTAs:
+### 1. `src/components/ProfileIdentifiesSection.tsx`
+Eyebrow: "Assessment Coverage"
+Headline: "What this profile helps identify"
+Intro copy (exact): "People do not all think, learn, or work in the same way. This assessment helps translate individual differences into practical guidance for learning, confidence, AI tool use, and program support."
 
-- **Headline:** "Understand how you think — so you can build from your strengths."
-- **Subheading:** "A structured cognitive and personality profile designed to help participants understand how they learn, solve problems, communicate, and adapt to AI-enabled work."
-- **Secondary line (muted, smaller):** "Built to support Applied AI Works Canada by helping participants identify where they may thrive, where they may need support, and how to start with the right AI-enabled tools and workflows."
-- **Primary CTA:** `Start the assessment` → triggers `onStart` (currently "Start Free IQ Test")
-- **Secondary CTA:** `Learn how it supports the program` → smooth-scrolls to a new "Program Context" section
+Eight cards in a responsive grid (2 cols mobile, 4 cols desktop). Each card: small muted icon, bold title, one short practical sentence. Cards are flat with a subtle border; no gradients, no glowing effects.
 
-Remove the "First assessment free · No sign-up required" line — replace with neutral "No sign-up required to begin."
+| Card title | Practical sentence |
+|---|---|
+| Cognitive style | How you process, structure, and retrieve information under different conditions. |
+| Learning preferences | The formats, pacing, and environments where you absorb and retain most effectively. |
+| Problem-solving patterns | Whether you work iteratively, systematically, or through pattern recognition first. |
+| Communication style | How you prefer to express ideas, receive feedback, and collaborate with others. |
+| Personality tendencies | Trait patterns that shape how you approach work, decisions, and relationships. |
+| Divergent thinking indicators | Where your thinking naturally branches, connects, or generates alternatives. |
+| AI workflow fit | Which AI-enabled tools and workflows align with how you think and produce best. |
+| Support needs | Where structure, coaching, pacing, or scaffolding may help you move forward. |
 
-Drop the gold pulsing dot / "Up next" ribbon energy from the spine header (keep progress, lose the lottery vibe).
+### 2. `src/components/WhyThisMattersSection.tsx`
+Headline (exact): "Different thinking needs different support."
+Body copy (exact):
+> Some people are highly visual. Some are systems thinkers. Some need structure before action. Some learn by experimenting. Some process quickly but struggle with organization. Some are strong conceptually but need support turning ideas into repeatable workflows.
+>
+> This assessment helps make those differences visible, useful, and actionable.
 
-## 2. Reframe the guided-map block (`DiscoverMyMindSpine.tsx`)
+Centered text block on a muted background (`bg-card/30`). No cards, no icons. Just clean typography.
 
-Copy-only changes, no structural rework:
+### 3. `src/components/ProgramConnectionSection.tsx`
+Eyebrow: "Program Alignment"
+Headline (exact): "Designed to support Applied AI Works Canada participants."
+Body copy (exact): "The results help identify which parts of the Applied AI Works Canada program may be the strongest starting point for each participant — and where additional scaffolding, coaching, structure, or tool support may help them move forward with confidence."
 
-- Title: "Discover My Mind — Full Guided Profile" → **"Full Cognitive & AI-Readiness Profile"**
-- Subhead: "Four assessments. Start and Resume Anytime…" → **"Four structured modules. Complete in any order — your profile builds as you go."**
-- Primary button: "Start the Full Guided Map" → **"Begin the assessment"**
-- Footer microcopy "Each step tags ADHD, autism-spectrum, gifted, and defense indicators across your profile" → **"Each module surfaces cognitive style, learning preferences, and potential support needs — not a clinical diagnosis."**
-- Step "Up next" pill → **"Next module"** (neutral, no pulse)
-- Per-step accent colours toned down to a single restrained palette (muted slate + one accent) instead of blue/emerald/amber/purple — see §5.
+Three cards in a row:
+| Card title | Body |
+|---|---|
+| Strongest starting point | Identifies where a participant may be best positioned to begin. |
+| Useful AI workflows | Suggests the kinds of tools, prompts, automations, and workflows that may fit the participant's thinking style. |
+| Support needs | Highlights where extra structure, coaching, pacing, or practice may help. |
 
-## 3. Reframe the single-test picker (`SingleTestPicker.tsx`)
+### 4. `src/components/DisclaimerSection.tsx`
+A full-width, centered text block near the bottom (above the Footer CTA).
+Exact copy:
+> This tool is for self-understanding, learning support, and program guidance. It is not a medical, psychological, educational, or diagnostic assessment.
 
-- Section heading "OR JUST PICK A SINGLE TEST / Take One Test on Its Own" → **"Or take a single module / Focus on one lens at a time."**
-- Card labels: keep instrument names (ASRS-v1.1, AQ-50) but reword descriptions away from "evaluation"/"screening" tone toward **"self-report inventory"** and **"reflection module."**
-- Rename "ADHD Evaluation" / "Autism Spectrum Evaluation" card titles → **"Attention & Focus Patterns"** / **"Social & Sensory Processing Patterns"** (instrument name stays in the meta line for credibility).
+Styling: small text, muted, with a thin top border. No card container. This is a legal footer-like strip.
 
-## 4. AI Insights + CTA + Methodology sections (`LandingHero.tsx`)
+---
 
-- "Go Beyond the Numbers" → **"What You Get After the Assessment"**
-- "AI-Powered Insights" pill → **"Personalized Synthesis"**
-- "Historical Mind Match" card → keep name, reword description to **"See which documented thinking styles align with yours — for reflection, not comparison."** Remove "20+ historical figures" sparkle line; replace with **"Reflective benchmark"**.
-- "Therapist Report" card → rename **"Practitioner-Ready Summary"**, description: **"A structured summary you can share with a coach, mentor, or clinician."**
-- "Ask AI About Results" → keep; reword to **"Explore what your profile means for your work, learning, and AI workflows."**
-- Footer CTA section: replace "Ready to Begin? / Start Free IQ Test" with **"Ready to begin your profile?"** and CTA **"Start the assessment"**. Remove the gold-brain circle ornament; replace with a thin rule + small-caps eyebrow.
+## Component to Update
 
-## 5. New "Program Context" section (between Hero and AI Insights)
+### `src/components/LandingHero.tsx`
+- Import the four new components.
+- Remove the existing "Program Context" section (lines ~188-233).
+- Insert the new sections in the correct order:
+  1. ProfileIdentifiesSection
+  2. WhyThisMattersSection
+  3. DiscoverMyMindSpine
+  4. SingleTestPicker
+  5. ProgramConnectionSection
+  6. What you get after assessment (existing)
+  7. Methodology (existing)
+  8. DisclaimerSection
+  9. Footer CTA
+  10. FAQ / SEOFooter
 
-A short, calm band that the secondary CTA scrolls to. Three columns, no icons-as-decoration:
+- Update the `scrollToProgram` scroll target to point to the new `ProgramConnectionSection` ID (e.g., `id="program-connection"`).
 
-- **For participants** — Identify how you process information and where AI tools fit your workflow.
-- **For facilitators** — Understand cohort patterns and where individuals may need extra support.
-- **For the program** — A shared language for cognitive style, learning preferences, and AI-readiness across Applied AI Works Canada.
+---
 
-Includes a one-line disclaimer: *"This is a structured self-assessment, not a clinical diagnostic tool. It does not diagnose ADHD, autism, learning disabilities, or mental health conditions."*
+## Design Tokens to Use
+- Backgrounds: `bg-background`, `bg-card/30`
+- Borders: `border-border`
+- Typography: `font-serif` for headings, default sans for body
+- Text: `text-foreground`, `text-muted-foreground`, `text-muted-foreground/70`
+- Cards: flat with `border border-border` and subtle background (no gradients, no glow, no glassmorphism)
+- Icons: `lucide-react`, strokeWidth 1.5, muted color
+- Spacing: `py-16 sm:py-24` between sections, `max-w-5xl mx-auto` content width
+- No framer-motion on the new sections (static, calm)
 
-## 6. Visual register pass (`src/index.css` + component classes)
-
-Goal: serious psychometric platform, not neon dashboard.
-
-- Keep deep navy background but reduce saturation on `--primary` (purple) from `252 100% 69%` → a calmer `230 55% 62%` (slate-indigo) for the assessment surfaces. Gold (`--yellow`) stays but reserved for progress + key affordances only — not headers, not decorative dots.
-- Replace the gradient hero glows (`bg-yellow/[0.04]`, blurred yellow blob) with a single subtle top hairline + flat background.
-- Remove `animate-pulse` decorations from the spine header and step pills.
-- Headlines: keep Crimson Pro serif but drop the `text-primary` color swap on "Think?" — set entire H1 in foreground; use a thin underline accent instead. Tracks tighter, weight 500 instead of 700.
-- Cards: remove gradient fills (`from-amber-500/10 to-amber-500/5` etc.) on the AI Insights trio — flat `bg-card` + 1px border, single muted accent per card.
-- Animations: reduce framer-motion `y: 15` entrances to `y: 6`, durations to 0.3s. No hover lift on the spine step cards beyond a border-color change.
-
-## 7. Header / nav (`LandingHero.tsx` top bar)
-
-- Brand lockup keeps "How Do I Think" but adds a small subtitle line on desktop: **"An Applied AI Works Canada assessment."**
-- Replace the round yellow brain badge with a simple monogram mark (HDT) in a thin-bordered square — calmer, less mascot-like.
-
-## 8. Language sweep (find/replace across landing surfaces only)
-
-Across `LandingHero.tsx`, `DiscoverMyMindSpine.tsx`, `SingleTestPicker.tsx`, `HomeFAQ.tsx`, `SEOFooter.tsx`:
-
-- "IQ test" → "cognitive reasoning module" (except where it refers to the specific instrument)
-- "unlock", "discover your genius", "great minds" → removed or replaced with "identify", "map", "documented thinking styles"
-- "fun" / "quiz" / "test" (in marketing copy) → "module" / "assessment" / "self-report"
-- "diagnose", "evaluation" in marketing copy → "self-report" / "reflection"
-- "ADHD screening", "autism screening" → "attention patterns", "social/sensory patterns" (instrument names retained in meta lines)
-
-## Out of scope
-
-- No changes to the assessment instruments themselves, scoring, AI prompts, or results screens (those can be a follow-up pass).
-- No changes to pricing, premium gating, or auth.
-- No new routes or backend work.
-
-## Files touched
-
-```text
-src/components/LandingHero.tsx         (hero, sections, CTAs, copy)
-src/components/DiscoverMyMindSpine.tsx (copy, tone, restrained accents)
-src/components/SingleTestPicker.tsx    (copy, card titles)
-src/components/HomeFAQ.tsx             (language sweep)
-src/components/SEOFooter.tsx           (positioning line)
-src/index.css                          (calmer primary, ornament reduction)
-```
-
-## Open questions before I build
-
-1. Should the secondary CTA scroll to the new Program Context section, or link out to AppliedAIWorks.ca? (I assumed scroll.)
-2. Keep the "Historical Mind Match" feature visible on the landing page at all, or hide it entirely under this serious repositioning? (I assumed reword + keep.)
-3. Confirm we keep the gold accent as the progress/affordance colour, or move fully to a slate-indigo single-accent system?
+## Out of Scope
+- No changes to assessment logic, scoring, results, pricing, auth, or backend.
+- No changes to DiscoverMyMindSpine, SingleTestPicker, HomeFAQ, SEOFooter, or Methodology sections.
+- No new color tokens in `index.css`.
