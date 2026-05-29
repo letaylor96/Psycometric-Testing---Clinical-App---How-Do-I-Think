@@ -24,6 +24,7 @@ import { SampleProfilePreview } from '@/components/landing/SampleProfilePreview'
 import { JourneyPathway } from '@/components/landing/JourneyPathway';
 import { JourneyStageChip } from '@/components/landing/JourneyStageChip';
 import { ProfileClaritySection } from '@/components/landing/ProfileClaritySection';
+import { WhatYouLearnSection } from '@/components/landing/WhatYouLearnSection';
 
 
 interface LandingHeroProps {
@@ -200,6 +201,9 @@ export const LandingHero = ({
 
       {/* How the profile creates clarity — 4-step process */}
       <ProfileClaritySection />
+
+      {/* What you'll learn — outcome chips */}
+      <WhatYouLearnSection />
 
       {/* Journey pathway */}
       <JourneyPathway />
