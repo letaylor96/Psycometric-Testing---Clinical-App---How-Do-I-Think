@@ -256,7 +256,7 @@ export const frameworkInfo: Record<AnalysisFramework, {
   jungian: {
     name: 'Analytical Psychology',
     thinker: 'Carl Jung',
-    description: 'Discover your archetypes, shadow self, and journey toward individuation and wholeness.',
+    description: 'Explore archetypes, shadow material, and individuation themes as part of your structured self-assessment.',
     icon: '🌓',
     color: 'text-purple-500',
   },

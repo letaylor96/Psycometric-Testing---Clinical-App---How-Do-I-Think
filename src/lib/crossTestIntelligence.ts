@@ -85,7 +85,7 @@ export const enhanceIQResults = (
 
     // Processing style impact
     if (cog.processingStyle === 'nonlinear' || cog.processingStyle === 'parallel') {
-      crossTestSynergies.push('Your nonlinear processing style may indicate creative problem-solving that traditional IQ tests undervalue');
+      crossTestSynergies.push('Your nonlinear processing style may indicate creative problem-solving that traditional reasoning modules undervalue');
     }
   }
 

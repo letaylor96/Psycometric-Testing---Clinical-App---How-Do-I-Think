@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: 'What will I learn about myself?',
-    a: 'You\'ll discover your personality archetype, your Big Five trait scores, your equivalent MBTI type, and detailed insights into how your personality affects your relationships, work style, and decision-making.',
+    a: 'You will see your Big Five trait pattern, equivalent MBTI type, and notes on how this contributes to your strengths and support needs for program guidance.',
   },
 ];
 

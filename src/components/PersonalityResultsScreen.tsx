@@ -67,7 +67,7 @@ ${results.archetype.rarity} — joining the ranks of ${results.archetype.famousE
 
 Take the free assessment yourself!`;
 
-  const twitterText = `My personality: ${results.mbti.type} (${results.mbti.name}) 🎭 "${results.archetype.tagline}" — ${results.archetype.rarity}. Discover yours:`;
+  const twitterText = `Personality module: ${results.mbti.type} (${results.mbti.name}) 🎭 "${results.archetype.tagline}" — ${results.archetype.rarity}. Structured self-assessment for program guidance →`;
 
   return (
     <div className="min-h-screen px-4 py-12 relative overflow-hidden">

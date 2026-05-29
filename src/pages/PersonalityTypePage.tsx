@@ -93,7 +93,7 @@ const PersonalityTypePage = () => {
 
               {!persistedResults.personality && (
                 <Button onClick={handleStart} size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-6 text-base">
-                  Discover Your Type
+                  Explore this personality type
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               )}

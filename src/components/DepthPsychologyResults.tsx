@@ -859,9 +859,9 @@ export const DepthPsychologyResultsScreen = ({
             </CardHeader>
             <CardContent className="flex justify-center">
               <SocialShareButtons
-                shareText={`🧠 Just completed my ${frameworkInfo[results.framework].thinker} depth psychology analysis!\n\n${frameworkInfo[results.framework].description}\n\nDiscover the hidden patterns in your psyche!`}
-                linkedInText={`Just explored my unconscious mind through ${frameworkInfo[results.framework].thinker}'s lens! 🧠\n\nFascinating insights into the unconscious mind.\n\nDiscover your own depth psychology profile!`}
-                twitterText={`Explored my psyche through ${frameworkInfo[results.framework].thinker}'s lens 🧠 Fascinating insights into the unconscious mind. Discover yours:`}
+                shareText={`🧠 Completed the depth-psychology reflection through ${frameworkInfo[results.framework].thinker}'s lens.\n\n${frameworkInfo[results.framework].description}\n\nStructured self-assessment for thinking patterns →`}
+                linkedInText={`Explored my depth-psychology reflection through ${frameworkInfo[results.framework].thinker}'s lens 🧠\n\nA structured self-assessment for self-understanding and program guidance.`}
+                twitterText={`Explored my depth-psychology reflection through ${frameworkInfo[results.framework].thinker}'s lens 🧠 Structured self-assessment for program guidance →`}
               />
             </CardContent>
           </Card>

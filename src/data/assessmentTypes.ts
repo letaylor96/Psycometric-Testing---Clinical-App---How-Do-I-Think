@@ -39,7 +39,7 @@ export const assessmentInfo: Record<AssessmentType, AssessmentInfo> = {
     id: 'personality',
     title: 'Personality Type',
     shortTitle: 'Personality Type',
-    description: 'Discover your personality archetype, Myers-Briggs type, and what makes you uniquely you.',
+    description: 'A Big Five (OCEAN) personality module that contributes to your cognitive style profile and program guidance.',
     framework: 'Big Five + MBTI',
     questionCount: 30,
     timeMinutes: Math.ceil((30 * TIME_PER_QUESTION_SECONDS) / 60), // 15 min
