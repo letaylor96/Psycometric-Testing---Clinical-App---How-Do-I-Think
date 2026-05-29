@@ -77,7 +77,10 @@ export const LandingHero = ({
               </div>
             </div>
           </div>
-          <AuthButton />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <AuthButton />
+          </div>
         </div>
       </header>
 
