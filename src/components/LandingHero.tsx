@@ -1,8 +1,7 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Brain, Lightbulb, Sparkles, Target, Zap, Crown, MessageCircle, FileText, Info, X } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowRight, FileText, MessageCircle, BookOpen, Users, Layers, GraduationCap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { AssessmentType, SelectableTestKey, assessmentInfo, allAssessmentTypes } from '@/data/assessmentTypes';
+import { AssessmentType, SelectableTestKey } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
 import { AuthButton } from '@/components/AuthButton';
 import { HomeFAQ } from '@/components/HomeFAQ';
@@ -15,9 +14,6 @@ import { usePremiumAccess } from '@/hooks/usePremiumAccess';
 import { useDiscoverMyMind } from '@/hooks/useDiscoverMyMind';
 import { DiscoverMyMindSpine } from '@/components/DiscoverMyMindSpine';
 import { SingleTestPicker } from '@/components/SingleTestPicker';
-import { cn } from '@/lib/utils';
-
-
 
 interface LandingHeroProps {
   onStart: () => void;
@@ -30,8 +26,8 @@ interface LandingHeroProps {
   cognitiveStyleResults?: CognitiveStyleResults | null;
 }
 
-export const LandingHero = ({ 
-  onStart, 
+export const LandingHero = ({
+  onStart,
   onSelectAssessment,
   onSelectTest,
   onViewDashboard,
@@ -41,7 +37,6 @@ export const LandingHero = ({
   cognitiveStyleResults,
 }: LandingHeroProps) => {
   const { hasPremiumAccess } = usePremiumAccess();
-  const [showAbout, setShowAbout] = useState(false);
 
   const completionStatus: Record<AssessmentType, boolean> = {
     personality: !!personalityResults,
@@ -58,33 +53,40 @@ export const LandingHero = ({
     .map(([t]) => t);
   const mapStatus = useDiscoverMyMind(completedAssessments);
 
+  const scrollToProgram = () => {
+    document.getElementById('program-context')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
     <div className="min-h-screen bg-background">
       {/* Top Navigation Bar */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-yellow/20">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-yellow/20 flex items-center justify-center flex-shrink-0">
-              <Brain className="w-4 h-4 sm:w-5 sm:h-5 text-yellow" />
+            <div className="w-9 h-9 rounded-md border border-border bg-card flex items-center justify-center flex-shrink-0">
+              <span className="font-serif text-[11px] font-semibold tracking-wider text-foreground">HDT</span>
             </div>
-            <span className="font-serif text-base sm:text-lg font-semibold text-foreground tracking-tight">
-              How Do I Think
-            </span>
+            <div className="leading-tight">
+              <div className="font-serif text-base sm:text-lg font-medium text-foreground tracking-tight">
+                How Do I Think
+              </div>
+              <div className="hidden sm:block text-[10px] uppercase tracking-[0.18em] text-muted-foreground/80">
+                An Applied AI Works Canada assessment
+              </div>
+            </div>
           </div>
           <AuthButton />
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-20 sm:pt-24 pb-6 sm:pb-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-yellow/[0.04] via-transparent to-transparent" />
-        <div className="absolute top-40 left-1/4 w-32 sm:w-64 h-32 sm:h-64 bg-yellow/5 rounded-full blur-[60px] sm:blur-[100px]" />
-        
+      <section className="relative pt-24 sm:pt-32 pb-8 sm:pb-12">
+        <div className="absolute top-[64px] inset-x-0 h-px bg-border/60" />
+
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
           {/* Progress bar for returning users */}
           {hasStarted && (
-            <div className="mb-4 sm:mb-6">
+            <div className="mb-6">
               <AssessmentProgress
                 iqResults={iqResults ?? null}
                 personalityResults={personalityResults ?? null}
@@ -96,172 +98,208 @@ export const LandingHero = ({
             </div>
           )}
 
-          {/* Headline */}
-          <div className="text-center mb-5 sm:mb-8">
-            <motion.h1
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-[1.1] tracking-tight mb-2 sm:mb-3"
-            >
-              How Do I <span className="text-primary">Think?</span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed"
-            >
-              Uncover How Your Mind Works & How to Set Yourself Up for Success
-            </motion.p>
+          {/* Eyebrow */}
+          <div className="text-center mb-4">
+            <span className="inline-block text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-muted-foreground font-medium">
+              Cognitive &amp; AI-Readiness Self-Assessment
+            </span>
           </div>
 
-          {/* ===== DISCOVER MY MIND — Unified Guided Funnel (also the engagement surface) ===== */}
+          {/* Headline */}
+          <div className="text-center mb-6 sm:mb-8 max-w-3xl mx-auto">
+            <motion.h1
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium text-foreground leading-[1.15] tracking-tight mb-5"
+            >
+              Understand how you think — so you can build from your strengths.
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.08 }}
+              className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
+            >
+              A structured cognitive and personality profile designed to help participants understand how they learn, solve problems, communicate, and adapt to AI-enabled work.
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3, delay: 0.16 }}
+              className="text-muted-foreground/70 text-sm max-w-2xl mx-auto leading-relaxed mt-4"
+            >
+              Built to support Applied AI Works Canada by helping participants identify where they may thrive, where they may need support, and how to start with the right AI-enabled tools and workflows.
+            </motion.p>
+
+            {/* Primary + Secondary CTA */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-7">
+              <Button
+                onClick={onStart}
+                size="lg"
+                className="bg-foreground text-background hover:bg-foreground/90 font-medium px-7 py-5 text-sm"
+              >
+                Start the assessment
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+              <Button
+                onClick={scrollToProgram}
+                variant="outline"
+                size="lg"
+                className="border-border text-foreground hover:bg-card font-medium px-7 py-5 text-sm"
+              >
+                Learn how it supports the program
+              </Button>
+            </div>
+
+            {!hasPremiumAccess && !hasStarted && (
+              <p className="text-muted-foreground/60 text-xs mt-5">
+                No sign-up required to begin.
+              </p>
+            )}
+          </div>
+
+          {/* ===== Full Cognitive & AI-Readiness Profile ===== */}
           <DiscoverMyMindSpine
             status={mapStatus}
             onStart={onSelectAssessment}
             onViewDashboard={onViewDashboard}
           />
 
-          {/* ===== Single-test picker — alternative to the full guided flow ===== */}
+          {/* ===== Single-module picker ===== */}
           <SingleTestPicker onSelectTest={onSelectTest} />
 
-          {/* Returning-user progress hint */}
           {hasStarted && completedCount < 4 && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center mt-4">
               <p className="text-muted-foreground text-xs sm:text-sm">
-                <span className="text-foreground font-medium">{completedCount}/4 complete</span>
+                <span className="text-foreground font-medium">{completedCount} of 4 modules complete</span>
                 {' '}— finish all four for your integrated profile.
               </p>
             </motion.div>
           )}
-
-          {!hasPremiumAccess && !hasStarted && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="text-center text-muted-foreground/50 text-xs mt-4"
-            >
-              First assessment free · No sign-up required
-            </motion.p>
-          )}
         </div>
       </section>
 
-      {/* About Modal */}
-      <AnimatePresence>
-        {showAbout && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4"
-            onClick={() => setShowAbout(false)}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative max-w-2xl w-full bg-card border border-yellow/20 rounded-xl p-8 md:p-12"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                onClick={() => setShowAbout(false)}
-                className="absolute top-4 right-4 p-2 text-muted-foreground hover:text-foreground transition-colors"
-                aria-label="Close"
-              >
-                <X className="w-5 h-5" />
-              </button>
-              <div className="flex justify-center gap-4 mb-6">
-                <div className="w-12 h-12 rounded-full bg-yellow/10 flex items-center justify-center">
-                  <Lightbulb className="w-6 h-6 text-yellow" />
-                </div>
-              </div>
-              <p className="text-yellow text-sm font-medium tracking-widest uppercase mb-4 text-center">
-                About Our Assessments
-              </p>
-              <h2 className="font-serif text-xl md:text-2xl lg:text-3xl font-semibold text-foreground leading-relaxed text-center">
-                Four validated instruments providing a comprehensive analysis of your cognitive 
-                architecture, personality structure, and neurological processing patterns.
-              </h2>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* AI Insights Section */}
-      <section className="py-12 sm:py-20 bg-gradient-to-b from-background via-purple-500/[0.03] to-background">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-10 sm:mb-16">
-            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs sm:text-sm font-medium mb-3 sm:mb-4">
-              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              AI-Powered Insights
-            </div>
-            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground mb-3 sm:mb-4">
-              Go Beyond the Numbers
+      {/* Program Context */}
+      <section id="program-context" className="py-16 sm:py-24 border-t border-border bg-card/30">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 max-w-2xl mx-auto">
+            <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-3">
+              Program Context
+            </p>
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-foreground tracking-tight mb-4">
+              How this supports Applied AI Works Canada.
             </h2>
-            <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto px-2">
-              After completing your assessments, unlock powerful AI-driven tools to 
-              understand your unique cognitive profile.
+            <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+              A shared instrument used across the program to help participants, facilitators, and program leads work from the same understanding of cognitive style and AI-readiness.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8">
-            <div className="p-5 sm:p-8 rounded-xl bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/20 text-center">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                <Crown className="w-6 h-6 sm:w-8 sm:h-8 text-amber-500" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border border border-border">
+            {[
+              {
+                icon: GraduationCap,
+                label: 'For participants',
+                body: 'Identify how you process information, where you learn best, and where AI tools fit into your workflow.',
+              },
+              {
+                icon: Users,
+                label: 'For facilitators',
+                body: 'Understand cohort patterns and where individuals may benefit from additional support or differentiated guidance.',
+              },
+              {
+                icon: Layers,
+                label: 'For the program',
+                body: 'A shared language for cognitive style, learning preferences, and AI-readiness across every cohort.',
+              },
+            ].map((col) => (
+              <div key={col.label} className="bg-background p-7 sm:p-8">
+                <col.icon className="w-5 h-5 text-muted-foreground mb-4" strokeWidth={1.5} />
+                <h3 className="font-serif text-base font-medium text-foreground mb-2">{col.label}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{col.body}</p>
               </div>
-              <h3 className="font-serif text-lg sm:text-xl font-semibold text-foreground mb-2 sm:mb-3">Historical Mind Match</h3>
-              <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4">Discover which great minds from history share your cognitive patterns.</p>
-              <span className="text-amber-500 text-xs sm:text-sm font-medium">20+ historical figures</span>
-            </div>
+            ))}
+          </div>
 
-            <div className="p-5 sm:p-8 rounded-xl bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20 text-center">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-500" />
-              </div>
-              <h3 className="font-serif text-lg sm:text-xl font-semibold text-foreground mb-2 sm:mb-3">Therapist Report</h3>
-              <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4">Professional clinical summary for mental health providers.</p>
-              <span className="text-emerald-500 text-xs sm:text-sm font-medium">Export-ready format</span>
-            </div>
+          <p className="text-muted-foreground/70 text-xs sm:text-sm italic text-center mt-10 max-w-2xl mx-auto leading-relaxed">
+            This is a structured self-assessment, not a clinical diagnostic tool. It does not diagnose ADHD, autism, learning disabilities, or mental health conditions.
+          </p>
+        </div>
+      </section>
 
-            <div className="p-5 sm:p-8 rounded-xl bg-gradient-to-br from-violet-500/10 to-violet-500/5 border border-violet-500/20 text-center sm:col-span-2 md:col-span-1">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-violet-500/20 border border-violet-500/30 flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                <MessageCircle className="w-6 h-6 sm:w-8 sm:h-8 text-violet-500" />
+      {/* What You Get After the Assessment */}
+      <section className="py-16 sm:py-24">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 max-w-2xl mx-auto">
+            <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-3">
+              Personalized Synthesis
+            </p>
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-foreground tracking-tight mb-4">
+              What you get after the assessment.
+            </h2>
+            <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+              Once your modules are complete, your responses are synthesized into a structured profile you can reflect on, share, and apply.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[
+              {
+                icon: BookOpen,
+                title: 'Documented Thinking Styles',
+                body: 'See which documented thinking styles align with yours — for reflection, not comparison.',
+                meta: 'Reflective benchmark',
+              },
+              {
+                icon: FileText,
+                title: 'Practitioner-Ready Summary',
+                body: 'A structured summary you can share with a coach, mentor, or clinician.',
+                meta: 'Export-ready format',
+              },
+              {
+                icon: MessageCircle,
+                title: 'Ask About Your Profile',
+                body: 'Explore what your profile means for your work, learning, and AI workflows.',
+                meta: 'Conversational guidance',
+              },
+            ].map((card) => (
+              <div key={card.title} className="p-7 bg-card border border-border rounded-md">
+                <card.icon className="w-5 h-5 text-muted-foreground mb-5" strokeWidth={1.5} />
+                <h3 className="font-serif text-base font-medium text-foreground mb-2">{card.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed mb-4">{card.body}</p>
+                <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground/70">{card.meta}</p>
               </div>
-              <h3 className="font-serif text-lg sm:text-xl font-semibold text-foreground mb-2 sm:mb-3">Ask AI About Results</h3>
-              <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4">Chat with AI to understand what your results mean for your life.</p>
-              <span className="text-violet-500 text-xs sm:text-sm font-medium">Personalized insights</span>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Methodology Section */}
-      <section className="py-12 sm:py-20 bg-card border-y border-yellow/20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-10 sm:mb-16">
-            <p className="text-yellow text-xs sm:text-sm font-medium tracking-widest uppercase mb-3 sm:mb-4">Scientific Foundation</p>
-            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground mb-4 sm:mb-6">Research-Based Methodology</h2>
-            <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto px-2">
-              Our assessments are built on decades of peer-reviewed research in cognitive psychology, psychometrics, and neuroscience.
+      <section className="py-16 sm:py-24 border-y border-border bg-card/30">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 max-w-2xl mx-auto">
+            <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-3">
+              Scientific Foundation
+            </p>
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-foreground tracking-tight mb-4">
+              Built on established instruments.
+            </h2>
+            <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+              Each module draws on peer-reviewed frameworks from cognitive psychology, psychometrics, and applied learning research.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-border border border-border bg-background">
             {[
-              { title: 'Big Five Model', icon: Target, description: 'The most validated personality framework in modern psychology.' },
-              { title: "Raven's Matrices", icon: Brain, description: 'Non-verbal assessment of fluid intelligence used globally.' },
-              { title: 'ASRS-v1.1', icon: Zap, description: 'WHO screening for attention patterns.' },
-              { title: 'Cognitive Load', icon: Lightbulb, description: 'How you process information.' },
-            ].map((item, i) => (
-              <div key={i} className="text-center">
-                <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-yellow/10 border border-yellow/20 flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                  <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-yellow" />
-                </div>
-                <h3 className="font-semibold text-foreground text-xs sm:text-base mb-1 sm:mb-2">{item.title}</h3>
-                <p className="text-muted-foreground text-[10px] sm:text-sm leading-relaxed">{item.description}</p>
+              { title: 'Big Five Model', description: 'The most validated personality framework in modern psychology.' },
+              { title: "Raven's Matrices", description: 'Non-verbal assessment of fluid reasoning used globally.' },
+              { title: 'ASRS-v1.1', description: 'WHO instrument for attention-pattern self-report.' },
+              { title: 'Cognitive Load Theory', description: 'How information is processed under demand.' },
+            ].map((item) => (
+              <div key={item.title} className="p-7">
+                <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground/70 mb-2">Reference</p>
+                <h3 className="font-serif text-base font-medium text-foreground mb-2">{item.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
               </div>
             ))}
           </div>
@@ -269,30 +307,30 @@ export const LandingHero = ({
       </section>
 
       {/* Footer CTA */}
-      <section className="py-12 sm:py-20 bg-background relative">
-        <div className="absolute inset-0 bg-gradient-to-t from-yellow/[0.03] to-transparent" />
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center relative z-10">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-yellow/10 border border-yellow/30 flex items-center justify-center mx-auto mb-4 sm:mb-6">
-            <Brain className="w-6 h-6 sm:w-8 sm:h-8 text-yellow" />
-          </div>
-          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground mb-4 sm:mb-6">
-            Ready to Begin?
+      <section className="py-16 sm:py-24">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
+          <div className="w-12 h-px bg-border mx-auto mb-6" />
+          <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-3">
+            Begin
+          </p>
+          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-foreground tracking-tight mb-4">
+            Ready to begin your profile?
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-base mb-6 sm:mb-8 px-2">
-            Start with the free IQ test, or pick any assessment above.
+          <p className="text-muted-foreground text-sm sm:text-base mb-8 leading-relaxed">
+            Start with any module — your profile builds as you complete each one.
           </p>
           <Button
             onClick={onStart}
             size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-8 sm:px-10 py-5 sm:py-6 text-sm sm:text-base w-full sm:w-auto"
+            className="bg-foreground text-background hover:bg-foreground/90 font-medium px-8 py-5 text-sm"
           >
-            Start Free IQ Test
+            Start the assessment
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
       </section>
 
-      {/* FAQ Section */}
+      {/* FAQ */}
       <HomeFAQ />
 
       {/* Footer */}
