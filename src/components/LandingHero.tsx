@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, FileText, MessageCircle, BookOpen, Users, Layers, GraduationCap } from 'lucide-react';
+import { ArrowRight, FileText, MessageCircle, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, SelectableTestKey } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
@@ -16,6 +16,10 @@ import { usePremiumAccess } from '@/hooks/usePremiumAccess';
 import { useDiscoverMyMind } from '@/hooks/useDiscoverMyMind';
 import { DiscoverMyMindSpine } from '@/components/DiscoverMyMindSpine';
 import { SingleTestPicker } from '@/components/SingleTestPicker';
+import { ProfileIdentifiesSection } from '@/components/ProfileIdentifiesSection';
+import { WhyThisMattersSection } from '@/components/WhyThisMattersSection';
+import { ProgramConnectionSection } from '@/components/ProgramConnectionSection';
+import { DisclaimerSection } from '@/components/DisclaimerSection';
 
 interface LandingHeroProps {
   onStart: () => void;
@@ -56,7 +60,7 @@ export const LandingHero = ({
   const mapStatus = useDiscoverMyMind(completedAssessments);
 
   const scrollToProgram = () => {
-    document.getElementById('program-context')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('program-connection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
@@ -163,15 +167,24 @@ export const LandingHero = ({
               </p>
             )}
           </div>
+        </div>
+      </section>
 
-          {/* ===== Full Cognitive & AI-Readiness Profile ===== */}
+      {/* What this profile helps identify */}
+      <ProfileIdentifiesSection />
+
+      {/* Why this matters */}
+      <WhyThisMattersSection />
+
+      {/* Guided profile + single-module picker */}
+      <section className="py-16 sm:py-24 border-t border-border">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <DiscoverMyMindSpine
             status={mapStatus}
             onStart={onSelectAssessment}
             onViewDashboard={onViewDashboard}
           />
 
-          {/* ===== Single-module picker ===== */}
           <SingleTestPicker onSelectTest={onSelectTest} />
 
           {hasStarted && completedCount < 4 && (
@@ -185,52 +198,9 @@ export const LandingHero = ({
         </div>
       </section>
 
-      {/* Program Context */}
-      <section id="program-context" className="py-16 sm:py-24 border-t border-border bg-card/30">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12 max-w-2xl mx-auto">
-            <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-3">
-              Program Context
-            </p>
-            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-foreground tracking-tight mb-4">
-              How this supports Applied AI Works Canada.
-            </h2>
-            <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-              A shared instrument used across the program to help participants, facilitators, and program leads work from the same understanding of cognitive style and AI-readiness.
-            </p>
-          </div>
+      {/* Connection to Applied AI Works Canada */}
+      <ProgramConnectionSection />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border border border-border">
-            {[
-              {
-                icon: GraduationCap,
-                label: 'For participants',
-                body: 'Identify how you process information, where you learn best, and where AI tools fit into your workflow.',
-              },
-              {
-                icon: Users,
-                label: 'For facilitators',
-                body: 'Understand cohort patterns and where individuals may benefit from additional support or differentiated guidance.',
-              },
-              {
-                icon: Layers,
-                label: 'For the program',
-                body: 'A shared language for cognitive style, learning preferences, and AI-readiness across every cohort.',
-              },
-            ].map((col) => (
-              <div key={col.label} className="bg-background p-7 sm:p-8">
-                <col.icon className="w-5 h-5 text-muted-foreground mb-4" strokeWidth={1.5} />
-                <h3 className="font-serif text-base font-medium text-foreground mb-2">{col.label}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{col.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <p className="text-muted-foreground/70 text-xs sm:text-sm italic text-center mt-10 max-w-2xl mx-auto leading-relaxed">
-            This is a structured self-assessment, not a clinical diagnostic tool. It does not diagnose ADHD, autism, learning disabilities, or mental health conditions.
-          </p>
-        </div>
-      </section>
 
       {/* What You Get After the Assessment */}
       <section className="py-16 sm:py-24">
@@ -310,6 +280,10 @@ export const LandingHero = ({
           </div>
         </div>
       </section>
+
+      {/* Disclaimer */}
+      <DisclaimerSection />
+
 
       {/* Footer CTA */}
       <section className="py-16 sm:py-24">
