@@ -50,7 +50,10 @@ type GameState =
   | 'adhd-quiz'
   | 'adhd-results'
   | 'autism-quiz'
+  | 'autism-quiz'
   | 'autism-results'
+  | 'cognitive-profile-quiz'
+  | 'cognitive-profile-results'
   | 'dashboard';
 
 const Index = () => {
