@@ -13,113 +13,80 @@ interface TestOption {
   blurb: string;
   meta: string;
   icon: React.ElementType;
-  text: string;
-  iconBg: string;
-  border: string;
-  hoverBorder: string;
   note?: string;
 }
 
 const OPTIONS: TestOption[] = [
   {
     key: 'iq',
-
-    title: 'IQ',
-    blurb: 'Mensa-style pattern recognition and abstract reasoning.',
+    title: 'Cognitive Reasoning',
+    blurb: 'Pattern recognition and abstract reasoning module.',
     meta: '25 questions · ~13 min',
     icon: Brain,
-    text: 'text-blue-400',
-    iconBg: 'bg-blue-500/15',
-    border: 'border-blue-500/25',
-    hoverBorder: 'hover:border-blue-500/60',
   },
   {
     key: 'neurodivergent',
-
-    title: 'Neurodivergence Level',
-    blurb: 'Cognitive style + attention screening across the full spectrum.',
+    title: 'Cognitive Style & Attention',
+    blurb: 'Self-report inventory mapping thinking style and attention patterns.',
     meta: '38 questions · ~19 min',
     icon: Zap,
-    text: 'text-emerald-400',
-    iconBg: 'bg-emerald-500/15',
-    border: 'border-emerald-500/25',
-    hoverBorder: 'hover:border-emerald-500/60',
   },
   {
     key: 'personality',
-
-    title: 'Personality Type',
-    blurb: 'Big Five + MBTI archetype and trait breakdown.',
+    title: 'Personality Profile',
+    blurb: 'Big Five (OCEAN) trait inventory with MBTI archetype mapping.',
     meta: '30 questions · ~15 min',
     icon: Target,
-    text: 'text-amber-400',
-    iconBg: 'bg-amber-500/15',
-    border: 'border-amber-500/25',
-    hoverBorder: 'hover:border-amber-500/60',
   },
   {
     key: 'adhd',
-
-    title: 'ADHD Evaluation',
-    blurb: 'WHO ASRS-v1.1 screening — the standard 18-item adult ADHD self-report scale.',
+    title: 'Attention & Focus Patterns',
+    blurb: 'A structured self-report inventory of adult attention and focus patterns.',
     meta: '18 questions · ~9 min',
     icon: Activity,
-    text: 'text-rose-400',
-    iconBg: 'bg-rose-500/15',
-    border: 'border-rose-500/25',
-    hoverBorder: 'hover:border-rose-500/60',
-    note: 'Standalone WHO ASRS-v1.1 (Part A + Part B)',
+    note: 'WHO ASRS-v1.1 (Part A + Part B). Self-report, not a diagnosis.',
   },
   {
     key: 'autism',
-    title: 'Autism Spectrum Evaluation',
-    blurb: 'AQ-50 by Baron-Cohen et al. — 5 subscales mapping the autism spectrum.',
+    title: 'Social & Sensory Processing Patterns',
+    blurb: 'A reflection module across five domains of social and sensory processing.',
     meta: '50 questions · ~25 min',
     icon: Puzzle,
-    text: 'text-cyan-400',
-    iconBg: 'bg-cyan-500/15',
-    border: 'border-cyan-500/25',
-    hoverBorder: 'hover:border-cyan-500/60',
-    note: 'Standalone AQ-50 with subscale breakdown',
+    note: 'Based on the AQ-50 inventory (Baron-Cohen et al.). Self-report, not a diagnosis.',
   },
   {
     key: 'depth',
-
-    title: 'Psychoanalytical Insights',
-    blurb: 'Freud · Jung · Nietzsche lenses with AI-powered analysis.',
-    meta: '24 questions · ~20 min',
+    title: 'Depth-Psychology Reflection',
+    blurb: 'Free-form reflection module analysed through Freudian, Jungian, and Nietzschean lenses.',
+    meta: '24 prompts · ~20 min',
     icon: Sparkles,
-    text: 'text-purple-400',
-    iconBg: 'bg-purple-500/15',
-    border: 'border-purple-500/25',
-    hoverBorder: 'hover:border-purple-500/60',
   },
 ];
 
 export const SingleTestPicker = ({ onSelectTest }: SingleTestPickerProps) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, delay: 0.1 }}
+      transition={{ duration: 0.3, delay: 0.08 }}
       className="relative max-w-5xl mx-auto mb-6 sm:mb-8"
     >
-      <div className="relative overflow-hidden rounded-2xl border border-border bg-card/60 p-5 sm:p-7">
+      <div className="relative rounded-lg border border-border bg-card/40 p-5 sm:p-7">
         {/* Divider with label */}
         <div className="flex items-center gap-3 mb-5">
           <div className="h-px flex-1 bg-border/60" />
-          <span className="text-[11px] sm:text-xs uppercase tracking-[0.18em] text-muted-foreground font-medium">
-            Or just pick a single test
+          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-medium">
+            Or take a single module
           </span>
           <div className="h-px flex-1 bg-border/60" />
         </div>
 
-        <div className="text-center mb-5 sm:mb-6">
-          <h3 className="font-serif text-lg sm:text-xl font-semibold text-foreground leading-tight">
-            Take One Test on Its Own
+        <div className="text-center mb-6">
+          <h3 className="font-serif text-lg sm:text-xl font-medium text-foreground leading-tight">
+            Focus on one lens at a time.
           </h3>
-          <p className="text-muted-foreground text-xs sm:text-sm mt-1">
-            Prefer a specific lens? Jump straight into any single evaluation — no full profile required.
+          <p className="text-muted-foreground text-xs sm:text-sm mt-1.5">
+            Each module stands on its own and contributes to your overall profile when you continue.
           </p>
         </div>
 
@@ -127,56 +94,42 @@ export const SingleTestPicker = ({ onSelectTest }: SingleTestPickerProps) => {
           {OPTIONS.map((opt) => {
             const Icon = opt.icon;
             return (
-              <motion.button
+              <button
                 key={opt.key}
                 onClick={() => onSelectTest(opt.key)}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
                 className={cn(
-                  'group relative text-left rounded-xl border bg-card/60 p-3.5 sm:p-4 transition-all duration-200',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-                  opt.border,
-                  opt.hoverBorder,
+                  'group relative text-left rounded-md border border-border bg-background p-4 transition-colors duration-200',
+                  'hover:border-foreground/30',
+                  'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background',
                 )}
               >
                 <div className="flex items-start gap-3">
-                  <div
-                    className={cn(
-                      'w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center flex-shrink-0',
-                      opt.iconBg,
-                    )}
-                  >
-                    <Icon className={cn('w-4 h-4 sm:w-5 sm:h-5', opt.text)} />
+                  <div className="w-9 h-9 rounded-md border border-border bg-card flex items-center justify-center flex-shrink-0">
+                    <Icon className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h4 className="font-serif text-sm font-semibold text-foreground leading-tight">
+                    <h4 className="font-serif text-sm font-medium text-foreground leading-tight">
                       {opt.title}
                     </h4>
                     <p className="text-[11px] text-muted-foreground mt-0.5">{opt.meta}</p>
                   </div>
                 </div>
 
-                <p className="text-xs text-muted-foreground/90 mt-2.5 leading-snug">
+                <p className="text-xs text-muted-foreground mt-3 leading-relaxed">
                   {opt.blurb}
                 </p>
 
                 {opt.note && (
-                  <p className="text-[10px] text-muted-foreground/60 italic mt-1.5">
+                  <p className="text-[10px] text-muted-foreground/60 italic mt-2 leading-relaxed">
                     {opt.note}
                   </p>
                 )}
 
-                <span
-                  className={cn(
-                    'inline-flex items-center gap-1 text-[11px] font-medium mt-2.5 transition-all',
-                    opt.text,
-                    'opacity-70 group-hover:opacity-100',
-                  )}
-                >
-                  Start
+                <span className="inline-flex items-center gap-1 text-[11px] font-medium mt-3 text-foreground/80">
+                  Begin module
                   <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
                 </span>
-              </motion.button>
+              </button>
             );
           })}
         </div>
