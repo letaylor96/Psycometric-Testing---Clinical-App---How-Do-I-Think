@@ -74,7 +74,7 @@ export const SampleProfilePreview = () => {
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gold/15 border border-gold/30">
             <span className="w-1.5 h-1.5 rounded-full bg-gold" />
             <span className="text-[10px] uppercase tracking-[0.18em] text-gold font-medium">
-              Complete
+              Sample · For illustration
             </span>
           </div>
         </div>
@@ -204,7 +204,7 @@ export const SampleProfilePreview = () => {
             Generated from your responses across 4 modules
           </p>
           <p className="text-[10px] uppercase tracking-[0.22em] text-gold/80">
-            v · sample
+            For illustration only
           </p>
         </div>
       </div>

@@ -21,7 +21,6 @@ import { WhyThisMattersSection } from '@/components/WhyThisMattersSection';
 import { ProgramConnectionSection } from '@/components/ProgramConnectionSection';
 import { DisclaimerSection } from '@/components/DisclaimerSection';
 import { SampleProfilePreview } from '@/components/landing/SampleProfilePreview';
-import { JourneyPathway } from '@/components/landing/JourneyPathway';
 import { JourneyStageChip } from '@/components/landing/JourneyStageChip';
 import { ProfileClaritySection } from '@/components/landing/ProfileClaritySection';
 import { WhatYouLearnSection } from '@/components/landing/WhatYouLearnSection';
@@ -206,9 +205,6 @@ export const LandingHero = ({
 
       {/* What you'll learn — outcome chips */}
       <WhatYouLearnSection />
-
-      {/* Journey pathway */}
-      <JourneyPathway />
 
 
       {/* Stage 01 — What your profile includes */}

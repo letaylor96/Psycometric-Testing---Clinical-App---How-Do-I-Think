@@ -50,15 +50,15 @@ export const DiscoverMyMindSpine = ({
       transition={{ duration: 0.45 }}
       className="relative max-w-5xl mx-auto mb-6 sm:mb-8"
     >
-      <div className="relative rounded-lg border border-border bg-card p-5 sm:p-7">
+      <div className="relative rounded-2xl border border-navy-deep/10 bg-card shadow-sm p-5 sm:p-7">
         {/* Header */}
         <div className="flex items-start justify-between gap-3 mb-5 sm:mb-6">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-10 h-10 rounded-md border border-border bg-background flex items-center justify-center flex-shrink-0">
-              <Layers className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
+            <div className="w-10 h-10 rounded-lg border border-navy-deep/10 bg-cream-warm flex items-center justify-center flex-shrink-0">
+              <Layers className="w-4 h-4 text-teal" strokeWidth={1.5} />
             </div>
             <div className="min-w-0">
-              <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground/80 mb-0.5">
+              <p className="text-[10px] uppercase tracking-[0.22em] text-gold mb-0.5 font-medium">
                 Guided Profile
               </p>
               <h2 className="font-serif text-base sm:text-lg font-medium text-foreground leading-tight">
@@ -68,7 +68,7 @@ export const DiscoverMyMindSpine = ({
                     ? 'Continue your profile.'
                     : 'Full Cognitive & AI-Readiness Profile'}
               </h2>
-              <p className="text-muted-foreground text-xs sm:text-sm leading-snug mt-1">
+              <p className="text-ink-muted text-xs sm:text-sm leading-snug mt-1">
                 {isFinished
                   ? 'All four modules complete. Open your integrated dashboard.'
                   : active
@@ -78,8 +78,8 @@ export const DiscoverMyMindSpine = ({
             </div>
           </div>
           {completedCount > 0 && !isFinished && (
-            <div className="hidden sm:flex items-center px-3 py-1 rounded-md border border-border bg-background flex-shrink-0">
-              <span className="text-[11px] font-medium text-muted-foreground tabular-nums">
+            <div className="hidden sm:flex items-center px-3 py-1 rounded-full border border-teal/30 bg-teal-soft/40 flex-shrink-0">
+              <span className="text-[11px] font-medium text-teal tabular-nums">
                 {completedCount} / {totalSteps}
               </span>
             </div>
@@ -87,12 +87,16 @@ export const DiscoverMyMindSpine = ({
         </div>
 
         {/* Progress bar */}
-        <div className="relative h-[3px] bg-border/60 mb-6 overflow-hidden">
+        <div className="relative h-[3px] bg-navy-deep/10 rounded-full mb-6 overflow-hidden">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${pct}%` }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
-            className="absolute inset-y-0 left-0 bg-foreground/70"
+            className="absolute inset-y-0 left-0 rounded-full"
+            style={{
+              backgroundImage:
+                'linear-gradient(to right, hsl(var(--teal)), hsl(var(--gold)))',
+            }}
           />
         </div>
 
@@ -109,41 +113,42 @@ export const DiscoverMyMindSpine = ({
                 key={type}
                 onClick={() => onStart(type)}
                 className={cn(
-                  'group relative text-left rounded-md border bg-background p-4 transition-colors duration-200',
-                  'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+                  'group relative text-left rounded-xl border bg-card p-4 transition-all duration-200',
+                  'hover:border-teal/40 hover:shadow-md hover:-translate-y-0.5',
+                  'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-teal focus-visible:ring-offset-2 focus-visible:ring-offset-background',
                   isDone
-                    ? 'border-foreground/30'
+                    ? 'border-teal/40'
                     : isNext
-                      ? 'border-foreground/50'
-                      : 'border-border hover:border-foreground/30',
+                      ? 'border-gold/40'
+                      : 'border-navy-deep/10',
                 )}
               >
                 {/* Step ribbon */}
                 <div className="absolute top-3 right-3 flex items-center gap-1">
                   {isDone && (
-                    <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                    <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.14em] text-teal font-medium">
                       <Check className="w-3 h-3" strokeWidth={2} />
                       Done
                     </span>
                   )}
                   {isNext && !isDone && (
-                    <span className="text-[10px] uppercase tracking-[0.14em] text-foreground/70">
+                    <span className="text-[10px] uppercase tracking-[0.14em] text-gold font-medium">
                       Next module
                     </span>
                   )}
                   {!isDone && !isNext && (
-                    <span className="text-[10px] font-mono text-muted-foreground/50">
+                    <span className="text-[10px] font-mono text-ink-muted/50">
                       0{idx + 1}
                     </span>
                   )}
                 </div>
 
                 {/* Icon */}
-                <div className="w-8 h-8 rounded-md border border-border bg-card flex items-center justify-center mb-3">
+                <div className="w-9 h-9 rounded-lg border border-teal/20 bg-cream-warm flex items-center justify-center mb-3">
                   {isDone ? (
-                    <Check className="w-4 h-4 text-foreground/70" strokeWidth={2} />
+                    <Check className="w-4 h-4 text-teal" strokeWidth={2} />
                   ) : (
-                    <Icon className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
+                    <Icon className="w-4 h-4 text-teal" strokeWidth={1.5} />
                   )}
                 </div>
 
@@ -153,12 +158,12 @@ export const DiscoverMyMindSpine = ({
                 </h3>
 
                 {/* Meta */}
-                <p className="text-[11px] text-muted-foreground mb-3">
+                <p className="text-[11px] text-ink-muted mb-3">
                   {info.questionCount} questions · ~{info.timeMinutes} min
                 </p>
 
                 {/* CTA */}
-                <span className="inline-flex items-center gap-1 text-[11px] font-medium text-foreground/80">
+                <span className="inline-flex items-center gap-1 text-[11px] font-medium text-teal">
                   {isDone ? 'Review' : isNext ? 'Continue' : 'Begin'}
                   <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
                 </span>
@@ -172,7 +177,7 @@ export const DiscoverMyMindSpine = ({
           <Button
             onClick={handlePrimary}
             size="lg"
-            className="flex-1 bg-foreground text-background hover:bg-foreground/90 font-medium py-5 sm:py-6"
+            className="flex-1 bg-navy-deep text-cream hover:bg-navy-deep/90 font-medium py-5 sm:py-6"
           >
             {isFinished
               ? 'Open integrated dashboard'
@@ -182,14 +187,14 @@ export const DiscoverMyMindSpine = ({
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
           {!isFinished && (
-            <p className="text-center sm:text-left text-muted-foreground text-[11px] sm:text-xs sm:max-w-[200px] leading-snug">
+            <p className="text-center sm:text-left text-ink-muted text-[11px] sm:text-xs sm:max-w-[200px] leading-snug">
               Or select any module above — no required order.
             </p>
           )}
         </div>
 
         {!isFinished && (
-          <p className="text-center text-muted-foreground/70 text-[11px] mt-4 pt-4 border-t border-border/60 leading-relaxed">
+          <p className="text-center text-ink-muted/70 text-[11px] mt-4 pt-4 border-t border-navy-deep/10 leading-relaxed">
             Each module surfaces cognitive style, learning preferences, and potential support needs — not a clinical diagnosis.
           </p>
         )}

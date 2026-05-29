@@ -79,21 +79,21 @@ export const SingleTestPicker = ({ onSelectTest }: SingleTestPickerProps) => {
       transition={{ duration: 0.3, delay: 0.08 }}
       className="relative max-w-5xl mx-auto mb-6 sm:mb-8"
     >
-      <div className="relative rounded-lg border border-border bg-card/40 p-5 sm:p-7">
+      <div className="relative rounded-2xl border border-navy-deep/10 bg-cream-warm/40 dark:bg-card/40 p-5 sm:p-7">
         {/* Divider with label */}
         <div className="flex items-center gap-3 mb-5">
-          <div className="h-px flex-1 bg-border/60" />
-          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-medium">
+          <div className="h-px flex-1 bg-navy-deep/10" />
+          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-teal font-medium">
             Or take a single module
           </span>
-          <div className="h-px flex-1 bg-border/60" />
+          <div className="h-px flex-1 bg-navy-deep/10" />
         </div>
 
         <div className="text-center mb-6">
           <h3 className="font-serif text-lg sm:text-xl font-medium text-foreground leading-tight">
             Focus on one lens at a time.
           </h3>
-          <p className="text-muted-foreground text-xs sm:text-sm mt-1.5">
+          <p className="text-ink-muted text-xs sm:text-sm mt-1.5">
             Each module stands on its own and contributes to your overall profile when you continue.
           </p>
         </div>
@@ -106,34 +106,34 @@ export const SingleTestPicker = ({ onSelectTest }: SingleTestPickerProps) => {
                 key={opt.key}
                 onClick={() => onSelectTest(opt.key)}
                 className={cn(
-                  'group relative text-left rounded-md border border-border bg-background p-4 transition-colors duration-200',
-                  'hover:border-foreground/30',
-                  'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+                  'group relative text-left rounded-xl border border-navy-deep/10 bg-card p-4 transition-all duration-200',
+                  'hover:border-teal/40 hover:shadow-md hover:-translate-y-0.5',
+                  'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-teal focus-visible:ring-offset-2 focus-visible:ring-offset-background',
                 )}
               >
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-md border border-border bg-card flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
+                  <div className="w-9 h-9 rounded-lg border border-teal/20 bg-cream-warm flex items-center justify-center flex-shrink-0">
+                    <Icon className="w-4 h-4 text-teal" strokeWidth={1.5} />
                   </div>
                   <div className="min-w-0 flex-1">
                     <h4 className="font-serif text-sm font-medium text-foreground leading-tight">
                       {opt.title}
                     </h4>
-                    <p className="text-[11px] text-muted-foreground mt-0.5">{opt.meta}</p>
+                    <p className="text-[11px] text-ink-muted mt-0.5">{opt.meta}</p>
                   </div>
                 </div>
 
-                <p className="text-xs text-muted-foreground mt-3 leading-relaxed">
+                <p className="text-xs text-ink-muted mt-3 leading-relaxed">
                   {opt.blurb}
                 </p>
 
                 {opt.note && (
-                  <p className="text-[10px] text-muted-foreground/60 italic mt-2 leading-relaxed">
+                  <p className="text-[10px] text-ink-muted/70 italic mt-2 leading-relaxed">
                     {opt.note}
                   </p>
                 )}
 
-                <span className="inline-flex items-center gap-1 text-[11px] font-medium mt-3 text-foreground/80">
+                <span className="inline-flex items-center gap-1 text-[11px] font-medium mt-3 text-teal">
                   Begin module
                   <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
                 </span>

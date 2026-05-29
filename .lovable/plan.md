@@ -1,46 +1,53 @@
-## Plan: Add "Why this matters" companion section
+## Plan: Final cleanup pass for tone, consistency, and visual coherence
 
-### Goal
-Add a polished companion section beside or below the sample report preview that communicates the practical value of the assessment in three concise points, plus a professional disclaimer callout.
+### Findings
+After reviewing the full landing page, most copy and design already aligns with the executive, Applied AI Works Canada–oriented direction. Three concrete issues remain:
 
-### What will be built
+1. **Redundant journey section** — `JourneyPathway` and `ProfileClaritySection` both present a 4-step "how it works" with nearly identical content. This reads as filler.
+2. **Monochrome dashboard-heavy sections** — `DiscoverMyMindSpine` and `SingleTestPicker` are styled with bare `bg-foreground` / `text-muted-foreground` / hard rectangles. They feel like a generic SaaS dashboard and clash with the warm navy-deep / teal / gold / cream-warm palette used everywhere else.
+3. **Sample preview minor copy** — `SampleProfilePreview` shows a green "Complete" badge and a `v · sample` footer string that read as faux-product chrome.
 
-#### 1. New component: `src/components/landing/WhyThisMattersCompanion.tsx`
-- **Section wrapper**: `py-14 sm:py-20`, slightly warmer background (`bg-cream-warm/50` or `bg-cream-warm/60`), optional top border for separation.
-- **Heading area**: centered, with a small uppercase label (e.g. "VALUE" or "Why this matters") in `text-gold` and the section title "Why this matters" in serif.
-- **Three value cards** in a responsive grid (`grid-cols-1 md:grid-cols-3 gap-5`):
-  - **Card 1 — Self-awareness that is practical**
-    - Icon: `Brain` or `UserCircle` (Lucide), colored in `text-teal`
-    - Subtitle: "Understand how you think, not just what you know."
-    - Soft background tint, e.g. `bg-teal-soft/30` or `bg-card` with `border-teal/15`
-  - **Card 2 — Stronger learning and outcomes**
-    - Icon: `TrendingUp` or `Zap` (Lucide), colored in `text-gold`
-    - Subtitle: "Use your strengths. Get support where it matters. Make faster progress."
-    - Soft background tint, e.g. `bg-gold-soft/40` or `bg-card` with `border-gold/15`
-  - **Card 3 — Start with confidence**
-    - Icon: `Rocket` or `Compass` (Lucide), colored in `text-navy-deep`
-    - Subtitle: "Begin with the right tools, supports, and learning path."
-    - Soft background tint, e.g. `bg-cream` or `bg-card` with `border-navy-deep/10`
-- **Disclaimer callout box**: full-width card below the three cards with:
-  - `bg-card` or slightly muted warm background
-  - `border` with subtle color
-  - `Info` or `ShieldAlert` icon
-  - Text: "This tool is for self-understanding, learning support, and program guidance. It is not a medical, psychological, educational, or diagnostic assessment."
-  - Small, professional styling (`text-[13px]`, `text-ink-muted`)
-- **Motion**: `framer-motion` `whileInView` fade-in with stagger on the three cards.
-- **Design tokens only**: all colors via semantic tokens (`--teal`, `--gold`, `--navy-deep`, `--cream-warm`, `--ink-muted`, etc.). No hardcoded hex values.
+Everything else (FAQ, footer, disclaimer, ProfileIdentifiesSection, ProgramConnectionSection, WhyThisMattersSection, WhatYouLearnSection, SampleReportPreview, WhyThisMattersCompanion, Methodology, "What you get after", Footer CTA) already uses the right tone — no copy changes needed there.
 
-#### 2. Update `src/components/LandingHero.tsx`
-- Import the new `WhyThisMattersCompanion` component.
-- Place it **immediately below** `<SampleReportPreview />` (line 230), before the Stage 03 module picker section. This keeps it as a companion to the report preview while maintaining the page flow.
+### Changes
+
+#### 1. `src/components/LandingHero.tsx`
+- Remove the `<JourneyPathway />` block and its import. `ProfileClaritySection` already covers the same four-step journey with stronger visuals.
+- Keep all other section ordering as-is.
+
+#### 2. `src/components/SingleTestPicker.tsx` — restyle (no copy changes)
+- Container: `bg-card/40` → `bg-cream-warm/40`, border to `border-navy-deep/10`, rounded `rounded-2xl`.
+- Divider label text from `text-muted-foreground` → `text-teal` with same uppercase tracking.
+- Heading: keep "Focus on one lens at a time." but switch helper text to `text-ink-muted`.
+- Each card: `bg-background` → `bg-card`, `border-border` → `border-navy-deep/10`, hover `hover:border-teal/40 hover:shadow-md hover:-translate-y-0.5`, rounded `rounded-xl`.
+- Icon chip: warmer — `bg-cream-warm`, `text-teal`, `border-teal/20`.
+- Module title stays `font-serif`, meta uses `text-ink-muted`, blurb uses `text-ink-muted`, note italic in `text-ink-muted/70`.
+- "Begin module" CTA uses `text-teal` (or `text-navy-deep`) instead of `text-foreground/80`.
+
+#### 3. `src/components/DiscoverMyMindSpine.tsx` — restyle (no logic changes)
+- Outer card: `bg-card` + `border-border` → `bg-card` + `border-navy-deep/10`, `rounded-2xl`, soft shadow.
+- Header icon chip: warm `bg-cream-warm`, `border-navy-deep/10`, icon `text-teal`.
+- Eyebrow label `text-muted-foreground/80` → `text-gold` with current letterspacing.
+- Progress bar fill `bg-foreground/70` → gradient teal → gold (`linear-gradient(to right, hsl(var(--teal)), hsl(var(--gold)))`); track `bg-navy-deep/10`.
+- Step cards: warm card surface (`bg-card`), `border-navy-deep/10`, hover `hover:border-teal/40`. Done state uses `border-teal/40` + small teal check; next state uses `border-gold/40` and gold "Next module" label.
+- Module icon chip: `bg-cream-warm`, icon `text-teal`.
+- Primary CTA: `bg-navy-deep text-cream hover:bg-navy` to match hero CTA.
+- Bottom disclaimer line stays as-is but uses `text-ink-muted/70`.
+
+#### 4. `src/components/landing/SampleProfilePreview.tsx` — light copy polish
+- Change the top-right pill from `Complete` (green-ish gold) to `Sample · For illustration` to match `SampleReportPreview` and avoid implying a real result.
+- Replace footer right-side `v · sample` with `For illustration only`.
+- No structural / radar / color changes.
 
 ### Out of scope
-- No new routes, backend changes, or logic.
-- No modifications to the existing `WhyThisMattersSection` (used in Stage 02).
-- No interactive behavior beyond hover states and scroll-entrance animation.
+- No copy changes to FAQ, footer, disclaimer, methodology, or any of the already-aligned narrative sections.
+- No new sections, routes, data, or backend changes.
+- No changes to assessment logic, scoring, or routes.
+- Existing routes (e.g. `/free-iq-test`) stay — the URL slug is SEO history; the *label* shown to users is already "Cognitive Reasoning" everywhere.
 
-### Design notes
-- Keep icons refined and minimal (Lucide, strokeWidth ~1.5).
-- Hover states: subtle lift (`-translate-y-0.5`) and shadow increase.
-- Maintain the existing executive-level, calm, professional tone.
-- Text should be concise and readable; avoid playful or inflated language.
+### Result
+After this pass:
+- One clear 4-step process (`ProfileClaritySection`) instead of two.
+- Module picker and guided-profile spine read as part of the same warm, serious brand instead of a separate monochrome dashboard.
+- Sample preview language matches the rest of the page.
+- No quiz / free-IQ / hype wording remains in user-facing copy on the landing page.
