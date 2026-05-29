@@ -91,7 +91,7 @@
     --card-foreground: 210 40% 98%;
     --popover: 225 25% 9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 252 100% 69%;
+    --primary: 230 55% 62%;
     --primary-foreground: 225 25% 6%;
     --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
@@ -103,20 +103,25 @@
     --destructive-foreground: 0 0% 100%;
     --border: 217 33% 17%;
     --input: 217 33% 17%;
-    --ring: 252 100% 69%;
-    --chart-1: 252 100% 69%;
+    --ring: 230 55% 62%;
+    --yellow: 45 100% 55%;
+    --yellow-foreground: 225 25% 6%;
+    --chart-1: 230 55% 62%;
     --chart-2: 330 100% 65%;
     --chart-3: 180 100% 50%;
     --chart-4: 45 100% 65%;
     --chart-5: 142 76% 50%;
     --sidebar: 225 25% 9%;
     --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 252 100% 69%;
+    --sidebar-primary: 230 55% 62%;
     --sidebar-primary-foreground: 225 25% 6%;
     --sidebar-accent: 217 33% 17%;
     --sidebar-accent-foreground: 210 40% 98%;
     --sidebar-border: 217 33% 17%;
-    --sidebar-ring: 252 100% 69%;
+    --sidebar-ring: 230 55% 62%;
+    --gradient-card: linear-gradient(145deg, hsl(225 25% 11%) 0%, hsl(225 25% 7%) 100%);
+    --gradient-glass: linear-gradient(135deg, hsla(225, 25%, 15%, 0.6) 0%, hsla(225, 25%, 8%, 0.4) 100%);
+    --shadow-card: 0 8px 32px hsla(0, 0%, 0%, 0.4);
     --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.2);
     --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.2);
     --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.3), 0 1px 2px -1px hsl(0 0% 0% / 0.3);
@@ -126,6 +131,8 @@
     --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.3), 0 8px 10px -1px hsl(0 0% 0% / 0.3);
     --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.5);
   }
+}
+
 }
 
 @layer base {
