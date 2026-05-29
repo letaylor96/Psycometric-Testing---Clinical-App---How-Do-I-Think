@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Brain, Target, Zap, Sparkles, Check, ArrowRight, Map } from 'lucide-react';
+import { Brain, Target, Zap, Sparkles, Check, ArrowRight, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, assessmentInfo } from '@/data/assessmentTypes';
 import { MAP_MY_MIND_ORDER, DiscoverMyMindStatus } from '@/hooks/useDiscoverMyMind';
@@ -12,13 +12,6 @@ const stepIcons: Record<AssessmentType, React.ElementType> = {
   depth: Sparkles,
 };
 
-// Per-step visual accent — each step is its own engagement target.
-const stepTheme: Record<AssessmentType, { text: string; iconBg: string; border: string; hoverBorder: string; ring: string }> = {
-  iq:            { text: 'text-blue-400',    iconBg: 'bg-blue-500/15',    border: 'border-blue-500/25',    hoverBorder: 'hover:border-blue-500/60',    ring: 'ring-blue-500/30' },
-  neurodivergent:{ text: 'text-emerald-400', iconBg: 'bg-emerald-500/15', border: 'border-emerald-500/25', hoverBorder: 'hover:border-emerald-500/60', ring: 'ring-emerald-500/30' },
-  personality:   { text: 'text-amber-400',   iconBg: 'bg-amber-500/15',   border: 'border-amber-500/25',   hoverBorder: 'hover:border-amber-500/60',   ring: 'ring-amber-500/30' },
-  depth:         { text: 'text-purple-400',  iconBg: 'bg-purple-500/15',  border: 'border-purple-500/25',  hoverBorder: 'hover:border-purple-500/60',  ring: 'ring-purple-500/30' },
-};
 
 interface DiscoverMyMindSpineProps {
   status: DiscoverMyMindStatus;
