@@ -17,7 +17,6 @@ const assessmentIcons: Record<AssessmentType, React.ElementType> = {
   depth: Sparkles,
 };
 
-const assessmentTiers: Record<AssessmentType, { 
 const assessmentTiers: Record<AssessmentType, {
   paid: string[];
 }> = {
@@ -30,6 +29,7 @@ const assessmentTiers: Record<AssessmentType, {
       'Practitioner-ready report layout',
     ],
   },
+  personality: {
     paid: [
       'Full Big Five + all 30 facets',
       'Your Myers-Briggs type with confidence %',
@@ -80,6 +80,10 @@ const assessmentTiers: Record<AssessmentType, {
 };
 
 const assessmentDescriptions: Record<AssessmentType, { tagline: string; what: string; isTimed?: boolean }> = {
+  'cognitive-profile': {
+    tagline: 'A structured profile of how you think, learn, and work with AI',
+    what: 'Forty self-report items grouped into ten categories — information processing, learning style, problem-solving, communication, structure, ambiguity tolerance, divergent thinking, AI readiness, support preferences, and program-fit. Grounded in established psychometric instruments.',
+  },
   personality: {
     tagline: 'Discover what makes you uniquely you',
     what: 'This 30-question assessment maps your personality across the Big Five dimensions (Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism) and derives your Myers-Briggs type.',
@@ -88,10 +92,6 @@ const assessmentDescriptions: Record<AssessmentType, { tagline: string; what: st
     tagline: 'Measure your cognitive potential',
     what: "This Mensa-style assessment uses 25 progressive pattern recognition puzzles based on Raven's Matrices to estimate your IQ and cognitive ranking.",
     isTimed: true,
-const assessmentDescriptions: Record<AssessmentType, { tagline: string; what: string; isTimed?: boolean }> = {
-  'cognitive-profile': {
-    tagline: 'A structured profile of how you think, learn, and work with AI',
-    what: 'Forty self-report items grouped into ten categories — information processing, learning style, problem-solving, communication, structure, ambiguity tolerance, divergent thinking, AI readiness, support preferences, and program-fit. Grounded in established psychometric instruments.',
   },
   neurodivergent: {
     tagline: 'Understand your unique cognitive style and attention patterns',
@@ -102,6 +102,7 @@ const assessmentDescriptions: Record<AssessmentType, { tagline: string; what: st
     what: 'Choose your philosophical lens—Freud, Jung, or Nietzsche—and explore your unconscious patterns through 20 free-form questions analyzed by AI using rigorous psychoanalytic frameworks.',
   },
 };
+
 
 export const AssessmentPreview = ({ type, onStart, onBack }: AssessmentPreviewProps) => {
   const info = assessmentInfo[type];
