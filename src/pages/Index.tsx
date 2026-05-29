@@ -720,6 +720,28 @@ const Index = () => {
           </motion.div>
         )}
 
+        {gameState === 'cognitive-profile-quiz' && (
+          <motion.div key="cognitive-profile-quiz" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            <CognitiveProfileQuiz
+              onComplete={(r) => {
+                setCognitiveProfileResults(r);
+                setGameState('cognitive-profile-results');
+              }}
+              onBack={handleRestart}
+            />
+          </motion.div>
+        )}
+
+        {gameState === 'cognitive-profile-results' && cognitiveProfileResults && (
+          <motion.div key="cognitive-profile-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            <CognitiveProfileResultsScreen
+              results={cognitiveProfileResults}
+              onRestart={handleRestart}
+              onViewDashboard={handleViewDashboard}
+            />
+          </motion.div>
+        )}
+
 
         {gameState === 'dashboard' && (
           <motion.div
