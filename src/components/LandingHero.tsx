@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, FileText, MessageCircle, BookOpen, Users, Layers, GraduationCap } from 'lucide-react';
+import { ArrowRight, FileText, MessageCircle, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, SelectableTestKey } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
@@ -16,6 +16,10 @@ import { usePremiumAccess } from '@/hooks/usePremiumAccess';
 import { useDiscoverMyMind } from '@/hooks/useDiscoverMyMind';
 import { DiscoverMyMindSpine } from '@/components/DiscoverMyMindSpine';
 import { SingleTestPicker } from '@/components/SingleTestPicker';
+import { ProfileIdentifiesSection } from '@/components/ProfileIdentifiesSection';
+import { WhyThisMattersSection } from '@/components/WhyThisMattersSection';
+import { ProgramConnectionSection } from '@/components/ProgramConnectionSection';
+import { DisclaimerSection } from '@/components/DisclaimerSection';
 
 interface LandingHeroProps {
   onStart: () => void;
@@ -56,7 +60,7 @@ export const LandingHero = ({
   const mapStatus = useDiscoverMyMind(completedAssessments);
 
   const scrollToProgram = () => {
-    document.getElementById('program-context')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('program-connection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
