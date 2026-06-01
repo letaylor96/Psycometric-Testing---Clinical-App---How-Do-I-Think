@@ -148,7 +148,7 @@ export const LandingHero = ({
                 transition={{ duration: 0.3 }}
                 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium leading-[1.12] tracking-tight mt-5 mb-5"
               >
-                <span className="text-navy-deep dark:text-cream">Understand how you think =</span>
+                <span className="text-navy-deep dark:text-cream">Understand how<br />you think =</span>
                 <br />
                 <span className="italic">
                   <span className="text-navy-deep dark:text-cream">Build</span>{' '}

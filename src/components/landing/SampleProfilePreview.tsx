@@ -55,17 +55,17 @@ export const SampleProfilePreview = () => {
     >
       <div className="relative rounded-2xl border border-navy-deep/10 shadow-xl overflow-hidden bg-card">
         {/* Card header */}
-        <div className="px-6 pt-6 pb-4 flex items-start justify-between">
+        <div className="px-6 pt-6 pb-4 flex items-start justify-between gap-3">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.24em] text-ink-muted mb-1.5">
+            <p className="text-[10px] uppercase tracking-[0.24em] text-ink-muted mb-1.5 font-medium">
               Sample preview
             </p>
             <h3 className="font-serif text-foreground text-xl font-medium leading-tight">
               Your Thinking Profile
             </h3>
           </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gold/15 border border-gold/40">
-            <span className="text-[10px] uppercase tracking-[0.18em] text-gold font-semibold">
+          <div className="flex items-center px-3 py-1.5 rounded-full bg-gold text-navy-deep shadow-sm">
+            <span className="text-[10px] uppercase tracking-[0.18em] font-bold">
               Sample · For illustration
             </span>
           </div>
@@ -75,54 +75,80 @@ export const SampleProfilePreview = () => {
         <div className="px-6 py-4 grid grid-cols-1 sm:grid-cols-5 gap-4 items-center">
           {/* Radar */}
           <div className="sm:col-span-3 flex justify-center">
-            <svg
-              viewBox={`0 0 ${size} ${size}`}
-              className="w-full max-w-[300px] h-auto"
-              role="img"
-              aria-label="Sample thinking profile radar"
-            >
-              {[0.25, 0.5, 0.75, 1].map((r) => (
-                <polygon
-                  key={r}
-                  points={buildPoints(new Array(AXES.length).fill(r), radius, cx, cy)}
-                  fill={r === 1 ? 'hsl(var(--teal-soft) / 0.4)' : 'none'}
-                  stroke="hsl(var(--navy-deep) / 0.10)"
-                  strokeWidth={1}
-                />
-              ))}
-              {axisEnds.map((p, i) => (
-                <line
-                  key={i}
-                  x1={cx}
-                  y1={cy}
-                  x2={p.x}
-                  y2={p.y}
-                  stroke="hsl(var(--navy-deep) / 0.10)"
-                  strokeWidth={1}
-                />
-              ))}
-              <polygon
-                points={buildPoints(values, radius, cx, cy)}
-                fill="hsl(var(--teal) / 0.18)"
-                stroke="hsl(var(--teal))"
-                strokeWidth={1.5}
-              />
-              {values.map((v, i) => {
-                const p = axisEnds[i];
-                const r = radius * v;
-                return (
-                  <circle
-                    key={i}
-                    cx={cx + r * Math.cos(p.angle)}
-                    cy={cy + r * Math.sin(p.angle)}
-                    r={3}
-                    fill="hsl(var(--teal))"
+            <div className="relative w-full max-w-[320px] aspect-square">
+              <svg
+                viewBox={`0 0 ${size} ${size}`}
+                className="absolute inset-0 w-full h-full"
+                role="img"
+                aria-label="Sample thinking profile radar"
+              >
+                {[0.25, 0.5, 0.75, 1].map((r) => (
+                  <polygon
+                    key={r}
+                    points={buildPoints(new Array(AXES.length).fill(r), radius, cx, cy)}
+                    fill={r === 1 ? 'hsl(var(--cream-warm) / 0.6)' : 'none'}
+                    stroke="hsl(var(--navy-deep) / 0.10)"
+                    strokeWidth={1}
                   />
+                ))}
+                {axisEnds.map((p, i) => (
+                  <line
+                    key={i}
+                    x1={cx}
+                    y1={cy}
+                    x2={p.x}
+                    y2={p.y}
+                    stroke="hsl(var(--navy-deep) / 0.10)"
+                    strokeWidth={1}
+                  />
+                ))}
+                <polygon
+                  points={buildPoints(values, radius, cx, cy)}
+                  fill="hsl(var(--teal) / 0.20)"
+                  stroke="hsl(var(--teal))"
+                  strokeWidth={1.75}
+                />
+                {values.map((v, i) => {
+                  const p = axisEnds[i];
+                  const r = radius * v;
+                  return (
+                    <circle
+                      key={i}
+                      cx={cx + r * Math.cos(p.angle)}
+                      cy={cy + r * Math.sin(p.angle)}
+                      r={3.5}
+                      fill="hsl(var(--teal))"
+                    />
+                  );
+                })}
+                <circle cx={cx} cy={cy} r={16} fill="hsl(var(--cream))" stroke="hsl(var(--navy-deep) / 0.18)" />
+                <circle cx={cx} cy={cy - 3} r={3.5} fill="none" stroke="hsl(var(--navy-deep) / 0.55)" strokeWidth={1.2} />
+                <path d={`M ${cx - 6} ${cy + 6} Q ${cx} ${cy + 1} ${cx + 6} ${cy + 6}`} fill="none" stroke="hsl(var(--navy-deep) / 0.55)" strokeWidth={1.2} strokeLinecap="round" />
+              </svg>
+
+              {/* HTML axis labels with icons, positioned around the radar */}
+              {AXES.map((axis, i) => {
+                const p = axisEnds[i];
+                const labelRadius = radius + 30;
+                const lx = cx + labelRadius * Math.cos(p.angle);
+                const ly = cy + labelRadius * Math.sin(p.angle);
+                const leftPct = (lx / size) * 100;
+                const topPct = (ly / size) * 100;
+                const Icon = axis.Icon;
+                return (
+                  <div
+                    key={i}
+                    className="absolute flex items-center gap-1 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                    style={{ left: `${leftPct}%`, top: `${topPct}%` }}
+                  >
+                    <Icon className="w-3 h-3 text-teal flex-shrink-0" strokeWidth={2} />
+                    <span className="text-[10px] font-medium text-foreground leading-tight whitespace-pre text-center">
+                      {axis.label}
+                    </span>
+                  </div>
                 );
               })}
-              {/* center avatar circle */}
-              <circle cx={cx} cy={cy} r={14} fill="hsl(var(--cream-warm))" stroke="hsl(var(--navy-deep) / 0.15)" />
-            </svg>
+            </div>
           </div>
 
           {/* Side meta */}
