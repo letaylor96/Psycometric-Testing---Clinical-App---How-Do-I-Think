@@ -3,7 +3,7 @@ import { ArrowRight, FileText, MessageCircle, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, SelectableTestKey } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
-import { HeadTreeMark } from '@/components/HeadTreeMark';
+import logoWordmark from '@/assets/logo-wordmark.png';
 import { AuthButton } from '@/components/AuthButton';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
@@ -78,11 +78,12 @@ export const LandingHero = ({
       {/* Top Navigation Bar */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-4">
-          <a href="/" className="flex items-center gap-2.5 flex-shrink-0 group">
-            <img src="/favicon.png" alt="How Do I Think" className="w-9 h-9 rounded-md transition-transform group-hover:-rotate-3" />
-            <span className="font-serif text-lg sm:text-xl font-medium text-navy-deep dark:text-cream tracking-tight">
-              How Do I Think
-            </span>
+          <a href="/" className="flex items-center flex-shrink-0 group">
+            <img
+              src={logoWordmark}
+              alt="How Do I Think — Cognitive & Personality Assessment"
+              className="h-10 sm:h-12 w-auto transition-transform group-hover:scale-[1.02]"
+            />
           </a>
           <nav className="hidden lg:flex items-center gap-7 text-sm text-foreground/80">
             <a href="#profile-includes" className="hover:text-teal transition-colors">About the Assessment</a>
