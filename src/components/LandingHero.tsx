@@ -76,20 +76,23 @@ export const LandingHero = ({
     <div className="min-h-screen bg-background">
       {/* Top Navigation Bar */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-9 h-9 rounded-md border border-navy-deep/20 bg-navy-deep flex items-center justify-center flex-shrink-0">
-              <span className="font-serif text-[11px] font-semibold tracking-wider text-cream">HDT</span>
-            </div>
-            <div className="leading-tight">
-              <div className="font-serif text-base sm:text-lg font-medium text-foreground tracking-tight">
-                How Do I Think
-              </div>
-              <div className="hidden sm:block text-[10px] uppercase tracking-[0.18em] text-ink-muted">
-                An Applied AI Works Canada assessment
-              </div>
-            </div>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-4">
+          <a href="/" className="flex items-center gap-2.5 flex-shrink-0">
+            <img
+              src="/favicon.png"
+              alt=""
+              className="w-9 h-9 rounded-md border border-navy-deep/10 shadow-sm"
+            />
+            <span className="font-serif text-lg sm:text-xl font-medium text-navy-deep dark:text-cream tracking-tight">
+              How Do I Think
+            </span>
+          </a>
+          <nav className="hidden lg:flex items-center gap-7 text-sm text-foreground/80">
+            <a href="#profile-includes" className="hover:text-teal transition-colors">About the Assessment</a>
+            <a href="#modules" className="hover:text-teal transition-colors">For Organizations</a>
+            <a href="#thinking-map" className="hover:text-teal transition-colors">Research</a>
+            <a href="#faq" className="hover:text-teal transition-colors">About Us</a>
+          </nav>
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <AuthButton />
