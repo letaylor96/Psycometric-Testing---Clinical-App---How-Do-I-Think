@@ -55,17 +55,17 @@ export const SampleProfilePreview = () => {
     >
       <div className="relative rounded-2xl border border-navy-deep/10 shadow-xl overflow-hidden bg-card">
         {/* Card header */}
-        <div className="px-6 pt-6 pb-4 flex items-start justify-between">
+        <div className="px-6 pt-6 pb-4 flex items-start justify-between gap-3">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.24em] text-ink-muted mb-1.5">
+            <p className="text-[10px] uppercase tracking-[0.24em] text-ink-muted mb-1.5 font-medium">
               Sample preview
             </p>
             <h3 className="font-serif text-foreground text-xl font-medium leading-tight">
               Your Thinking Profile
             </h3>
           </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gold/15 border border-gold/40">
-            <span className="text-[10px] uppercase tracking-[0.18em] text-gold font-semibold">
+          <div className="flex items-center px-3 py-1.5 rounded-full bg-gold text-navy-deep shadow-sm">
+            <span className="text-[10px] uppercase tracking-[0.18em] font-bold">
               Sample · For illustration
             </span>
           </div>
