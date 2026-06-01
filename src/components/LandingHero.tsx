@@ -219,6 +219,9 @@ export const LandingHero = ({
         </div>
       </section>
 
+      {/* Trust signals row */}
+      <TrustBadgesRow />
+
       {/* How the profile creates clarity — 4-step process */}
       <ProfileClaritySection />
 
