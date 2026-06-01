@@ -3,6 +3,7 @@ import { ArrowRight, FileText, MessageCircle, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, SelectableTestKey } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
+import { HeadTreeMark } from '@/components/HeadTreeMark';
 import { AuthButton } from '@/components/AuthButton';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
@@ -77,12 +78,8 @@ export const LandingHero = ({
       {/* Top Navigation Bar */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-4">
-          <a href="/" className="flex items-center gap-2.5 flex-shrink-0">
-            <img
-              src="/favicon.png"
-              alt=""
-              className="w-9 h-9 rounded-md border border-navy-deep/10 shadow-sm"
-            />
+          <a href="/" className="flex items-center gap-2.5 flex-shrink-0 group">
+            <HeadTreeMark className="w-9 h-9 text-navy-deep dark:text-cream transition-transform group-hover:-rotate-3" />
             <span className="font-serif text-lg sm:text-xl font-medium text-navy-deep dark:text-cream tracking-tight">
               How Do I Think
             </span>
@@ -173,7 +170,7 @@ export const LandingHero = ({
                 transition={{ duration: 0.3, delay: 0.16 }}
                 className="flex items-start gap-3 mt-6 max-w-xl"
               >
-                <img src="/favicon.png" alt="" className="w-9 h-9 rounded-md border border-navy-deep/10 flex-shrink-0 mt-0.5" />
+                <HeadTreeMark className="w-9 h-9 text-navy-deep dark:text-cream flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-foreground text-sm font-semibold mb-1">
                     Built to support clarity, growth, and better alignment.
