@@ -170,7 +170,7 @@ export const LandingHero = ({
                 transition={{ duration: 0.3, delay: 0.16 }}
                 className="flex items-start gap-3 mt-6 max-w-xl"
               >
-                <HeadTreeMark className="w-9 h-9 text-navy-deep dark:text-cream flex-shrink-0 mt-0.5" />
+                <img src="/favicon.png" alt="" className="w-9 h-9 rounded-md flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-foreground text-sm font-semibold mb-1">
                     Built to support clarity, growth, and better alignment.
