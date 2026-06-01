@@ -77,12 +77,12 @@ export const LandingHero = ({
     <div className="min-h-screen bg-background">
       {/* Top Navigation Bar */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-4">
-          <a href="/" className="flex items-center flex-shrink-0 group">
+        <div className="w-full pl-2 sm:pl-4 pr-4 sm:pr-6 py-3 sm:py-4 flex items-center justify-between gap-4">
+          <a href="/" className="flex items-center flex-shrink-0 group mr-auto">
             <img
               src={logoWordmark}
               alt="How Do I Think — Cognitive & Personality Assessment"
-              className="h-10 sm:h-12 w-auto transition-transform group-hover:scale-[1.02]"
+              className="h-20 sm:h-24 w-auto transition-transform group-hover:scale-[1.02]"
             />
           </a>
           <nav className="hidden lg:flex items-center gap-7 text-sm text-foreground/80">
