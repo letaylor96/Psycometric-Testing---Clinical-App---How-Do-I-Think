@@ -26,6 +26,7 @@ import { ProfileClaritySection } from '@/components/landing/ProfileClaritySectio
 import { WhatYouLearnSection } from '@/components/landing/WhatYouLearnSection';
 import { SampleReportPreview } from '@/components/landing/SampleReportPreview';
 import { WhyThisMattersCompanion } from '@/components/landing/WhyThisMattersCompanion';
+import { TrustBadgesRow } from '@/components/landing/TrustBadgesRow';
 
 
 interface LandingHeroProps {
@@ -75,20 +76,23 @@ export const LandingHero = ({
     <div className="min-h-screen bg-background">
       {/* Top Navigation Bar */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-9 h-9 rounded-md border border-navy-deep/20 bg-navy-deep flex items-center justify-center flex-shrink-0">
-              <span className="font-serif text-[11px] font-semibold tracking-wider text-cream">HDT</span>
-            </div>
-            <div className="leading-tight">
-              <div className="font-serif text-base sm:text-lg font-medium text-foreground tracking-tight">
-                How Do I Think
-              </div>
-              <div className="hidden sm:block text-[10px] uppercase tracking-[0.18em] text-ink-muted">
-                An Applied AI Works Canada assessment
-              </div>
-            </div>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-4">
+          <a href="/" className="flex items-center gap-2.5 flex-shrink-0">
+            <img
+              src="/favicon.png"
+              alt=""
+              className="w-9 h-9 rounded-md border border-navy-deep/10 shadow-sm"
+            />
+            <span className="font-serif text-lg sm:text-xl font-medium text-navy-deep dark:text-cream tracking-tight">
+              How Do I Think
+            </span>
+          </a>
+          <nav className="hidden lg:flex items-center gap-7 text-sm text-foreground/80">
+            <a href="#profile-includes" className="hover:text-teal transition-colors">About the Assessment</a>
+            <a href="#modules" className="hover:text-teal transition-colors">For Organizations</a>
+            <a href="#thinking-map" className="hover:text-teal transition-colors">Research</a>
+            <a href="#faq" className="hover:text-teal transition-colors">About Us</a>
+          </nav>
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <AuthButton />
@@ -134,7 +138,7 @@ export const LandingHero = ({
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-teal/30 bg-teal-soft/60 dark:bg-teal-soft/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-teal" />
                 <span className="text-[10px] uppercase tracking-[0.24em] text-teal font-medium">
-                  Cognitive &amp; AI-Readiness Self-Assessment
+                  Cognitive &amp; Personality Self-Assessment
                 </span>
               </span>
 
@@ -142,9 +146,16 @@ export const LandingHero = ({
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium text-foreground leading-[1.12] tracking-tight mt-5 mb-5"
+                className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium leading-[1.12] tracking-tight mt-5 mb-5"
               >
-                Understand how you think — <span className="text-navy-deep dark:text-cream">so you can build from your strengths.</span>
+                <span className="text-navy-deep dark:text-cream">Understand how you think =</span>
+                <br />
+                <span className="italic">
+                  <span className="text-navy-deep dark:text-cream">Build</span>{' '}
+                  <span className="text-teal">from your</span>{' '}
+                  <span className="text-gold">strengths</span>
+                  <span className="text-navy-deep dark:text-cream">.</span>
+                </span>
               </motion.h1>
 
               <motion.p
@@ -153,17 +164,25 @@ export const LandingHero = ({
                 transition={{ duration: 0.3, delay: 0.08 }}
                 className="text-ink-muted text-base sm:text-lg max-w-xl leading-relaxed"
               >
-                A structured cognitive and personality profile designed to help participants understand how they learn, solve problems, communicate, and adapt to AI-enabled work.
+                A rigorous cognitive and personality profile designed to help you understand how you learn, solve problems, communicate, and make decisions — so you can align with roles and environments where you are most likely to thrive.
               </motion.p>
 
-              <motion.p
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3, delay: 0.16 }}
-                className="text-ink-muted/85 text-sm max-w-xl leading-relaxed mt-4 border-l-2 border-gold/50 pl-4"
+                className="flex items-start gap-3 mt-6 max-w-xl"
               >
-                Built to support Applied AI Works Canada by helping participants identify where they may thrive, where they may need support, and how to start with the right AI-enabled tools and workflows.
-              </motion.p>
+                <img src="/favicon.png" alt="" className="w-9 h-9 rounded-md border border-navy-deep/10 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-foreground text-sm font-semibold mb-1">
+                    Built to support clarity, growth, and better alignment.
+                  </p>
+                  <p className="text-ink-muted text-sm leading-relaxed">
+                    Identify your natural thinking preferences, uncover what drives your strengths, and make more confident choices about learning, work, and the environments where you do your best.
+                  </p>
+                </div>
+              </motion.div>
 
               {/* Primary + Secondary CTA */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-7">
@@ -199,6 +218,9 @@ export const LandingHero = ({
           </div>
         </div>
       </section>
+
+      {/* Trust signals row */}
+      <TrustBadgesRow />
 
       {/* How the profile creates clarity — 4-step process */}
       <ProfileClaritySection />

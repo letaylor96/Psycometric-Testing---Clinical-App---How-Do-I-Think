@@ -1,16 +1,23 @@
 import { motion } from 'framer-motion';
+import { Brain, BookOpen, Puzzle, MessageCircle, Scale, User } from 'lucide-react';
 
 const AXES = [
-  { label: 'Cognitive\nStyle', value: 0.82 },
-  { label: 'Learning\nPattern', value: 0.7 },
-  { label: 'Problem-\nSolving', value: 0.88 },
-  { label: 'Communi-\ncation', value: 0.65 },
-  { label: 'AI Workflow\nFit', value: 0.78 },
+  { label: 'Cognitive\nStyle', value: 0.82, Icon: Brain },
+  { label: 'Learning\nPattern', value: 0.7, Icon: BookOpen },
+  { label: 'Problem\nSolving', value: 0.88, Icon: Puzzle },
+  { label: 'Communication\nStyle', value: 0.65, Icon: MessageCircle },
+  { label: 'Decision\nStyle', value: 0.78, Icon: Scale },
 ];
 
 const SUPPORT_CHIPS = ['Pacing', 'Structure', 'Examples'];
 
-// Build polygon points for radar
+const AT_A_GLANCE = [
+  'Strengths-led insights',
+  'Reflects real behavior',
+  'Aligned to work contexts',
+  'Actionable for growth',
+];
+
 const buildPoints = (values: number[], radius: number, cx: number, cy: number) => {
   const n = values.length;
   return values
@@ -31,10 +38,10 @@ const buildAxisEnds = (n: number, radius: number, cx: number, cy: number) =>
   });
 
 export const SampleProfilePreview = () => {
-  const size = 280;
+  const size = 300;
   const cx = size / 2;
   const cy = size / 2;
-  const radius = 95;
+  const radius = 100;
 
   const values = AXES.map((a) => a.value);
   const axisEnds = buildAxisEnds(AXES.length, radius, cx, cy);
@@ -46,65 +53,43 @@ export const SampleProfilePreview = () => {
       transition={{ duration: 0.5, delay: 0.15 }}
       className="relative w-full"
     >
-      {/* Background decorative dots */}
-      <div
-        aria-hidden
-        className="absolute -inset-6 -z-10 opacity-[0.35] rounded-3xl"
-        style={{
-          backgroundImage:
-            'radial-gradient(hsl(var(--teal) / 0.35) 1px, transparent 1px)',
-          backgroundSize: '14px 14px',
-        }}
-      />
-
-      <div
-        className="relative rounded-2xl border border-navy-deep/10 shadow-xl overflow-hidden"
-        style={{ background: 'var(--gradient-hero)' }}
-      >
+      <div className="relative rounded-2xl border border-navy-deep/10 shadow-xl overflow-hidden bg-card">
         {/* Card header */}
-        <div className="px-6 pt-6 pb-4 flex items-start justify-between border-b border-cream/10">
+        <div className="px-6 pt-6 pb-4 flex items-start justify-between">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.24em] text-cream/60 mb-1.5">
+            <p className="text-[10px] uppercase tracking-[0.24em] text-ink-muted mb-1.5">
               Sample preview
             </p>
-            <h3 className="font-serif text-cream text-xl font-medium leading-tight">
+            <h3 className="font-serif text-foreground text-xl font-medium leading-tight">
               Your Thinking Profile
             </h3>
           </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gold/15 border border-gold/30">
-            <span className="w-1.5 h-1.5 rounded-full bg-gold" />
-            <span className="text-[10px] uppercase tracking-[0.18em] text-gold font-medium">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gold/15 border border-gold/40">
+            <span className="text-[10px] uppercase tracking-[0.18em] text-gold font-semibold">
               Sample · For illustration
             </span>
           </div>
         </div>
 
         {/* Body */}
-        <div className="px-6 py-6 grid grid-cols-1 sm:grid-cols-5 gap-5 items-center">
+        <div className="px-6 py-4 grid grid-cols-1 sm:grid-cols-5 gap-4 items-center">
           {/* Radar */}
           <div className="sm:col-span-3 flex justify-center">
             <svg
               viewBox={`0 0 ${size} ${size}`}
-              className="w-full max-w-[280px] h-auto"
+              className="w-full max-w-[300px] h-auto"
               role="img"
-              aria-label="Sample cognitive profile radar"
+              aria-label="Sample thinking profile radar"
             >
-              {/* concentric rings */}
               {[0.25, 0.5, 0.75, 1].map((r) => (
                 <polygon
                   key={r}
-                  points={buildPoints(
-                    new Array(AXES.length).fill(r),
-                    radius,
-                    cx,
-                    cy,
-                  )}
-                  fill="none"
-                  stroke="hsl(var(--cream) / 0.12)"
+                  points={buildPoints(new Array(AXES.length).fill(r), radius, cx, cy)}
+                  fill={r === 1 ? 'hsl(var(--teal-soft) / 0.4)' : 'none'}
+                  stroke="hsl(var(--navy-deep) / 0.10)"
                   strokeWidth={1}
                 />
               ))}
-              {/* axes */}
               {axisEnds.map((p, i) => (
                 <line
                   key={i}
@@ -112,72 +97,45 @@ export const SampleProfilePreview = () => {
                   y1={cy}
                   x2={p.x}
                   y2={p.y}
-                  stroke="hsl(var(--cream) / 0.12)"
+                  stroke="hsl(var(--navy-deep) / 0.10)"
                   strokeWidth={1}
                 />
               ))}
-              {/* data polygon */}
               <polygon
                 points={buildPoints(values, radius, cx, cy)}
-                fill="hsl(var(--teal) / 0.25)"
+                fill="hsl(var(--teal) / 0.18)"
                 stroke="hsl(var(--teal))"
                 strokeWidth={1.5}
               />
-              {/* gold emphasis on strongest axis */}
-              {(() => {
-                const maxIdx = values.indexOf(Math.max(...values));
-                const p = axisEnds[maxIdx];
-                const r = radius * values[maxIdx];
-                const angle = p.angle;
+              {values.map((v, i) => {
+                const p = axisEnds[i];
+                const r = radius * v;
                 return (
                   <circle
-                    cx={cx + r * Math.cos(angle)}
-                    cy={cy + r * Math.sin(angle)}
-                    r={5}
-                    fill="hsl(var(--gold))"
-                    stroke="hsl(var(--navy-deep))"
-                    strokeWidth={2}
+                    key={i}
+                    cx={cx + r * Math.cos(p.angle)}
+                    cy={cy + r * Math.sin(p.angle)}
+                    r={3}
+                    fill="hsl(var(--teal))"
                   />
                 );
-              })()}
-              {/* axis labels */}
-              {axisEnds.map((p, i) => {
-                const labelR = radius + 18;
-                const lx = cx + labelR * Math.cos(p.angle);
-                const ly = cy + labelR * Math.sin(p.angle);
-                return (
-                  <text
-                    key={i}
-                    x={lx}
-                    y={ly}
-                    fontSize={9}
-                    fill="hsl(var(--cream) / 0.75)"
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '0.04em' }}
-                  >
-                    {AXES[i].label.split('\n').map((line, li) => (
-                      <tspan key={li} x={lx} dy={li === 0 ? 0 : 10}>
-                        {line}
-                      </tspan>
-                    ))}
-                  </text>
-                );
               })}
+              {/* center avatar circle */}
+              <circle cx={cx} cy={cy} r={14} fill="hsl(var(--cream-warm))" stroke="hsl(var(--navy-deep) / 0.15)" />
             </svg>
           </div>
 
           {/* Side meta */}
           <div className="sm:col-span-2 space-y-5">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.22em] text-cream/55 mb-2">
+              <p className="text-[10px] uppercase tracking-[0.22em] text-ink-muted mb-2 font-semibold">
                 Support needs
               </p>
               <div className="flex flex-wrap gap-1.5">
                 {SUPPORT_CHIPS.map((s) => (
                   <span
                     key={s}
-                    className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-cream/10 text-cream border border-cream/15"
+                    className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-cream-warm text-foreground border border-navy-deep/10"
                   >
                     {s}
                   </span>
@@ -186,24 +144,27 @@ export const SampleProfilePreview = () => {
             </div>
 
             <div>
-              <p className="text-[10px] uppercase tracking-[0.22em] text-cream/55 mb-2">
+              <p className="text-[10px] uppercase tracking-[0.22em] text-ink-muted mb-2 font-semibold">
                 At a glance
               </p>
-              <ul className="space-y-1.5 text-cream/90 text-[13px] leading-relaxed">
-                <li>· Pattern-led thinker</li>
-                <li>· Reflective learner</li>
-                <li>· Strong fit for structured AI workflows</li>
+              <ul className="space-y-1.5 text-foreground/85 text-[12px] leading-relaxed">
+                {AT_A_GLANCE.map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-teal mt-1.5 flex-shrink-0" />
+                    <span>{item}</span>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3 border-t border-cream/10 flex items-center justify-between">
-          <p className="text-[10px] uppercase tracking-[0.22em] text-cream/50">
+        <div className="px-6 py-3 border-t border-navy-deep/10 flex items-center justify-between bg-cream-warm/40">
+          <p className="text-[10px] uppercase tracking-[0.22em] text-ink-muted">
             Generated from your responses across 4 modules
           </p>
-          <p className="text-[10px] uppercase tracking-[0.22em] text-gold/80">
+          <p className="text-[10px] uppercase tracking-[0.22em] text-gold font-semibold">
             For illustration only
           </p>
         </div>
