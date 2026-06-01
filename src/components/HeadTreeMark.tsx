@@ -3,37 +3,53 @@ interface HeadTreeMarkProps {
 }
 
 /**
- * Minimal line mark: side-profile head with a small tree growing from the crown.
- * Uses currentColor so it inherits text color.
+ * Minimal mark: stylized side-profile head facing right with a small
+ * three-leaf tree growing from the crown. The accent leaf uses --gold.
  */
 export const HeadTreeMark = ({ className }: HeadTreeMarkProps) => (
   <svg
-    viewBox="0 0 48 48"
+    viewBox="0 0 64 64"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     className={className}
     aria-hidden="true"
   >
-    {/* Head — side profile facing right */}
+    {/* Side-profile head, facing right.
+        Drawn as a single rounded outline: crown -> forehead -> nose ->
+        lips -> chin -> neck. */}
     <path
-      d="M14 38 V30 c-3-1-4-4-4-7 0-7 5-12 12-12 6 0 11 4 12 10 0 2-0 4-1 6-1 1-1 2-1 3 v3 h-3 v5"
+      d="
+        M22 56
+        L22 48
+        C16 46 12 41 12 34
+        C12 23 21 14 32 14
+        C40 14 47 19 49 27
+        C50 31 49 34 47 36
+        L44 38
+        L44 42
+        L40 42
+        L40 48
+        L26 48
+      "
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="2.4"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
-    {/* Trunk */}
+    {/* Eye */}
+    <circle cx="38" cy="29" r="1.1" fill="currentColor" />
+
+    {/* Tree trunk emerging from crown */}
     <path
-      d="M22 11 V3"
+      d="M28 14 L28 7"
       stroke="currentColor"
-      strokeWidth="1.75"
+      strokeWidth="2"
       strokeLinecap="round"
     />
-    {/* Branches / leaves cluster */}
-    <circle cx="19" cy="4" r="2" fill="currentColor" />
-    <circle cx="25" cy="4" r="2" fill="currentColor" />
-    <circle cx="22" cy="1.5" r="2" fill="currentColor" />
-    {/* Small accent leaf in warm tone */}
-    <circle cx="26.5" cy="6.5" r="1.4" fill="hsl(var(--gold))" />
+
+    {/* Three leaves — two navy, one gold accent */}
+    <circle cx="24" cy="6" r="2.6" fill="currentColor" />
+    <circle cx="30" cy="3" r="2.6" fill="currentColor" />
+    <circle cx="33.5" cy="8.5" r="2.4" fill="hsl(var(--gold))" />
   </svg>
 );
