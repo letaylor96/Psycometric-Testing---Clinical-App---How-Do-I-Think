@@ -26,6 +26,7 @@ import { ProfileClaritySection } from '@/components/landing/ProfileClaritySectio
 import { WhatYouLearnSection } from '@/components/landing/WhatYouLearnSection';
 import { SampleReportPreview } from '@/components/landing/SampleReportPreview';
 import { WhyThisMattersCompanion } from '@/components/landing/WhyThisMattersCompanion';
+import { TrustBadgesRow } from '@/components/landing/TrustBadgesRow';
 
 
 interface LandingHeroProps {
