@@ -3,9 +3,9 @@ interface HeadTreeMarkProps {
 }
 
 /**
- * Side-profile head facing right with a small tree on the crown.
- * Strokes follow the brand: navy outline + gold accent leaf.
- * Uses currentColor for the head outline so it inherits text color.
+ * Stylized side-profile head (facing left) with a small three-leaf tree
+ * growing from the crown. Filled silhouette reads clearly at favicon size.
+ * Uses currentColor for the head/trunk; gold accent leaf for warmth.
  */
 export const HeadTreeMark = ({ className }: HeadTreeMarkProps) => (
   <svg
@@ -15,60 +15,48 @@ export const HeadTreeMark = ({ className }: HeadTreeMarkProps) => (
     className={className}
     aria-hidden="true"
   >
-    {/*
-      Side-profile head silhouette, facing right.
-      Starts at back of neck, goes up the back of the head, over the
-      crown, down the forehead, out for the nose, in for the lips,
-      out for the chin, then down the throat.
+    {/* Head silhouette, facing LEFT (nose on the left side, like the reference).
+        Drawn clockwise from top of crown:
+          crown -> forehead -> nose bridge -> nose tip -> philtrum ->
+          lips -> chin -> jaw -> neck back -> up the back of skull.
     */}
     <path
       d="
-        M16 56
-        L16 46
-        Q10 44 9 36
-        Q8 28 12 22
-        Q17 14 26 13
-        Q38 12 44 20
-        Q49 27 47 34
-        Q46 38 43 38
-        L43 42
-        L40 42
-        Q40 46 36 47
-        L33 48
-        L33 56
+        M32 14
+        C42 14, 50 22, 50 32
+        C50 38, 47 42, 44 44
+        L44 52
+        L26 52
+        L26 48
+        Q22 47, 21 43
+        L18 43
+        L18 39
+        L14 39
+        Q12 36, 13 32
+        L10 32
+        L14 28
+        Q15 22, 19 18
+        Q24 14, 32 14
+        Z
       "
-      stroke="currentColor"
-      strokeWidth="2.2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="none"
+      fill="currentColor"
     />
 
-    {/* Nose bump on the profile (front of face, mid-height) */}
+    {/* Eye (small cream dot on the face for character) */}
+    <circle cx="22" cy="30" r="1.4" fill="hsl(var(--cream))" />
+
+    {/* Tree trunk rising from the crown, slight curve */}
     <path
-      d="M44 28 Q48 30 47 33 Q46 35 43 35"
+      d="M34 14 Q33 9 35 5"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-      strokeLinejoin="round"
       fill="none"
     />
 
-    {/* Eye */}
-    <circle cx="38" cy="27" r="1.2" fill="currentColor" />
-
-    {/* Tree trunk rising from the crown */}
-    <path
-      d="M26 13 Q25 9 27 6"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      fill="none"
-    />
-
-    {/* Leaves — two navy, one gold accent */}
-    <circle cx="22" cy="5" r="2.4" fill="currentColor" />
-    <circle cx="28" cy="3" r="2.6" fill="currentColor" />
-    <circle cx="32" cy="7" r="2.2" fill="hsl(var(--gold))" />
+    {/* Leaves — two in brand color, one gold accent */}
+    <circle cx="30" cy="4" r="2.6" fill="currentColor" />
+    <circle cx="36" cy="2.5" r="2.6" fill="currentColor" />
+    <circle cx="40" cy="7" r="2.4" fill="hsl(var(--gold))" />
   </svg>
 );
