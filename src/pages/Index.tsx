@@ -273,8 +273,12 @@ const Index = () => {
     setGameState('personality-results');
   }, [persistPersonality]);
 
-  const handleNeurodivergentComplete = useCallback((cognitiveAnswers: number[], adhdAnswers: number[]) => {
-    const results = calculateNeurodivergentMindResults(cognitiveAnswers, adhdAnswers);
+  const handleNeurodivergentComplete = useCallback((
+    cognitiveAnswers: number[],
+    adhdAnswers: number[],
+    deeperAnswers: import('@/data/neurodivergentMindQuestions').DeeperAnswers = {}
+  ) => {
+    const results = calculateNeurodivergentMindResults(cognitiveAnswers, adhdAnswers, deeperAnswers);
     setNeurodivergentResults(results);
     // Also set the individual results for dashboard compatibility
     setCognitiveStyleResults(results.cognitiveStyle);
