@@ -74,6 +74,10 @@ export const LandingHero = ({
     document.getElementById('profile-includes')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const scrollToTests = () => {
+    document.getElementById('tests')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Top Navigation Bar */}
