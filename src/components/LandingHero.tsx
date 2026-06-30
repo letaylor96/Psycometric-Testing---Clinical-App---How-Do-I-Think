@@ -214,19 +214,19 @@ export const LandingHero = ({
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
                 </Button>
                 <Button
-                  onClick={scrollToIncludes}
+                  onClick={scrollToTests}
                   variant="outline"
                   size="lg"
                   className="border-navy-deep/30 text-foreground hover:bg-cream-warm font-medium px-7 py-5 text-sm"
                 >
-                  See what the profile includes
+                  Browse the tests
                 </Button>
                 <InstallAppButton variant="hero" />
               </div>
 
               {!hasPremiumAccess && !hasStarted && (
                 <p className="text-ink-muted/70 text-xs mt-5">
-                  No sign-up required · Install on your phone for one-tap access · ~25 min total
+                  No sign-up required · Pick a single test or take all four · ~25 min total
                 </p>
               )}
             </div>
