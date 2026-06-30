@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { adhdQuestions, adhdOptions, adhdDomainLabels } from '@/data/adhdQuestions';
 import { cn } from '@/lib/utils';
-import { ArrowLeft, Activity } from 'lucide-react';
+import { ArrowLeft, Activity, Pause } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useQuizProgress } from '@/hooks/useQuizProgress';
 
 interface ADHDQuizProps {
   onComplete: (answers: number[]) => void;
@@ -11,9 +12,19 @@ interface ADHDQuizProps {
 }
 
 export const ADHDQuiz = ({ onComplete, onBack }: ADHDQuizProps) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<number[]>([]);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const { state, setState, clear } = useQuizProgress<number[]>('adhd', {
+    currentIndex: 0,
+    answers: [],
+  });
+  const { currentIndex, answers } = state;
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(
+    answers[currentIndex] ?? null,
+  );
+
+  useEffect(() => {
+    setSelectedAnswer(answers[currentIndex] ?? null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIndex]);
 
   const question = adhdQuestions[currentIndex];
   const progress = ((currentIndex + 1) / adhdQuestions.length) * 100;
@@ -24,17 +35,30 @@ export const ADHDQuiz = ({ onComplete, onBack }: ADHDQuizProps) => {
 
   const handleNext = () => {
     if (selectedAnswer === null) return;
-    
-    const newAnswers = [...answers, selectedAnswer];
-    
+    const newAnswers = [...answers];
+    newAnswers[currentIndex] = selectedAnswer;
     if (currentIndex < adhdQuestions.length - 1) {
-      setAnswers(newAnswers);
-      setCurrentIndex(prev => prev + 1);
-      setSelectedAnswer(null);
+      setState({ currentIndex: currentIndex + 1, answers: newAnswers });
     } else {
+      clear();
       onComplete(newAnswers);
     }
   };
+
+  const handlePrevious = () => {
+    if (currentIndex === 0) return;
+    const newAnswers = [...answers];
+    if (selectedAnswer !== null) newAnswers[currentIndex] = selectedAnswer;
+    setState({ currentIndex: currentIndex - 1, answers: newAnswers });
+  };
+
+  const handleSaveAndExit = () => {
+    const newAnswers = [...answers];
+    if (selectedAnswer !== null) newAnswers[currentIndex] = selectedAnswer;
+    setState({ currentIndex, answers: newAnswers });
+    onBack();
+  };
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8">
@@ -42,9 +66,9 @@ export const ADHDQuiz = ({ onComplete, onBack }: ADHDQuizProps) => {
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
         <div className="max-w-2xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between mb-2">
-            <button onClick={onBack} className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
-              <ArrowLeft className="w-4 h-4" />
-              <span className="text-sm">Back</span>
+            <button onClick={handleSaveAndExit} className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors" title="Your progress will be saved">
+              <Pause className="w-4 h-4" />
+              <span className="text-sm">Save &amp; exit</span>
             </button>
             <div className="flex items-center gap-2">
               <Activity className="w-4 h-4 text-accent" />
@@ -122,23 +146,27 @@ export const ADHDQuiz = ({ onComplete, onBack }: ADHDQuizProps) => {
               ))}
             </div>
 
-            {/* Next Button */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: selectedAnswer !== null ? 1 : 0.3 }}
-              className="mt-6 flex justify-end"
-            >
+            <div className="mt-6 flex items-center justify-between gap-3">
+              <Button
+                variant="ghost"
+                onClick={handlePrevious}
+                disabled={currentIndex === 0}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <ArrowLeft className="w-4 h-4 mr-1.5" />
+                Previous
+              </Button>
               <Button
                 onClick={handleNext}
                 disabled={selectedAnswer === null}
                 className={cn(
                   'px-6 py-2.5 font-semibold',
-                  selectedAnswer !== null ? 'bg-accent hover:bg-accent/90 text-accent-foreground' : 'bg-muted cursor-not-allowed'
+                  selectedAnswer !== null ? 'bg-accent hover:bg-accent/90 text-accent-foreground' : 'bg-muted cursor-not-allowed opacity-50'
                 )}
               >
                 {currentIndex === adhdQuestions.length - 1 ? 'See Results' : 'Next →'}
               </Button>
-            </motion.div>
+            </div>
           </div>
         </motion.div>
       </AnimatePresence>

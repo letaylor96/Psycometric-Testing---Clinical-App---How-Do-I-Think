@@ -243,16 +243,28 @@ const Index = () => {
   const handleNextQuestion = useCallback(() => {
     if (selectedAnswer === null) return;
 
-    const newAnswers = [...answers, selectedAnswer];
+    const newAnswers = [...answers];
+    newAnswers[currentQuestionIndex] = selectedAnswer;
     setAnswers(newAnswers);
-    setSelectedAnswer(null);
 
     if (currentQuestionIndex < sessionQuestions.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
+      const nextIdx = currentQuestionIndex + 1;
+      setCurrentQuestionIndex(nextIdx);
+      setSelectedAnswer(newAnswers[nextIdx] ?? null);
     } else {
       finishQuiz(newAnswers, sessionQuestions);
     }
   }, [selectedAnswer, answers, currentQuestionIndex, finishQuiz, sessionQuestions]);
+
+  const handlePreviousQuestion = useCallback(() => {
+    if (currentQuestionIndex === 0) return;
+    const newAnswers = [...answers];
+    if (selectedAnswer !== null) newAnswers[currentQuestionIndex] = selectedAnswer;
+    setAnswers(newAnswers);
+    const prevIdx = currentQuestionIndex - 1;
+    setCurrentQuestionIndex(prevIdx);
+    setSelectedAnswer(newAnswers[prevIdx] ?? null);
+  }, [currentQuestionIndex, selectedAnswer, answers]);
 
   const handleTimeUp = useCallback(() => {
     const finalAnswers = [...answers];
@@ -540,6 +552,8 @@ const Index = () => {
               selectedAnswer={selectedAnswer}
               onSelectAnswer={handleSelectAnswer}
               onNext={handleNextQuestion}
+              onPrevious={handlePreviousQuestion}
+              canGoPrevious={currentQuestionIndex > 0}
               totalTimeRemaining={timeRemaining}
               onTimeUp={handleTimeUp}
             />
