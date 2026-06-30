@@ -430,6 +430,10 @@ Fascinating insights into how I think and solve problems. Try it yourself!`;
           )}
         </motion.div>
 
+        <InstallAppBanner className="max-w-3xl mx-auto" />
+
+
+
         {/* Footer Note */}
         <motion.p
           initial={{ opacity: 0 }}
