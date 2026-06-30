@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 import { PremiumFeatureTeaser } from '@/components/PremiumFeatureTeaser';
 import { SaveAssessmentButton } from '@/components/SaveAssessmentButton';
 import { SocialShareButtons } from '@/components/SocialShareButtons';
+import { InstallAppBanner } from '@/components/InstallAppBanner';
 import { ShareableResultCard } from '@/components/ShareableResultCard';
 
 interface PersonalityResultsScreenProps {
@@ -559,7 +560,10 @@ Take the free assessment yourself!`;
           )}
         </motion.div>
 
+        <InstallAppBanner className="max-w-3xl mx-auto" />
+
         {/* Legal Disclaimer */}
+
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

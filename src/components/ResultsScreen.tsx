@@ -8,6 +8,7 @@ import { PremiumFeatureTeaser } from '@/components/PremiumFeatureTeaser';
 import { QuestionReview } from '@/components/QuestionReview';
 import { SaveAssessmentButton } from '@/components/SaveAssessmentButton';
 import { SocialShareButtons } from '@/components/SocialShareButtons';
+import { InstallAppBanner } from '@/components/InstallAppBanner';
 import { ShareableResultCard } from '@/components/ShareableResultCard';
 import { cn } from '@/lib/utils';
 
@@ -428,6 +429,10 @@ Fascinating insights into how I think and solve problems. Try it yourself!`;
             </Button>
           )}
         </motion.div>
+
+        <InstallAppBanner className="max-w-3xl mx-auto" />
+
+
 
         {/* Footer Note */}
         <motion.p

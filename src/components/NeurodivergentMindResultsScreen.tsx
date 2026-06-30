@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils';
 import { NeurodivergentMindResults, processingStyleLabels, dimensionLabels } from '@/data/neurodivergentMindQuestions';
 import { SaveAssessmentButton } from '@/components/SaveAssessmentButton';
 import { SocialShareButtons } from '@/components/SocialShareButtons';
+import { InstallAppBanner } from '@/components/InstallAppBanner';
 import { percentileFor, percentileLabel, NORM_SOURCE } from '@/lib/ndNorms';
 import {
   RadarChart,
@@ -570,7 +571,10 @@ Cognitive Style: ${cognitiveStyle.primaryProfile.name}`;
               Take Another Assessment
             </Button>
           </div>
+
+          <InstallAppBanner />
         </motion.div>
+
       </div>
     </div>
   );

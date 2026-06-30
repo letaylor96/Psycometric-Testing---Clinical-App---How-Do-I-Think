@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, ChevronDown, ChevronUp, Sparkles } from 'lucide-
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { CognitiveProfileResults, ARCHETYPE_BY_KEY } from '@/data/cognitiveProfileQuestions';
+import { InstallAppBanner } from '@/components/InstallAppBanner';
 
 interface Props {
   results: CognitiveProfileResults;
@@ -207,6 +208,10 @@ export const CognitiveProfileResultsScreen = ({ results, onRestart, onViewDashbo
             </Button>
           )}
         </section>
+
+        <InstallAppBanner />
+
+
 
         {/* 11. Disclaimer */}
         <section className="border-t border-border pt-8 text-center">

@@ -15,6 +15,7 @@ import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, LayoutDashboard, TrendingUp, Sparkles, RefreshCw, ChevronDown, ChevronUp, BookOpen, Eye, AlertCircle } from 'lucide-react';
 import { SaveAssessmentButton } from '@/components/SaveAssessmentButton';
 import { SocialShareButtons } from '@/components/SocialShareButtons';
+import { InstallAppBanner } from '@/components/InstallAppBanner';
 import { cn } from '@/lib/utils';
 import type { NarcissismProfile } from '@/data/depthPsychologyQuestions';
 
@@ -884,7 +885,10 @@ export const DepthPsychologyResultsScreen = ({
             View Full Dashboard
           </Button>
           </div>
+
+          <InstallAppBanner />
         </motion.div>
+
       </div>
     </div>
   );
