@@ -78,8 +78,8 @@ export const LandingHero = ({
     <div className="min-h-screen bg-background">
       {/* Top Navigation Bar */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-        <div className="w-full pl-2 sm:pl-4 pr-4 sm:pr-6 py-3 sm:py-4 flex items-center justify-between gap-4">
-          <a href="/" className="flex items-center flex-shrink-0 group mr-auto">
+        <div className="w-full pl-2 sm:pl-4 pr-2 sm:pr-6 py-2 sm:py-4 flex items-center justify-between gap-2 sm:gap-4">
+          <a href="/" className="flex items-center flex-shrink-0 group mr-auto min-w-0">
             <img
               src={logoWordmark}
               alt="How Do I Think — Cognitive & Personality Assessment"
@@ -87,7 +87,7 @@ export const LandingHero = ({
               height={305}
               decoding="async"
               fetchPriority="high"
-              className="h-20 sm:h-24 w-auto transition-transform group-hover:scale-[1.02]"
+              className="h-14 sm:h-20 md:h-24 w-auto transition-transform group-hover:scale-[1.02]"
             />
           </a>
           <nav className="hidden lg:flex items-center gap-7 text-sm text-foreground/80">
@@ -96,8 +96,9 @@ export const LandingHero = ({
             <a href="#thinking-map" className="hover:text-teal transition-colors">Research</a>
             <a href="#faq" className="hover:text-teal transition-colors">About Us</a>
           </nav>
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
+          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+            <InstallAppButton variant="header" />
+            <div className="hidden sm:block"><ThemeToggle /></div>
             <AuthButton />
           </div>
         </div>
