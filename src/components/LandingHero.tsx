@@ -77,9 +77,9 @@ export const LandingHero = ({
   return (
     <div className="min-h-screen bg-background">
       {/* Top Navigation Bar */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-        <div className="w-full pl-2 sm:pl-4 pr-2 sm:pr-6 py-2 sm:py-4 flex items-center justify-between gap-2 sm:gap-4">
-          <a href="/" className="flex items-center flex-shrink-0 group mr-auto min-w-0">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-xl border-b border-border/80 shadow-[0_1px_0_0_hsl(var(--border)/0.4),0_8px_24px_-12px_hsl(var(--foreground)/0.12)]">
+        <div className="w-full pl-3 sm:pl-6 pr-3 sm:pr-6 py-2 sm:py-3 flex items-center justify-between gap-3 sm:gap-6">
+          <a href="/" className="flex items-center flex-shrink-0 group mr-auto min-w-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 focus-visible:ring-offset-background">
             <img
               src={logoWordmark}
               alt="How Do I Think — Cognitive & Personality Assessment"
@@ -87,16 +87,27 @@ export const LandingHero = ({
               height={305}
               decoding="async"
               fetchPriority="high"
-              className="h-14 sm:h-20 md:h-24 w-auto transition-transform group-hover:scale-[1.02]"
+              className="h-12 sm:h-16 md:h-20 w-auto transition-transform group-hover:scale-[1.02]"
             />
           </a>
-          <nav className="hidden lg:flex items-center gap-7 text-sm text-foreground/80">
-            <a href="#profile-includes" className="hover:text-teal transition-colors">About the Assessment</a>
-            <a href="#modules" className="hover:text-teal transition-colors">For Organizations</a>
-            <a href="#thinking-map" className="hover:text-teal transition-colors">Research</a>
-            <a href="#faq" className="hover:text-teal transition-colors">About Us</a>
+          <nav aria-label="Primary" className="hidden lg:flex items-center gap-1 text-[0.9rem] font-medium tracking-tight">
+            {[
+              { href: '#profile-includes', label: 'About the Assessment' },
+              { href: '#modules', label: 'For Organizations' },
+              { href: '#thinking-map', label: 'Research' },
+              { href: '#faq', label: 'About Us' },
+            ].map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="relative px-3 py-2 rounded-md text-foreground/85 hover:text-foreground transition-colors after:content-[''] after:absolute after:left-3 after:right-3 after:-bottom-0.5 after:h-[2px] after:bg-teal after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition-transform after:duration-300"
+              >
+                {item.label}
+              </a>
+            ))}
           </nav>
-          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0">
+            <div className="hidden lg:block h-6 w-px bg-border/80 mr-1" aria-hidden="true" />
             <InstallAppButton variant="header" />
             <div className="hidden sm:block"><ThemeToggle /></div>
             <AuthButton />
