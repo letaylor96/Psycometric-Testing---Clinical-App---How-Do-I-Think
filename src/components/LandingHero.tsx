@@ -96,10 +96,13 @@ export const LandingHero = ({
           </a>
           <nav aria-label="Primary" className="hidden lg:flex items-center gap-1 text-[0.9rem] font-medium tracking-tight">
             {[
-              { href: '#profile-includes', label: 'About the Assessment' },
-              { href: '#modules', label: 'For Organizations' },
-              { href: '#thinking-map', label: 'Research' },
-              { href: '#faq', label: 'About Us' },
+              { href: '#profile-includes', label: 'How it works' },
+              { href: '#sample-report', label: 'Sample report' },
+              { href: '#tests', label: 'The tests' },
+              { href: '/research', label: 'Research', route: true },
+              { href: '/organizations', label: 'For organizations', route: true },
+              { href: '/about', label: 'About', route: true },
+              { href: '#faq', label: 'FAQ' },
             ].map((item) => (
               <a
                 key={item.href}
@@ -112,12 +115,21 @@ export const LandingHero = ({
           </nav>
           <div className="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0">
             <div className="hidden lg:block h-6 w-px bg-border/80 mr-1" aria-hidden="true" />
+            <Button
+              onClick={scrollToTests}
+              size="sm"
+              className="h-9 px-3 sm:px-4 text-xs sm:text-sm bg-teal text-cream hover:bg-teal/90 font-semibold"
+            >
+              Start a test
+              <ArrowRight className="w-3.5 h-3.5 ml-1" />
+            </Button>
             <InstallAppButton variant="header" />
             <div className="hidden sm:block"><ThemeToggle /></div>
             <AuthButton />
           </div>
         </div>
       </header>
+
 
       {/* Hero Section */}
       <section className="relative pt-24 sm:pt-36 md:pt-44 pb-12 sm:pb-16 overflow-hidden">
