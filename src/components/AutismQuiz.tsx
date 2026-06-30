@@ -135,22 +135,27 @@ export const AutismQuiz = ({ onComplete, onBack }: AutismQuizProps) => {
               ))}
             </div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: selectedAnswer !== null ? 1 : 0.3 }}
-              className="mt-6 flex justify-end"
-            >
+            <div className="mt-6 flex items-center justify-between gap-3">
+              <Button
+                variant="ghost"
+                onClick={handlePrevious}
+                disabled={currentIndex === 0}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <ArrowLeft className="w-4 h-4 mr-1.5" />
+                Previous
+              </Button>
               <Button
                 onClick={handleNext}
                 disabled={selectedAnswer === null}
                 className={cn(
                   'px-6 py-2.5 font-semibold',
-                  selectedAnswer !== null ? 'bg-cyan-500 hover:bg-cyan-500/90 text-white' : 'bg-muted cursor-not-allowed'
+                  selectedAnswer !== null ? 'bg-cyan-500 hover:bg-cyan-500/90 text-white' : 'bg-muted cursor-not-allowed opacity-50'
                 )}
               >
                 {currentIndex === aqQuestions.length - 1 ? 'See Results' : 'Next →'}
               </Button>
-            </motion.div>
+            </div>
           </div>
         </motion.div>
       </AnimatePresence>
