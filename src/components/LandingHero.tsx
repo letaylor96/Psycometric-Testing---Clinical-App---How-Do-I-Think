@@ -222,19 +222,20 @@ export const LandingHero = ({
                   size="lg"
                   className="bg-navy-deep text-cream hover:bg-navy font-medium px-7 py-5 text-sm group"
                 >
-                  Start the assessment
+                  Start all tests
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
                 </Button>
                 <Button
                   onClick={scrollToTests}
-                  variant="outline"
                   size="lg"
-                  className="border-navy-deep/30 text-foreground hover:bg-cream-warm font-medium px-7 py-5 text-sm"
+                  className="bg-teal text-cream hover:bg-teal/90 font-medium px-7 py-5 text-sm group"
                 >
-                  Browse the tests
+                  Pick one test
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
                 </Button>
                 <InstallAppButton variant="hero" />
               </div>
+
 
               {!hasPremiumAccess && !hasStarted && (
                 <p className="text-ink-muted/70 text-xs mt-5">
