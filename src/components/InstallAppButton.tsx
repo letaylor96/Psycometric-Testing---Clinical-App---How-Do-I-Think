@@ -173,16 +173,28 @@ export const InstallAppButton = ({ variant = 'inline', className }: InstallAppBu
                 </li>
               </ol>
             ) : (
-              <div className="text-sm text-foreground space-y-3">
-                <p>To install on your phone, open this page in your phone's browser:</p>
-                <div className="p-3 bg-cream-warm/60 border border-border rounded-lg text-xs font-mono break-all">
+              <div className="text-sm text-foreground space-y-4">
+                <p>Scan this QR code with your phone camera to open How Do I Think — then add it to your home screen.</p>
+                <div className="flex justify-center">
+                  <div className="p-3 bg-cream-warm rounded-xl border border-border">
+                    <img
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=0&data=${encodeURIComponent(typeof window !== 'undefined' ? window.location.origin : 'https://howdoithink.com')}`}
+                      alt="QR code to open How Do I Think on your phone"
+                      width={220}
+                      height={220}
+                      className="block"
+                    />
+                  </div>
+                </div>
+                <div className="p-3 bg-cream-warm/60 border border-border rounded-lg text-xs font-mono break-all text-center">
                   {typeof window !== 'undefined' ? window.location.origin : ''}
                 </div>
                 <p className="text-ink-muted text-xs">
-                  On iPhone use Safari → Share → Add to Home Screen. On Android use Chrome → menu → Install app.
+                  On iPhone: open in Safari → Share → Add to Home Screen. On Android: Chrome menu → Install app.
                 </p>
               </div>
             )}
+
 
             <Button
               onClick={() => setShowIosSheet(false)}
