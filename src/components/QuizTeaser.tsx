@@ -175,7 +175,7 @@
              transition={{ delay: 0.3 }}
              className="mt-6 text-center"
            >
-             <p className="text-muted-foreground/60 text-sm">
+             <p className="text-muted-foreground text-sm">
                Join thousands who've discovered their cognitive profile
              </p>
            </motion.div>

@@ -411,7 +411,7 @@ export const CognitiveStyleResultsScreen = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
-          className="text-center text-xs text-muted-foreground/60 mt-8 max-w-lg mx-auto leading-relaxed"
+          className="text-center text-xs text-muted-foreground mt-8 max-w-lg mx-auto leading-relaxed"
         >
           <strong className="text-muted-foreground/80">Educational & Entertainment Purposes Only.</strong>{' '}
           This assessment is designed for self-reflection and personal insight, not clinical diagnosis. 

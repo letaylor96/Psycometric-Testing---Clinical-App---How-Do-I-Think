@@ -52,7 +52,7 @@ export const CognitiveProfileResultsScreen = ({ results, onRestart, onViewDashbo
           <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
             {primary.summary}
           </p>
-          <p className="text-muted-foreground/60 text-xs mt-4">Generated {generatedDate}</p>
+          <p className="text-muted-foreground text-xs mt-4">Generated {generatedDate}</p>
         </section>
 
         {/* 2. Primary + Secondary cards */}
@@ -288,7 +288,7 @@ const ScoreBar = ({
           {label}
         </span>
         {sub && (
-          <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground/60 ml-2">
+          <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground ml-2">
             {sub}
           </span>
         )}

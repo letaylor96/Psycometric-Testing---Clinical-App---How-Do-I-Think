@@ -439,7 +439,7 @@ Fascinating insights into how I think and solve problems. Try it yourself!`;
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="text-center text-xs text-muted-foreground/60 mt-10 max-w-lg mx-auto leading-relaxed"
+          className="text-center text-xs text-muted-foreground mt-10 max-w-lg mx-auto leading-relaxed"
         >
           <strong className="text-muted-foreground/80">For self-understanding and program guidance only.</strong>{' '}
           This module is part of a structured self-assessment, not a diagnostic instrument. It does not provide a clinical measure of intelligence.
