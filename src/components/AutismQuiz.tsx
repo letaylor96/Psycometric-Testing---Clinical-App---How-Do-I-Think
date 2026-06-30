@@ -64,9 +64,9 @@ export const AutismQuiz = ({ onComplete, onBack }: AutismQuizProps) => {
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
         <div className="max-w-2xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between mb-2">
-            <button onClick={onBack} className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
-              <ArrowLeft className="w-4 h-4" />
-              <span className="text-sm">Back</span>
+            <button onClick={handleSaveAndExit} className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors" title="Your progress will be saved">
+              <Pause className="w-4 h-4" />
+              <span className="text-sm">Save &amp; exit</span>
             </button>
             <div className="flex items-center gap-2">
               <Puzzle className="w-4 h-4 text-cyan-400" />
