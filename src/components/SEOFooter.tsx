@@ -39,6 +39,28 @@ export const SEOFooter = () => {
             <p className="text-muted-foreground/60 text-xs mt-4 leading-relaxed">
               © {new Date().getFullYear()} How Do I Think · An Applied AI Works Canada assessment. Structured self-assessment for reflection and program use; not a clinical diagnostic tool.
             </p>
+            <p className="text-muted-foreground/50 text-[11px] mt-3 leading-relaxed">
+              Built by{' '}
+              <a
+                href="https://bocg.ca"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-dotted underline-offset-2 hover:text-foreground transition-colors"
+              >
+                BOCG
+              </a>{' '}
+              in support of{' '}
+              <a
+                href="https://appliedaiworks.ca"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-dotted underline-offset-2 hover:text-foreground transition-colors"
+              >
+                Applied AI Works Canada
+              </a>
+              , a not-for-profit.
+            </p>
+
           </div>
         </div>
       </div>
