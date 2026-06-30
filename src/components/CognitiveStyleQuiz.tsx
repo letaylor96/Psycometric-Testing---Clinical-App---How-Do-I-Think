@@ -154,12 +154,21 @@ export const CognitiveStyleQuiz = ({ onComplete, onBack }: CognitiveStyleQuizPro
               ))}
             </div>
 
-            {/* Next Button */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: selectedAnswer !== null ? 1 : 0.3 }}
-              className="mt-6 flex justify-end"
-            >
+            {/* Navigation */}
+            <div className="mt-6 flex items-center justify-between gap-3">
+              <button
+                onClick={handlePrevious}
+                disabled={currentIndex === 0}
+                className={cn(
+                  'px-4 py-2 rounded-xl font-medium text-sm transition-colors inline-flex items-center gap-1.5',
+                  currentIndex === 0
+                    ? 'text-muted-foreground/40 cursor-not-allowed'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50',
+                )}
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Previous
+              </button>
               <button
                 onClick={handleNext}
                 disabled={selectedAnswer === null}
@@ -172,7 +181,7 @@ export const CognitiveStyleQuiz = ({ onComplete, onBack }: CognitiveStyleQuizPro
               >
                 {currentIndex === sessionQuestions.length - 1 ? 'See Results' : 'Next →'}
               </button>
-            </motion.div>
+            </div>
           </div>
         </motion.div>
       </AnimatePresence>
