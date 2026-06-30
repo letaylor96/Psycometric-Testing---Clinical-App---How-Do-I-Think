@@ -885,7 +885,10 @@ export const DepthPsychologyResultsScreen = ({
             View Full Dashboard
           </Button>
           </div>
+
+          <InstallAppBanner />
         </motion.div>
+
       </div>
     </div>
   );
