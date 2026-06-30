@@ -36,6 +36,10 @@ const App = () => (
               <Route path="/personality/:typeCode" element={<PersonalityTypePage />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/payment-success" element={<PaymentSuccess />} />
+              <Route path="/organizations" element={<Organizations />} />
+              <Route path="/research" element={<Research />} />
+              <Route path="/about" element={<About />} />
+
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
