@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 import { PremiumFeatureTeaser } from '@/components/PremiumFeatureTeaser';
 import { SaveAssessmentButton } from '@/components/SaveAssessmentButton';
 import { SocialShareButtons } from '@/components/SocialShareButtons';
+import { InstallAppBanner } from '@/components/InstallAppBanner';
 import { ShareableResultCard } from '@/components/ShareableResultCard';
 
 interface PersonalityResultsScreenProps {
