@@ -38,6 +38,8 @@ export const QuizQuestion = ({
   selectedAnswer,
   onSelectAnswer,
   onNext,
+  onPrevious,
+  canGoPrevious = false,
   totalTimeRemaining,
   onTimeUp,
 }: QuizQuestionProps) => {
