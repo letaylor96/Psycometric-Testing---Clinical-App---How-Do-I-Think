@@ -115,7 +115,7 @@ export const LandingHero = ({
           </nav>
 
           <div className="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0">
-            <div className="hidden lg:block h-6 w-px bg-border/80 mr-1" aria-hidden="true" />
+            <div className="hidden xl:block h-6 w-px bg-border/80 mr-1" aria-hidden="true" />
             <Button
               onClick={scrollToTests}
               size="sm"
