@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { adhdQuestions, adhdOptions, adhdDomainLabels } from '@/data/adhdQuestions';
 import { cn } from '@/lib/utils';
-import { ArrowLeft, Activity } from 'lucide-react';
+import { ArrowLeft, Activity, Pause } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useQuizProgress } from '@/hooks/useQuizProgress';
 
 interface ADHDQuizProps {
   onComplete: (answers: number[]) => void;
@@ -11,9 +12,19 @@ interface ADHDQuizProps {
 }
 
 export const ADHDQuiz = ({ onComplete, onBack }: ADHDQuizProps) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<number[]>([]);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const { state, setState, clear } = useQuizProgress<number[]>('adhd', {
+    currentIndex: 0,
+    answers: [],
+  });
+  const { currentIndex, answers } = state;
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(
+    answers[currentIndex] ?? null,
+  );
+
+  useEffect(() => {
+    setSelectedAnswer(answers[currentIndex] ?? null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIndex]);
 
   const question = adhdQuestions[currentIndex];
   const progress = ((currentIndex + 1) / adhdQuestions.length) * 100;
@@ -24,17 +35,30 @@ export const ADHDQuiz = ({ onComplete, onBack }: ADHDQuizProps) => {
 
   const handleNext = () => {
     if (selectedAnswer === null) return;
-    
-    const newAnswers = [...answers, selectedAnswer];
-    
+    const newAnswers = [...answers];
+    newAnswers[currentIndex] = selectedAnswer;
     if (currentIndex < adhdQuestions.length - 1) {
-      setAnswers(newAnswers);
-      setCurrentIndex(prev => prev + 1);
-      setSelectedAnswer(null);
+      setState({ currentIndex: currentIndex + 1, answers: newAnswers });
     } else {
+      clear();
       onComplete(newAnswers);
     }
   };
+
+  const handlePrevious = () => {
+    if (currentIndex === 0) return;
+    const newAnswers = [...answers];
+    if (selectedAnswer !== null) newAnswers[currentIndex] = selectedAnswer;
+    setState({ currentIndex: currentIndex - 1, answers: newAnswers });
+  };
+
+  const handleSaveAndExit = () => {
+    const newAnswers = [...answers];
+    if (selectedAnswer !== null) newAnswers[currentIndex] = selectedAnswer;
+    setState({ currentIndex, answers: newAnswers });
+    onBack();
+  };
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8">
