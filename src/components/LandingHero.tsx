@@ -91,30 +91,31 @@ export const LandingHero = ({
               height={305}
               decoding="async"
               fetchPriority="high"
-              className="h-12 sm:h-16 md:h-20 w-auto transition-transform group-hover:scale-[1.02]"
+              className="h-10 sm:h-12 md:h-14 lg:h-16 w-auto transition-transform group-hover:scale-[1.02]"
             />
           </a>
-          <nav aria-label="Primary" className="hidden lg:flex items-center gap-1 text-[0.9rem] font-medium tracking-tight">
+          <nav aria-label="Primary" className="hidden xl:flex items-center gap-0.5 text-[0.875rem] font-medium tracking-tight">
             {[
               { href: '#profile-includes', label: 'How it works' },
-              { href: '#sample-report', label: 'Sample report' },
-              { href: '#tests', label: 'The tests' },
+              { href: '#sample-report', label: 'Sample' },
+              { href: '#tests', label: 'Tests' },
               { href: '/research', label: 'Research', route: true },
-              { href: '/organizations', label: 'For organizations', route: true },
+              { href: '/organizations', label: 'Organizations', route: true },
               { href: '/about', label: 'About', route: true },
               { href: '#faq', label: 'FAQ' },
             ].map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className="relative px-3 py-2 rounded-md text-foreground/85 hover:text-foreground transition-colors after:content-[''] after:absolute after:left-3 after:right-3 after:-bottom-0.5 after:h-[2px] after:bg-teal after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition-transform after:duration-300"
+                className="relative whitespace-nowrap px-3 py-2 rounded-md text-foreground/85 hover:text-foreground transition-colors after:content-[''] after:absolute after:left-3 after:right-3 after:-bottom-0.5 after:h-[2px] after:bg-teal after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition-transform after:duration-300"
               >
                 {item.label}
               </a>
             ))}
           </nav>
+
           <div className="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0">
-            <div className="hidden lg:block h-6 w-px bg-border/80 mr-1" aria-hidden="true" />
+            <div className="hidden xl:block h-6 w-px bg-border/80 mr-1" aria-hidden="true" />
             <Button
               onClick={scrollToTests}
               size="sm"
