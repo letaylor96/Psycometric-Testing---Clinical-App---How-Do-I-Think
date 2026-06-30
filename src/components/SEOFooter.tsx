@@ -36,10 +36,10 @@ export const SEOFooter = () => {
               <Link to="/auth" className="text-muted-foreground hover:text-foreground text-sm transition-colors">Sign In</Link>
               <Link to="/" className="text-muted-foreground hover:text-foreground text-sm transition-colors">Home</Link>
             </nav>
-            <p className="text-muted-foreground/60 text-xs mt-4 leading-relaxed">
+            <p className="text-muted-foreground text-xs mt-4 leading-relaxed">
               © {new Date().getFullYear()} How Do I Think · An Applied AI Works Canada assessment. Structured self-assessment for reflection and program use; not a clinical diagnostic tool.
             </p>
-            <p className="text-muted-foreground/50 text-[11px] mt-3 leading-relaxed">
+            <p className="text-muted-foreground text-[11px] mt-3 leading-relaxed">
               Built by{' '}
               <a
                 href="https://bocg.ca"

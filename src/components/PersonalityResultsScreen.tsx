@@ -568,7 +568,7 @@ Take the free assessment yourself!`;
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="text-center text-xs text-muted-foreground/60 mt-10 max-w-lg mx-auto leading-relaxed"
+          className="text-center text-xs text-muted-foreground mt-10 max-w-lg mx-auto leading-relaxed"
         >
           <strong className="text-muted-foreground/80">Educational & Entertainment Purposes Only.</strong>{' '}
           This personality assessment is for self-reflection and entertainment. It does not constitute psychological 

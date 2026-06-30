@@ -245,7 +245,7 @@ export const CareerIntelligenceReport = ({ results }: CareerIntelligenceReportPr
                 )}
               </Button>
 
-              <p className="text-center text-muted-foreground/60 text-xs mt-4">
+              <p className="text-center text-muted-foreground text-xs mt-4">
                 Your CV is processed securely and not stored permanently. Analysis powered by AI.
               </p>
             </div>
