@@ -209,6 +209,10 @@ export const CognitiveProfileResultsScreen = ({ results, onRestart, onViewDashbo
           )}
         </section>
 
+        <InstallAppBanner />
+
+
+
         {/* 11. Disclaimer */}
         <section className="border-t border-border pt-8 text-center">
           <p className="text-[10px] uppercase tracking-[0.28em] text-muted-foreground/70 mb-3">
