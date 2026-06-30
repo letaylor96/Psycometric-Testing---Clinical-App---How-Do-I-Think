@@ -571,7 +571,10 @@ Cognitive Style: ${cognitiveStyle.primaryProfile.name}`;
               Take Another Assessment
             </Button>
           </div>
+
+          <InstallAppBanner />
         </motion.div>
+
       </div>
     </div>
   );
