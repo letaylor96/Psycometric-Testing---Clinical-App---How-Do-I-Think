@@ -11,6 +11,8 @@ interface QuizQuestionProps {
   selectedAnswer: number | null;
   onSelectAnswer: (index: number) => void;
   onNext: () => void;
+  onPrevious?: () => void;
+  canGoPrevious?: boolean;
   totalTimeRemaining: number;
   onTimeUp: () => void;
 }
