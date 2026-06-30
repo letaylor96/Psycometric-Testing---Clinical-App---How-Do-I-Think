@@ -274,16 +274,34 @@ export const LandingHero = ({
       {/* Stage 03 — Module picker */}
       <section id="modules" className="py-16 sm:py-24 border-t border-border scroll-mt-24">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="flex justify-center mb-8">
-            <JourneyStageChip stage={3} label="Build your profile" />
+          <div className="flex justify-center mb-6">
+            <JourneyStageChip stage={3} label="Pick a test to begin" />
+          </div>
+
+          <div id="tests" className="scroll-mt-24 text-center mb-8">
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-foreground leading-tight">
+              Choose any test to start.
+            </h2>
+            <p className="text-ink-muted text-sm sm:text-base mt-3 max-w-2xl mx-auto">
+              Each test stands on its own — pick the one that interests you most. You can come back for the others anytime, and completing all four unlocks your integrated profile.
+            </p>
+          </div>
+
+          <SingleTestPicker onSelectTest={onSelectTest} />
+
+          {/* Or take the full integrated profile */}
+          <div className="flex items-center gap-3 mt-12 mb-6 max-w-3xl mx-auto">
+            <div className="h-px flex-1 bg-navy-deep/10" />
+            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-ink-muted font-medium">
+              Or take the integrated profile
+            </span>
+            <div className="h-px flex-1 bg-navy-deep/10" />
           </div>
           <DiscoverMyMindSpine
             status={mapStatus}
             onStart={onSelectAssessment}
             onViewDashboard={onViewDashboard}
           />
-
-          <SingleTestPicker onSelectTest={onSelectTest} />
 
           {hasStarted && completedCount < 4 && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center mt-4">
