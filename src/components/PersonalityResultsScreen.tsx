@@ -560,7 +560,10 @@ Take the free assessment yourself!`;
           )}
         </motion.div>
 
+        <InstallAppBanner className="max-w-3xl mx-auto" />
+
         {/* Legal Disclaimer */}
+
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
