@@ -1,0 +1,31 @@
+"""Cognitive Style & Attention (Neurodivergent Mind) end-to-end flow."""
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from _helpers import BASE_URL, answer_loop, click_first_visible, fail, ok, run, shot, step
+
+
+async def flow(page):
+    await page.goto(BASE_URL, wait_until="domcontentloaded")
+
+    step("select Cognitive Style & Attention card")
+    loc = page.get_by_text("Cognitive Style & Attention", exact=False).first
+    await loc.scroll_into_view_if_needed(timeout=3000)
+    await loc.click(timeout=3000)
+
+    if not await click_first_visible(page, "Start Assessment", "Begin"):
+        fail("preview Start button missing")
+
+    answered = await answer_loop(page, "neurodivergent", max_questions=45)
+    ok(f"answered {answered} questions")
+
+    await page.wait_for_timeout(1500)
+    body = (await page.locator("body").inner_text()).lower()
+    if not any(k in body for k in ("attention", "style", "focus", "profile")):
+        fail("neurodivergent results did not render")
+    await shot(page, "neurodivergent", "99_results")
+
+
+if __name__ == "__main__":
+    run(flow, flow="neurodivergent")
