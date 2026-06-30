@@ -13,6 +13,10 @@ import PersonalityTest from "./pages/PersonalityTest";
 import ADHDTest from "./pages/ADHDTest";
 import PersonalityTypePage from "./pages/PersonalityTypePage";
 import NotFound from "./pages/NotFound";
+import Organizations from "./pages/Organizations";
+import Research from "./pages/Research";
+import About from "./pages/About";
+
 
 const queryClient = new QueryClient();
 
