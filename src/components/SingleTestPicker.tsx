@@ -80,23 +80,9 @@ export const SingleTestPicker = ({ onSelectTest }: SingleTestPickerProps) => {
       className="relative max-w-5xl mx-auto mb-6 sm:mb-8"
     >
       <div className="relative rounded-2xl border border-navy-deep/10 bg-cream-warm/40 dark:bg-card/40 p-5 sm:p-7">
-        {/* Divider with label */}
-        <div className="flex items-center gap-3 mb-5">
-          <div className="h-px flex-1 bg-navy-deep/10" />
-          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-teal font-medium">
-            Or take a single module
-          </span>
-          <div className="h-px flex-1 bg-navy-deep/10" />
-        </div>
-
-        <div className="text-center mb-6">
-          <h3 className="font-serif text-lg sm:text-xl font-medium text-foreground leading-tight">
-            Focus on one lens at a time.
-          </h3>
-          <p className="text-ink-muted text-xs sm:text-sm mt-1.5">
-            Each module stands on its own and contributes to your overall profile when you continue.
-          </p>
-        </div>
+        <p className="text-center text-ink-muted text-xs sm:text-sm mb-5">
+          {OPTIONS.length} tests · click any card to begin
+        </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3">
           {OPTIONS.map((opt) => {
