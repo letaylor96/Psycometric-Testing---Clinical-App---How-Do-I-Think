@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Question, categoryLabels, TOTAL_TEST_TIME } from '@/data/quizQuestions';
 import { cn } from '@/lib/utils';
-import { Clock, AlertTriangle } from 'lucide-react';
+import { Clock, AlertTriangle, ArrowLeft } from 'lucide-react';
 
 interface QuizQuestionProps {
   question: Question;
