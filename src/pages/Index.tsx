@@ -552,6 +552,8 @@ const Index = () => {
               selectedAnswer={selectedAnswer}
               onSelectAnswer={handleSelectAnswer}
               onNext={handleNextQuestion}
+              onPrevious={handlePreviousQuestion}
+              canGoPrevious={currentQuestionIndex > 0}
               totalTimeRemaining={timeRemaining}
               onTimeUp={handleTimeUp}
             />
