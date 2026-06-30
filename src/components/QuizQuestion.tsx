@@ -205,12 +205,21 @@ export const QuizQuestion = ({
               ))}
             </div>
 
-            {/* Next Button */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: selectedAnswer !== null ? 1 : 0.3 }}
-              className="mt-6 flex justify-end"
-            >
+            {/* Navigation */}
+            <div className="mt-6 flex items-center justify-between gap-3">
+              <button
+                onClick={onPrevious}
+                disabled={!canGoPrevious}
+                className={cn(
+                  'inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-colors',
+                  canGoPrevious
+                    ? 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                    : 'text-muted-foreground/40 cursor-not-allowed',
+                )}
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Previous
+              </button>
               <button
                 onClick={onNext}
                 disabled={selectedAnswer === null}
@@ -223,7 +232,7 @@ export const QuizQuestion = ({
               >
                 {currentIndex === totalQuestions - 1 ? 'See Results' : 'Next →'}
               </button>
-            </motion.div>
+            </div>
           </div>
         </motion.div>
       </AnimatePresence>
