@@ -206,11 +206,12 @@ export const LandingHero = ({
                 >
                   See what the profile includes
                 </Button>
+                <InstallAppButton variant="hero" />
               </div>
 
               {!hasPremiumAccess && !hasStarted && (
                 <p className="text-ink-muted/70 text-xs mt-5">
-                  No sign-up required to begin · ~25 min total across modules
+                  No sign-up required · Install on your phone for one-tap access · ~25 min total
                 </p>
               )}
             </div>
