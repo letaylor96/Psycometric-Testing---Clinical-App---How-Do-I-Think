@@ -8,6 +8,7 @@ import { PremiumFeatureTeaser } from '@/components/PremiumFeatureTeaser';
 import { QuestionReview } from '@/components/QuestionReview';
 import { SaveAssessmentButton } from '@/components/SaveAssessmentButton';
 import { SocialShareButtons } from '@/components/SocialShareButtons';
+import { InstallAppBanner } from '@/components/InstallAppBanner';
 import { ShareableResultCard } from '@/components/ShareableResultCard';
 import { cn } from '@/lib/utils';
 
