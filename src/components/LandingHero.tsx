@@ -3,7 +3,7 @@ import { ArrowRight, FileText, MessageCircle, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssessmentType, SelectableTestKey } from '@/data/assessmentTypes';
 import { AssessmentProgress } from '@/components/AssessmentProgress';
-import logoWordmark from '@/assets/logo-wordmark.png';
+import logoWordmark from '@/assets/logo-wordmark.webp';
 import { AuthButton } from '@/components/AuthButton';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
@@ -82,6 +82,10 @@ export const LandingHero = ({
             <img
               src={logoWordmark}
               alt="How Do I Think — Cognitive & Personality Assessment"
+              width={1200}
+              height={305}
+              decoding="async"
+              fetchPriority="high"
               className="h-20 sm:h-24 w-auto transition-transform group-hover:scale-[1.02]"
             />
           </a>
