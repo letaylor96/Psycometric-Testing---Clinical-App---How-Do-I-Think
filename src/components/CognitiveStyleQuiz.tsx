@@ -43,16 +43,26 @@ export const CognitiveStyleQuiz = ({ onComplete, onBack }: CognitiveStyleQuizPro
   const handleNext = useCallback(() => {
     if (selectedAnswer === null) return;
 
-    const newAnswers = [...answers, selectedAnswer];
+    const newAnswers = [...answers];
+    newAnswers[currentIndex] = selectedAnswer;
     setAnswers(newAnswers);
-    setSelectedAnswer(null);
 
     if (currentIndex < sessionQuestions.length - 1) {
       setCurrentIndex(prev => prev + 1);
+      setSelectedAnswer(newAnswers[currentIndex + 1] ?? null);
     } else {
       onComplete(newAnswers);
     }
   }, [selectedAnswer, answers, currentIndex, onComplete, sessionQuestions.length]);
+
+  const handlePrevious = useCallback(() => {
+    if (currentIndex === 0) return;
+    const newAnswers = [...answers];
+    if (selectedAnswer !== null) newAnswers[currentIndex] = selectedAnswer;
+    setAnswers(newAnswers);
+    setCurrentIndex(prev => prev - 1);
+    setSelectedAnswer(newAnswers[currentIndex - 1] ?? null);
+  }, [currentIndex, selectedAnswer, answers]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8">
