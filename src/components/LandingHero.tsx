@@ -105,7 +105,7 @@ export const LandingHero = ({
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-36 sm:pt-44 pb-12 sm:pb-16 overflow-hidden">
+      <section className="relative pt-24 sm:pt-36 md:pt-44 pb-12 sm:pb-16 overflow-hidden">
         {/* faint connected-dots backdrop, "mapping" motif */}
         <div
           aria-hidden
